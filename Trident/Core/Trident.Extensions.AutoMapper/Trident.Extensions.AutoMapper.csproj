@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="10.1.1"/>
+        <PackageReference Include="AutoMapper.Collection" Version="7.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0"/>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <ProjectReference Include="..\Trident.Contracts.Api\Trident.Contracts.Api.csproj"/>
+        <ProjectReference Include="..\Trident\Trident.csproj"/>
+    </ItemGroup>
+
+</Project>

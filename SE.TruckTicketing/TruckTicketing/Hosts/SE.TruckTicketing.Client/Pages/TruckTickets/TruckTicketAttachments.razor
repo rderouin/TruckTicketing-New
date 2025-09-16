@@ -1,0 +1,100 @@
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Security
+@using SE.Shared.Common.Utilities
+@inherits BaseTruckTicketingComponent
+
+<style>
+   .form-grid td .rz-cell-data {
+       display: inline;
+   }
+</style>
+
+<div class="bg-white p-4">
+    <div class="d-flex align-items-center justify-content-between">
+        <h3></h3>
+
+        @if (ViewModel.TruckTicket.Status is not TruckTicketStatus.Invoiced and not TruckTicketStatus.Void && IsAuthorizedFor(Permissions.Resources.TruckTicketAttachment, Permissions.Operations.Write))
+        {
+            <TridentFileUploader DialogTitle="Upload Attachment"
+                                 TriggerText="Upload Attachment"
+                                 CompleteButtonText="Done"
+                                 Accept=".doc, .docx, .xls, .xlsx, .pdf, .bmp, .gif, .jpeg, .jpg, .png, .tif, .tiff, .rtf, .txt, .msg"
+                                 UploadUriProvider="@GetAttachmentUploadUrl"
+                                 OnUploadComplete="@HandleAttachmentUploadCompletion"
+                                 UploadOnFileSubmit="@true"/>
+        }
+    </div>
+    <div></div>
+</div>
+<div class="px-4 form-grid">
+    <PagableGridView TModel="TruckTicketAttachment"
+                     Results="@_attachments"
+                     EnableSearch="false"
+                     EnablePaging="false"
+                     EnableSorting="true"
+                     OnDataLoad="LoadAttachments"
+                     EnableRowExpansion="false"
+                     EnableFilters="false"
+                     GridPageSize="10"
+                     @ref="_grid">
+        <Columns>
+            <ColumnDefinition TItem="TruckTicketAttachment"
+                              Property="@nameof(TruckTicketAttachment.File)"
+                              Title="Attachment Name"
+                              PropertyType="typeof(string)">
+                <Template Context="data">
+                    <div style="transform: translateY(-10px)">@data.File</div>
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="TruckTicketAttachment"
+                              Property="@nameof(TruckTicketAttachment.AttachmentType)"
+                              Title="Type"
+                              PropertyType="typeof(string)">
+                <Template Context="context">
+                    <RadzenDropDown TValue="AttachmentType"
+                                    id="AttachmentTypeDropDown"
+                                    Name="AttachmentTypeDropDown"
+                                    @bind-Value="@context.AttachmentType"
+                                    TextProperty="Value"
+                                    ValueProperty="Key"
+                                    Multiple="false"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    Data="@(DataDictionary.For<AttachmentType>(false))"
+                                    class="w-100"/>
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="TruckTicketAttachment"
+                              Property="@nameof(TruckTicketAttachment.ReferenceId)"
+                              Title="Reference ID"
+                              Width="6rem"
+                              PropertyType="typeof(string)">
+                <Template Context="data">
+                    <div style="transform: translateY(-10px)">@data.ReferenceId</div>
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="TruckTicketAttachment"
+                              Property="@nameof(TruckTicketAttachment)"
+                              Title="Actions"
+                              Width="10rem"
+                              EnableSorting="false">
+                <Template Context="data">
+                    <div style="transform: translateY(-13px)">
+                        <RadzenButton Click="@(() => HandleAttachmentDownload(data))"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Small"
+                                      Text="Download"/>
+
+                        <RadzenButton Click="@(() => HandleAttachmentRemove(data))"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small"
+                                      Visible="@(ViewModel.TruckTicket.Status is not TruckTicketStatus.Invoiced and not TruckTicketStatus.Void)"
+                                      Disabled="@(!IsAuthorizedFor(Permissions.Resources.TruckTicketAttachment, Permissions.Operations.Write))"
+                                      Text="Remove"/>
+                    </div>
+
+                </Template>
+            </ColumnDefinition>
+        </Columns>
+    </PagableGridView>
+</div>

@@ -1,0 +1,59 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseTruckTicketingComponent
+
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Account Addresses"
+                             Component="AccountAddressDropDown" />
+                <RadzenDropDownDataGrid TValue="Guid?"
+                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        AllowFiltering="true"
+                                        AllowClear="true"
+                                        Data="@(_accountAddresses)"
+                                        Style="width: 100%"
+                                        AllowColumnResize="true"
+                                        TextProperty="@nameof(AccountAddress.Display)"
+                                        ValueProperty="@nameof(AccountAddress.Id)"
+                                        Change="@(OnAddressSelect)"
+                                        Placeholder="Select an address..."
+                                        @bind-Value="@_selectedAddressGuid"
+                                        PageSize="10">
+                    <Columns>
+                        <RadzenDropDownDataGridColumn Property="@nameof(AccountAddress.Street)"
+                                                      Title="Street"
+                                                      Width="100px" />
+                        <RadzenDropDownDataGridColumn Property="@nameof(AccountAddress.City)"
+                                                      Title="City"
+                                                      Width="100px" />
+                        <RadzenDropDownDataGridColumn Property="@nameof(AccountAddress.ZipCode)"
+                                                      Title="Zip/Postal Code"
+                                                      Width="100px" />
+                        <RadzenDropDownDataGridColumn Property="@nameof(AccountAddress.Country)"
+                                                      Title="Country"
+                                                      Width="100px" />
+                        <RadzenDropDownDataGridColumn Property="@nameof(AccountAddress.Province)"
+                                                      Title="State/Province"
+                                                      Width="100px" />
+                    </Columns>
+                </RadzenDropDownDataGrid>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4 mb-3">
+    <div class="col d-flex justify-content-end">
+
+        <RadzenButton ButtonStyle="ButtonStyle.Light"
+                      Text="Cancel"
+                      Click="HandleCancel" />
+
+        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                      Click="HandleSelect"
+                      class="ml-2"
+                      Text="Select"
+                      Disabled="@DisableSelect" />
+
+    </div>
+</div>

@@ -1,0 +1,104 @@
+﻿@using SE.Shared.Common.Extensions
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Lookups
+<div class="row mb-3">
+    <div class="col d-flex flex-column">
+        @if (NewStatus == TruckTicketStatus.Void)
+        {
+            <RadzenLabel Text="Void Reason"
+                         Component="TicketVoidStatusDropDown"
+                         class="required"/>
+
+            <TridentApiDropDown Name="TicketVoidStatusDropDown"
+                                TModel="TruckTicketVoidReason"
+                                TValue="string"
+                                Placeholder="Select reason..."
+                                @bind-Value="@_voidReason"
+                                TextProperty="@nameof(TruckTicketVoidReason.VoidReason)"
+                                ValueProperty="@nameof(TruckTicketVoidReason.VoidReason)"
+                                PageSize="10"
+                                Class="w-100"/>
+        }
+        else if (NewStatus == TruckTicketStatus.Hold)
+        {
+            <RadzenLabel Text="Hold Reason"
+                         Component="TicketHoldStatusDropdown"
+                         class="required"/>
+
+            <TridentApiDropDown Name="TicketHoldStatusDropDown"
+                                TModel="TruckTicketHoldReason"
+                                TValue="string"
+                                Placeholder="Select reason..."
+                                @bind-Value="@_holdReason"
+                                TextProperty="@nameof(TruckTicketHoldReason.HoldReason)"
+                                ValueProperty="@nameof(TruckTicketHoldReason.HoldReason)"
+                                PageSize="10"
+                                Class="w-100"/>
+        }
+    </div>
+
+    @if (_holdReason?.ToLower() == "other" || _voidReason?.ToLower() == "other")
+    {
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Other Reason"
+                         Component="OtherReasonStatusTextBox"
+                         class="required"/>
+            <RadzenTextBox Name="OtherReasonStatusTextBox"
+                           @bind-Value="@_comment"
+                           Class="w-100"/>
+        </div>
+    }
+</div>
+<div class="d-flex align-items-center justify-content-end gap-2">
+    <RadzenButton ButtonStyle="ButtonStyle.Light"
+                  Text="Cancel"
+                  Click="@OnCancel"/>
+
+    <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                  ButtonType="ButtonType.Button"
+                  Text="Proceed"
+                  Click="@HandleConfirm"
+                  Disabled="@ConfirmButtonDisabled"/>
+</div>
+
+
+@code {
+
+    private string _holdReason;
+
+    private string _voidReason;
+
+    private string _comment;
+
+    [Parameter]
+    public TruckTicket TruckTicket { get; set; }
+
+    [Parameter]
+    public TruckTicketStatus NewStatus { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        _holdReason = TruckTicket.HoldReason;
+        _voidReason = TruckTicket.VoidReason;
+        _comment = TruckTicket.OtherReason;
+    }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public EventCallback OnConfirm { get; set; }
+
+    public async Task HandleConfirm()
+    {
+        TruckTicket.HoldReason = _holdReason;
+        TruckTicket.VoidReason = _voidReason;
+        TruckTicket.OtherReason = _comment;
+        await OnConfirm.InvokeAsync();
+    }
+
+    private bool ConfirmButtonDisabled => (NewStatus is TruckTicketStatus.Hold && !_holdReason.HasText()) ||
+                                          (NewStatus is TruckTicketStatus.Void && !_voidReason.HasText()) ||
+                                          ((_holdReason?.ToLower() == "other" || _voidReason?.ToLower() == "other") && !_comment.HasText());
+
+}

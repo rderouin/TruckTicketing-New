@@ -1,0 +1,70 @@
+﻿@using SE.BillingService.Contracts.Api.Enums
+@inherits BaseTruckTicketingComponent
+
+<EditForm EditContext="@_editContext">
+    <div class="row pb-2">
+        @if (Type == MessageAdapterType.Csv)
+        {
+            <div class="col">
+                <RadzenLabel Text="Include Header Row"></RadzenLabel><br/>
+                <RadzenSwitch @bind-Value="@MessageAdapterSettings.IncludeHeaderRow"
+                              class="d-block">
+                </RadzenSwitch>
+            </div>
+            <div class="col">
+                <RadzenLabel Text="Always Use Quotes"></RadzenLabel><br/>
+                <RadzenSwitch Value="@(MessageAdapterSettings.AlwaysQuote ?? false)"
+                              ValueChanged="@(b => MessageAdapterSettings.AlwaysQuote = b)"
+                              class="d-block">
+                </RadzenSwitch>
+            </div>
+        }
+        @if (Type == MessageAdapterType.OpenApi)
+        {
+            <div class="col">
+                <RadzenLabel Text="API Definition URI"></RadzenLabel><br/>
+                <RadzenTextBox @bind-Value="MessageAdapterSettings.DestinationApiDefinitionUri"
+                               class="w-100">
+                </RadzenTextBox>
+            </div>
+        }
+    </div>
+    <div class="row pb-2">
+        <div class="col">
+            <RadzenLabel Text="Accepts Attachments"></RadzenLabel><br/>
+            <RadzenSwitch @bind-Value="@MessageAdapterSettings.AcceptsAttachments"
+                          class="d-block">
+            </RadzenSwitch>
+        </div>
+        @if (MessageAdapterSettings.AcceptsAttachments &&
+             (Type == MessageAdapterType.Pidx ||
+              Type == MessageAdapterType.MailMessage))
+        {
+            <div class="col">
+                <RadzenLabel Text="Embed Attachments"></RadzenLabel><br/>
+                <RadzenSwitch @bind-Value="@MessageAdapterSettings.EmbedAttachments"
+                              class="d-block">
+                </RadzenSwitch>
+            </div>
+        }
+    </div>
+    <div class="row">
+        @if (MessageAdapterSettings.AcceptsAttachments)
+        {
+            <div class="col">
+                <RadzenLabel Text="Supports One Attachment Only"></RadzenLabel><br/>
+                <RadzenSwitch @bind-Value="@MessageAdapterSettings.SupportsSingleAttachmentOnly"
+                              class="d-block">
+                </RadzenSwitch>
+            </div>
+            <div class="col">
+                <RadzenLabel Text="Max File Size (Mb)"></RadzenLabel><br/>
+                <RadzenNumeric TValue="int"
+                               @bind-Value="@MessageAdapterSettings.MaxAttachmentSizeInMegabytes"
+                               Min="1"
+                               Max="1000">
+                </RadzenNumeric>
+            </div>
+        }
+    </div>
+</EditForm>

@@ -1,0 +1,36 @@
+﻿@using SE.TruckTicketing.UI.ViewModels
+@inherits BaseRazorComponent
+
+<RadzenTemplateForm TItem="EDIValueViewModel"
+                    InvalidSubmit="@OnInvalidSubmit"
+                    Submit="@OnSubmit"
+                    Data="@model"
+                    @ref="ReferenceToForm">
+    <div class="row">
+        @foreach (var fieldDefinition in _ediViewModelData)
+        {
+            <div class="col-3">
+                <RadzenLabel Text=@fieldDefinition.EDIFieldName Class="m-0"/>
+                <div class="text-secondary text-opacity-50 m-0 p-0 d-flex align-items-center"
+                     style="font-size: 0.75rem;">
+                    <RadzenIcon Icon="label"/> @fieldDefinition.ReferenceId
+                </div>
+                <RadzenTextBox class="w-100 mb-2"
+                               Name="@fieldDefinition.EDIFieldName.Replace(" ", "")"
+                               Change="@(args => OnChange(args, fieldDefinition.EDIFieldName))"
+                               @bind-Value="@fieldDefinition.EDIFieldValueContent"/>
+                @if (fieldDefinition.IsRequired)
+                {
+                    <RadzenRequiredValidator Component="@fieldDefinition.EDIFieldName.Replace(" ", "")"
+                                             Text="Required"/>
+                }
+                @if (fieldDefinition.ValidationRequired)
+                {
+                    <RadzenRegexValidator Component="@fieldDefinition.EDIFieldName.Replace(" ", "")"
+                                          Text="@fieldDefinition.ValidationErrorMessage"
+                                          Pattern="@fieldDefinition.ValidationPattern"/>
+                }
+            </div>
+        }
+    </div>
+</RadzenTemplateForm>

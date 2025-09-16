@@ -1,0 +1,23 @@
+﻿<div style="height: 100vh;">
+    <div class="h-100 d-flex flex-column justify-content-center align-items-center">
+        <img alt="Secure Energy"
+             src="/img/se-logo.svg"
+             style="width: 250px; fill: #0a2848"/>
+
+        <div class="flex gap-3 align-items-center position-fixed bottom-0 w-100 justify-content-center pb-5"
+             style="font-size: 0.75rem!important;">
+            <div class="spinner-border spinner-border-sm text-secondary"
+                 role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            @ChildContent
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+}

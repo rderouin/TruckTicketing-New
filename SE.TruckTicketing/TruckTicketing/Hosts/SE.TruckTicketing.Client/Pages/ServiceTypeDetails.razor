@@ -1,0 +1,514 @@
+@page "/serviceType"
+@page "/serviceType/{ServiceTypeId:guid}"
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<PageLoadingContainer IsLoading="_isLoading">
+<LoadedView>
+<EditForm EditContext="@_editContext"
+          OnValidSubmit="@SaveButton_Clicked">
+
+<div class="bg-white p-4">
+    <div class="breadcrumb-container text-uppercase">
+        @Breadcrumb
+    </div>
+    <div class="d-flex align-items-center justify-content-between pb-3">
+        <h3>@Title</h3>
+        <div class="d-flex gap-2 align-items-center">
+
+
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="@SubmitButtonText"
+                          Disabled="@(SubmitButtonDisabled || !HasWritePermission(Permissions.Resources.ServiceType))"
+                          IsBusy="_isSaving"
+                          BusyText="@SubmitButtonBusyText"
+                          Icon="@SubmitButtonIcon"/>
+        </div>
+    </div>
+    <TridentValidationSummary Response="@Response"
+                              TModel="ServiceType"/>
+</div>
+<div class="p-4">
+<div class="card">
+    <div class="card-header">
+        <h4 class="fw-bold">General Info</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Service Type ID"
+                             Component="ServiceTypeTextBox"
+                             class="required"/>
+                <RadzenTextBox Name="ServiceTypeTextBox"
+                               @bind-Value="@ServiceType.ServiceTypeId"
+                               Class="w-100"
+                               Placeholder="Enter service type ID"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Service Type Name"
+                             Component="ServiceTypeNameTextBox"
+                             class="required"/>
+                <RadzenTextBox Name="ServiceTypeNameTextBox"
+                               @bind-Value="@ServiceType.Name"
+                               Class="w-100"
+                               Placeholder="Enter service type name"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Class"
+                             Component="ClassDropDown"
+                             class="required"/>
+                <RadzenDropDown TValue="Class"
+                                Class="w-100"
+                                id="ClassDropDown"
+                                @bind-Value="@ServiceType.Class"
+                                Placeholder="Select Class number"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Data="@(DataDictionary.For<Class>())"/>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Legal Entity"
+                             Component="LegalEntityDropDown"/>
+                <TridentApiDropDownDataGrid id="LegalEntityDropDown"
+                                            TModel="LegalEntity"
+                                            TValue="Guid"
+                                            Placeholder="Select Legal Entity..."
+                                            @bind-Value="@ServiceType.LegalEntityId"
+                                            TextProperty="@nameof(LegalEntity.Name)"
+                                            PageSize="10"
+                                            Disabled="false"
+                                            OnItemSelect="OnLegalEntityChange"
+                                            OnDataLoading="HandleLegalEntityLoading">
+                    <Columns>
+                        <RadzenDropDownDataGridColumn Property="@nameof(LegalEntity.Code)"
+                                                      Title="Code"
+                                                      Width="100px"/>
+                        <RadzenDropDownDataGridColumn Property="@nameof(LegalEntity.Name)"
+                                                      Title="Name"/>
+                    </Columns>
+                </TridentApiDropDownDataGrid>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Country"
+                             Component="CountryTextBox"
+                             class="required"/>
+                <RadzenDropDown TValue="CountryCode"
+                                Class="w-100"
+                                id="CountryTextBox"
+                                @bind-Value="@ServiceType.CountryCode"
+                                Placeholder="Select Country"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Disabled="true"
+                                Data="@(DataDictionary.For<CountryCode>())"/>
+
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Description"
+                             Component="DescriptionTextBox"/>
+                <RadzenTextBox Name="DescriptionTextBox"
+                               @bind-Value="@ServiceType.Description"
+                               Class="w-100"
+                               Placeholder="Enter description"/>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Report As Cut Type"
+                             Component="CutTypeDropDown"
+                             class="required"/>
+                <RadzenDropDown TValue="ReportAsCutTypes"
+                                Class="w-100"
+                                id="CutTypeDropDown"
+                                @bind-Value="@ServiceType.ReportAsCutType"
+                                Placeholder="Select cut type"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Data="@(DataDictionary.For<ReportAsCutTypes>())"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Stream"
+                             Component="StreamDropDown"
+                             class="required"/>
+                <RadzenDropDown Name="StreamDropDown"
+                                TValue="Stream"
+                                @bind-Value="@ServiceType.Stream"
+                                Class="w-100"
+                                Placeholder="Select stream"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Data="@(DataDictionary.For<Stream>())"/>
+            </div>
+            <div class="col d-flex flex-row">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Prorate Service"
+                                 Component="ProrateServiceSwitch"/>
+                    <RadzenSwitch Name="ProrateServiceSwitch"
+                                  @bind-Value="@ServiceType.ProrateService">
+                    </RadzenSwitch>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Production Accountant Report"
+                                 Component="ProductionAccountantReportSwitch"/>
+                    <RadzenSwitch Name="ProductionAccountantReportSwitch"
+                                  @bind-Value="@ServiceType.ProductionAccountantReport">
+                    </RadzenSwitch>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h4 class="fw-bold">Total Info</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Item Number"
+                             Component="TotalItemDropDown"
+                             class="required"/>
+                <TridentApiDropDownDataGrid id="TotalItemDropDown"
+                                            TModel="Product"
+                                            TValue="Guid"
+                                            Placeholder="Select item number"
+                                            @bind-Value="@ServiceType.TotalItemId"
+                                            TextProperty="@nameof(Product.DisplayProduct)"
+                                            ValueProperty="@nameof(Product.Id)"
+                                            PageSize="10"
+                                            AllowFiltering="true"
+                                            OnDataLoading="OnProductLoading"
+                                            OnItemSelect="@(obj => OnChange(obj, "TotalItemDropDown"))">
+
+                    <Columns>
+                        <RadzenDropDownDataGridColumn Property="@nameof(Product.Name)"
+                                                      Title="Name"/>
+                        <RadzenDropDownDataGridColumn Property="@nameof(Product.Number)"
+                                                      Title="Number"/>
+                    </Columns>
+                </TridentApiDropDownDataGrid>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Validation Unit"
+                             Component="TotalThresholdTypeTextBox"/>
+                <RadzenDropDown TValue="SubstanceThresholdType"
+                                Class="w-100"
+                                id="TotalThresholdTypeTextBox"
+                                @bind-Value="@ServiceType.TotalThresholdType"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Placeholder="Select validation unit"
+                                Change="@(obj => OnThresholdChange(obj, "TotalThresholdTypeTextBox"))"
+                                Data="@(DataDictionary.For<SubstanceThresholdType>())"/>
+            </div>
+            <div class="col d-flex flex-row">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Show $0 line"
+                                 Component="ShowZeroLineSwitch"/>
+                    <RadzenSwitch Name="ShowZeroLineSwitch"
+                                  @bind-Value="@ServiceType.TotalShowZeroDollarLine">
+                    </RadzenSwitch>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text=@("Min " + _totalValidationUnitText)
+                             Component="TotalMinimumPercentageTextBox"/>
+                <TridentNumeric Name="TotalMinimumPercentageTextBox"
+                                TValue="double?"
+                                MaxDecimalPlaces="@TotalValueFormat"
+                                @bind-Value="@(ServiceType.TotalMinValue)"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text=@("Max " + _totalValidationUnitText)
+                             Component="TotalMaximumPercentageTextBox"/>
+                <TridentNumeric Name="TotalMaximumPercentageTextBox"
+                                TValue="double?"
+                                MaxDecimalPlaces="@TotalValueFormat"
+                                @bind-Value="@(ServiceType.TotalMaxValue)"/>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-bold">Water Info</h4>
+            <RadzenSwitch Name="MinThresholdIncludesWaterSwitch"
+                          @bind-Value="@ServiceType.IncludesWater"
+                          class="form-switch small">
+            </RadzenSwitch>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Item Number"
+                             Component="WaterItemDropDown"/>
+                <TridentApiDropDownDataGrid id="WaterItemDropDown"
+                                            TModel="Product"
+                                            TValue="Guid"
+                                            Placeholder="Select item number"
+                                            @bind-Value="@ServiceType.WaterItemId"
+                                            TextProperty="@nameof(Product.DisplayProduct)"
+                                            ValueProperty="@nameof(Product.Id)"
+                                            PageSize="10"
+                                            AllowFiltering="true"
+                                            OnDataLoading="OnProductLoading"
+                                            OnItemSelect="@(obj => OnChange(obj, "WaterItemDropDown"))">
+
+                    <Columns>
+                        <RadzenDropDownDataGridColumn Property="@nameof(Product.Name)"
+                                                      Title="Name"/>
+                        <RadzenDropDownDataGridColumn Property="@nameof(Product.Number)"
+                                                      Title="Number"/>
+                    </Columns>
+                </TridentApiDropDownDataGrid>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Validation Unit"
+                             Component="WaterThresholdTypeTextBox"/>
+                <RadzenDropDown TValue="SubstanceThresholdType"
+                                Class="w-100"
+                                id="WaterThresholdTypeTextBox"
+                                @bind-Value="@ServiceType.WaterThresholdType"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Placeholder="Select validation unit"
+                                Change="@(obj => OnThresholdChange(obj, "WaterThresholdTypeTextBox"))"
+                                Data="@(DataDictionary.For<SubstanceThresholdType>())"/>
+            </div>
+            <div class="col d-flex flex-row">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Pricing Min %"
+                                 Component="MinWaterPricingPercentage"/>
+                    <TridentNumeric Name="MinWaterPricingPercentage"
+                                    TValue="double?"
+                                    MaxDecimalPlaces="2"
+                                    @bind-Value="@ServiceType.WaterMinPricingPercentage"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Show $0 line"
+                                 Component="WaterShowZeroLineSwitch"/>
+                    <RadzenSwitch Name="WaterShowZeroLineSwitch"
+                                  @bind-Value="@ServiceType.WaterShowZeroDollarLine">
+                    </RadzenSwitch>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text=@("Min " + _waterValidationUnitText)
+                             Component="WaterMinimumPercentageTextBox"/>
+                <TridentNumeric Name="WaterMinimumPercentageTextBox"
+                                TValue="double?"
+                                MaxDecimalPlaces="@WaterValueFormat"
+                                @bind-Value="@(ServiceType.WaterMinValue)"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text=@("Max " + _waterValidationUnitText)
+                             Component="WaterMaximumPercentageTextBox"/>
+                <TridentNumeric Name="WaterMaximumPercentageTextBox"
+                                TValue="double?"
+                                MaxDecimalPlaces="@WaterValueFormat"
+                                @bind-Value="@(ServiceType.WaterMaxValue)"/>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-bold">Oil Info</h4>
+            <RadzenSwitch Name="MinThresholdIncludesOilSwitch"
+                          @bind-Value="@ServiceType.IncludesOil"
+                          class="form-switch small">
+            </RadzenSwitch>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Item Number"
+                             Component="OilItemDropDown"/>
+                <TridentApiDropDownDataGrid id="OilItemDropDown"
+                                            TModel="Product"
+                                            TValue="Guid"
+                                            Placeholder="Select item number"
+                                            @bind-Value="@ServiceType.OilItemId"
+                                            TextProperty="@nameof(Product.DisplayProduct)"
+                                            ValueProperty="@nameof(Product.Id)"
+                                            PageSize="10"
+                                            AllowFiltering="true"
+                                            OnDataLoading="OnProductLoading"
+                                            OnItemSelect="@(obj => OnChange(obj, "OilItemDropDown"))">
+
+                    <Columns>
+                        <RadzenDropDownDataGridColumn Property="@nameof(Product.Name)"
+                                                      Title="Name"/>
+                        <RadzenDropDownDataGridColumn Property="@nameof(Product.Number)"
+                                                      Title="Number"/>
+                    </Columns>
+                </TridentApiDropDownDataGrid>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Validation Unit"
+                             Component="OilThresholdTypeTextBox"/>
+                <RadzenDropDown TValue="SubstanceThresholdType"
+                                Class="w-100"
+                                id="OilThresholdTypeTextBox"
+                                @bind-Value="@ServiceType.OilThresholdType"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Placeholder="Select validation unit"
+                                Change="@(obj => OnThresholdChange(obj, "OilThresholdTypeTextBox"))"
+                                Data="@(DataDictionary.For<SubstanceThresholdType>())"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Credit Min Volume"
+                             Component="OilCreditMinVolumeTextBox"/>
+                <RadzenNumeric ShowUpDown="false"
+                               TValue="double"
+                               Name="OilCreditMinVolumeTextBox"
+                               @bind-Value="@ServiceType.OilCreditMinVolume"
+                               Class="w-100"
+                               Placeholder="Enter credit min volume"/>
+
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text=@("Min " + _oilValidationUnitText)
+                             Component="OilMinimumPercentageTextBox"/>
+                <TridentNumeric Name="OilMinimumPercentageTextBox"
+                                TValue="double?"
+                                MaxDecimalPlaces="@OilValueFormat"
+                                @bind-Value="@(ServiceType.OilMinValue)"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text=@("Max " + _oilValidationUnitText)
+                             Component="OilMaximumPercentageTextBox"/>
+                <TridentNumeric Name="OilMaximumPercentageTextBox"
+                                TValue="double?"
+                                MaxDecimalPlaces="@OilValueFormat"
+                                @bind-Value="@(ServiceType.OilMaxValue)"/>
+            </div>
+            <div class="col d-flex flex-row">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Show $0 line"
+                                 Component="OilShowZeroLineSwitch"/>
+                    <RadzenSwitch Name="OilShowZeroLineSwitch"
+                                  @bind-Value="@ServiceType.OilShowZeroDollarLine">
+                    </RadzenSwitch>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Item Reverse"
+                                 Component="OilShowZeroLineSwitch"/>
+                    <RadzenSwitch Name="OilItemReverseSwitch"
+                                  @bind-Value="@ServiceType.OilItemReverse">
+                    </RadzenSwitch>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-bold">Solid Info</h4>
+            <RadzenSwitch Name="MinThresholdIncludesSolids"
+                          @bind-Value="@ServiceType.IncludesSolids"
+                          class="form-switch small">
+            </RadzenSwitch>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Item Number"
+                             Component="SolidItemDropDown"/>
+                <TridentApiDropDownDataGrid id="SolidItemDropDown"
+                                            TModel="Product"
+                                            TValue="Guid"
+                                            Placeholder="Select item number"
+                                            @bind-Value="@ServiceType.SolidItemId"
+                                            TextProperty="@nameof(Product.DisplayProduct)"
+                                            ValueProperty="@nameof(Product.Id)"
+                                            PageSize="10"
+                                            AllowFiltering="true"
+                                            OnDataLoading="OnProductLoading"
+                                            OnItemSelect="@(obj => OnChange(obj, "SolidItemDropDown"))">
+
+                    <Columns>
+                        <RadzenDropDownDataGridColumn Property="@nameof(Product.Name)"
+                                                      Title="Name"/>
+                        <RadzenDropDownDataGridColumn Property="@nameof(Product.Number)"
+                                                      Title="Number"/>
+                    </Columns>
+                </TridentApiDropDownDataGrid>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Validation Unit"
+                             Component="SolidThresholdTypeTextBox"/>
+                <RadzenDropDown TValue="SubstanceThresholdType"
+                                Class="w-100"
+                                id="SolidThresholdTypeTextBox"
+                                @bind-Value="@ServiceType.SolidThresholdType"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Placeholder="Select validation unit"
+                                Change="@(obj => OnThresholdChange(obj, "SolidThresholdTypeTextBox"))"
+                                Data="@(DataDictionary.For<SubstanceThresholdType>())"/>
+            </div>
+            <div class="col d-flex flex-row">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Pricing Min %"
+                                 Component="MinSolidPricingPercentage"/>
+                    <TridentNumeric Name="MinSolidPricingPercentage"
+                                    TValue="double?"
+                                    MaxDecimalPlaces="2"
+                                    @bind-Value="@ServiceType.SolidMinPricingPercentage"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Show $0 line"
+                                 Component="SolidShowZeroLineSwitch"/>
+                    <RadzenSwitch Name="SolidShowZeroLineSwitch"
+                                  @bind-Value="@ServiceType.SolidShowZeroDollarLine">
+                    </RadzenSwitch>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text=@("Min " + _solidValidationUnitText)
+                             Component="SolidMinimumPercentageTextBox"/>
+                <TridentNumeric Name="SolidMinimumPercentageTextBox"
+                                TValue="double?"
+                                MaxDecimalPlaces="@SolidValueFormat"
+                                @bind-Value="@(ServiceType.SolidMinValue)"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text=@("Max " + _solidValidationUnitText)
+                             Component="SolidMaximumPercentageTextBox"/>
+                <TridentNumeric Name="SolidMaximumPercentageTextBox"
+                                TValue="double?"
+                                MaxDecimalPlaces="@SolidValueFormat"
+                                @bind-Value="@(ServiceType.SolidMaxValue)"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</EditForm>
+
+</LoadedView>
+</PageLoadingContainer>

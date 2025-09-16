@@ -1,0 +1,68 @@
+@page "/RoleEdit"
+@using SE.TruckTicketing.UI.ViewModels
+@using SE.Shared.Common.Extensions
+@inherits BaseRazorComponent
+
+<EditForm Model="Role">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-6">
+                    <div class="row">
+                        <h4 class="fw-bold">Add Role</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <div class="mb-2">
+                        <RadzenLabel Text="Name"></RadzenLabel>
+                        <RadzenTextBox Name="RoleName"
+                                       @bind-Value="Role.Name"
+                                       Class="w-100"/>
+                    </div>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Enabled"></RadzenLabel>
+                    <RadzenSwitch @bind-Value="@Enabled"
+                                  Name="RoleEnabled"
+                                  TValue="bool"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <DualListBox TItem="FlattenedPermission"
+                                 TValue="string"
+                                 SourceData="FlatPermissions"
+                                 SelectedValues="selectedValues"
+                                 TextProperty="@nameof(FlattenedPermission.Display)"
+                                 ValueProperty="@nameof(FlattenedPermission.Id)"
+                                 SortExpression="x => x.Display"
+                                 OnSelectChange="SelectionChanged"
+                                 Multiple="true"
+                                 SelectHeading="Unassigned Permissions"
+                                 UnselectHeading="Assigned Permissions"
+                                 SelectItemText="Assign"
+                                 Height="25"
+                                 UnselectItemText="Unassign"/>
+                </div>
+            </div>
+            <div class="row mt-4 mb-3">
+                <div class="col d-flex justify-content-end">
+                    <RadzenButton Click="() => CancelButton_Clicked()"
+                                  Text="Cancel"
+                                  ButtonStyle="ButtonStyle.Secondary">
+                    </RadzenButton>
+                    <RadzenButton Click="() => SaveButton_Clicked()"
+                                  ButtonStyle="ButtonStyle.Primary"
+                                  Text="Save"
+                                  class="ml-2"
+                                  Disabled="@(!Role.Name.HasText() || Role.SubmitButtonDisabled)">
+                    </RadzenButton>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>

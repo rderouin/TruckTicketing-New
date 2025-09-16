@@ -1,0 +1,111 @@
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+@namespace SE.TruckTicketing.Client.Components.Accounts
+
+<EditForm Model="@ViewModel.EdiFieldDefinition"
+          OnValidSubmit="@SaveButton_Clicked">
+    <div class="card">
+        <div class="card-body grid-switch-container">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="EDI Field"
+                                 Component="EDIFieldDropDown"/>
+                    <TridentApiDropDown id="EDIFieldDropDown"
+                                        TModel="EDIFieldLookup"
+                                        TValue="Guid"
+                                        Placeholder="Select EDI Field..."
+                                        @bind-Value="@ViewModel.EdiFieldDefinition.EDIFieldLookupId"
+                                        TextProperty="@nameof(EDIFieldLookup.Name)"
+                                        PageSize="10"
+                                        OnItemSelect="OnEDIFieldChanged"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Default Value"
+                                 Component="EDIDefaultValue"/>
+                    <RadzenTextBox @bind-Value="@ViewModel.EDIFieldValue"
+                                   Name="EDIDefaultValue"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Is Required"
+                                 Component="IsRequiredSwitch"/>
+                    <RadzenSwitch @bind-Value="@ViewModel.EdiFieldDefinition.IsRequired"
+                                  Name="IsRequiredSwitch"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Print on Invoice"
+                                 Component="IsPrintedSwitch"/>
+                    <RadzenSwitch @bind-Value="@ViewModel.EdiFieldDefinition.IsPrinted"
+                                  Name="IsPrintedSwitch"/>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Validation Required"
+                                 Component="ValidationRequiredSwitch"/>
+                    <RadzenSwitch @bind-Value="@ViewModel.EdiFieldDefinition.ValidationRequired"
+                                  Name="ValidationRequiredSwitch"
+                                  Change="@(args => ValidationOnChange(args))"/>
+                </div>
+                <div class="col d-flex flex-column"
+                     hidden="@ShowValidationPattern">
+                    <RadzenLabel Text="Validation Pattern"
+                                 Component="ValidationPatterDropDown"/>
+                    <TridentApiDropDown id="ValidationPatterDropDown"
+                                        TModel="EDIValidationPatternLookup"
+                                        TValue="Guid"
+                                        Placeholder="Select Validation Pattern..."
+                                        @bind-Value="@EDIValidationPatternLookupValue"
+                                        TextProperty="@nameof(EDIValidationPatternLookup.Name)"
+                                        PageSize="10"
+                                        OnItemSelect="OnEDIValidationPatternChanged"
+                                        Disabled="!ShowValidationPattern"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (ViewModel.EdiFieldDefinition.ValidationRequired && !string.IsNullOrEmpty(ViewModel.EdiFieldDefinition.ValidationPattern))
+    {
+        <div class="card">
+            <div class="card-header">
+                <h4 class="fw-bold">Pattern Details</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-3 d-flex flex-column">
+                        <RadzenLabel Text="Pattern"
+                                     Component="PatternTextBox"/>
+                        <RadzenTextBox id="PatternTextBox"
+                                       @bind-Value="@ViewModel.EdiFieldDefinition.ValidationPattern"/>
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Error Message"
+                                     Component="ErrorMessageTextBox"/>
+                        <RadzenTextBox id="ErrorMessageTextBox"
+                                       @bind-Value="@ViewModel.EdiFieldDefinition.ValidationErrorMessage"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="@ViewModel.SubmitButtonText"
+                          IsBusy="@IsBusy"
+                          BusyText="@ViewModel.SubmitButtonBusyText"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          class="ml-2"
+                          Click="HandleCancel"/>
+        </div>
+    </div>
+
+</EditForm>

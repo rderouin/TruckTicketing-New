@@ -1,0 +1,111 @@
+﻿@page "/invoice-configurations"
+@using SE.TruckTicketing.Contracts.Models.InvoiceConfigurations
+@inherits BaseRazorComponent
+<div class="">
+    @if (DisplayAddButton)
+    {
+        <div class="bg-white  p-4">
+            <div class="row">
+                <div class="col-6">
+                    <div class="row">
+                        <h3 class="flex-grow-1">Manage Invoice Configs</h3>
+                    </div>
+                    <div class="row">
+                        <p>Control your configurations and presets for specific business units and customers.</p>
+                    </div>
+                </div>
+
+                <div class="col-6 d-flex align-items-center justify-content-end">
+                    <RadzenLink Icon="add_outline"
+                                Path="/invoice-configurations/new"
+                                Text="Add Invoice Configuration"
+                                class="@($"rz-button rz-button-md btn-primary text-decoration-none {(IsSaveButtonDisabled ? "rz-link-disabled" : "")}")" />
+                </div>
+            </div>
+        </div>
+    }
+
+
+    <div class="@ClassNames(("px-4", DisplayAddButton), ("pb-4", DisplayAddButton)) grid-switch-container">
+        <PagableGridView TModel="InvoiceConfiguration"
+                         Results="@_invoiceConfigurations"
+                         EnablePaging="true"
+                         EnableSorting="true"
+                         EnableFilters="false"
+                         EnableSearch="false"
+                         OnDataLoad="LoadData"
+                         IsLoading="@_isLoading"
+                         @ref="_grid">
+            <Columns>
+                <ColumnDefinition TItem="InvoiceConfiguration"
+                                  Property="@nameof(InvoiceConfiguration.CatchAll)"
+                                  Title="Has Catch All"
+                                  Width="5.625rem"
+                                  EnableSorting="false"
+                                  CanToggleVisibility="false">
+                    <Template Context="data">
+                        <RadzenSwitch @bind-Value="@data.CatchAll"
+                                      class="grid-switch"
+                                      Disabled="true"/>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="InvoiceConfiguration"
+                                  Property="@nameof(InvoiceConfiguration.Name)"
+                                  Title="Config Name"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="InvoiceConfiguration"
+                                  Property="@nameof(InvoiceConfiguration.Description)"
+                                  Title="Description"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="InvoiceConfiguration"
+                                  Property="@nameof(InvoiceConfiguration.CustomerName)"
+                                  Title="Customer"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="InvoiceConfiguration"
+                                  Property="@nameof(InvoiceConfiguration.SourceLocationIdentifier)"
+                                  Title="Source Location"
+                                  PropertyType="typeof(string)">
+                    <Template Context="data">
+                        @(data.AllSourceLocations ? "All" : data.SourceLocationIdentifier == null || !data.SourceLocationIdentifier.Any() ? string.Empty :
+                                                                string.Join(", ", data.SourceLocationIdentifier))
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="InvoiceConfiguration"
+                                  Property="@nameof(InvoiceConfiguration.WellClassifications)"
+                                  Title="Well Classification"
+                                  PropertyType="typeof(string)">
+                    <Template Context="data">
+                        @(data.AllWellClassifications ? "All" : data.WellClassifications == null || !data.WellClassifications.Any() ? string.Empty :
+                                                                    string.Join(", ", data.WellClassifications))
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="InvoiceConfiguration"
+                                  Property="@nameof(InvoiceConfiguration.FacilityCode)"
+                                  Title="Facility"
+                                  PropertyType="typeof(string)">
+                    <Template Context="data">
+                        @(data.AllFacilities ? "All" : data.FacilityCode == null || !data.FacilityCode.Any() ? string.Empty :
+                                                           string.Join(", ", data.FacilityCode))
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="InvoiceConfiguration"
+                                  Property="@nameof(InvoiceConfiguration.Id)"
+                                  Title="Actions"
+                                  Width="8rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="() => EditButton_Click(data)"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Small"
+                                      Text="Edit"/>
+                        <RadzenButton Click="() => CloneButton_Click(data)"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Small"
+                                      Text="Clone"/>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+
+</div>

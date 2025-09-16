@@ -1,0 +1,80 @@
+﻿@using SE.TruckTicketing.Contracts.Api.Models.SpartanProductParameters
+@using SE.TruckTicketing.Contracts.Models.FacilityServices
+@inherits BaseTruckTicketingComponent
+
+<div class="px-3">
+    <TridentApiDropDownDataGrid TValue="Guid?"
+                                Class="w-100"
+                                TModel="SpartanProductParameter"
+                                ValueProperty="@nameof(SpartanProductParameter.Id)"
+                                TextProperty="@nameof(SpartanProductParameter.Display)"
+                                @bind-Value="_selectedSpartanProductParameter"
+                                OnDataLoading="BeforeLoadingSpartanProductParameters"
+                                OnItemSelect="HandleSpartanProductParameterSelection"
+                                Placeholder="Select a Spartan product parameter to associate...">
+        <Columns>
+            <RadzenDropDownDataGridColumn Property="@nameof(SpartanProductParameter.ProductName)"
+                                          Title="Product Name"
+                                          Width="100px"/>
+            <RadzenDropDownDataGridColumn Property="@nameof(SpartanProductParameter.LocationOperatingStatus)"
+                                          Title="Location Operating Status"
+                                          Width="100px"/>
+            <RadzenDropDownDataGridColumn Property="@nameof(SpartanProductParameter.MinFluidDensity)"
+                                          Title="Fluid Density (Min)"
+                                          Width="100px">
+                <Template Context="data">
+                    <span>@($"{data.MinFluidDensity:N1}")</span>
+                </Template>
+            </RadzenDropDownDataGridColumn>
+            <RadzenDropDownDataGridColumn Property="@nameof(SpartanProductParameter.MinFluidDensity)"
+                                          Title="Fluid Density (Max)"
+                                          Width="100px">
+                <Template Context="data">
+                    <span>@($"{data.MaxFluidDensity:N1}")</span>
+                </Template>
+            </RadzenDropDownDataGridColumn>
+            <RadzenDropDownDataGridColumn Property="@nameof(SpartanProductParameter.MinFluidDensity)"
+                                          Title="Water Percentage (Min)"
+                                          Width="100px">
+                <Template Context="data">
+                    <span>@($"{data.MinWaterPercentage:N6}")</span>
+                </Template>
+            </RadzenDropDownDataGridColumn>
+
+            <RadzenDropDownDataGridColumn Property="@nameof(SpartanProductParameter.MinFluidDensity)"
+                                          Title="Water Percentage (Max)"
+                                          Width="100px">
+                <Template Context="data">
+                    <span>@($"{data.MaxWaterPercentage:N6}")</span>
+                </Template>
+            </RadzenDropDownDataGridColumn>
+        </Columns>
+    </TridentApiDropDownDataGrid>
+</div>
+<PagableGridView @ref="_grid"
+                 TModel="FacilityServiceSpartanProductParameter"
+                 EnableSorting="false"
+                 EnableSearch="false"
+                 EnableFilters="false"
+                 OnDataLoad="LoadData"
+                 EnablePaging="false"
+                 GridPageSize="10"
+                 Results="@_associatedSpartanProductParameters">
+    <Columns>
+        <ColumnDefinition TItem="FacilityServiceSpartanProductParameter"
+                          Property="@nameof(FacilityServiceSpartanProductParameter.SpartanProductParameterDisplay)"
+                          Title="Spartan Product Parameter"/>
+
+        <ColumnDefinition TItem="FacilityServiceSpartanProductParameter"
+                          Property="@nameof(FacilityServiceSpartanProductParameter.SpartanProductParameterId)"
+                          Width="4.5rem"
+                          Title="Actions">
+            <Template Context="data">
+                <RadzenButton Click="() => HandleSpartanProductParameterDelete(data)"
+                              ButtonStyle="ButtonStyle.Danger"
+                              Size="ButtonSize.Small"
+                              Text="Delete"/>
+            </Template>
+        </ColumnDefinition>
+    </Columns>
+</PagableGridView>

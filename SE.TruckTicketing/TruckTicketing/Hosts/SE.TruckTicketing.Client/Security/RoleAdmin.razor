@@ -1,0 +1,73 @@
+@page "/access-management/roles"
+
+@using SE.TruckTicketing.Contracts.Models.Accounts
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Security;
+@using Trident.Search;
+@inherits BaseTruckTicketingComponent
+
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex gap-2 align-items-start">
+            <h4 class="fw-bold">Manage User Roles</h4>
+        </div>
+        <div class="d-flex gap-2 align-items-end">
+            <RadzenButton Click="@AddButton_Click" Text="Add New Role" Disabled="@(!HasWritePermission(Permissions.Resources.Roles))" ButtonStyle="ButtonStyle.Primary" />
+        </div>
+    </div>
+    <div class="card-body grid-switch-container">
+        <GridFiltersContainer Expandable="@false"
+                              @ref="_gridFiltersContainer"
+                              OnFilterChange="@(async criteria => await LoadData(criteria))">
+            <div class="d-flex flex-grow-1 gap-3">
+                <KeywordFilter Label="Search"
+                               Placeholder="Search by user role name..."/>
+
+                <PermissionFilter Label="Permissions"/>
+
+                <SelectFilter Label="Enable"
+                              Placeholder="All Options"
+                              FilterPath="@nameof(Role.Deleted)"
+                              CompareOperator="CompareOperators.ne"
+                              Data="@(DataDictionary.ForBooleanOnlyDictionary().SelectOptions())" />
+            </div>
+        </GridFiltersContainer>
+        <div class="card-body grid-switch-container">
+            <PagableGridView TModel="Role"
+                             Results="@_results"
+                             EnablePaging="true"
+                             EnableSorting="true"
+                             OnDataLoad="LoadData"
+                             EnableFilters="false"
+                             EnableSearch="false">
+                <Columns>
+                    <ColumnDefinition TItem="Role"
+                                      Property="@nameof(Role.Name)"
+                                      Title="Role Name"
+                                      PropertyType="typeof(string)"/>
+                    <ColumnDefinition TItem="Role"
+                                      Property="@nameof(Role.PermissionDisplay)"
+                                      Title="Permissions"
+                                      PropertyType="typeof(string)"/>
+                    <ColumnDefinition TItem="Role"
+                                      Property="@nameof(Role.Enabled)"
+                                      Title="Enabled"
+                                      PropertyType="typeof(bool)"/>
+                    <ColumnDefinition TItem="Role"
+                                      HideColumn="ReadOnlyUser"
+                                      Property="@nameof(Role.Id)"
+                                      Title="Actions"
+                                      Width="245px">
+                        <Template Context="data">
+
+                            <RadzenButton Click="() => EditButton_Click(data)">
+                                <i class="fa fa-2x fa-edit">Edit</i>
+                            </RadzenButton>
+                        </Template>
+                    </ColumnDefinition>
+                </Columns>
+            </PagableGridView>
+        </div>
+    </div>
+</div>

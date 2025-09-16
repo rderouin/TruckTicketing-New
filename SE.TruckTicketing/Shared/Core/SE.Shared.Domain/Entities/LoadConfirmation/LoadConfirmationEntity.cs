@@ -1,0 +1,175 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+
+using SE.Shared.Common.Extensions;
+using SE.Shared.Common.Lookups;
+using SE.Shared.Domain.Entities.BillingConfiguration;
+using SE.Shared.Domain.Entities.SalesLine;
+using SE.TruckTicketing.Contracts.Lookups;
+
+using Trident.Data;
+using Trident.Domain;
+using Trident.SourceGeneration.Attributes;
+
+namespace SE.Shared.Domain.Entities.LoadConfirmation;
+
+[UseSharedDataSource(Databases.SecureEnergyDB)]
+[Container(Databases.Containers.Operations, nameof(DocumentType), Databases.DocumentTypes.LoadConfirmation, PartitionKeyType.Composite)]
+[Discriminator(nameof(EntityType), Databases.Discriminators.LoadConfirmation)]
+[GenerateProvider]
+public class LoadConfirmationEntity : TTAuditableEntityBase, IFacilityRelatedEntity, IHaveCompositePartitionKey
+{
+    public int SalesLineCount { get; set; } = 0;
+
+    public double TotalCost { get; set; } = 0;
+
+    public Guid BillingConfigurationId { get; set; }
+
+    public string BillingConfigurationName { get; set; }
+
+    public string GlInvoiceNumber { get; set; }
+
+    public bool IsSignatureRequired { get; set; }
+
+    public bool FieldTicketsUploadEnabled { get; set; }
+
+    public string Number { get; set; }
+
+    public LoadConfirmationStatus Status { get; set; }
+
+    public InvoiceStatus InvoiceStatus { get; set; } = InvoiceStatus.UnPosted;
+
+    public int SentCount { get; set; }
+
+    public string FacilityName { get; set; }
+
+    public string SiteId { get; set; }
+
+    public string InvoiceNumber { get; set; }
+
+    public bool IsReversed { get; set; }
+
+    public bool IsReversal { get; set; }
+
+    public Guid? ReversedLoadConfirmationId { get; set; }
+
+    public Guid? ReversalLoadConfirmationId { get; set; }
+
+    public Guid BillingCustomerId { get; set; }
+
+    public string BillingCustomerName { get; set; }
+
+    public string BillingCustomerNumber { get; set; }
+
+    public string BillingCustomerDunsNumber { get; set; }
+
+    [OwnedHierarchy]
+    public List<LoadConfirmationGeneratorEntity> Generators { get; set; } = new();
+
+    public string GeneratorNames { get => string.Join(",", Generators?.Select(generator => generator.Name) ?? Enumerable.Empty<string>()); private set => _ = value; }
+
+    [OwnedHierarchy]
+    public List<SignatoryContactEntity> Signatories { get; set; } = new();
+
+    public bool? SignatoriesAreUpdated { get; set; }
+
+    public string Frequency { get; set; }
+
+    public DateTimeOffset StartDate { get; set; }
+
+    public DateTimeOffset? EndDate { get; set; }
+
+    public DateTimeOffset TicketStartDate { get; set; }
+
+    public DateTimeOffset TicketEndDate { get; set; }
+
+    public string SignatoryNames { get => string.Join(",", Signatories?.Select(signatory => signatory.FirstName + " " + signatory.LastName) ?? Enumerable.Empty<string>()); set => _ = value; }
+
+    public DateTimeOffset LastApprovalEmailSentOn { get; set; }
+
+    public Guid? LastGeneratedDocumentId { get; set; }
+
+    public bool HasFailedDueToGatewayError { get; set; }
+
+    public bool RequiresDocumentRegeneration { get; set; }
+
+    public List<LoadConfirmationAttachmentEntity> Attachments { get; set; } = new();
+
+    public Guid InvoiceId { get; set; }
+
+    public string Currency { get; set; }
+
+    public string LegalEntity { get; set; }
+
+    public string InvoicePermutationId { get; set; }
+
+    public CreditStatus? CustomerCreditStatus { get; set; }
+
+    public WatchListStatus? CustomerWatchListStatus { get; set; }
+
+    [NotMapped]
+    public bool? RequiresInvoiceDocumentRegeneration { get; set; }
+
+    public Guid FacilityId { get; set; }
+
+    public void InitPartitionKey(string customPartitionKey = null)
+    {
+        DocumentType ??= customPartitionKey ?? $"{Databases.DocumentTypes.LoadConfirmation}|{DateTime.Today:MMyyyy}";
+    }
+
+    public bool IsOpen()
+    {
+        return EndDate == null;
+    }
+
+    public string GetSignatoryEmails()
+    {
+        return string.Join("; ", Signatories.Where(s => s.Email.HasText()).Select(s => s.Email));
+    }
+
+    public void UpdateEffectiveDateRange(List<SalesLineEntity> salesLines)
+    {
+        LoadConfirmationHelper.SetLoadConfirmationTicketStartEndDates(this, salesLines);
+    }
+
+    public void UpdateTicketDateRange(DateTime truckTicketEffectiveDate)
+    {
+        if (this.TicketStartDate > truckTicketEffectiveDate)
+        {
+            this.TicketStartDate = truckTicketEffectiveDate;
+
+        }
+        else if (this.TicketEndDate < truckTicketEffectiveDate)
+        {
+            this.TicketEndDate = truckTicketEffectiveDate;
+        }
+    }
+}
+
+public class LoadConfirmationAttachmentEntity : OwnedEntityBase<Guid>
+{
+    public string BlobContainer { get; set; }
+
+    public string BlobPath { get; set; }
+
+    public string FileName { get; set; }
+
+    public string ContentType { get; set; }
+
+    public DateTimeOffset AttachedOn { get; set; }
+
+    public bool? Autogenerated { get; set; }
+
+    public bool? IsIncludedInInvoice { get; set; }
+
+    public LoadConfirmationAttachmentOrigin? AttachmentOrigin { get; set; }
+}
+
+public class LoadConfirmationGeneratorEntity : OwnedEntityBase<Guid>
+{
+    public Guid AccountId { get; set; }
+
+    public string Name { get; set; }
+}

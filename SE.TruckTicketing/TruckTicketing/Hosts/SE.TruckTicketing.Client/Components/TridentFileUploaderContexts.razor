@@ -1,0 +1,90 @@
+@inherits BaseTruckTicketingComponent
+
+<div>
+    @foreach (var context in ViewModel.UploadContexts)
+    {
+        @if (ViewModel.UploadedStarted)
+        {
+            <div class="d-flex gap-2 align-items-center mb-2">
+                <div class="d-flex flex-column flex-grow-1">
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                        <small style="font-size: 0.875rem">@context.File.Name</small>
+                        <RadzenIcon Icon="@(context.Progress < 100 ? "error" : "check_circle")"
+                                    Style="font-size: 0.875rem"
+                                    IconStyle="@(context.Progress < 100 ? IconStyle.Danger : IconStyle.Success)"
+                                    Visible="@context.UploadComplete">
+                        </RadzenIcon>
+                    </div>
+                    <RadzenProgressBar Value="@context.Progress"
+                                       ShowValue="false"
+                                       Max="100"
+                                       class="w-100"
+                                       Style="height: 0.5rem"
+                                       Mode="@(context.IsUploading ? ProgressBarMode.Indeterminate : ProgressBarMode.Determinate)"/>
+                </div>
+
+                @if (context.UploadComplete)
+                {
+                    <RadzenButton Icon="delete"
+                                  ButtonStyle="ButtonStyle.Danger"
+                                  Click="@(async _ => await HandleDelete(context))"/>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <RadzenTextBox Disabled="@true"
+                               Value="@context.File.Name"
+                               class="flex-grow-1"/>
+                <RadzenButton Icon="delete"
+                              ButtonStyle="ButtonStyle.Danger"
+                              Click="@(async _ => await HandleDelete(context))"/>
+            </div>
+        }
+    }
+
+    <div class="row mt-3">
+        @if (ViewModel.UploadedStarted)
+        {
+            <div class="col d-flex align-items-center justify-content-between">
+                @if (ViewModel.IsUploading)
+                {
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="spinner-grow spinner-grow-sm text-primary"
+                             role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <span style="font-size: 0.875rem">Uploading...</span>
+                    </div>
+                }
+                <div></div>
+                <span style="font-size: 0.875rem">@ViewModel.CompletedUploads of @ViewModel.UploadContexts.Count files uploaded</span>
+
+                <div class="d-flex gap-2">
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                                  Text="Try Again"
+                                  Click="@(() => ViewModel.Reset())"
+                                  Visible="@(!ViewModel.TriggerUploadOnRender && ViewModel.HasError)"/>
+
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                  Text="@ViewModel.CompleteButtonText"
+                                  Click="@HandleUploadComplete"
+                                  Visible="@(!ViewModel.TriggerUploadOnRender && ViewModel.IsComplete && !ViewModel.TriggerUploadOnSubmit)"/>
+                </div>
+            </div>
+        }
+        else if (!ViewModel.TriggerUploadOnRender)
+        {
+            <div class="col d-flex justify-content-end align-items-center gap-2">
+                <RadzenButton ButtonStyle="ButtonStyle.Light"
+                              Text="Cancel"
+                              Click="@OnCancel"/>
+
+                <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                              Text="Upload"
+                              Click="@HandleUpload"/>
+            </div>
+        }
+    </div>
+</div>

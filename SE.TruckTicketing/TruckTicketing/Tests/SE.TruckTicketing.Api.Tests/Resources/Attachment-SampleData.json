@@ -1,0 +1,13 @@
+{
+  "Source": "Attachments",
+  "EnterpriseId": "21b7d6a8-7ae5-4ca3-be54-c53ceac0abb1",
+  "MessageType": "ScannedAttachment",
+  "Operation": "Update",
+  "CorrelationId": "413c0b53-a4ed-48e3-a892-2971b4ba0bcb",
+  "MessageDate": "0001-01-01T00:00:00",
+  "Payload": {
+    "container": "tt-attachments",
+    "file": "TAFAT12346-LF-INT",
+    "id": "70a4fe15-ee9a-4357-b347-6e8fd90bc5a8"
+  }
+}

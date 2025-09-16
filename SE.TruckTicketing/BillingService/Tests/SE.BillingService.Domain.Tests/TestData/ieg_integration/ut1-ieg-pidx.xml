@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pidx:Invoice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" pidx:transactionPurposeIndicator="Add" pidx:version="1.0" xmlns:pidx="http://www.api.org/pidXML/v1.0">
+    <pidx:InvoiceProperties>
+        <pidx:InvoiceNumber>CIN0000024</pidx:InvoiceNumber>
+        <pidx:InvoiceDate>2023-02-01</pidx:InvoiceDate>
+        <pidx:PartnerInformation partnerRoleIndicator="BillTo">
+            <pidx:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">243813578</pidx:PartnerIdentifier>
+            <pidx:ContactInformation contactInformationIndicator="BuyerDepartment">
+                <pidx:ContactName>testbuyerdepartment</pidx:ContactName>
+            </pidx:ContactInformation>
+        </pidx:PartnerInformation>
+        <pidx:PartnerInformation partnerRoleIndicator="RemitTo">
+            <pidx:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">243483406</pidx:PartnerIdentifier>
+        </pidx:PartnerInformation>
+        <pidx:PrimaryCurrency>
+            <pidx:CurrencyCode>CAD</pidx:CurrencyCode>
+        </pidx:PrimaryCurrency>
+        <pidx:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-02-01T00:00:00</pidx:ServiceDateTime>
+        <pidx:SpecialInstructions instructionIndicator="RoutingInstructions">Save</pidx:SpecialInstructions>
+    </pidx:InvoiceProperties>
+    <pidx:InvoiceDetails>
+        <pidx:InvoiceLineItem>
+            <pidx:LineItemNumber>1</pidx:LineItemNumber>
+            <pidx:InvoiceQuantity>
+                <pidx:Quantity>1</pidx:Quantity>
+                <pidx:UnitOfMeasureCode>MT</pidx:UnitOfMeasureCode>
+            </pidx:InvoiceQuantity>
+            <pidx:LineItemInformation>
+                <pidx:LineItemIdentifier identifierIndicator="AssignedBySeller">701001</pidx:LineItemIdentifier>
+                <pidx:LineItemDescription>Landfill Disposal Class 2 - Drilling</pidx:LineItemDescription>
+            </pidx:LineItemInformation>
+            <pidx:PurchaseOrderLineItemNumber>testpoline</pidx:PurchaseOrderLineItemNumber>
+            <pidx:PurchaseOrderInformation>
+                <pidx:PurchaseOrderNumber>testponum</pidx:PurchaseOrderNumber>
+            </pidx:PurchaseOrderInformation>
+            <pidx:JobLocationInformation>
+                <pidx:WellInformation>
+                    <pidx:WellIdentifier>testlocation</pidx:WellIdentifier>
+                </pidx:WellInformation>
+            </pidx:JobLocationInformation>
+            <pidx:Pricing>
+                <pidx:UnitPrice>
+                    <pidx:MonetaryAmount>1000</pidx:MonetaryAmount>
+                    <pidx:UnitOfMeasureCode>MT</pidx:UnitOfMeasureCode>
+                </pidx:UnitPrice>
+            </pidx:Pricing>
+            <pidx:Tax>
+                <pidx:TaxTypeCode>GoodsAndServicesTax</pidx:TaxTypeCode>
+                <pidx:TaxLocation>
+                    <pidx:AddressInformation>
+                        <pidx:StateProvince>SK</pidx:StateProvince>
+                        <pidx:PostalCountry>
+                            <pidx:CountryCode>CA</pidx:CountryCode>
+                        </pidx:PostalCountry>
+                    </pidx:AddressInformation>
+                </pidx:TaxLocation>
+                <pidx:TaxAmount>
+                    <pidx:MonetaryAmount>50</pidx:MonetaryAmount>
+                </pidx:TaxAmount>
+            </pidx:Tax>
+            <pidx:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-02-16T07:00:01Z</pidx:ServiceDateTime>
+            <pidx:ServiceDateTime dateTypeIndicator="ServicePeriodEnd">2023-02-16T07:00:01Z</pidx:ServiceDateTime>
+            <pidx:ReferenceInformation referenceInformationIndicator="AFENumber">
+                <pidx:ReferenceNumber>testafe</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="OperatorGeneralLedgerCode">
+                <pidx:ReferenceNumber>testglaccount</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="CostCenter">
+                <pidx:ReferenceNumber>testcc</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="JobNumber">
+                <pidx:ReferenceNumber>testwo1</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="CustomerAccountingReference">
+                <pidx:ReferenceNumber>testassetnum</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="ContractNumber">
+                <pidx:ReferenceNumber>testcontract</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+        </pidx:InvoiceLineItem>
+        <pidx:InvoiceLineItem>
+            <pidx:LineItemNumber>2</pidx:LineItemNumber>
+            <pidx:InvoiceQuantity>
+                <pidx:Quantity>2</pidx:Quantity>
+                <pidx:UnitOfMeasureCode>MT</pidx:UnitOfMeasureCode>
+            </pidx:InvoiceQuantity>
+            <pidx:LineItemInformation>
+                <pidx:LineItemIdentifier identifierIndicator="AssignedBySeller">701002</pidx:LineItemIdentifier>
+                <pidx:LineItemDescription>Landfill Disposal Class 2 - Remediation</pidx:LineItemDescription>
+            </pidx:LineItemInformation>
+            <pidx:PurchaseOrderLineItemNumber>testpoline</pidx:PurchaseOrderLineItemNumber>
+            <pidx:PurchaseOrderInformation>
+                <pidx:PurchaseOrderNumber>testponum</pidx:PurchaseOrderNumber>
+            </pidx:PurchaseOrderInformation>
+            <pidx:JobLocationInformation>
+                <pidx:WellInformation>
+                    <pidx:WellIdentifier>testlocation</pidx:WellIdentifier>
+                </pidx:WellInformation>
+            </pidx:JobLocationInformation>
+            <pidx:Pricing>
+                <pidx:UnitPrice>
+                    <pidx:MonetaryAmount>2000</pidx:MonetaryAmount>
+                    <pidx:UnitOfMeasureCode>MT</pidx:UnitOfMeasureCode>
+                </pidx:UnitPrice>
+            </pidx:Pricing>
+            <pidx:Tax>
+                <pidx:TaxTypeCode>GoodsAndServicesTax</pidx:TaxTypeCode>
+                <pidx:TaxLocation>
+                    <pidx:AddressInformation>
+                        <pidx:StateProvince>SK</pidx:StateProvince>
+                        <pidx:PostalCountry>
+                            <pidx:CountryCode>CA</pidx:CountryCode>
+                        </pidx:PostalCountry>
+                    </pidx:AddressInformation>
+                </pidx:TaxLocation>
+                <pidx:TaxAmount>
+                    <pidx:MonetaryAmount>200</pidx:MonetaryAmount>
+                </pidx:TaxAmount>
+            </pidx:Tax>
+            <pidx:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-02-17T07:00:02Z</pidx:ServiceDateTime>
+            <pidx:ServiceDateTime dateTypeIndicator="ServicePeriodEnd">2023-02-17T07:00:02Z</pidx:ServiceDateTime>
+            <pidx:ReferenceInformation referenceInformationIndicator="AFENumber">
+                <pidx:ReferenceNumber>testafe</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="OperatorGeneralLedgerCode">
+                <pidx:ReferenceNumber>testglaccount</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="CostCenter">
+                <pidx:ReferenceNumber>testcc</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="JobNumber">
+                <pidx:ReferenceNumber>testwo2</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="CustomerAccountingReference">
+                <pidx:ReferenceNumber>testassetnum</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="ContractNumber">
+                <pidx:ReferenceNumber>testcontract</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+        </pidx:InvoiceLineItem>
+    </pidx:InvoiceDetails>
+    <pidx:InvoiceSummary>
+        <pidx:TotalLineItems>2</pidx:TotalLineItems>
+        <pidx:InvoiceTotal>
+            <pidx:MonetaryAmount>5250</pidx:MonetaryAmount>
+        </pidx:InvoiceTotal>
+    </pidx:InvoiceSummary>
+</pidx:Invoice>

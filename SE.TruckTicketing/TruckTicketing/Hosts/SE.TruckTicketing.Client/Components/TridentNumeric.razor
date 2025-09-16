@@ -1,0 +1,13 @@
+@typeparam TValue
+@inherits BaseTruckTicketingComponent
+
+<RadzenNumeric @ref="@_numeric"
+               @attributes="@Attributes"
+               Name="@Name"
+               ShowUpDown="false"
+               Disabled="@Disabled"
+               Placeholder="@Placeholder"
+               TValue="TValue"
+               @oninput="@OnInput"
+               @bind-Value="@Value"
+               Change="@Change"/>

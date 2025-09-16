@@ -1,0 +1,205 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using SE.TruckTicketing.Contracts.Lookups
+@inherits BaseTruckTicketingComponent
+@page "/truck-ticketing/lf-loadsummary-reports"
+<style>
+    .loading-dp::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        margin-top: -10px;
+        margin-left: -10px;
+        border: 2px solid #333;
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 0.5s linear infinite;
+    }
+    
+    /* Keyframes for the spinning animation */
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+<PageLoadingContainer IsLoading="IsLoading">
+    <LoadedView>
+        <TridentValidationSummary TModel="LoadSummaryReportRequest"/>
+        <div class="card">
+            <div class="card-header d-flex align-content-center">
+                <h4 class="fw-bold">Load Summary Report</h4>
+            </div>
+            <div class="card-body">
+                <div class="row mt-3 mb-3">
+                    <div class="col d-flex flex-column">
+
+                        <RadzenLabel Text="Facility"
+                                     class="required"
+                                     Component="FacilityDropdown"/>
+
+                        <FacilityDropDown TValue="Guid"
+                                          TModel="Facility"
+                                          Class="w-100"
+                                          id="FacilityDropdown"
+                                          Placeholder="Select facility..."
+                                          OnDataLoading="OnFacilitiesLoading"
+                                          OnItemSelect="OnFacilitySelect"
+                                          AllowClear="true"
+                                          @bind-Value="@Request.FacilityId"
+                                          TextProperty="@nameof(Facility.Display)"
+                                          ValueProperty="@nameof(Facility.Id)"/>
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Generator"
+                                     Component="GeneratorDropDown"/>
+                        <AccountsDropDown id="GeneratorDropDown"
+                                          TValue="Guid"
+                                          AccountType="@AccountTypes.Generator"
+                                          Placeholder="Select customer..."
+                                          @bind-Value="@Request.GeneratorId"
+                                          TextProperty="@nameof(Account.Name)"
+                                          ValueProperty="@nameof(Account.Id)"
+                                          PageSize="10"
+                                          AllowClear="true"
+                                          OnItemSelect="OnGeneratorSelect"
+                                          Disabled="@FacilityNotSelected"/>
+                    </div>
+
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Source Location"
+                                     Component="SourceLocationDropDown"/>
+                        <SourceLocationDropDown Name="SourceLocationDropDown"
+                                                @ref="_sourceLocationDropDown"
+                                                TValue="Guid"
+                                                Placeholder="Select Source Location..."
+                                                @bind-Value="@Request.SourceLocationId"
+                                                TextProperty="@nameof(SourceLocation.FormattedIdentifier)"
+                                                ValueProperty="@nameof(SourceLocation.Id)"
+                                                PageSize="10"
+                                                AllowClear="true"
+                                                OnDataLoading="OnSourceLocationLoad"
+                                                OnItemSelect="OnSourceLocationSelect"
+                                                class="w-100"
+                                                Disabled="@FacilityNotSelected"/>
+                    </div>
+                </div>
+
+                <div class="row mt-4 mb-3">
+                    <div class="col d-flex flex-column">
+
+                        <RadzenLabel Text="Material Approval"
+                                     Component="MaterialApprovalDropDown"/>
+
+                        <TridentApiDropDownDataGrid @ref="@_materialApprovalDataGrid"
+                                                    id="MaterialApprovalDropDown"
+                                                    TModel="MaterialApproval"
+                                                    TValue="Guid"
+                                                    Placeholder="Select Material Approval..."
+                                                    TextProperty="@nameof(MaterialApproval.MaterialApprovalNumber)"
+                                                    ValueProperty="@nameof(MaterialApproval.Id)"
+                                                    Multiple="@false"
+                                                    PageSize="10"
+                                                    Class="w-100"
+                                                    AllowClear="true"
+                                                    OnDataLoading="OnMaterialApprovalLoading"
+                                                    OnItemSelect="OnMaterialApprovalSelect"
+                                                    Disabled="@FacilityNotSelected">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="@nameof(MaterialApproval.MaterialApprovalNumber)"
+                                                              Title="Material Approval Number"/>
+                            </Columns>
+                        </TridentApiDropDownDataGrid>
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Trucking Company"
+                                     Component="TruckingCompanyListBox"/>
+
+                        <RadzenDropDownDataGrid id="TruckingCompanyDropDown"
+                                                @ref="_truckingCompanyDropDown"
+                                                class="@(ClassNames("w-100", ("loading-dp", IsTruckingCompanyLoading)))"
+                                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                FilterOperator="StringFilterOperator.Contains"
+                                                Placeholder="Select Trucking Companies..."
+                                                Multiple="true"
+                                                Data="@_truckingCompanies"
+                                                Change="@(OnTruckingCompanyChange)"
+                                                Count="@(truckingCompanyResults?.Info?.TotalRecords ?? _truckingCompanies.Count)"
+                                                ShowPagingSummary="@true"
+                                                AllowFiltering="true"
+                                                AllowSorting="false"
+                                                AllowClear="true"
+                                                @bind-Value="@TruckingCompanyIds"
+                                                PageSize="10"
+                                                TextProperty="@nameof(Account.Name)"
+                                                ValueProperty="@nameof(Account.Id)"
+                                                Disabled="@IsTruckingCompanyLoading">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Width="40px"
+                                                              Sortable="false">
+                                    <HeaderTemplate>
+                                        <RadzenCheckBox Disabled="true"
+                                                        TriState="false"
+                                                        TValue="bool"
+                                                        Value="@(TruckingCompanyIds != null ? TruckingCompanyIds.ToArray().Any() : false)"/>
+                                    </HeaderTemplate>
+                                    <Template Context="data">
+                                        <RadzenCheckBox TriState="false"
+                                                        TValue="bool"
+                                                        Value="@(TruckingCompanyIds != null && TruckingCompanyIds.ToList().Contains(data.Id))"/>
+                                    </Template>
+                                </RadzenDropDownDataGridColumn>
+                                <RadzenDropDownDataGridColumn Property="@nameof(Account.Name)"
+                                                              Title="Trucking Company"/>
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                    </div>
+                </div>
+
+                <div class="row mt-4 mb-3">
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="From Date"
+                                     Component="FromDatePicker"/>
+                        <RadzenDatePicker TValue="DateTimeOffset?"
+                                          Name="FromDatePicker"
+                                          DateFormat="MM/dd/yyyy"
+                                          @bind-Value="@Request.FromDate"/>
+
+
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="To Date"
+                                     Component="ToDatePicker"/>
+                        <RadzenDatePicker TValue="DateTimeOffset?"
+                                          Name="ToDatePicker"
+                                          DateFormat="MM/dd/yyyy"
+                                          @bind-Value="@Request.ToDate"/>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="row mt-4 mb-3">
+                    <div class="col d-flex justify-content-end gap-2">
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                      Text="Generate"
+                                      Click="HandleGenerate"
+                                      Disabled="@(GenerateButtonDisable)"/>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </LoadedView>
+</PageLoadingContainer>

@@ -1,0 +1,113 @@
+﻿@page "/truck-ticketing/fstdailyreport"
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+
+<EditForm Model="@FSTRequest">
+    <TridentValidationSummary TModel="FSTWorkTicketRequest"/>
+    <div class="card">
+        <div class="card-header d-flex align-content-center">
+            <h4 class="fw-bold">FST Daily Work Report</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mt-3 mb-3">
+                <div class="col d-flex flex-column">
+
+                    <RadzenLabel Text="Facility"
+                                 Component="FacilityDropdown"
+                                 class="required"/>
+
+                    <FacilityDropDown id="FacilityDropDown"
+                                      TValue="Guid"
+                                      Placeholder="Select facility..."
+                                      @bind-Value="@FSTRequest.FacilityId"
+                                      TextProperty="@nameof(Facility.Name)"
+                                      ValueProperty="@nameof(Facility.Id)"
+                                      PageSize="10"
+                                      OnDataLoading="OnFacilitiesLoading"
+                                      OnItemSelect="OnFacilitySelect"
+                                      Class="w-100"/>
+                </div>
+                <div class="col d-flex flex-column">
+
+                    <RadzenLabel Text="Service Type" Component="ServiceTypeDropDown"/>
+
+                    <FacilityServiceTypeDropdown @ref="_serviceTypeDropDown"
+                                                 TValue="Guid"
+												 TModel="ServiceType"
+                                                Name="FacilityService"
+                                                ValueProperty="@nameof(ServiceType.Id)"
+                                                TextProperty="@nameof(ServiceType.Name)"
+                                                class="w-100"
+                                                PageSize="10"
+                                                Multiple="@true"
+                                                AllowClear="true"
+                                                OnChange="OnServiceTypeChange"
+                                                FacilityIds="@FacilityIds"
+                                                Placeholder="All Service Types">
+                    </FacilityServiceTypeDropdown>
+                </div>
+            </div>
+            <div class="row mt-4 mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="From Date"
+                                 Component="FromDatePicker"
+                                 class="required"/>
+                    <RadzenDatePicker TValue="DateTimeOffset?"
+                                      Name="FromDatePicker"
+                                      DateFormat="MM/dd/yyyy"
+                                      @bind-Value="@FSTRequest.FromDate"/>
+
+
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="To Date"
+                                 Component="ToDatePicker"
+                                 class="required"/>
+                    <RadzenDatePicker TValue="DateTimeOffset?"
+                                      Name="ToDatePicker"
+                                      DateFormat="MM/dd/yyyy"
+                                      @bind-Value="@FSTRequest.ToDate"/>
+                </div>
+            </div>
+            <div class="row mt-4 mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Ticket Status" 
+                                 Component="TicketStatusDropDown"
+                                 class="required"  />
+                    <RadzenDropDown @bind-Value="@SelectedStatusViewModels"
+                                    Data="@TruckTicketStatusViewModels"
+                                    Change="OnTruckTicketStatusChange"
+                                    TextProperty="Value" 
+                                    ValueProperty="Id"
+                                    Multiple="true" 
+                                    AllowClear="true" 
+                                    Placeholder="Truck Ticket Statuses" 
+                                    class="w-400" />
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Destination" Component="DestinationTextBox" />
+                    
+                    <RadzenTextBox id="DestinationTextBox"
+                                   Name="DestinationTextBox"
+                                   @bind-Value="@FSTRequest.Destination"
+                                   class="w-100" />
+                </div>
+                </div>
+                <div class="row mt-4 mb-3">
+                    <div class="col d-flex justify-content-end gap-2">
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                      Text="Generate FST Daily Report (PDF)"
+                                      Click="HandleGeneratePdf"
+                                      Disabled="@(GenerateButtonDisable)"
+                                      IsBusy="@_isPdfGenBusy"/>
+
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                      Text="Generate FST Daily Report (Excel)"
+                                      Click="HandleGenerateExcel"
+                                      Disabled="@(GenerateButtonDisable)"
+                                      IsBusy="@_isExcelGenBusy" />
+                    </div>
+                </div>
+            </div>
+    </div>
+</EditForm>

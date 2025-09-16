@@ -1,0 +1,55 @@
+@using SE.TruckTicketing.Client.Components.Header
+@using SE.TruckTicketing.Client.Components.Drawer
+@inherits BaseRazorComponent
+
+<AuthorizeView>
+    <Authorized Context="data">
+        @if (data?.User.Identity?.IsAuthenticated is true)
+        {
+            <Header>
+                <Navigation>
+                    @foreach (var item in _navigationItems ?? new())
+                    {
+                        <NavItem Href="@item.RelativeUrl"
+                                 IsActive=@(_activeHeaderNavigationItem == item)>
+                            @item.Text
+                        </NavItem>
+                    }
+                </Navigation>
+                <div class="flex gap-3">
+                    <Profile Click="@InitiateLogout"/>
+                    <AppVersion/>
+                </div>
+            </Header>
+        }
+    </Authorized>
+</AuthorizeView>
+
+
+@if (_subNavigationItems.Count > 0)
+{
+    <Drawer Open=@DrawerOpen
+            OpenSize=@DrawerWidth>
+        <DrawerTitle Text="Menu"
+                     Icon=@(DrawerOpen ? "close" : "menu")
+                     Click="ToggleDrawer"/>
+        <DrawerItems OpenSize=@DrawerWidth>
+            @foreach (var item in _subNavigationItems)
+            {
+                <DrawerItem>
+                    <a href="@item.RelativeUrl"
+                       @onclick="@(() => DrawerOpen = false)"
+                       class="@(item == _activeSideNavigationMenuChildItem ? "active" : "")">
+                        @item.Text
+                    </a>
+                </DrawerItem>
+            }
+        </DrawerItems>
+    </Drawer>
+}
+
+<div class="main-content @(_subNavigationItems.Count <= 0 ? "no-menu" : "")">
+    <main class="w-100 h-100">
+        @ChildContent
+    </main>
+</div>

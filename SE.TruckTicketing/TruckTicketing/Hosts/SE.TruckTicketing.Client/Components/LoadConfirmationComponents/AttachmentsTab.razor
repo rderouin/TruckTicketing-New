@@ -1,0 +1,91 @@
+@using Humanizer
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.LoadConfirmations
+@inherits BaseTruckTicketingComponent
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex gap-2 align-items-start">
+            <h4 class="fw-bold">Attachments</h4>
+        </div>
+        <div class="d-flex gap-2 align-items-end">
+            <TridentFileUploader UploadUriProvider="@GetAttachmentUploadUri"
+                                 OnUploadComplete="@HandleUploadComplete"
+                                 CompleteButtonText="Link Attachments"
+                                 UploadOnFileSubmit="@true"/>
+        </div>
+    </div>
+    <div class="card-body grid-switch-container">
+        <PagableGridView TModel="LoadConfirmationAttachment"
+                         Results="@_attachments"
+                         EnableSearch="false"
+                         EnablePaging="false"
+                         EnableSorting="true"
+                         EnableRowExpansion="false"
+                         EnableFilters="false"
+                         GridPageSize="50"
+                         @ref="_loadConfirmationAttachmentGrid"
+                         OnDataLoad="LoadAttachments">
+            <Columns>
+
+                <ColumnDefinition TItem="LoadConfirmationAttachment"
+                                  Property="@nameof(LoadConfirmationAttachment.IsIncludedInInvoice)"
+                                  Title="Include In Invoice"
+                                  PropertyType="typeof(string)"
+                                  EnableSorting="false"
+                                  Width="8rem">
+                    <Template Context="data">
+                        <RadzenSwitch @bind-Value="@data.IsIncludedInInvoice"
+                                      class="grid-switch"
+                                      Change="@(value => ToggleAttachmentInclusion(data, value))"/>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="LoadConfirmationAttachment"
+                                  Property="@nameof(LoadConfirmationAttachment.FileName)"
+                                  Title="Filename"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="LoadConfirmationAttachment"
+                                  Property="@nameof(LoadConfirmationAttachment.AttachedOn)"
+                                  Title="Creation Date/Time"
+                                  PropertyType="typeof(string)">
+                    <Template Context="data">
+                        @(data.AttachedOn.ToString("g"))
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="LoadConfirmationAttachment"
+                                  Property="@nameof(LoadConfirmationAttachment.AttachmentOrigin)"
+                                  Title="Attachment Type"
+                                  PropertyType="typeof(string)">
+                    <Template Context="data">
+                        @if (data.AttachmentOrigin != LoadConfirmationAttachmentOrigin.Unknown)
+                        {
+                            @(data.AttachmentOrigin.Humanize())
+                        }
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="LoadConfirmationAttachment"
+                                  Property="@nameof(LoadConfirmationAttachment.ReferenceId)"
+                                  Title="Reference ID"
+                                  Width="6rem"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="LoadConfirmationAttachment"
+                                  Property="@nameof(LoadConfirmationAttachment)"
+                                  Title="Actions"
+                                  Width="10rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="@(() => HandleAttachmentDownload(data))"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Small"
+                                      Text="Download"/>
+                        <RadzenButton Click="@(() => HandleAttachmentRemove(data))"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small"
+                                      Text="Remove"/>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

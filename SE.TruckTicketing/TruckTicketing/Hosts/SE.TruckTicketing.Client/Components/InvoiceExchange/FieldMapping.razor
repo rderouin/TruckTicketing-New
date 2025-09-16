@@ -1,0 +1,217 @@
+﻿@using SE.BillingService.Contracts.Api.Enums
+@using SE.Shared.Common.Utilities
+@inherits BaseTruckTicketingComponent
+
+<div class="d-flex gap-4">
+    <div class="card w-25">
+        <div class="card-header">
+            <h5 class="ms-2">Message Adapter Settings</h5>
+        </div>
+        <div class="card-body">
+            @if (InvoiceExchangeType == InvoiceExchangeType.Global)
+            {
+                <div class="m-2">
+                    <RadzenLabel Text="Message adapter">
+                    </RadzenLabel><br/>
+                    <RadzenDropDown @bind-Value="DeliveryConfiguration.MessageAdapterType"
+                                    Data="SupportedMessageAdapters"
+                                    ValueProperty="Key"
+                                    TextProperty="Value">
+                    </RadzenDropDown>
+                    @if (DeliveryConfiguration.MessageAdapterType == MessageAdapterType.Pidx)
+                    {
+                        <RadzenDropDown @bind-Value="DeliveryConfiguration.MessageAdapterVersion"
+                                        Data="SupportedPidxVersions"
+                                        ValueProperty="Key"
+                                        TextProperty="Value">
+                        </RadzenDropDown>
+                    }
+                </div>
+            }
+            <hr/>
+            <div class="m-2">
+                <AdapterSettings MessageAdapterSettings="@DeliveryConfiguration.MessageAdapterSettings"
+                                 OnFieldChanged="OnMessageAdapterSettingsChanged"
+                                 Type="@DeliveryConfiguration.MessageAdapterType">
+                </AdapterSettings>
+            </div>
+            <hr/>
+            <div class="m-2">
+                <div>
+                    <RadzenLabel Text="Supports status polling">
+                    </RadzenLabel><br/>
+                    <RadzenSwitch @bind-Value="DeliveryConfiguration.SupportsStatusPolling"
+                                  class="d-block">
+                    </RadzenSwitch>
+                </div>
+                @if (DeliveryConfiguration.SupportsStatusPolling)
+                {
+                    <div class="mt-2">
+                        <RadzenLabel Text="Supports status polling">
+                        </RadzenLabel><br/>
+                        <RadzenDropDown TValue="MessageAdapterPollingStrategy"
+                                        @bind-Value="DeliveryConfiguration.PollingStrategy"
+                                        TextProperty="Value"
+                                        ValueProperty="Key"
+                                        Placeholder="Select Polling Strategy..."
+                                        Multiple="false"
+                                        AllowClear="true"
+                                        Data="@(DataDictionary.For<MessageAdapterPollingStrategy>())"
+                                        class="w-100"/>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="card w-25">
+        <div class="card-header">
+            <h5 class="ms-2">Transport Settings - Delivery</h5>
+        </div>
+        <div class="card-body">
+            <TransportSettings Config="@DeliveryConfiguration.TransportSettings"
+                               IsAttachmentSettings="@false">
+            </TransportSettings>
+        </div>
+    </div>
+    @if (DeliveryConfiguration.MessageAdapterSettings.AcceptsAttachments &&
+         (DeliveryConfiguration.MessageAdapterSettings.EmbedAttachments == false ||
+          (DeliveryConfiguration.MessageAdapterType != MessageAdapterType.Pidx &&
+           DeliveryConfiguration.MessageAdapterType != MessageAdapterType.MailMessage)))
+    {
+        <div class="card w-25">
+            <div class="card-header">
+                <h5 class="ms-2">Transport Settings - Attachments</h5>
+            </div>
+            <div class="card-body">
+                <TransportSettings Config="@DeliveryConfiguration.AttachmentSettings"
+                                   IsAttachmentSettings="@true">
+                </TransportSettings>
+            </div>
+        </div>
+    }
+    <div class="card w-25">
+        <div class="card-header">
+            <h5 class="ms-2">Request Preprocessor</h5>
+        </div>
+        <div class="card-body">
+            <div class="d-flex align-items-center p-1">
+                <RadzenLabel Text="Enable Preprocessor"
+                             class="me-2">
+                </RadzenLabel>
+                <RadzenSwitch @bind-Value="@DeliveryConfiguration.IsPreprocessorEnabled">
+                </RadzenSwitch>
+            </div>
+            <div class="p-1 expression-box @(DeliveryConfiguration.IsPreprocessorEnabled ? "expression-box-active" : "expression-box-disabled")">
+                <RadzenTextArea @bind-Value="DeliveryConfiguration.PreprocessorExpression"
+                                Rows="4"
+                                Disabled="@(!DeliveryConfiguration.IsPreprocessorEnabled)"
+                                class="w-100">
+                </RadzenTextArea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr/>
+
+@if (DeliveryConfiguration.Mappings?.Any() != true)
+{
+    <div class="text-secondary text-center">
+        <em>No mappings have been defined. Select a 'Message Adapter' and then press 'Add Mapping' to add a new mapping.</em>
+    </div>
+}
+
+@foreach (var m in DeliveryConfiguration.Mappings!)
+{
+    @if (m == null) continue;
+    <div class="p-3">
+        <div class="d-flex p-3 border rounded-3 shadow position-relative">
+            <div class="flex-fill w-100 m-3">
+                <SourceField ItemsSource="@SourceFields"
+                             FormatsSource="@ValueFormats"
+                             Model="@m"
+                             ShowFormatSelection="@(!FullLayout && !m.DestinationUsesValueExpression)">
+                </SourceField>
+            </div>
+            @if (FullLayout)
+            {
+                <div class="flex-shrink-1 align-arrow">
+                    <span class="oi oi-arrow-thick-right h1 m-3"></span>
+                </div>
+                <div class="flex-fill w-100 m-3">
+                    @switch (DeliveryConfiguration.MessageAdapterType)
+                    {
+                        case MessageAdapterType.Pidx:
+                            <DestinationField AllItemsSource="@PidxFields"
+                                              PidxNamespace="@VersionedPidxNamespace"
+                                              FormatsSource="@ValueFormats"
+                                              Model="@m"
+                                              ShowFormatSelection="@(!m.DestinationUsesValueExpression)">
+                            </DestinationField>
+                            break;
+
+                        case MessageAdapterType.Csv:
+                            <CsvField FormatsSource="@ValueFormats"
+                                      Model="@m"
+                                      ShowFormatSelection="@(!m.DestinationUsesValueExpression)">
+                            </CsvField>
+                            break;
+
+                        case MessageAdapterType.MailMessage:
+                            <DestinationField AllItemsSource="@PidxFields"
+                                              PidxNamespace="EMAIL"
+                                              FormatsSource="@ValueFormats"
+                                              Model="@m"
+                                              ShowFormatSelection="@(!m.DestinationUsesValueExpression)">
+                            </DestinationField>
+                            break;
+
+                        case MessageAdapterType.OpenApi:
+                            <OpenApiField FormatsSource="@ValueFormats"
+                                          Model="@m"
+                                          ShowFormatSelection="@(!m.DestinationUsesValueExpression)">
+                            </OpenApiField>
+                            break;
+                    }
+                </div>
+            }
+            <div class="flex-fill w-100 m-3">
+                <FormatOverride Model="@m"
+                                ModelUpdated="StateHasChanged">
+                </FormatOverride>
+            </div>
+            <div class="position-absolute top-0 end-0 m-3 d-flex gap-3">
+                <div>
+                    <RadzenLabel Text="Disabled"
+                                 Style="margin-top: 0.5rem">
+                    </RadzenLabel>
+                    <RadzenSwitch @bind-Value="@m.IsDisabled"
+                                  style="vertical-align: middle;">
+                    </RadzenSwitch>
+                </div>
+                <div>
+                    <RadzenButton Text="Delete"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  Click="() => DeleteMapping(m)">
+                    </RadzenButton>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="d-flex">
+    <div class="flex-grow-1">&nbsp;</div>
+    <div class="d-flex justify-content-end">
+        <div>
+            @if (DeliveryConfiguration.MessageAdapterType != default)
+            {
+                <RadzenButton Text="Add Mapping"
+                              ButtonStyle="ButtonStyle.Secondary"
+                              Click="@AddMapping">
+                </RadzenButton>
+            }
+        </div>
+    </div>
+</div>

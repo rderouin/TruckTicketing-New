@@ -1,0 +1,57 @@
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+@namespace SE.TruckTicketing.Client.Components.Accounts
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-bold">Manage EDI Field(s)</h4>
+        </div>
+        <div>
+            <RadzenButton Click="@(args => AddEdiFieldsButton_Click())"
+                          Text="Add EDI Field(s)"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Size="ButtonSize.Small"
+                          Icon="contact_mail"/>
+        </div>
+    </div>
+    <div class="card-body">
+        <PagableGridView @ref="grid"
+                         TModel="EDIFieldValue"
+                         Results="@_EDIFieldValuesList"
+                         EnablePaging="false"
+                         EnableSorting="true"
+                         OnDataLoad="@LoadEDIFieldValuesData"
+                         EnableFilters="false"
+                         EnableSearch="false"
+                         IsLoading="@IsGridLoading"
+                         GridPageSize="10">
+            <Columns>
+                <ColumnDefinition TItem="EDIFieldValue"
+                                  Property="@nameof(EDIFieldValue.EDIFieldName)"
+                                  Title="Field"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="EDIFieldValue"
+                                  Property="@nameof(EDIFieldValue.EDIFieldValueContent)"
+                                  Title="Field Value"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="EDIFieldValue"
+                                  Property="@nameof(EDIFieldValue)"
+                                  Title="Actions"
+                                  Width="8rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="() => EditButton_Click(data)"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Small"
+                                      Text="Edit"/>
+                        <RadzenButton Click="() => DeleteButton_Click(data)"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small"
+                                      Text="Delete"/>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

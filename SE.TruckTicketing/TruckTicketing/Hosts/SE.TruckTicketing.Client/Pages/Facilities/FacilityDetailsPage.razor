@@ -1,0 +1,453 @@
+﻿@page "/facilities/{id:guid}"
+@using SE.TruckTicketing.UI.ViewModels.Facilities
+@using SE.TruckTicketing.Contracts.Security
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models
+@inherits BaseTruckTicketingComponent
+
+
+<PageLoadingContainer IsLoading="_isLoading">
+<LoadedView>
+<RadzenTemplateForm TItem="FacilityDetailsViewModel"
+                    @ref="@_form"
+                    Data="@_viewModel"
+                    Submit="OnHandleSubmit">
+<div class="bg-white sticky-footer-page">
+<p class="breadcrumb">
+    @_viewModel.Breadcrumb
+</p>
+<h3 class="title">@_viewModel.Title</h3>
+<div class="sticky-footer">
+    <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                  ButtonType="ButtonType.Submit"
+                  Text="@_viewModel.SubmitButtonText"
+                  Disabled="@(!HasWritePermission(Permissions.Resources.Facility))"
+                  IsBusy="_isSaving"
+                  BusyText="@_viewModel.SubmitButtonBusyText"
+                  Icon="@_viewModel.SubmitButtonIcon"/>
+</div>
+
+<TridentValidationSummary Response="_response"
+                          TModel="Facility"/>
+<br/>
+<RadzenTabs>
+<Tabs>
+<RadzenTabsItem Text="General">
+<div class="card">
+    <div class="card-header d-flex align-content-center">
+        <h4 class="fw-bold">General Info</h4>
+    </div>
+    <div class="card-body">
+        <div class="d-flex flex-wrap">
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Facility Code"
+                             Component="FacilityCodeTextBox"/>
+                <RadzenTextBox id="FacilityCodeTextBox"
+                               @bind-Value="@_viewModel.Facility.SiteId"
+                               Disabled="true"
+                               class="w-100"/>
+            </div>
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Facility Name"
+                             Component="NameTextBox"/>
+                <RadzenTextBox id="NameTextBox"
+                               @bind-Value="@_viewModel.Facility.Name"
+                               Disabled="true"
+                               class="w-100"/>
+            </div>
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Facility Type"
+                             Component="TypeDropdown"/>
+                <RadzenDropDown TValue="FacilityType"
+                                Class="w-100"
+                                id="TypeDropdown"
+                                @bind-Value="@_viewModel.Facility.Type"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Data="@(DataDictionary.For<FacilityType>())"/>
+            </div>
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Facility Location Code"
+                             Component="LocationCodeTextBox"/>
+                <RadzenTextBox id="LocationCodeTextBox"
+                               @bind-Value="@_viewModel.Facility.LocationCode"
+                               class="w-100"
+                               MaxLength="250"/>
+            </div>
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Legal Entity"
+                             Component="LegalEntityTextBox"/>
+                <RadzenTextBox id="LegalEntityTextBox"
+                               @bind-Value="@_viewModel.Facility.LegalEntity"
+                               Disabled="true"
+                               class="w-100"/>
+            </div>
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Province/State"
+                             Component="ProvinceStateDropdown"/>
+                <RadzenDropDown TValue="StateProvince"
+                                AllowClear="true"
+                                AllowFiltering="true"
+                                id="ProvinceStateDropdown"
+                                Name="ProvinceStateDropdown"
+                                @bind-Value="@_viewModel.Facility.Province"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Placeholder="Select State/Province..."
+                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                Multiple="false"
+                                Data="@(_stateProvinceData)"
+                                class="w-100"
+                                Change="@ProvinceOnChange"/>
+            </div>
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Time Zone"
+                             Component="TimeZoneTextBox"/>
+                <RadzenTextBox id="TimeZoneTextBox"
+                               @bind-Value="@_viewModel.Facility.TimeZone"
+                               Disabled="true"
+                               class="w-100"/>
+            </div>
+            @if (ShowEnableTareWeight)
+            {
+                <div class="d-flex flex-column flex-grow-1 thirds"
+                     hidden="@ShowEnableTareWeight">
+                    <RadzenLabel Text="Enable Tare Weight Messages"
+                                 Component="TareWeightSwitch"/>
+                    <RadzenSwitch id="TareWeightSwitch"
+                                  @bind-Value="_viewModel.Facility.EnableTareWeightMessages"/>
+                </div>
+            }
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Admin Email"
+                             Component="AdminEmailTextBox"/>
+                <RadzenTextBox id="AdminEmailTextBox"
+                               Name="AdminEmailTextBox"
+                               @bind-Value="@_viewModel.Facility.AdminEmail"
+                               class="w-100"/>
+                <RadzenRegexValidator Component="AdminEmailTextBox"
+                                      Text="Enter email in valid format"
+                                      Pattern="@EmailValidationPattern"/>
+            </div>
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Operating Day Cut Off Time"
+                             Component="OperatingDayCutoffTime"/>
+                <RadzenDatePicker TValue="DateTimeOffset?"
+                                  ShowTime="true"
+                                  Name="OperatingDayCutoffTime"
+                                  HourFormat="12"
+                                  MinutesStep="15"
+                                  TimeOnly="true"
+                                  DateFormat="HH:mm"
+                                  Change="@OnOperatingDayCutoffTimeChanged"
+                                  @bind-value="@_viewModel.Facility.OperatingDayCutOffTime"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-content-center">
+        <h4 class="fw-bold">Regulatory Codes</h4>
+    </div>
+    <div class="card-body">
+        <div class="d-flex flex-wrap">
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Pipeline"
+                             Component="PipelineTextBox"/>
+                <RadzenTextBox id="PipelineTextBox"
+                               Name="PipelineTextBox"
+                               @bind-Value="@_viewModel.Facility.Pipeline"
+                               class="w-100"/>
+                <RadzenRegexValidator Component="PipelineTextBox"
+                                      Text="Special Characters are not allowed"
+                                      Pattern="[a-zA-Z0-9_\s]+"/>
+            </div>
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Terminaling"
+                             Component="TerminalingTextBox"/>
+                <RadzenTextBox id="TerminalingTextBox"
+                               Name="TerminalingTextBox"
+                               @bind-Value="@_viewModel.Facility.Terminaling"
+                               class="w-100"/>
+                <RadzenRegexValidator Component="TerminalingTextBox"
+                                      Text="Special Characters are not allowed"
+                                      Pattern="[a-zA-Z0-9_\s]+"/>
+            </div>
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Treating"
+                             Component="TreatingTextBox"/>
+                <RadzenTextBox id="TreatingTextBox"
+                               Name="TreatingTextBox"
+                               @bind-Value="@_viewModel.Facility.Treating"
+                               class="w-100"/>
+                <RadzenRegexValidator Component="TreatingTextBox"
+                                      Text="Special Characters are not allowed"
+                                      Pattern="[a-zA-Z0-9_\s]+"/>
+            </div>
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Water"
+                             Component="WaterTextBox"/>
+                <RadzenTextBox id="WaterTextBox"
+                               Name="WaterTextBox"
+                               @bind-Value="@_viewModel.Facility.Water"
+                               class="w-100"/>
+                <RadzenRegexValidator Component="WaterTextBox"
+                                      Text="Special Characters are not allowed"
+                                      Pattern="[a-zA-Z0-9_\s]+"/>
+            </div>
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Waste"
+                             Component="WasteTextBox"/>
+                <RadzenTextBox id="WasteTextBox"
+                               Name="WasteTextBox"
+                               @bind-Value="@_viewModel.Facility.Waste"
+                               class="w-100"/>
+                <RadzenRegexValidator Component="WasteTextBox"
+                                      Text="Special Characters are not allowed"
+                                      Pattern="[a-zA-Z0-9_\s]+"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-content-center">
+        <h4 class="fw-bold">Invoice Contact</h4>
+    </div>
+    <div class="card-body">
+        <div class="d-flex flex-wrap">
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="First Name"
+                             Component="InvoiceContactFirstNameTextBox"/>
+                <RadzenTextBox id="InvoiceContactFirstNameTextBox"
+                               Name="InvoiceContactFirstNameTextBox"
+                               @bind-Value="@_viewModel.Facility.InvoiceContactFirstName"
+                               class="w-100"/>
+            </div>
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Last Name"
+                             Component="InvoiceContactLastNameTextBox"/>
+                <RadzenTextBox id="InvoiceContactLastNameTextBox"
+                               Name="InvoiceContactLastNameTextBox"
+                               @bind-Value="@_viewModel.Facility.InvoiceContactLastName"
+                               class="w-100"/>
+            </div>
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Phone Number"
+                             Component="InvoiceContactPhoneNumberTextBox"/>
+                <RadzenMask id="InvoiceContactPhoneNumberTextBox"
+                            Name="InvoiceContactPhoneNumberTextBox"
+                            Mask="(***) ***-****"
+                            CharacterPattern="[0-9]"
+                            @bind-Value="@_viewModel.Facility.InvoiceContactPhoneNumber"
+                            class="w-100"/>
+                <RadzenRegexValidator Component="InvoiceContactPhoneNumberTextBox"
+                                      Text="Enter phone number in valid format : (***) ***-****"
+                                      Pattern="^(1\s?)?(\d{3}|\(\d{3}\))[\s\-]?\d{3}[\s\-]?\d{4}$"/>
+            </div>
+            <div class="d-flex flex-column flex-grow-1 thirds">
+                <RadzenLabel Text="Email Address"
+                             Component="InvoiceContactEmailTextBox"/>
+                <RadzenTextBox id="InvoiceContactEmailTextBox"
+                               Name="InvoiceContactEmailTextBox"
+                               @bind-Value="@_viewModel.Facility.InvoiceContactEmailAddress"
+                               class="w-100"/>
+                <RadzenRegexValidator Component="InvoiceContactEmailTextBox"
+                                      Text="Enter email in valid format"
+                                      Pattern="@EmailValidationPattern"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-content-center">
+        <h4 class="fw-bold">Configurations</h4>
+    </div>
+    <div class="card-body">
+        <h5 class="fw-bold">Truck Tickets</h5>
+        <div class="d-flex flex-wrap justify-content-between gap-3">
+            <div class="d-flex flex-column">
+                <RadzenLabel Text="Show Class Number"
+                             Component="ShowClassNumber"/>
+                <RadzenSwitch id="ShowClassNumber"
+                              @bind-Value="_viewModel.Facility.ShowClassNumber"/>
+            </div>
+            <div class="d-flex flex-column">
+                <RadzenLabel Text="Show Un Number"
+                             Component="ShowUnNumber"/>
+                <RadzenSwitch id="ShowUnNumber"
+                              @bind-Value="_viewModel.Facility.ShowUnNumber"/>
+            </div>
+            <div class="d-flex flex-column">
+                <RadzenLabel Text="Show Material Approval"
+                             Component="ShowMaterialApproval"/>
+                <RadzenSwitch id="ShowMaterialApproval"
+                              @bind-Value="_viewModel.Facility.ShowMaterialApproval"
+                              Disabled="@(_viewModel.Facility.Type == FacilityType.Lf)"/>
+            </div>
+            <div class="d-flex flex-column">
+                <RadzenLabel Text="Show Conversion Calculator"
+                             Component="ShowConversionCalculator"/>
+                <RadzenSwitch id="ShowConversionCalculator"
+                              @bind-Value="_viewModel.Facility.ShowConversionCalculator"/>
+            </div>
+            <div class="d-flex flex-column">
+                <RadzenLabel Text="Show Destination"
+                             Component="ShowDestinationSwitch"/>
+                <RadzenSwitch id="ShowDestinationSwitch"
+                              @bind-Value="_viewModel.Facility.ShowDestination"/>
+            </div>
+            <div class="d-flex flex-column">
+                <RadzenLabel Text="Field Ticket Auto Approve"
+                             Component="FieldTicketAutoApproveSwitch"/>
+                <RadzenSwitch id="FieldTicketAutoApproveSwitch"
+                              @bind-Value="_viewModel.Facility.FieldTicketAutoApproval"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Spartan Active"
+                             Component="SpartanActiveSwitch"/>
+                <RadzenSwitch id="SpartanActiveSwitch"
+                              @bind-Value="@_viewModel.SpartanActive"/>
+
+            </div>
+            @if (ShowEnableTareWeight)
+            {
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Tare Weight Validity Days"
+                                 Component="TareWeightValidityDays"/>
+
+                    <RadzenNumeric TValue="int?"
+                                   Min="1"
+                                   @bind-Value="_viewModel.Facility.TareWeightValidityDays"/>
+
+                </div>
+            }
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Dow/Non-Dow Default"
+                             Component="DowNonDowDropdown"
+                             class="required"/>
+                <RadzenDropDown TValue="DowNonDow"
+                                Class="w-100"
+                                Id="DowNonDowDropdown"
+                                @bind-Value="@_viewModel.Facility.DowNonDow"
+                                Placeholder="Select Dow or Non-Dow"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Disabled="false"
+                                Data="@(DataDictionary.For<DowNonDow>())"/>
+            </div>
+        </div>
+
+        <h5 class="fw-bold mt-3">Material Approvals</h5>
+        <div class="d-flex flex-wrap gap-3">
+            <div class="d-flex flex-column">
+                <RadzenLabel Text="Show Haz/NonHaz"
+                             Component="ShowHazNonHazSwitch"/>
+                <RadzenSwitch id="ShowHazNonHazSwitch"
+                              @bind-Value="@_viewModel.Facility.ShowHazNonHaz"/>
+            </div>
+            <div class="d-flex flex-column">
+                <RadzenLabel Text="Show Source Region"
+                             Component="ShowSourceRegionSwitch"/>
+                <RadzenSwitch id="ShowSourceRegionSwitch"
+                              @bind-Value="@_viewModel.Facility.ShowSourceRegion"/>
+            </div>
+
+            <div class="d-flex flex-column">
+                <RadzenLabel Text="Enable Tare Weight"
+                             Component="EnableTareWeightSwitch"/>
+                <RadzenSwitch id="EnableTareWeightSwitch"
+                              @bind-Value="@_viewModel.Facility.EnableTareWeight"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-content-center">
+        <h4 class="fw-bold">Financial Dimensions</h4>
+    </div>
+    <div class="card-body">
+        <div class="d-flex gap-3">
+            <div class="flex-grow-1 d-flex flex-column">
+                <RadzenLabel Text="Division"
+                             Component="DivisionTextBox"/>
+                <RadzenTextBox id="DivisionTextBox"
+                               @bind-Value="@_viewModel.Facility.Division"
+                               class="w-100"/>
+
+            </div>
+            <div class="flex-grow-1 d-flex flex-column">
+                <RadzenLabel Text="Business Unit"
+                             Component="BusinessUnitTextBox"/>
+                <RadzenTextBox id="BusinessUnitTextBox"
+                               @bind-Value="@_viewModel.Facility.BusinessUnitId"
+                               class="w-100"/>
+
+            </div>
+            <div class="flex-grow-1 d-flex flex-column">
+                <RadzenLabel Text="Ticket Type"
+                             Component="TicketTypeDropDown"/>
+                <RadzenDropDown id="TicketTypeDropDown"
+                                TModel="TruckTicket"
+                                Multiple="true"
+                                Placeholder="Select ticket types"
+                                @bind-Value="@SelectedTicketType"
+                                TextProperty="@nameof(TicketType.TicketTypeName)"
+                                ValueProperty="@nameof(TruckTicket.Id)"
+                                Data="TicketTypesData"
+                                Change="OnTicketTypeChange"
+                                PageSize="10"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="fw-bold d-flex">
+            <span class="flex-grow-1">Facility Service</span>
+            <RadzenButton Text="Add Facility Service"
+                          Class="flex-grow-0"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Size="ButtonSize.Small"
+                          Disabled="@_viewModel.IsNew"
+                          Click="@(() => OpenFacilityServiceDetailsDialog(new()))"/>
+        </h4>
+    </div>
+    <div class="card-body">
+        <FacilityServiceGrid @ref="_facilityServiceGrid"
+                             Facility="@_viewModel.Facility"/>
+    </div>
+</div>
+
+@if (_viewModel.Facility.ShowConversionCalculator)
+{
+    <PreSetFacilityDefaultDensities Title="Pre-set Default Densities (By Weight)"
+                                    Facility="@_viewModel.Facility"
+                                    FacilityDefaultDensities="@_viewModel.Facility.WeightConversionParameters"/>
+
+    <PreSetFacilityDefaultDensities Title="Pre-set Default Densities (By Mid-Weight)"
+                                    Facility="@_viewModel.Facility"
+                                    FacilityDefaultDensities="@_viewModel.Facility.MidWeightConversionParameters"/>
+}
+</RadzenTabsItem>
+@if (_viewModel.Facility.Id != Guid.Empty)
+{
+    <RadzenTabsItem Text="History">
+        <TridentChangeDataGridWrapper Id="_viewModel.Facility.Id"
+                                      EntityType="Facility"
+                                      EntityName="Facility"/>
+    </RadzenTabsItem>
+}
+</Tabs>
+</RadzenTabs>
+</div>
+</RadzenTemplateForm>
+</LoadedView>
+</PageLoadingContainer>

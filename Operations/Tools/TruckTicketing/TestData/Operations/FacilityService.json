@@ -1,0 +1,53 @@
+[
+  {
+    "Id": "61b669ad-8ffa-411e-816e-d1dcae072762",
+    "DocumentType": "FacilityService",
+    "EntityType": "FacilityServiceSubstanceIndex",
+    "FacilityId": "ae62f28e-fd0b-4594-b235-0e254bc4771a",
+    "FacilityServiceId": "454848ed-303e-4789-abba-a80bbc6a85fc",
+    "FacilityServiceNumber": "FOXLF-1",
+    "ServiceTypeId": "ee2f91a1-98c8-4ec7-9c6d-28922c06fd80",
+    "ServiceTypeName": "Waste - Processing",
+	"TotalProductId": "a71ce21f-3e55-4333-953b-9cc27d4ffc57",
+    "TotalProductName": "Waste - Processing",
+	"SubstanceId": "ce4a4fd3-a11a-4f06-90eb-f3327f761234",
+    "Substance": "Contaminated Debris and Soil (chem/solvent)",	
+    "WasteCode": "SOILCH",
+	"IsAuthorized": true,
+    "id": "FacilityServiceEntity|61b669ad-8ffa-411e-816e-d1dcae072762"
+  },
+  {
+    "Id": "c4d7d9dd-e003-45cc-a0bc-660b92918d2f",
+    "DocumentType": "FacilityService",
+    "EntityType": "FacilityServiceSubstanceIndex",
+    "FacilityId": "ae62f28e-fd0b-4594-b235-0e254bc4771a",
+    "FacilityServiceId": "454848ed-303e-4789-abba-a80bbc6a85fc",
+    "FacilityServiceNumber": "FOXLF-2",
+    "ServiceTypeId": "ee2f91a1-98c8-4ec7-9c6d-28922c06fd80",
+    "ServiceTypeName": "Waste - Processing",
+    "TotalProductId": "a71ce21f-3e55-4333-953b-9cc27d4ffc57",
+    "TotalProductName": "Waste - Processing",
+	"SubstanceId": "ce4a4fd3-a11a-4f06-90eb-f3327f761235",
+	"Substance": "Sludge - Emulsion",	
+    "WasteCode": "SLGEML",
+	"IsAuthorized": true,
+    "id": "FacilityServiceEntity|c4d7d9dd-e003-45cc-a0bc-660b92918d2f"
+  },
+  {
+    "Id": "17a08a82-f964-4765-8176-da3cb7fc90c3",
+    "DocumentType": "FacilityService",
+    "EntityType": "FacilityServiceSubstanceIndex",
+    "FacilityId": "ae62f28e-fd0b-4594-b235-0e254bc4771a",
+    "FacilityServiceId": "454848ed-303e-4789-abba-a80bbc6a85fc",
+    "FacilityServiceNumber": "FOXLF-3",
+    "ServiceTypeId": "ee2f91a1-98c8-4ec7-9c6d-28922c06fd80",
+    "ServiceTypeName": "Waste - Processing",
+	"TotalProductId": "a71ce21f-3e55-4333-953b-9cc27d4ffc57",
+    "TotalProductName": "Waste - Processing",
+	"SubstanceId": "b66e10b4-11c1-4078-8ae4-cc1b16e80485",
+    "Substance": "Sludge - Emulsion - Two",
+    "WasteCode": "SLGEM2",
+	"IsAuthorized": true,
+    "id": "FacilityServiceEntity|17a08a82-f964-4765-8176-da3cb7fc90c3"
+  }
+]

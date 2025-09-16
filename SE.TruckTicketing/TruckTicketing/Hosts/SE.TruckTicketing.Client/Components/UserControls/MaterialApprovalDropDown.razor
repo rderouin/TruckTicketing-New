@@ -1,0 +1,20 @@
+﻿@typeparam TValue    
+
+@inherits TridentApiDropDown<SE.TruckTicketing.Contracts.Models.Operations.MaterialApproval, TValue>
+<RadzenDropDown @ref="DropDown"
+                id="@Id"
+                Name="@Id"
+                TValue="TValue"
+                AllowClear="@AllowClear"
+                Disabled="@(Disabled || IsLoading)"
+                AllowVirtualization="true"
+                LoadData="@OnLoadData"
+                Placeholder="@Placeholder"
+                AllowFiltering="true"
+                Count="@(Results?.Info?.TotalRecords ?? 0)"
+                Data="@Results?.Results"
+                TextProperty="@TextProperty"
+                ValueProperty="@ValueProperty"
+                Change="@Change"
+                @bind-Value="@Value">
+</RadzenDropDown>

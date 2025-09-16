@@ -1,0 +1,43 @@
+@page "/facility-density-defaults/{id:guid}"
+@using SE.TruckTicketing.UI.ViewModels.Facilities
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<PageLoadingContainer IsLoading="_isLoading">
+<LoadedView>
+<RadzenTemplateForm TItem="FacilityDetailsViewModel"
+                    @ref="@_form"
+                    Data="@_viewModel"
+                    Submit="OnHandleSubmit">
+<div class="bg-white sticky-footer-page">
+<p class="breadcrumb">
+    @_viewModel.Breadcrumb
+</p>
+<h3 class="title">Editing @_viewModel.Facility.Name Density Defaults</h3>
+<div class="sticky-footer">
+    <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                  ButtonType="ButtonType.Submit"
+                  Text="@_viewModel.SubmitButtonText"
+                  IsBusy="_isSaving"
+                  Disabled = "@(!HasWritePermission(Permissions.Resources.Facility))"
+                  BusyText="@_viewModel.SubmitButtonBusyText"
+                  Icon="@_viewModel.SubmitButtonIcon"/>
+</div>
+
+<TridentValidationSummary Response="_response"
+                          TModel="Facility"/>
+<br/>
+
+<PreSetFacilityDefaultDensities Title="Pre-set Default Densities (By Weight)"
+                                Facility="@_viewModel.Facility"
+                                FacilityDefaultDensities="@_viewModel.Facility.WeightConversionParameters"/>
+
+<PreSetFacilityDefaultDensities Title="Pre-set Default Densities (By Mid-Weight)"
+                                Facility="@_viewModel.Facility"
+                                FacilityDefaultDensities="@_viewModel.Facility.MidWeightConversionParameters"/>
+
+</div>
+</RadzenTemplateForm>
+</LoadedView>
+</PageLoadingContainer>

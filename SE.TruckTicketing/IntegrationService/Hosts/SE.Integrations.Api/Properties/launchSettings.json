@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "SE.Integrations.Api": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7138",
+      "launchBrowser": false
+    }
+  }
+}

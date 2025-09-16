@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "SE.BillingService.Api": {
+      "commandName": "Project",
+      "commandLineArgs": "start --port 6001",
+      "launchBrowser": false
+    }
+  }
+}

@@ -1,0 +1,294 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using SE.TruckTicketing.Contracts.Models.Substances
+@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Lookups
+@inherits BaseRazorComponent
+@namespace SE.TruckTicketing.Client.Pages
+
+
+<div class="flex-grow-0">
+    <div class="d-flex align-items-end justify-content-between">
+        <div class="d-flex gap-2 flex-column">
+            <span class="flex-grow-1"><strong>Billing Configuration: </strong>@ViewModel?.BillingConfiguration?.Name</span>
+            <span class="flex-grow-1"><strong>Invoice Configuration: </strong>@ViewModel?.InvoiceConfiguration?.Name</span>
+            <span class="flex-grow-1"><strong>Account: </strong>@ViewModel?.BillingConfiguration?.BillingCustomerName</span>
+        </div>
+    </div>
+    <br/>
+    @if (isDuplicate)
+    {
+        <div>
+            <div class="d-flex align-items-center">
+                <RadzenIcon Icon="error"
+                            IconStyle="IconStyle.Danger"/>
+                <h6 class="small-grey-label text-danger pl-2">Duplicate Match Predicate Found:</h6>
+            </div>
+            <ul class="ml-4 mt-1 pl-1 text-danger">
+                <li class="pb-1">• <span>Duplicate match predicate exists in BillingConfiguration: @string.Join(", ", billingConfigurationsWithDuplicateMatchPredicate)</span></li>
+            </ul>
+        </div>
+        <br/>
+    }
+</div>
+
+<RadzenTemplateForm TItem="MatchPredicate"
+                    Submit="@SaveButton_Clicked"
+                    Data="@ViewModel.MatchPredicate"
+                    @ref="ReferenceToForm">
+<div class="card">
+<div class="card-header d-flex align-content-center">
+    <h4 class="fw-bold">Predicates</h4>
+</div>
+<div class="card-body">
+<div class="row mb-3">
+    <div class="col">
+        <RadzenLabel Text="Source Location"
+                     Component="SourceLocationIdentifierDropDown"/>
+        <div class="d-flex flex-row align-items-center gap-2">
+
+            <RadzenRadioButtonList TValue="MatchPredicateValueState"
+                                   id="SourceLocationButtonList"
+                                   Name="SourceLocationButtonList"
+                                   TextProperty="Value"
+                                   ValueProperty="Key"
+                                   Data="@(DataDictionary.For<MatchPredicateValueState>())"
+                                   Change="@(args => OnSourceLocationValueStateChange(args))"
+                                   @bind-Value="@ViewModel.MatchPredicate.SourceLocationValueState"/>
+            <RadzenRequiredValidator Component="SourceLocationButtonList"
+                                     DefaultValue="MatchPredicateValueState.Unspecified"
+                                     Text="Required"/>
+            <div class="flex-grow-1">
+                <SourceLocationDropDown TValue="Guid?"
+                                        Placeholder="Select source location"
+                                        @bind-Value="@ViewModel.MatchPredicate.SourceLocationId"
+                                        ValueProperty="@nameof(SourceLocation.Id)"
+                                        class="w-100"
+                                        PageSize="10"
+                                        Name="SourceLocationIdentifierDropDown"
+                                        OnItemSelect="OnSourceLocationIdentifierChange"
+                                        Disabled="@disableSourceLocationDropDown"
+                                        OnDataLoading="BeforeSourceLocationLoad"/>
+                @if (ViewModel.MatchPredicate.SourceLocationValueState == MatchPredicateValueState.Value)
+                {
+                    <RadzenRequiredValidator Component="SourceLocationIdentifierDropDown"
+                                             DefaultValue="null"
+                                             Text="Required"/>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col">
+        <RadzenLabel Text="Well Classification"
+                     Component="WellClassificationDropDown"/>
+        <div class="d-flex flex-row align-items-center gap-2">
+
+            <RadzenRadioButtonList TValue="MatchPredicateValueState"
+                                   id="WellClassificationButtonList"
+                                   Name="WellClassificationButtonList"
+                                   TextProperty="Value"
+                                   ValueProperty="Key"
+                                   Data="@(DataDictionary.For<MatchPredicateValueState>())"
+                                   @bind-Value="@ViewModel.MatchPredicate.WellClassificationState"
+                                   Change="@(args => OnWellClassificationStateChange(args))"/>
+            <RadzenRequiredValidator Component="WellClassificationButtonList"
+                                     DefaultValue="MatchPredicateValueState.Unspecified"
+                                     Text="Required"/>
+            <div class="flex-grow-1">
+
+                <RadzenDropDown TValue="WellClassifications"
+                                @bind-Value="@ViewModel.MatchPredicate.WellClassification"
+                                Placeholder="Select well classification..."
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Disabled="@disableWellClassificationDropDown"
+                                Name="WellClassificationDropDown"
+                                Data="@(ViewModel.WellClassificationListData)"
+                                class="w-100"/>
+
+                @if (ViewModel.MatchPredicate.WellClassificationState == MatchPredicateValueState.Value)
+                {
+                    <RadzenRequiredValidator Component="WellClassificationDropDown"
+                                             DefaultValue="WellClassifications.Undefined"
+                                             Text="Required"/>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row mb-3">
+    <div class="col">
+        <RadzenLabel Text="Stream"
+                     Component="StreamDropDown"/>
+        <div class="d-flex flex-row align-items-center gap-2">
+
+            <RadzenRadioButtonList TValue="MatchPredicateValueState"
+                                   id="StreamButtonList"
+                                   Name="StreamButtonList"
+                                   TextProperty="Value"
+                                   ValueProperty="Key"
+                                   Data="@(DataDictionary.For<MatchPredicateValueState>())"
+                                   Change="@(args => OnStreamStateChange(args))"
+                                   @bind-Value="@ViewModel.MatchPredicate.StreamValueState"/>
+            <RadzenRequiredValidator Component="StreamButtonList"
+                                     DefaultValue="MatchPredicateValueState.Unspecified"
+                                     Text="Required"/>
+            <div class="flex-grow-1">
+                <RadzenDropDown TValue="Stream"
+                                @bind-Value="@ViewModel.MatchPredicate.Stream"
+                                Placeholder="Select stream..."
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Disabled="@disableStreamDropDown"
+                                Name="StreamDropDown"
+                                Data="@(DataDictionary.For<Stream>())"
+                                class="w-100"/>
+                @if (ViewModel.MatchPredicate.StreamValueState == MatchPredicateValueState.Value)
+                {
+                    <RadzenRequiredValidator Component="StreamDropDown"
+                                             DefaultValue="Stream.Undefined"
+                                             Text="Required"/>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col">
+        <RadzenLabel Text="Service Type"
+                     Component="ServiceTypeDropDown"/>
+        <div class="d-flex flex-row align-items-center gap-2">
+
+            <RadzenRadioButtonList TValue="MatchPredicateValueState"
+                                   id="ServiceTypeButtonList"
+                                   Name="ServiceTypeButtonList"
+                                   TextProperty="Value"
+                                   ValueProperty="Key"
+                                    Data="@(DataDictionary.For<MatchPredicateValueState>())"
+                                   Change="@(args => OnServiceTypeValueStateChange(args))"
+                                   @bind-Value="@ViewModel.MatchPredicate.ServiceTypeValueState"/>
+            <RadzenRequiredValidator Component="ServiceTypeButtonList"
+                                     DefaultValue="MatchPredicateValueState.Unspecified"
+                                     Text="Required"/>
+            <div class="flex-grow-1">
+                            <TridentApiDropDown Name="ServiceTypeDropDown"
+                                    TModel="ServiceType"
+                                    TValue="Guid?"
+                                    Placeholder="Select service type..."
+                                    @bind-Value="@ViewModel.MatchPredicate.ServiceTypeId"
+                                    TextProperty="@nameof(ServiceType.Name)"
+                                    ValueProperty="@nameof(ServiceType.Id)"
+                                    PageSize="10"
+                                    OnItemSelect="OnServiceTypeChange"
+                                    Disabled="@disableServiceTypeDropDown"
+                                    OnDataLoading="BeforeServiceTypeLoad"
+                                    class="w-100"/>
+                @if (ViewModel.MatchPredicate.ServiceTypeValueState == MatchPredicateValueState.Value)
+                {
+                    <RadzenRequiredValidator Component="ServiceTypeDropDown"
+                                             DefaultValue="null"
+                                             Text="Required"/>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col">
+        <RadzenLabel Text="Substance"
+                     Component="SubstanceDropDown"/>
+        <div class="d-flex flex-row align-items-center gap-2">
+
+            <RadzenRadioButtonList TValue="MatchPredicateValueState"
+                                   id="SubstanceButtonList"
+                                   Name="SubstanceButtonList"
+                                   TextProperty="Value"
+                                   ValueProperty="Key"
+                                               Data="@(DataDictionary.For<MatchPredicateValueState>())"
+                                   Change="@(args => OnSubstanceStateChange(args))"
+                                   @bind-Value="@ViewModel.MatchPredicate.SubstanceValueState"/>
+            <RadzenRequiredValidator Component="SubstanceButtonList"
+                                     DefaultValue="MatchPredicateValueState.Unspecified"
+                                     Text="Required"/>
+            <div class="flex-grow-1">
+                <TridentApiDropDown TModel="Substance"
+                                    TValue="Guid?"
+                                    Placeholder="Select substance..."
+                                    @bind-Value="@ViewModel.MatchPredicate.SubstanceId"
+                                    TextProperty="@nameof(Substance.SubstanceName)"
+                                    ValueProperty="@nameof(Substance.Id)"
+                                    PageSize="10"
+                                    Name="SubstanceDropDown"
+                                    OnItemSelect="OnSubstanceChange"
+                                    Disabled="@disableSubstanceDropDown"
+                                    OnDataLoading="BeforeSubstanceLoad"
+                                    class="w-100"/>
+                @if (ViewModel.MatchPredicate.SubstanceValueState == MatchPredicateValueState.Value)
+                {
+                    <RadzenRequiredValidator Component="SubstanceDropDown"
+                                             DefaultValue="null"
+                                             Text="Required"/>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-content-center">
+        <h4 class="fw-bold">Dates</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <div class="d-flex align-content-center">
+                    <RadzenLabel Text="Start Date"
+                                 Component="StartDateTimePicker"/>
+                    <small class="px-2 text-muted small-grey-label">MM/DD/YYYY</small>
+                </div>
+
+                <RadzenDatePicker TValue="DateTimeOffset?"
+                                  id="StartDateTimePicker"
+                                  DateFormat="yyyy-MM-dd"
+                                  Class="w-100"
+                                  @bind-Value="@ViewModel.MatchPredicate.StartDate"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <div class="d-flex align-content-center">
+                    <RadzenLabel Text="End Date"
+                                 Component="EndDateTimePicker"/>
+                    <small class="px-2 text-muted small-grey-label">MM/DD/YYYY</small>
+                </div>
+
+                <RadzenDatePicker TValue="DateTimeOffset?"
+                                  id="EndDateTimePicker"
+                                  DateFormat="yyyy-MM-dd"
+                                  Class="w-100"
+                                  @bind-Value="@ViewModel.MatchPredicate.EndDate"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4 mb-3">
+    <div class="col d-flex justify-content-end">
+        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                      ButtonType="ButtonType.Submit"
+                      Text="@ViewModel.SubmitButtonText"
+                      BusyText="@ViewModel.SubmitButtonBusyText"
+                      Icon="@ViewModel.SubmitButtonIcon"/>
+        <RadzenButton ButtonStyle="ButtonStyle.Light"
+                      Text="Cancel"
+                      class="ml-2"
+                      Click="HandleCancel"/>
+    </div>
+</div>
+</RadzenTemplateForm>

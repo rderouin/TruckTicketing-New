@@ -1,0 +1,14 @@
+{
+    "Id": "4f4c8aee-e3be-4037-ac69-824a55d3c7f3",
+    "DocumentType": "LandfillSamplingEntity",
+    "EntityType": "LandfillSampling",
+    "FacilityId": "ae62f28e-fd0b-4594-b235-0e254bc4771a",
+    "ProductNumberFilter": 706,
+    "SamplingRuleId": "67695bb9-8f33-4252-8704-575074675572",
+    "SamplingRuleType": 1,
+    "Threshold": "20",
+    "Value": "0",
+    "WarningThreshold": "16",
+    "WellClassificationFilters": [],
+    "id": "LandfillSampling|4f4c8aee-e3be-4037-ac69-824a55d3c7f3"
+}

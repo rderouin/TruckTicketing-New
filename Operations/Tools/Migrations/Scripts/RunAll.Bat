@@ -1,0 +1,1 @@
+sqlcmd -E -dTruckTicketDataMigration -i%~dp0RunAll.sql -SAHQDSV-D365REP1 -v path="%~dp0" 

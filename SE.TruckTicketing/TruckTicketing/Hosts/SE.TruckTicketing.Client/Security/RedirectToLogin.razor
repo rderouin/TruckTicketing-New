@@ -1,0 +1,13 @@
+@inject NavigationManager Navigation
+
+@code {
+
+    [CascadingParameter(Name = "authenticationStateTask")]
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Navigation.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+    }
+
+}

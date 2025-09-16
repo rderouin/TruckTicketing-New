@@ -1,0 +1,136 @@
+﻿@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Models.FacilityServices
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@inherits BaseRazorComponent
+
+<EditForm Model="@MatchPredicate"
+          OnValidSubmit="@SaveButton_Clicked">
+    <div class="card">
+        <div class="card-header d-flex align-content-center">
+            <h4 class="fw-bold">Predicates</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col">
+                    <RadzenLabel Text="Well Classification"
+                                 Component="WellClassificationRadioButton"/>
+                    <div class="flex-grow-1">
+                        <RadzenRadioButtonList TValue="MatchPredicateValueState"
+                                               id="WellClassificationRadioButton"
+                                               TextProperty="Value"
+                                               ValueProperty="Key"
+                                               Data="@(DataDictionary.For<MatchPredicateValueState>())"
+                                               Change="@(OnWellClassificationStateChange)"
+                                               @bind-Value="@MatchPredicate.WellClassificationState"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="flex-grow-1">
+                        <RadzenDropDown TValue="WellClassifications"
+                                        id="WellClassificationDropDown"
+                                        @bind-Value="@MatchPredicate.WellClassification"
+                                        Placeholder="Select well classification..."
+                                        TextProperty="Value"
+                                        ValueProperty="Key"
+                                        Disabled="@_disableWellClassificationDropDown"
+                                        Data="@(DataDictionary.For<WellClassifications>())"
+                                        class="w-100"
+                                        AllowClear="@true"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <RadzenLabel Text="Source Identifier"
+                                 Component="SourceLocationIdentifierRadioButton"/>
+                    <div class="flex-grow-1">
+                        <RadzenRadioButtonList TValue="MatchPredicateValueState"
+                                               id="SourceLocationIdentifierRadioButton"
+                                               TextProperty="Value"
+                                               ValueProperty="Key"
+                                               Data="@(DataDictionary.For<MatchPredicateValueState>())"
+                                               Change="@(OnSourceIdentifierValueStateChange)"
+                                               @bind-Value="@MatchPredicate.SourceIdentifierValueState"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="flex-grow-1">
+                        <div class="flex-grow-1">
+                            <SourceLocationDropDown id="SourceLocationIdentifierDropDown"
+                                                    TModel="SourceLocation"
+                                                    TValue="Guid?"
+                                                    Placeholder="Select source location identifier..."
+                                                    @bind-Value="@MatchPredicate.SourceLocationId"
+                                                    ValueProperty="@nameof(SourceLocation.Id)"
+                                                    PageSize="10"
+                                                    OnItemSelect="OnSourceLocationIdentifierChange"
+                                                    Disabled="@_disableSourceIdentifierDropDown"
+                                                    class="w-100"
+                                                    AllowClear="@true"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <RadzenLabel Text="Facility Service - Substance"
+                                 Component="FacilityServiceSubstanceRadioButton"/>
+                    <div class="flex-grow-1">
+                        <RadzenRadioButtonList TValue="MatchPredicateValueState"
+                                               id="FacilityServiceSubstanceRadioButton"
+                                               TextProperty="Value"
+                                               ValueProperty="Key"
+                                               Data="@(DataDictionary.For<MatchPredicateValueState>())"
+                                               Change="@(OnFacilityServiceSubstanceValueStateChange)"
+                                               @bind-Value="@MatchPredicate.SubstanceValueState"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="flex-grow-1">
+                        <div class="flex-grow-1">
+
+                            <TridentApiDropDownDataGrid TValue="Guid?"
+                                                        Id="FacilityServiceSubstanceDropDown"
+                                                        Name="FacilityServiceSubstanceDropDown"
+                                                        TModel="FacilityServiceSubstanceIndex"
+                                                        ValueProperty="@nameof(FacilityServiceSubstanceIndex.Id)"
+                                                        TextProperty="@nameof(FacilityServiceSubstanceIndex.FacilityServiceNumber)"
+                                                        @bind-Value="@MatchPredicate.FacilityServiceSubstanceId"
+                                                        OnDataLoading="BeforeLoadingFacilityServiceSubstances"
+                                                        class="w-100"
+                                                        OnItemSelect="OnFacilityServiceSubstanceChange"
+                                                        Placeholder="Select a facility service / substance..."
+                                                        Disabled="@_disableFacilityServiceSubstanceDropDown"
+                                                        AllowClear="@true">
+                                <Columns>
+                                    <RadzenDropDownDataGridColumn Property="@nameof(FacilityServiceSubstanceIndex.FacilityServiceNumber)"
+                                                                  Title="Facility Service Number"/>
+                                    <RadzenDropDownDataGridColumn Property="@nameof(FacilityServiceSubstanceIndex.Substance)"
+                                                                  Title="Substance"/>
+                                </Columns>
+                            </TridentApiDropDownDataGrid>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Save"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          class="ml-2"
+                          Click="HandleCancel"/>
+        </div>
+    </div>
+</EditForm>

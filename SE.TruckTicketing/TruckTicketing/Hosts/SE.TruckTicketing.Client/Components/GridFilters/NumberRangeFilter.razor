@@ -1,0 +1,37 @@
+@inherits RangeFilterComponent<double>
+
+<div class="flex-grow-1">
+    <div class="d-flex justify-content-between align-items-center">
+        <RadzenLabel Text="@Label"
+                     For="@Id"
+                     Class="filter-label"/>
+
+        @if (!IsValid)
+        {
+            <div class="d-flex gap-1 text-danger align-items-center"
+                 style="font-size: 0.75rem">
+                <RadzenIcon Icon="report"/>
+                <span>Invalid Range</span>
+            </div>
+        }
+    </div>
+    <div class="filter-input-container flex gap-2 align-items-center">
+        <RadzenNumeric TValue="double?"
+                       Placeholder="Min"
+                       Id="@Id"
+                       Name="@Id"
+                       Format="@Format"
+                       Class="flex-grow-1"
+                       @bind-Value="@Start"
+                       ShowUpDown="false"
+                       Change="@HandleChange"/>
+        <span>&mdash;</span>
+        <RadzenNumeric TValue="double?"
+                       Placeholder="Max"
+                       Format="@Format"
+                       Class="flex-grow-1"
+                       @bind-Value="@End"
+                       ShowUpDown="false"
+                       Change="@HandleChange"/>
+    </div>
+</div>

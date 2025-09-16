@@ -1,0 +1,47 @@
+[
+  {
+    "Id": "970c2f87-1390-4e35-83ec-b9ba93255c74",
+    "ErrorMessage": "only numbers allowed",
+    "Name": "Numeric Pattern",
+    "Pattern": "[0-9]+",
+	"CreatedAt": "0001-01-01T00:00:00+00:00",
+    "CreatedBy": null,
+    "CreatedById": null,
+    "UpdatedAt": "0001-01-01T00:00:00+00:00",
+    "UpdatedBy": null,
+    "UpdatedById": null,
+	"DocumentType": "EDIValidationPatternLookupEntity",
+    "EntityType": "EDIValidationPatternLookup",
+    "id": "EDIValidationPatternLookup|970c2f87-1390-4e35-83ec-b9ba93255c74"
+  },
+  {
+    "Id": "3fe2abb0-aba6-4065-a8a6-b0c3690d580e",    
+    "ErrorMessage": "only letters allowed",
+    "Name": "String Pattern",
+    "Pattern": "^[a-zA-Z ]*$",
+	"CreatedAt": "0001-01-01T00:00:00+00:00",
+    "CreatedBy": null,
+    "CreatedById": null,
+    "UpdatedAt": "0001-01-01T00:00:00+00:00",
+    "UpdatedBy": null,
+    "UpdatedById": null,
+	"DocumentType": "EDIValidationPatternLookupEntity",
+    "EntityType": "EDIValidationPatternLookup",
+    "id": "EDIValidationPatternLookup|3fe2abb0-aba6-4065-a8a6-b0c3690d580e"
+  },
+  {
+    "Id": "cd88e8c1-f14d-4eb7-abb2-124a2ec4574f",    
+    "ErrorMessage": "enter...",
+    "Name": "Custom",
+    "Pattern": "enter...",
+	"CreatedAt": "0001-01-01T00:00:00+00:00",
+    "CreatedBy": null,
+    "CreatedById": null,
+    "UpdatedAt": "0001-01-01T00:00:00+00:00",
+    "UpdatedBy": null,
+    "UpdatedById": null,
+	"DocumentType": "EDIValidationPatternLookupEntity",
+    "EntityType": "EDIValidationPatternLookup",
+    "id": "EDIValidationPatternLookup|cd88e8c1-f14d-4eb7-abb2-124a2ec4574f"
+  }
+]

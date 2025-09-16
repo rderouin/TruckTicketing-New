@@ -1,0 +1,197 @@
+﻿@page "/material-approvals"
+@using SE.Shared.Common.Extensions
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Models
+@using SE.TruckTicketing.Contracts.Lookups
+@inherits BaseTruckTicketingComponent
+
+
+<div class="">
+    <div class="bg-white p-4">
+        <div class="d-flex align-items-center justify-content-between">
+            <h3>Manage Material Approvals</h3>
+            <div class="d-flex align-items-center gap-1">
+                <RadzenLink Icon="add_outline"
+                            Path="/material-approval/new"
+                            Text="Add Material Approval"
+                            class="@($"rz-button rz-button-md btn-primary text-decoration-none {AddMaterialApprovalLink_Css} ")" />
+
+                <RadzenButton Icon="tune"
+                              title="Show Column Options"
+                              ButtonStyle="ButtonStyle.Light"
+                              Click="@(() => _grid.ShowColumnOptions())"/>
+
+                <RadzenButton Icon="save_alt"
+                              title="Export to CSV"
+                              ButtonStyle="ButtonStyle.Light"
+                              Click="@Export"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<GridFiltersContainer Expandable="@false"
+                      @ref="_gridFilterContainer"
+                      OnFilterChange="@(async criteria => await _grid.SetExternalSearchCriteriaModel(criteria))">
+    <div class="d-flex flex-grow-1 gap-3">
+        <KeywordFilter Label="Search"
+                       Placeholder="Search by material approval number, source location, trucking company, customer, etc..."/>
+        <DropDownDataGridFilter Label="Facility"
+                                FilterPath="@nameof(TruckTicket.FacilityId)"
+                                Placeholder="All facilities"
+                                TItem="Facility"
+                                DefaultSortProperty="@nameof(Facility.Name)"
+                                TextProperty="@nameof(Facility.SiteId)"
+                                BeforeDataLoad="@(criteria => criteria.Filters[nameof(Facility.IsActive)] = true)">
+            <Columns>
+                <RadzenDropDownDataGridColumn Property="@nameof(Facility.SiteId)"
+                                              Title="Site Id"
+                                              Width="50px"/>
+                <RadzenDropDownDataGridColumn Property="@nameof(Facility.Name)"
+                                              Title="Name"
+                                              Width="100px"/>
+            </Columns>
+        </DropDownDataGridFilter>
+        <DropDownDataGridFilter Label="Legal Entity"
+                                FilterPath="@nameof(MaterialApproval.LegalEntityId)"
+                                Placeholder="All legal entities"
+                                TItem="LegalEntity"
+                                DefaultSortProperty="@nameof(LegalEntity.Name)"
+                                TextProperty="@nameof(LegalEntity.Name)">
+            <Columns>
+                <RadzenDropDownDataGridColumn Property="@nameof(LegalEntity.Code)"
+                                              Title="Legal Entity"
+                                              Width="50px"/>
+            </Columns>
+        </DropDownDataGridFilter>
+        <DateRangeFilter Label="Analytical Expiry Date"
+                         FilterPath="@nameof(MaterialApproval.AnalyticalExpiryDate)"/>
+    </div>
+</GridFiltersContainer>
+
+<div class="p-4 grid-switch-container">
+    <PagableGridView @ref="_grid"
+                     TModel="MaterialApproval"
+                     Results="@_results"
+                     EnablePaging="true"
+                     EnableSorting="true"
+                     EnableFilters="false"
+                     EnableSearch="false"
+                     OnDataLoad="LoadData"
+                     IsLoading="@_isLoading">
+        <Columns>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.MaterialApprovalNumber)"
+                              Title="Material Approval Number"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.IsActive)"
+                              Title="Is Active"
+                              PropertyType="typeof(string)">
+                <Template Context="context">
+                    @(context.IsActive ? "Active" : "InActive")
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.LegalEntity)"
+                              Title="Legal Entity"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.Facility)"
+                              Title="Facility"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.GeneratorName)"
+                              Title="Generator"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.SourceLocationFormattedIdentifier)"
+                              Title="Source Location"
+                              PropertyType="typeof(string)">
+                <Template Context="context">
+                    @(context.SourceLocationFormattedIdentifier.HasText() ? context.SourceLocationFormattedIdentifier : context.SourceLocation)
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.Description)"
+                              Title="Description"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.FacilityServiceName)"
+                              Title="Facility Service Name"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.WasteCodeName)"
+                              Title="Waste Code"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.BillingCustomerName)"
+                              Title="Billing Customer"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.SignatoryNames)"
+                              Title="Signatories"
+                              PropertyType="typeof(string)">
+                <Template Context="context">
+                    <span title="@RetrieveMASignatoryNames(context)">@RetrieveMASignatoryNames(context)</span>
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.ThirdPartyAnalyticalCompanyName)"
+                              Title="3rd Party Analytical Co."
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.TruckingCompanyName)"
+                              Title="Trucking Co."
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.AnalyticalExpiryDate)"
+                              Title="Analytical Expiry Date"
+                              PropertyType="typeof(DateTimeOffset)">
+                <Template Context="context">
+                    @context.AnalyticalExpiryDate?.Date.ToString("MM/dd/yyyy")
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.AdditionalServiceName)"
+                              Title="Additional Services Name"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.AccumulatedTonnage)"
+                              Title="Accumulated Tonnage (T)"
+                              PropertyType="typeof(double)">
+                <Template Context="context">
+                    @context.AccumulatedTonnage.ToString("0.00")
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="MaterialApproval"
+                              Property="@nameof(MaterialApproval.Id)"
+                              Title="Actions"
+                              Width="15rem"
+                              EnableSorting="false">
+                <Template Context="data">
+                    <RadzenButton Click="() => EditButton_Click(data)"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Text="Edit"/>
+                    <RadzenButton Click="() => CloneButton_Click(data)"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Text="Clone"/>
+                    <RadzenButton Click="() => PrintButton_Click(data)"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Text="Print"/>
+                    <RadzenButton Click="() => EmailButton_Click(data)"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Text="Email"/>
+                    <EmailTemplateSenderDialog @ref="_dialog"
+                                               EventName="@EmailTemplateEventNames.MaterialApprovalConfirmation"
+                                               Title="Material Approval Email"
+                                               OnRequestDelivering="@OnRequest"/>
+                </Template>
+            </ColumnDefinition>
+        </Columns>
+    </PagableGridView>
+</div>

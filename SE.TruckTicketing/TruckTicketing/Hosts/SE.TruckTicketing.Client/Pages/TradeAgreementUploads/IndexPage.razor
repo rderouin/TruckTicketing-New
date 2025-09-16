@@ -1,0 +1,54 @@
+@page "/trade-agreement-uploads"
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Security;
+@inherits BaseTruckTicketingComponent
+
+<div class="bg-white p-4">
+    <div class="d-flex align-items-center justify-content-between">
+        <h3>Trade Agreement File Uploads</h3>
+
+        <TridentFileUploader DialogTitle="Upload Trade Agreement"
+                             TriggerText="Upload Trade Agreement"
+                             CompleteButtonText="Done"
+                             DisableUpload="@(!HasWritePermission(Permissions.Resources.TradeAgreement))"
+                             Accept=".csv"
+                             UploadUriProvider="@GetTradeAgreementUploadUrl"
+                             OnUploadComplete="@HandleTradeAgreementUploadCompletion"/>
+    </div>
+    <div></div>
+</div>
+
+<div class="px-4">
+    <PagableGridView TModel="TradeAgreementUpload"
+                     Results="@_tradeAgreementUploads"
+                     EnableSearch="false"
+                     EnablePaging="true"
+                     EnableSorting="true"
+                     EnableFilters="false"
+                     OnDataLoad="LoadTradeAgreementUploads"
+                     IsLoading="@_isLoading"
+                     @ref="_grid">
+        <Columns>
+            <ColumnDefinition TItem="TradeAgreementUpload"
+                              Property="@nameof(TradeAgreementUpload.OriginalFileName)"
+                              Title="Original File Name"
+                              PropertyType="typeof(string)"/>
+
+            <ColumnDefinition TItem="TradeAgreementUpload"
+                              Property="@nameof(TradeAgreementUpload.UploadFileName)"
+                              Title="Upload File Name"
+                              PropertyType="typeof(string)"/>
+
+            <ColumnDefinition TItem="TradeAgreementUpload"
+                              Property="@nameof(TradeAgreementUpload.CreatedAt)"
+                              Title="Uploaded At"
+                              SortOrder="SortOrder.Descending"
+                              PropertyType="typeof(DateTimeOffset)"/>
+
+            <ColumnDefinition TItem="TradeAgreementUpload"
+                              Property="@nameof(TradeAgreementUpload.CreatedBy)"
+                              Title="Uploaded By"
+                              PropertyType="typeof(string)"/>
+        </Columns>
+    </PagableGridView>
+</div>

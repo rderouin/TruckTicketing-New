@@ -1,0 +1,29 @@
+# Template to publish artifacts
+
+parameters:
+- name: projects
+- name: artifactName
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'Publish Solution'
+  inputs:
+    command: 'publish'
+    projects: ${{ parameters.projects }}
+    arguments: '--output publish_output --configuration Release --no-restore'
+    publishWebProjects: false
+    modifyOutputPath: false
+    zipAfterPublish: false
+
+- task: ArchiveFiles@2
+  displayName: "Archive Files"
+  inputs:
+    rootFolderOrFile: "$(System.DefaultWorkingDirectory)/publish_output"
+    includeRootFolder: false
+    archiveFile: "$(System.DefaultWorkingDirectory)/$(artifactName).$(Build.BuildNumber).zip"
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Build Artifacts'
+  inputs:
+    PathtoPublish: '$(System.DefaultWorkingDirectory)/$(artifactName).$(Build.BuildNumber).zip'
+    artifactName: 'drop'

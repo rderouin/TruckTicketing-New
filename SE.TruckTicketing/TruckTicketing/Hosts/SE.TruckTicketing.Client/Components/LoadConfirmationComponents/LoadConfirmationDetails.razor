@@ -1,0 +1,28 @@
+@inherits BaseTruckTicketingComponent
+
+<CascadingValue Value="@Model">
+    <RadzenTabs>
+        <Tabs>
+            <RadzenTabsItem Text="General">
+                <GeneralTab/>
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="Attachments">
+                <AttachmentsTab/>
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="Notes">
+                <Notes ThreadId="@ThreadId"
+                       ShowNew="@true"
+                       OnNoteUpdate="@HandleNoteUpdate"
+                       OnDataLoad="@LoadNotes"/>
+            </RadzenTabsItem>
+            @if (Model.Id != Guid.Empty)
+            {
+                <RadzenTabsItem Text="History">
+                    <TridentChangeDataGridWrapper Id="Model.Id"
+                                                  EntityType="LoadConfirmation"
+                                                  EntityName="Load Confirmation"/>
+                </RadzenTabsItem>
+            }
+        </Tabs>
+    </RadzenTabs>
+</CascadingValue>

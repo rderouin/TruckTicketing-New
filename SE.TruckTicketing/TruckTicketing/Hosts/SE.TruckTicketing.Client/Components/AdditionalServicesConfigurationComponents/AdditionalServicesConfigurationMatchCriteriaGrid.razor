@@ -1,0 +1,91 @@
+﻿@using Humanizer
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center grid-switch-container">
+        <h4 class="fw-bold">Match Criteria</h4>
+        <div class="d-flex gap-2 align-items-center">
+            <RadzenButton Click="@(args => OpenEditDialog(new(), true))"
+                          Text="Add Criteria"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Size="ButtonSize.Small"
+                          Icon="rule"
+                          Disabled="@Disabled"/>
+        </div>
+    </div>
+    <div class="card-body grid-switch-container">
+        <PagableGridView TModel="AdditionalServicesConfigurationMatchPredicate"
+                         Results="@_matchCriterias"
+                         class="bs-class"
+                         EnableSearch="false"
+                         EnablePaging="false"
+                         EnableSorting="true"
+                         OnDataLoad="LoadMatchCriteria"
+                         EnableRowExpansion="false"
+                         EnableFilters="false">
+            <Columns>
+                <ColumnDefinition TItem="AdditionalServicesConfigurationMatchPredicate"
+                                  Property="@nameof(AdditionalServicesConfigurationMatchPredicate.IsEnabled)"
+                                  Title="Enabled"
+                                  PropertyType="typeof(string)"
+                                  Width="4rem"
+                                  EnableSorting="false">
+                    <Template Context="context">
+                        <RadzenSwitch @bind-Value="@context.IsEnabled"
+                                      Change="() => EnabledFlagChange(context)"
+                                      class="grid-switch"
+                                      Disabled="@Disabled"/>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AdditionalServicesConfigurationMatchPredicate"
+                                  Property="@nameof(AdditionalServicesConfigurationMatchPredicate.WellClassification)"
+                                  Title="Well Classification"
+                                  PropertyType="typeof(string)">
+                    <Template Context="context">
+                        @((int)context.WellClassification == 0 ? context.WellClassificationState.Humanize() : context.WellClassification.Humanize())
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AdditionalServicesConfigurationMatchPredicate"
+                                  Property="@nameof(AdditionalServicesConfigurationMatchPredicate.SourceIdentifier)"
+                                  Title="Source Identifier"
+                                  PropertyType="typeof(string)">
+                    <Template Context="context">
+                        @(string.IsNullOrEmpty(context.SourceIdentifier) ? context.SourceIdentifierValueState.Humanize() : context.SourceIdentifier.Humanize())
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AdditionalServicesConfigurationMatchPredicate"
+                                  Property="@nameof(AdditionalServicesConfigurationMatchPredicate.SubstanceName)"
+                                  Title="Substance"
+                                  PropertyType="typeof(string)">
+                    <Template Context="context">
+                        @(string.IsNullOrEmpty(context.SubstanceName) ? context.SubstanceValueState.Humanize() : context.SubstanceName)
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AdditionalServicesConfigurationMatchPredicate"
+                                  Property="@nameof(AdditionalServicesConfigurationMatchPredicate.ReferenceId)"
+                                  Title="Reference ID"
+                                  PropertyType="typeof(string)"
+                                  Width="6rem">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AdditionalServicesConfigurationMatchPredicate"
+                                  Property="@nameof(AdditionalServicesConfigurationMatchPredicate)"
+                                  Title="Actions"
+                                  Width="8rem"
+                                  EnableSorting="false">
+                    <Template Context="matchPredicate">
+                        <RadzenButton Click="() => OpenEditDialog(matchPredicate, false)"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Small"
+                                      Text="Edit"
+                                      Disabled="@Disabled"/>
+                        <RadzenButton Click="() => DeleteButton_Click(matchPredicate)"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small"
+                                      Text="Delete"/>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

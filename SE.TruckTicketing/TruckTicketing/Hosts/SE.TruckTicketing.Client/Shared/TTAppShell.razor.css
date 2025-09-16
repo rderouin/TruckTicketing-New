@@ -1,0 +1,66 @@
+.main-page {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.main-content {
+    display: flex;
+    overflow: auto;
+    position: relative;
+    align-items: center;
+    padding-left: 4.25rem;
+    flex-direction: column;
+    height: calc(100% - 6rem);
+    background-color: var(--color-base-0);
+}
+
+.main-content.no-menu {
+    padding-left: 0;
+}
+
+.main-content.no-menu ::deep .sticky-footer {
+    left: 0;
+}
+
+::deep .sticky-footer-page {
+    padding: 1.5rem 1.5rem 7.5rem 1.5rem;
+}
+
+::deep .thirds {
+    width: 100%;
+    max-width: 33.3%;
+    padding-right: 1rem;
+    margin-bottom: 1rem;
+}
+
+::deep .thirds:nth-child(3n + 3) {
+    padding-right: 0;
+}
+
+::deep .title {
+    font-size: 2rem;
+    line-height: 1.1875;
+    margin-bottom: 2rem;
+    font-weight: var(--typography-weight-bold);
+}
+
+::deep .sticky-footer {
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    left: 4.25rem;
+    display: flex;
+    height: 6.5rem;
+    position: fixed;
+    padding: 0 2rem;
+    align-items: center;
+    justify-content: flex-end;
+    box-shadow: var(--shadow-3t);
+    background: var(--color-base-0);
+}
+
+::deep .small-text {
+    line-height: 1.428;
+    font-size: 0.875rem;
+}

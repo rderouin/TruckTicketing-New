@@ -1,0 +1,33 @@
+{
+  "Blobs": [
+    {
+      "BlobPath": "be855f88-4dd9-4f92-86ad-f0afdd6bf3a1/",
+      "ContainerName": "attachments",
+      "ContentType": "application/pdf",
+      "FileName": "test1.pdf"
+    }
+  ],
+  "CorrelationId": "{BF6262ED-9865-40E9-8E46-8C8875B971E7}",
+  "Identifiers": "",
+  "MessageDate": "2022-01-30T14:18:30+00:00",
+  "MessageType": "TaxGroup",
+  "Operation": "Create",
+  "Payload": {
+    "TaxCodes": [
+      {
+        "TaxCode": "GST",
+        "TaxName": "GST",
+        "CurrencyCode": "CAD",
+        "ExemptTax": false,
+        "UseTax": false,
+        "TaxValue": 5
+      }
+    ],
+    "TaxGroup": "BC_ALL",
+    "TaxGroupName": "BC ALL",
+    "DataAreaId": "MAEC",
+    "id": "{389EA7FD-D362-4114-8814-F6AD4E11B427}"
+  },
+  "Source": "D365FO",
+  "SourceId": "{389EA7FD-D362-4114-8814-F6AD4E11B427}"
+}

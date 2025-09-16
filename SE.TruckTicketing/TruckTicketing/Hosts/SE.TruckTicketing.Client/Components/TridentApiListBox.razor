@@ -1,0 +1,47 @@
+﻿@typeparam TModel
+@typeparam TValue    
+
+@inherits BaseTruckTicketingComponent
+@if (Template is null)
+{
+    <RadzenListBox @ref="ListBox"
+                   id="@Id"
+                   Name="@Name"
+                   AllowClear="@AllowClear"
+                   Disabled="@(Disabled || IsLoading)"
+                   Placeholder="@Placeholder"
+                   FilterCaseSensitivity="@FilterCaseSensitivity"
+                   AllowFiltering="true"
+                   Multiple="true"
+                   Count="@(Results?.Info?.TotalRecords ?? 0)"
+                   Data="@Results?.Results"
+                   TextProperty="@TextProperty"
+                   ValueProperty="@ValueProperty"
+                   Change="@(args => Change(args))"
+                   @bind-Value="@Value"
+                   class="@Class"
+                   Style="@Style"/>
+}
+else
+{
+    <RadzenListBox @ref="ListBox"
+                   id="@Id"
+                   Name="@Name"
+                   AllowClear="@AllowClear"
+                   Disabled="@(Disabled || IsLoading)"
+                   Placeholder="@Placeholder"
+                   AllowFiltering="true"
+                   FilterCaseSensitivity="@FilterCaseSensitivity"
+                   Multiple="true"
+                   Count="@(Results?.Info?.TotalRecords ?? 0)"
+                   Data="@Results?.Results"
+                   TextProperty="@TextProperty"
+                   ValueProperty="@ValueProperty"
+                   Change="@(args => Change(args))"
+                   @bind-Value="@Value"
+               class="@Class" Style="@Style">
+        <Template Context="context">
+            @Template((TModel)context)
+        </Template>
+    </RadzenListBox>
+}

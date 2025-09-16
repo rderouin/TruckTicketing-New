@@ -1,0 +1,76 @@
+﻿@using SE.TruckTicketing.Contracts.Models.InvoiceConfigurations
+@using SE.Shared.Common.Lookups
+@inherits BaseTruckTicketingComponent
+
+<div class="card mt-4">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-6">
+                <div class="row">
+                    <h4 class="fw-bold">Invoice Preview</h4>
+                </div>
+                <div class="row">
+                    <p>View what invoice(s) you will generate based on your selection(s)</p>
+                </div>
+            </div>
+            <div class="col-6 d-flex gap-2 align-items-center justify-content-end">
+                <RadzenLabel Text="Global View"
+                             Component="ViewPermutationsForCustomer"
+                             class="pt-lg-2" />
+                <RadzenSwitch id="ViewPermutationsForCustomer"
+                              Change="TriggerViewForCustomer"
+                              Disabled="@GlobalViewDisabled"
+                              @bind-Value="isGlobalView"/>
+                <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                              Text="Validate Setup"
+                              Click="ValidateBillingConfiguration"
+                              Disabled="@_disableValidateSetUp" />
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <PagableGridView @ref="_grid"
+                         TModel="InvoiceConfigurationPermutations"
+                         Results="@_invoiceConfigurationPermutations"
+                         EnablePaging="true"
+                         EnableSorting="true"
+                         EnableFilters="false"
+                         EnableSearch="false"
+                         OnDataLoad="@LoadData"
+                         IsLoading="@_isLoading"
+                         GridPageSize="10">
+            <Columns>
+                <ColumnDefinition TItem="InvoiceConfigurationPermutations"
+                                  Property="@nameof(InvoiceConfigurationPermutations.Name)"
+                                  Title="Name"
+                                  PropertyType="typeof(string)"
+                                  HideColumn="!isGlobalView" />
+                <ColumnDefinition TItem="InvoiceConfigurationPermutations"
+                                  Property="@nameof(InvoiceConfigurationPermutations.Number)"
+                                  Title="Invoice Number"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="InvoiceConfigurationPermutations"
+                                  Property="@nameof(InvoiceConfigurationPermutations.SourceLocation)"
+                                  Title="Source Location"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="InvoiceConfigurationPermutations"
+                                  Property="@nameof(InvoiceConfigurationPermutations.ServiceType)"
+                                  Title="Service Type"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="InvoiceConfigurationPermutations"
+                                  Property="@nameof(InvoiceConfigurationPermutations.WellClassification)"
+                                  Title="Well Classification"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="InvoiceConfigurationPermutations"
+                                  Property="@nameof(InvoiceConfigurationPermutations.Substance)"
+                                  Title="Substance"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="InvoiceConfigurationPermutations"
+                                  Property="@nameof(InvoiceConfigurationPermutations.Facility)"
+                                  Title="Facility"
+                                  PropertyType="typeof(string)"/>
+            </Columns>
+        </PagableGridView>
+
+    </div>
+</div>

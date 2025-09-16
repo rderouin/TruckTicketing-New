@@ -1,0 +1,39 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Billing Customer"
+                             Component="BillingCustomerDropDown"/>
+                <AccountsDropDown id="BillingCustomerDropDown"
+                                  TValue="Guid"
+                                  AccountType="Customer"
+                                  Placeholder="Select customer..."
+                                  @bind-Value="@SelctedCustomer.Id"
+                                  TextProperty="@nameof(Account.Name)"
+                                  ValueProperty="@nameof(Account.Id)"
+                                  PageSize="10"
+                                  OnItemSelect="BillingCustomerSelection"/>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4 mb-3">
+    <div class="col d-flex">
+        <RadzenButton ButtonStyle="ButtonStyle.Light"
+                      Click="CreateNewCustomer"
+                      Text="Create New Customer"/>
+    </div>
+    <div class="col d-flex justify-content-end">
+        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                      Click="HandleSubmit"
+                      Text="Save"/>
+
+        <RadzenButton ButtonStyle="ButtonStyle.Light"
+                      Text="Cancel"
+                      class="ml-2"
+                      Click="HandleCancel"/>
+    </div>
+</div>

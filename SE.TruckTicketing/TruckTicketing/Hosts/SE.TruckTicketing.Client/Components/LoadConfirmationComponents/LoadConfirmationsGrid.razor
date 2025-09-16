@@ -1,0 +1,298 @@
+﻿@using Humanizer
+@using SE.TruckTicketing.Client.Components.SalesManagement
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.LoadConfirmations
+@inherits BaseTruckTicketingComponent
+
+<style>
+    .lc-scroll{
+        overflow: auto;
+        position: absolute;
+        max-width: 99.4vw;
+        top:40px;
+        bottom:50px;
+    }
+
+    td:has(.redhighlight) {
+        background-color: #F88 !important;
+    }
+
+    .rz-frozen-cell:has(.redhighlight) {
+        background-color: #F88 !important;
+        border-right-color: #F88 !important;
+        border-right: 0px;
+    }
+</style>
+
+<div class="grid-switch-container"
+     style="max-height:100%; max-width:100%; align-content:center;">
+<div class="d-flex justify-content-end gap-1">
+    <RadzenButton Icon="save_alt"
+                  title="Export to CSV"
+                  ButtonStyle="ButtonStyle.Light"
+                  Click="@Export"
+                  Style="position:absolute; top:2px; right:29px;"/>
+</div>
+<PagableGridView TModel="LoadConfirmation"
+                 Results="@_results"
+                 OnDataLoad="@LoadData"
+                 GridPageSize="10"
+                 EnableSorting="true"
+                 EnablePaging="true"
+                 IsLoading="@_isLoading"
+                 EnableSearch="false"
+                 EnableFilters="false"
+                 EnableMultiLineSelect="@MultiSelect"
+                 SelectionMode="MultiSelect ? DataGridSelectionMode.Multiple : DataGridSelectionMode.Single"
+                 @ref="_grid"
+                 EnableRowExpansion="true"
+                 ChildStateChange="@SelectionChanged"
+                 class="mb-2 lc-scroll">
+<Template Context="context">
+    <SalesManagementGrid @ref="SelectedSalesManagementGrid"
+                         BeforeDataLoad="criteria => BeforeSalesLinesLoad(criteria, context)"
+                         ChildStateChange="ChildStateChanged"/>
+</Template>
+<Columns>
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.Number)"
+                  Title="Number"
+                  CanToggleVisibility="false">
+    <Template Context="data">
+        <span class="@ApplyHighlight(data)">
+            <a href="#"
+               @onclick="@(() => OpenLoadConfirmationDialog(data.Id))"
+               @onclick:preventDefault="true"
+               @onclick:stopPropagation="true"
+               class="text-decoration-none rz-link">
+                @data.Number
+            </a>
+            @if (IsPendingAsyncAction(data.Key))
+            {
+                <div class="spinner-border spinner-border-sm text-secondary ml-1"
+                     role="status">
+                    <span class="visually-hidden">Processing...</span>
+                </div>
+            }
+        </span>
+    </Template>
+</ColumnDefinition>
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.Status)"
+                  Title="LC Status"
+                  PropertyType="typeof(string)">
+    <Template Context="data">
+        <div class="d-flex align-items-center gap-1 @ApplyHighlight(data)">
+            <span>@(data.InvoiceStatus is InvoiceStatus.AgingUnSent && data.Status is LoadConfirmationStatus.Open ? "Unsent" : data.Status.Humanize())</span>
+            @if (IsLcReadyToSend(data))
+            {
+                <RadzenIcon Icon="schedule_send"
+                            IconStyle="IconStyle.Warning"
+                            MouseEnter="@(args => ShowTooltip(args))"/>
+            }
+        </div>
+    </Template>
+</ColumnDefinition>
+
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.InvoiceStatus)"
+                  Title="Invoice Status"
+                  PropertyType="typeof(string)">
+    <Template Context="data">
+        <span class="@ApplyHighlight(data)"
+              title="@data.InvoiceStatus.Humanize()">
+            @data.InvoiceStatus.Humanize()
+        </span>
+    </Template>
+</ColumnDefinition>
+
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.InvoiceNumber)"
+                  Title="Invoice Number"
+                  PropertyType="typeof(string)">
+    <Template Context="data">
+        @if (data.IsReversal || data.IsReversed)
+        {
+            <span class="@ApplyHighlight(data)"
+                  style="color: red">
+                @data.InvoiceNumber (R)
+            </span>
+        }
+        else
+        {
+            <span class="@ApplyHighlight(data)">@data.InvoiceNumber</span>
+        }
+    </Template>
+</ColumnDefinition>
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.GlInvoiceNumber)"
+                  Title="GL Invoice Number"
+                  PropertyType="typeof(string)">
+    <Template Context="data">
+        <span class="@ApplyHighlight(data)">@data.GlInvoiceNumber</span>
+    </Template>
+</ColumnDefinition>
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.BillingCustomerName)"
+                  Title="Customer"
+                  PropertyType="typeof(string)">
+    <Template Context="data">
+        <span class="@ApplyHighlight(data)">
+            <a href="#"
+               @onclick="@(() => OpenCustomerDialog(data.BillingCustomerId))"
+               @onclick:preventDefault="true"
+               @onclick:stopPropagation="true"
+               class="text-decoration-none rz-link">
+                @data.BillingCustomerName
+            </a>
+        </span>
+    </Template>
+</ColumnDefinition>
+
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.BillingConfigurationName)"
+                  Title="Billing Config"
+                  PropertyType="typeof(string)">
+    <Template Context="data">
+        @if (data.SalesLineCount == 0 && data.Status != LoadConfirmationStatus.Void)
+        {
+            <span class="redhighlight"/>
+        }
+        <a href="#"
+           onclick="@(() => OpenBillingDialog(data))"
+           @onclick:stopPropagation="true"
+           @onclick:preventDefault="true"
+           class="text-decoration-none rz-link @ApplyHighlight(data)">
+            @data.BillingConfigurationName
+        </a>
+    </Template>
+</ColumnDefinition>
+
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.GeneratorNames)"
+                  Title="Generators"
+                  PropertyType="typeof(string)">
+    <Template Context="data">
+        <span class="@ApplyHighlight(data)"
+              title="@data.GeneratorNames">
+            @data.GeneratorNames
+        </span>
+    </Template>
+</ColumnDefinition>
+
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.SignatoryNames)"
+                  Title="Signatories"
+                  PropertyType="typeof(string)">
+    <Template Context="data">
+        <span class="@ApplyHighlight(data)"
+              title="@data.SignatoryNames">
+            @data.SignatoryNames
+        </span>
+    </Template>
+</ColumnDefinition>
+
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.SignatoryEmails)"
+                  Title="Signatory Emails"
+                  PropertyType="typeof(string)">
+    <Template Context="data">
+        <span class="@ApplyHighlight(data)"
+              title="@RetrieveLCEmails(data)">
+            @RetrieveLCEmails(data)
+        </span>
+    </Template>
+</ColumnDefinition>
+
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.Frequency)"
+                  Title="Frequency"
+                  PropertyType="typeof(string)">
+    <Template Context="data">
+        <span class="@ApplyHighlight(data)"
+              title="@data.Frequency">
+            @data.Frequency
+        </span>
+    </Template>
+</ColumnDefinition>
+
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.StartDate)"
+                  Title="Start Date"
+                  PropertyType="typeof(DateTimeOffset)">
+    <Template Context="data">
+        <span class="@ApplyHighlight(data)">@data.StartDate.Date.ToString("MM/dd/yyyy")</span>
+    </Template>
+</ColumnDefinition>
+
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.EndDate)"
+                  Title="End Date"
+                  PropertyType="typeof(DateTimeOffset)">
+    <Template Context="data">
+        <span class="@ApplyHighlight(data)">@data.EndDate?.Date.ToString("MM/dd/yyyy")</span>
+    </Template>
+</ColumnDefinition>
+
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.LastApprovalEmailSentOn)"
+                  Title="Last Sent"
+                  PropertyType="typeof(DateTimeOffset)">
+    <Template Context="data">
+        @if (WasEverSent(data.LastApprovalEmailSentOn))
+        {
+            <span class="@ApplyHighlight(data)">@data.LastApprovalEmailSentOn.Date.ToString("MM/dd/yyyy")</span>
+        }
+        else
+        {
+            <span class="@ApplyHighlight(data)"/>
+        }
+    </Template>
+</ColumnDefinition>
+
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.SentCount)"
+                  Title="Send#"
+                  PropertyType="typeof(int)"
+                  Width="50px">
+    <Template Context="data">
+        <span class="@ApplyHighlight(data)"
+              title="@data.SentCount">
+            @data.SentCount
+        </span>
+    </Template>
+</ColumnDefinition>
+
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.TicketDateRange)"
+                  Title="Ticket Range"
+                  PropertyType="typeof(DateTimeOffset)">
+    <Template Context="data">
+        @if (data.TicketDateRange != null)
+        {
+            <span class="@ApplyHighlight(data)">@data.TicketDateRange</span>
+        }
+        else
+        {
+            <span class="@ApplyHighlight(data)"/>
+        }
+    </Template>
+</ColumnDefinition>
+
+<ColumnDefinition TItem="LoadConfirmation"
+                  Property="@nameof(LoadConfirmation.Id)"
+                  Title="Actions"
+                  EnableSorting="false">
+    <Template Context="data">
+        <RadzenButton Text="Preview"
+                      Disabled="@(IsPreviewDisabled(data))"
+                      Click="@(async () => await PreviewLoadConfirmation(data))"
+                      Size="ButtonSize.Small"
+                      ButtonStyle="ButtonStyle.Secondary"
+                      class="@ApplyHighlight(data)">
+        </RadzenButton>
+    </Template>
+</ColumnDefinition>
+</Columns>
+</PagableGridView>
+</div>

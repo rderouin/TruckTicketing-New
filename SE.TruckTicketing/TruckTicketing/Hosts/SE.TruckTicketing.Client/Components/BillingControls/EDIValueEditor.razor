@@ -1,0 +1,39 @@
+﻿@inherits BaseRazorComponent
+
+<RadzenTemplateForm TItem="EdiFieldDefinitionValue"
+                    Submit="@(() => { })"
+                    InvalidSubmit="@(() => { })"
+                    Data="@_model"
+                    @ref="_form">
+    <div class="row">
+        @foreach (var item in _ediFieldDefinitionValues)
+        {
+            <div class="col-3">
+                <RadzenLabel Text="@item.FieldDefinition.EDIFieldName"
+                             class="@(item.FieldDefinition.IsRequired ? "required m-0" : "m-0")"/>
+                <div class="text-secondary text-opacity-50 m-0 p-0 d-flex align-items-center"
+                     style="font-size: 0.75rem;">
+                    <RadzenIcon Icon="label"/> @item.Value.ReferenceId
+                </div>
+                <RadzenTextBox class="w-100 mb-1"
+                               Name="@item.FieldDefinition.EDIFieldName.Replace(" ", "")"
+                               Change="@(args => HandleEdiValueChange(args, item.FieldDefinition))"
+                               @bind-Value="@item.Value.EDIFieldValueContent"
+                               Disabled="@IsDisabled"/>
+
+                @if (!IsDisabled && item.FieldDefinition.IsRequired)
+                {
+                    <RadzenRequiredValidator Component="@item.FieldDefinition.EDIFieldName.Replace(" ", "")"
+                                             Text="Required"/>
+                }
+
+                @if (!IsDisabled && item.FieldDefinition.ValidationRequired)
+                {
+                    <RadzenRegexValidator Component="@item.FieldDefinition.EDIFieldName.Replace(" ", "")"
+                                          Text="@item.FieldDefinition.ValidationErrorMessage"
+                                          Pattern="@item.FieldDefinition.ValidationPattern"/>
+                }
+            </div>
+        }
+    </div>
+</RadzenTemplateForm>

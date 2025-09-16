@@ -1,0 +1,11 @@
+﻿@page "/email-templates/new"
+@page "/email-templates/{id:guid}"
+@inherits BaseTruckTicketingComponent
+
+<PageLoadingContainer IsLoading="@_isLoading">
+    <LoadedView>
+        <EmailTemplateDetails ViewModel="@_viewModel"
+                              OnCancel="@HandleCancel"
+                              OnSubmit="@HandleSubmit"/>
+    </LoadedView>
+</PageLoadingContainer>

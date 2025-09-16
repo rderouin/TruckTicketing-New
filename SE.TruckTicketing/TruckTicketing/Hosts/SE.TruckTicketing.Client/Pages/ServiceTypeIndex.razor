@@ -1,0 +1,99 @@
+@page "/service-type-view"
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Security;
+@inherits BaseTruckTicketingComponent
+
+<div class="">
+    <div class="bg-white p-4">
+        <div class="d-flex align-items-center justify-content-between">
+            <h3>Manage Service Type</h3>
+            <div>
+                <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                              Text="Add Service Type"
+                              Click="() => OpenServiceTypeDialog()"
+                              Disabled="@(!HasWritePermission(Permissions.Resources.ServiceType))"
+                              Icon="add_outline">
+                </RadzenButton>
+            </div>
+        </div>
+    </div>
+</div>
+
+<GridFiltersContainer Expandable="@false"
+                      @ref="_gridFilterContainer"
+                      OnFilterChange="@(async criteria => await _grid.SetExternalSearchCriteriaModel(criteria))">
+    <div class="d-flex flex-grow-1 gap-3">
+        <KeywordFilter Label="Search"
+                       Placeholder="Search by service type name, description, released products, etc..."/>
+    </div>
+</GridFiltersContainer>
+
+<div class="p-4 grid-switch-container">
+    <PagableGridView @ref="_grid"
+                     TModel="ServiceType"
+                     Results="@_results"
+                     EnablePaging="true"
+                     EnableSorting="false"
+                     EnableSearch="false"
+                     EnableFilters="false"
+                     OnDataLoad="LoadData"
+                     IsLoading="@_isLoading">
+        <Columns>
+            <ColumnDefinition TItem="ServiceType"
+                              Property="@nameof(ServiceType.IsActive)"
+                              Title="Active"
+                              Width="55px">
+                <Template Context="data">
+                    <RadzenSwitch @bind-Value="@data.IsActive"
+                                  class="grid-switch"
+                                  Change="@(isActive => OnChange(data.Id, isActive))"
+                                  Disabled="_updatingId == data.Id"/>
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="ServiceType"
+                              Property="@nameof(ServiceType.LegalEntityCode)"
+                              Title="Legal Entity"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="ServiceType"
+                              Property="@nameof(ServiceType.CountryCode)"
+                              Title="Country"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="ServiceType"
+                              Property="@nameof(ServiceType.Name)"
+                              Title="Service Type"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="ServiceType"
+                              Property="@nameof(ServiceType.Description)"
+                              Title="Description"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="ServiceType"
+                              Property="@nameof(ServiceType.TotalItemName)"
+                              Title="Total(T)"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="ServiceType"
+                              Property="@nameof(ServiceType.OilItemName)"
+                              Title="Oil(T)"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="ServiceType"
+                              Property="@nameof(ServiceType.WaterItemName)"
+                              Title="Water(T)"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="ServiceType"
+                              Property="@nameof(ServiceType.SolidItemName)"
+                              Title="Solid(T)"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="ServiceType"
+                              Property="@nameof(ServiceType.Id)"
+                              Title="Action"
+                              EnableSorting="false"
+                              Width="55px">
+                <Template Context="data">
+                    <RadzenButton Click="() => OpenServiceTypeDialog(data.Id)"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Text="Edit"/>
+                </Template>
+            </ColumnDefinition>
+        </Columns>
+    </PagableGridView>
+</div>

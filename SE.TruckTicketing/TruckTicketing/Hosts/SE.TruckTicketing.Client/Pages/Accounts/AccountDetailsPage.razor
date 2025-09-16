@@ -1,0 +1,315 @@
+﻿@page "/account/edit/{Id}"
+@using WatchListStatus = SE.Shared.Common.Lookups.WatchListStatus
+@using CreditStatus = SE.Shared.Common.Lookups.CreditStatus
+@using SE.Shared.Common.Extensions
+@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Client.Components.Accounts
+@using SE.TruckTicketing.Client.Components.Accounts.Edit
+@using SE.TruckTicketing.Client.Components.BillingControls
+@using SE.TruckTicketing.Client.Pages.InvoiceConfig
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Security
+@using Humanizer
+@inherits BaseTruckTicketingComponent
+
+<PageLoadingContainer IsLoading="_isLoading">
+<LoadedView>
+<EditForm EditContext="@_editContext"
+          OnValidSubmit="OnHandleSubmit"
+          class="h-100">
+<div class="d-flex flex-column h-100">
+
+<div class="flex-grow-0 p-4">
+    <div class="d-flex align-items-end justify-content-between">
+        <div class="d-flex gap-3 flex-column">
+            <h3 class="title flex-grow-1 m-0">@_viewModel.Title</h3>
+            <div class="d-flex align-items-center gap-3">
+                <span class="m-0">
+                    <strong>Account Number: </strong>@_viewModel?.Account?.AccountNumber
+                </span>
+                @if (_viewModel?.Account?.CustomerNumber.HasText() ?? false)
+                {
+                    <span class="m-0">
+                        <strong>Customer Number: </strong>@_viewModel?.Account?.CustomerNumber
+                    </span>
+                }
+            </div>
+
+        </div>
+        <div class="d-flex align-items-start gap-4 flex-grow-0 align-self-end">
+            <div class="d-flex flex-grow-0">
+                @if (_viewModel.IsAccountTypeCustomer)
+                {
+                    <div class="d-flex gap-2 align-items-center flex-grow-0">
+                        <RadzenLabel Text="Watch List Status"
+                                     Component="WatchListStatusTextBox"
+                                     class="m-0"/>
+                        <div class="rz-textbox w-100">
+                            <WatchListStatus Status="@_viewModel.Account.WatchListStatus">
+                                @if (_viewModel.Account.WatchListStatus == WatchListStatus.Undefined)
+                                {
+                                    <strong>None</strong>
+                                }
+                                else
+                                {
+                                    <strong>@_viewModel.Account.WatchListStatus.Humanize()</strong>
+                                }
+                            </WatchListStatus>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 align-items-center flex-grow-0">
+                        <RadzenLabel Text="Credit Status"
+                                     Component="CreditStatusTextBox"
+                                     class="m-0"/>
+                        <div class="rz-textbox w-100">
+                            <CreditStatus Status="@_viewModel.Account.CreditStatus">
+                                <strong>@_viewModel.Account.CreditStatus.Humanize()</strong>
+                            </CreditStatus>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+    <br/>
+    <TridentValidationSummary Response="_response"
+                              TModel="Account"/>
+</div>
+
+<div class="flex-grow-1 p-4"
+     style="overflow-y: auto">
+    <RadzenTabs>
+        <Tabs>
+            <RadzenTabsItem Text="Account Info">
+                <section class="mb-5">
+                    <h4 class="fw-bold mb-3">General Info</h4>
+                    <div class="d-flex flex-wrap mb-3 gap-3">
+                        <div class="d-flex flex-column flex-grow-1">
+                            <RadzenLabel Text="Account Name"
+                                         Component="AccountNameTextBox"/>
+                            <RadzenTextBox id="AccountNameTextBox"
+                                           @bind-Value="@_viewModel.Account.Name"
+                                           class="w-100"
+                                           Disabled="@(DisableCustomerNameTextBox || !IsAuthorizedFor(Permissions.Resources.NonBillableAccountName, Permissions.Operations.Write))"/>
+                        </div>
+                        <div class="flex-grow-1 d-flex flex-column">
+                            <RadzenLabel Text="Account Type(s)"
+                                         class="required flex-grow-0"/>
+                            <RadzenCheckBoxList @bind-Value="@_viewModel.SelectedAccountTypes"
+                                                TextProperty="Display"
+                                                ValueProperty="Value"
+                                                TValue="string"
+                                                Class="small-text flex-grow-1 d-flex align-items-center"
+                                                Change="@OnAccountTypeChange"
+                                                Data="@_viewModel.AccountTypeListData"/>
+                        </div>
+                    </div>
+                </section>
+
+                <AccountAddressesGrid AccountAddresses="@_viewModel.Account.AccountAddresses"
+                                      LegalEntityCountryCode="@_viewModel.LegalEntityCountryCode"
+                                      DefaultAccountAddressChange="UpdateDefaultAccountAddress"
+                                      AccountAddressDeleted="UpdateAccountAddressDeleted"
+                                      AccountAddressAddedUpdated="AddEditAccountAddress">
+                </AccountAddressesGrid>
+
+                @if (!_viewModel.IsAccountTypeTruckingCompany)
+                {
+                    <section class="mb-4">
+                        <h4 class="fw-bold mb-3">Billing Info</h4>
+                        <div class="d-flex flex-wrap mb-3">
+                            <div class="d-flex flex-column flex-grow-1 thirds">
+                                <RadzenLabel Text="Billing Type"
+                                             Component="AccountBillingTypeDropDown"/>
+                                <RadzenDropDown id="AccountBillingTypeDropDown"
+                                                TValue="BillingType"
+                                                @bind-Value="@_viewModel.Account.BillingType"
+                                                TextProperty="Value"
+                                                ValueProperty="Key"
+                                                Placeholder="Select Billing Type..."
+                                                Multiple="false"
+                                                Data="@(DataDictionary.For<BillingType>())"
+                                                class="w-100"
+                                                Disabled="true"/>
+                            </div>
+                            <div class="d-flex flex-column flex-grow-1 thirds">
+                                <RadzenLabel Text="Customer Number"
+                                             Component="AccountCustomerNumberTextBox"/>
+                                <RadzenTextBox id="AccountCustomerNumberTextBox"
+                                               @bind-Value="@_viewModel.Account.CustomerNumber"
+                                               Disabled="true"
+                                               class="w-100"/>
+                            </div>
+                            @if (_viewModel.IsAccountBillable)
+                            {
+                                <div class="d-flex flex-column flex-grow-1 thirds">
+                                    <RadzenLabel Text="Credit Limit ($)"
+                                                 Component="AccountCreditLimitTextBox"/>
+                                    <RadzenNumeric id="AccountCreditLimitTextBox"
+                                                   TValue="double?"
+                                                   Value="@_viewModel.Account.CreditLimit"
+                                                   Disabled="true"
+                                                   class="w-100"/>
+                                </div>
+                            }
+                            <div class="d-flex flex-column flex-grow-1 thirds">
+                                <div class="d-flex align-items-center gap-3 justify-content-between">
+                                    <RadzenLabel Text="Billing Transfer Recipient"
+                                                 Component="AccountTransferRecipientTextBox"/>
+                                    @if (_viewModel.Account.BillingTransferRecipientId != null)
+                                    {
+                                        <RadzenLink Icon="visibility"
+                                                    Path="@BillingTransferRecipientPath"
+                                                    Style="margin-top: -0.4rem"
+                                                    Text="View Account"/>
+                                    }
+
+                                </div>
+                                <RadzenTextBox id="AccountTransferRecipientTextBox"
+                                               @bind-Value="@_viewModel.Account.BillingTransferRecipientName"
+                                               Disabled="true"
+                                               class="w-100"/>
+                            </div>
+                        </div>
+                    </section>
+                }
+
+                <AddEditAccountContactGrid Account="@_viewModel.Account"
+                                           IsEdit="true"
+                                           OnAddEditAccountContact="AddEditAccountContact">
+                </AddEditAccountContactGrid>
+
+
+                @if (_viewModel.IsAccountTypeCustomer)
+                {
+                    <section class="mb-5">
+                        <header class="d-flex mb-3">
+                            <h4 class="fw-bold flex-grow-1">Invoice Configuration</h4>
+                            <RadzenButton Click="@(args => AddInvoiceConfiguration())"
+                                          Class="flex-grow-0"
+                                          Text="Add Invoice Configuration"
+                                          Disabled="@(!HasWritePermission(Permissions.Resources.Account))"
+                                          ButtonStyle="ButtonStyle.Secondary"
+                                          Size="ButtonSize.Small"
+                                          Icon="add_outline"/>
+                        </header>
+                        <div class="grid-switch-container">
+                            <InvoiceConfigurationIndexPage DisplayAddButton="false"
+                                                           IsSaveButtonDisabled="@(!HasWritePermission(Permissions.Resources.Account))"
+                                                           BillingCustomerId="@_viewModel.Account.Id">
+                            </InvoiceConfigurationIndexPage>
+                        </div>
+                    </section>
+                }
+
+                <section class="mb-5">
+                    <h4 class="fw-bold mb-3">Other Info</h4>
+                    <div class="d-flex flex-wrap mb-3">
+                        <div class="d-flex flex-column flex-grow-1 thirds">
+                            <RadzenLabel Text="Enable New Trucking Company Tickets & Material Approval"
+                                         Component="EnableNewTTandMASwitch"/>
+                            <RadzenSwitch id="EnableNewTTandMASwitch"
+                                          Change="@(args => OnOtherInfoContentChange(args))"
+                                          @bind-Value="_viewModel.Account.EnableNewTruckingCompany"/>
+                        </div>
+                        @if (_viewModel.IsAccountTypeCustomer)
+                        {
+                            <div class="d-flex flex-column flex-grow-1 thirds">
+                                <RadzenLabel Text="Has Price Book"
+                                             Component="EnablePriceBookSwitch"/>
+                                <RadzenSwitch id="EnablePriceBookSwitch"
+                                              Change="@(args => OnOtherInfoContentChange(args))"
+                                              Disabled="@(!IsAuthorizedFor(Permissions.Resources.AccountOtherInfo, Permissions.Operations.Write))"
+                                              @bind-Value="_viewModel.Account.HasPriceBook"/>
+                            </div>
+                            <div class="d-flex flex-column flex-grow-1 thirds">
+                                <RadzenLabel Text="Enable New 3rd Party Analytical Material Approvals"
+                                             Component="EnableNewThirdPartyAnalyticalSwitch"/>
+                                <RadzenSwitch id="EnableNewThirdPartyAnalyticalSwitch"
+                                              Change="@(args => OnOtherInfoContentChange(args))"
+                                              Disabled="@(!IsAuthorizedFor(Permissions.Resources.AccountOtherInfo, Permissions.Operations.Write))"
+                                              @bind-Value="_viewModel.Account.EnableNewThirdPartyAnalytical"/>
+                            </div>
+                            <div class="d-flex flex-column flex-grow-1 thirds">
+                                <RadzenLabel Text="Attach Internal Document to Invoice/LC"
+                                             Component="InternalAttachmentSwitch"/>
+                                <RadzenSwitch id="InternalAttachmentSwitch"
+                                              Change="@(args => OnOtherInfoContentChange(args))"
+                                              Disabled="@(!IsAuthorizedFor(Permissions.Resources.AccountOtherInfo, Permissions.Operations.Write))"
+                                              @bind-Value="_viewModel.Account.IncludeInternalDocumentAttachmentInLC"/>
+                            </div>
+                            <div class="d-flex flex-column flex-grow-1 thirds">
+                                <RadzenLabel Text="Attach External Document to Invoice/LC"
+                                             Component="ExternalAttachmentSwitch"/>
+                                <RadzenSwitch id="ExternalAttachmentSwitch"
+                                              Change="@(args => OnOtherInfoContentChange(args))"
+                                              Disabled="@(!IsAuthorizedFor(Permissions.Resources.AccountOtherInfo, Permissions.Operations.Write))"
+                                              @bind-Value="_viewModel.Account.IncludeExternalDocumentAttachmentInLC"/>
+                            </div>
+                            <div class="d-flex flex-column flex-grow-1 thirds">
+                                <RadzenLabel Text="Enable Data Scavenger Integration"
+                                             Component="EnableDataScavengerIntegrationSwitch"/>
+                                <RadzenSwitch id="EnableDataScavengerIntegrationSwitch"
+                                              Change="@(args => OnOtherInfoContentChange(args))"
+                                              Disabled="@(!IsAuthorizedFor(Permissions.Resources.AccountOtherInfo, Permissions.Operations.Write))"
+                                              @bind-Value="@_viewModel.Account.EnableDataScavengerIntegrationFlag"/>
+                            </div>
+                            <div class="d-flex flex-column flex-grow-1 thirds">
+                                <RadzenLabel Text="Enable Petrotranz Integration"
+                                             Component="EnablePetrotranz IntegrationSwitch"/>
+                                <RadzenSwitch id="EnablePetrotranz IntegrationSwitch"
+                                              Change="@(args => OnOtherInfoContentChange(args))"
+                                              @bind-Value="@_viewModel.Account.EnablePetrotranzIntegrationFlag"/>
+                            </div>
+                        }
+                    </div>
+                </section>
+
+                <AccountAttachmentsGrid Model="@_viewModel.Account"></AccountAttachmentsGrid>
+
+                @if (_viewModel.Account.AccountTypes.Contains(AccountTypes.Customer.ToString()))
+                {
+                    <EDIFieldsDefinition Model="@_viewModel.Account"></EDIFieldsDefinition>
+                }
+            </RadzenTabsItem>
+            @if (_viewModel.IsAccountTypeCustomer)
+            {
+                <RadzenTabsItem Text="Account History">
+                    <TridentChangeDataGridWrapper Id="_viewModel.Account.Id"
+                                                  EntityType="Account"
+                                                  EntityName="Account"/>
+                </RadzenTabsItem>
+            }
+        </Tabs>
+    </RadzenTabs>
+</div>
+<div class="flex-grow-0 d-flex align-items-center justify-content-between p-4 footer-panel">
+    <div class="d-flex gap-4 flex-grow-0 align-items-end">
+        <div class="d-flex flex-column">
+            <RadzenLabel Text="Active"
+                         Component="IsActiveSwitch"/>
+            <RadzenSwitch id="IsActiveSwitch"
+                          @bind-Value="_viewModel.Account.IsAccountActive"/>
+        </div>
+    </div>
+    <div class="d-flex gap-2">
+        <RadzenButton Text="Close"
+                      Icon="close"
+                      class="rz-button rz-button-md btn-secondary text-decoration-none active"
+                      Click="CloseButton_Click"/>
+        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                      ButtonType="ButtonType.Submit"
+                      Text="@_viewModel.SubmitButtonText"
+                      Disabled="@(_viewModel.SubmitButtonDisabled || !HasWritePermission(Permissions.Resources.Account))"
+                      IsBusy="_isSaving"
+                      BusyText="@_viewModel.SubmitButtonBusyText"
+                      Icon="@_viewModel.SubmitButtonIcon"/>
+    </div>
+</div>
+</div>
+</EditForm>
+</LoadedView>
+</PageLoadingContainer>

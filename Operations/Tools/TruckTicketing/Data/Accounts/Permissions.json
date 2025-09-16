@@ -1,0 +1,963 @@
+[
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000000",
+    "Code": "Account",
+    "Display": "Account",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Account",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000000",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000000",
+        "Description": "view customer, generator, trucking and third party analytical accounts index and edit pages.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000001",
+        "Description": "read account data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000002",
+        "Description": "create and update accounts.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000002",
+    "Code": "Account.BillingConfig.Default",
+    "Display": "Account.BillingConfig.Default",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Account.BillingConfig.Default",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000002",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000004",
+        "Description": "create, update or select new default billing configurations for customers.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000003",
+    "Code": "Account.EdiFieldDefinition",
+    "Display": "Account.EdiFieldDefinition",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Account.EdiFieldDefinition",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000003",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000005",
+        "Description": "create, update or remove EDI field definitions for customers.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000001",
+    "Code": "Account.InvoiceConfig.Default",
+    "Display": "Account.InvoiceConfig.Default",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Account.InvoiceConfig.Default",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000001",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000003",
+        "Description": "create and update catch-all invoice configurations for customers.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000004",
+    "Code": "Account.OtherInfo",
+    "Display": "Account.OtherInfo",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Account.OtherInfo",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000004",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000006",
+        "Description": "update account specific settings for customers.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-00000000001c",
+    "Code": "AdditionalServicesConfiguration",
+    "Display": "AdditionalServicesConfiguration",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "AdditionalServicesConfiguration",
+    "id": "Permission|eee92727-3326-46cb-a403-00000000001c",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000035",
+        "Description": "view additional service configuration index and edit pages.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000036",
+        "Description": "read additional service configuration data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000037",
+        "Description": "Create and update additional service configurations.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-00000000001f",
+    "Code": "EmailTemplate",
+    "Display": "EmailTemplate",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "EmailTemplate",
+    "id": "Permission|eee92727-3326-46cb-a403-00000000001f",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000003e",
+        "Description": "view email template index and edit pages.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000003f",
+        "Description": "read email template data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000040",
+        "Description": "create and update email templates.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000016",
+    "Code": "Facility",
+    "Display": "Facility",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Facility",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000016",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000023",
+        "Description": "view facility index and edit pages.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000024",
+        "Description": "read facility data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000025",
+        "Description": "update facilties.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000022",
+    "Code": "FstDailyWorkReport",
+    "Display": "FstDailyWorkReport",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "FstDailyWorkReport",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000022",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000044",
+        "Description": "view and execute FST Daily Work Reports.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000012",
+    "Code": "Invoice",
+    "Display": "Invoice",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Invoice",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000012",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000001d",
+        "Description": "view invoice management page",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000001e",
+        "Description": "read invoice data",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000001f",
+        "Description": "",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000015",
+    "Code": "Invoice.CollectionNotes",
+    "Display": "Invoice.CollectionNotes",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Invoice.CollectionNotes",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000015",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000022",
+        "Description": "create collection notes and change collection owners.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000014",
+    "Code": "Invoice.PaidUnstelledTransition",
+    "Display": "Invoice.PaidUnstelledTransition",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Invoice.PaidUnstelledTransition",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000014",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000021",
+        "Description": "mark posted invoices as Paid & Unsettled.",
+        "Display": "Execute",
+        "Name": "Execute",
+        "Value": "x"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000013",
+    "Code": "Invoice.Reversal",
+    "Display": "Invoice.Reversal",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Invoice.Reversal",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000013",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000020",
+        "Description": "trigger the invoice reversal process for posted invoices.",
+        "Display": "Execute",
+        "Name": "Execute",
+        "Value": "x"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-00000000001d",
+    "Code": "InvoiceExchangeConfiguration",
+    "Display": "InvoiceExchangeConfiguration",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "InvoiceExchangeConfiguration",
+    "id": "Permission|eee92727-3326-46cb-a403-00000000001d",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000038",
+        "Description": "view invoice exchange configuration index and edit pages.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000039",
+        "Description": "read invoice exchange configuration data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000003a",
+        "Description": "create and update invoice exchange platform configurations as well as business stream, legal entity and customer overrides for platform configurations.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000023",
+    "Code": "LandfillDailyWorkReport",
+    "Display": "LandfillDailyWorkReport",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "LandfillDailyWorkReport",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000023",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000045",
+        "Description": "view and execute Landfill Daily Work Reports.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000010",
+    "Code": "LoadConfirmation",
+    "Display": "LoadConfirmation",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "LoadConfirmation",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000010",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000019",
+        "Description": "view load confirmation management page.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000001a",
+        "Description": "read load confirmation data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000001b",
+        "Description": "process load confirmations as well as management load confirmation attachments.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000011",
+    "Code": "LoadConfirmation.SalesLineRemoval",
+    "Display": "LoadConfirmation.SalesLineRemoval",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "LoadConfirmation.SalesLineRemoval",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000011",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000001c",
+        "Description": "remove sales lines from a load confirmation and corresponding invoice.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000021",
+    "Code": "LoadSummaryReport",
+    "Display": "LoadSummaryReport",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "LoadSummaryReport",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000021",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000043",
+        "Description": "view and execute Load Summary Reports.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000008",
+    "Code": "MaterialApproval",
+    "Display": "MaterialApproval",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "MaterialApproval",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000008",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000000c",
+        "Description": "view material approval index and edit pages.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000000d",
+        "Description": "read material approval data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000000e",
+        "Description": "create and update material approvals.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000024",
+    "Code": "ProducerReport",
+    "Display": "ProducerReport",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "ProducerReport",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000024",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000046",
+        "Description": "view and execute Producer Reports.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-00000000001b",
+    "Code": "Roles",
+    "Display": "Roles",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Roles",
+    "id": "Permission|eee92727-3326-46cb-a403-00000000001b",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000032",
+        "Description": "view role index and permission assignment pages.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000033",
+        "Description": "read role data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000034",
+        "Description": "create and update roles and permissions assignments.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-00000000000d",
+    "Code": "SalesLine",
+    "Display": "SalesLine",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "SalesLine",
+    "id": "Permission|eee92727-3326-46cb-a403-00000000000d",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000015",
+        "Description": "view sales line management page.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000016",
+        "Description": "read sales line data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000017",
+        "Description": "write sales line data.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-00000000000f",
+    "Code": "SalesLine.PriceRefresh",
+    "Display": "SalesLine.PriceRefresh",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "SalesLine.PriceRefresh",
+    "id": "Permission|eee92727-3326-46cb-a403-00000000000f",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000018",
+        "Description": "perform bulk price refreshes which reset pricing to standard pricing as defined by F/O trade agreements.",
+        "Display": "Execute",
+        "Name": "Execute",
+        "Value": "x"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-00000000000e",
+    "Code": "SalesLine.Pricing.Bulk",
+    "Display": "SalesLine.Pricing.Bulk",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "SalesLine.Pricing.Bulk",
+    "id": "Permission|eee92727-3326-46cb-a403-00000000000e",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000017",
+        "Description": "perform bulk price updates of sales lines.",
+        "Display": "Execute",
+        "Name": "Execute",
+        "Value": "x"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000017",
+    "Code": "ServiceType",
+    "Display": "ServiceType",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "ServiceType",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000017",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000026",
+        "Description": "view service type index and edit pages",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000027",
+        "Description": "read service type data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000028",
+        "Description": "create and update service types.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000005",
+    "Code": "SourceLocation",
+    "Display": "SourceLocation",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "SourceLocation",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000005",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000007",
+        "Description": "view source location index and edit pages.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000008",
+        "Description": "read source location data.",
+        "Display": "Read ",
+        "Name": "Read ",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000009",
+        "Description": "create, update and delete (unused) source locations.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "d15664e3-52fd-4008-b195-f453acdaf20d",
+    "Code": "SourceLocation.NameId",
+    "Display": "SourceLocation.NameId",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "SourceLocation.NameId",
+    "id": "Permission|d15664e3-52fd-4008-b195-f453acdaf20d",
+    "AllowedOperations": [
+      {
+        "Id": "b1f37f99-a382-4eeb-a01c-7b2206de33ca",
+        "Description": "update ownership info for source locations.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000006",
+    "Code": "SourceLocation.OwnershipInfo",
+    "Display": "SourceLocation.OwnershipInfo",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "SourceLocation.OwnershipInfo",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000006",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000000a",
+        "Description": "update ownership info for source locations.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000007",
+    "Code": "SourceLocation.OwnershipInfo.Bulk",
+    "Display": "SourceLocation.OwnershipInfo.Bulk",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "SourceLocation.OwnershipInfo.Bulk",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000007",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000000b",
+        "Description": "bulk re-assign source locations of common ownership to a new owner.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000019",
+    "Code": "SourceLocationType",
+    "Display": "SourceLocationType",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "SourceLocationType",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000019",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000002c",
+        "Description": "view source location type index page.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000002d",
+        "Description": "read source location type data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000002e",
+        "Description": "create and update source loaction types.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000018",
+    "Code": "SpartanProductParameter",
+    "Display": "SpartanProductParameter",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "SpartanProductParameter",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000018",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000029",
+        "Description": "view spartan product parameter index and edit pages.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000002a",
+        "Description": "read spartan product parameter data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000002b",
+        "Description": "create and update spartan product parameters.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-00000000001e",
+    "Code": "TradeAgreement",
+    "Display": "TradeAgreement",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "TradeAgreement",
+    "id": "Permission|eee92727-3326-46cb-a403-00000000001e",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000003b",
+        "Description": "view trade agreement upload index page.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000003c",
+        "Description": "read trade agreement upload log data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000003d",
+        "Description": "upload trade agreement files to sharepoint for processing in F/O.",
+        "Display": "Upload",
+        "Name": "Upload",
+        "Value": "u"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000009",
+    "Code": "TruckTicket",
+    "Display": "TruckTicket",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "TruckTicket",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000009",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000000f",
+        "Description": "view the main truck ticket management page.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000010",
+        "Description": "read truck ticket data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000011",
+        "Description": "create and update unrestricted aspects of truck tickets.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-00000000000c",
+    "Code": "TruckTicket.Attachment",
+    "Display": "TruckTicket.Attachment",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "TruckTicket.Attachment",
+    "id": "Permission|eee92727-3326-46cb-a403-00000000000c",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000014",
+        "Description": "upload and remove attachments to and from truck tickets.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-00000000000a",
+    "Code": "TruckTicket.Billing",
+    "Display": "TruckTicket.Billing",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "TruckTicket.Billing",
+    "id": "Permission|eee92727-3326-46cb-a403-00000000000a",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000012",
+        "Description": "change the selected billing configuration for truck tickets.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-00000000000b",
+    "Code": "TruckTicket.Sales.Pricing",
+    "Display": "TruckTicket.Sales.Pricing",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "TruckTicket.Sales.Pricing",
+    "id": "Permission|eee92727-3326-46cb-a403-00000000000b",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000013",
+        "Description": "update rates of released products of services rendered for truck tickets. ",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000025",
+    "Code": "TruckTicketTareWeight",
+    "Display": "TruckTicketTareWeight",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "TruckTicketTareWeight",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000025",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000047",
+        "Description": "view live scale ticket auto-fill tare weight index.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000048",
+        "Description": "read live scale ticket auto-fill tare weight data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000049",
+        "Description": "upload auto-fill tare weight records for live scale ticket entry.",
+        "Display": "Upload",
+        "Name": "Upload",
+        "Value": "u"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-00000000001a",
+    "Code": "UserProfile",
+    "Display": "UserProfile",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "UserProfile",
+    "id": "Permission|eee92727-3326-46cb-a403-00000000001a",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-00000000002f",
+        "Description": "view user profile index and role assignment pages.",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000030",
+        "Description": "read user profile data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000031",
+        "Description": "update user role assignments.",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "eee92727-3326-46cb-a403-000000000020",
+    "Code": "VolumeChange",
+    "Display": "VolumeChange",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "VolumeChange",
+    "id": "Permission|eee92727-3326-46cb-a403-000000000020",
+    "AllowedOperations": [
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000041",
+        "Description": "view live volume change report. ",
+        "Display": "View",
+        "Name": "View",
+        "Value": "v"
+      },
+      {
+        "Id": "eee92727-3326-46cb-a402-000000000042",
+        "Description": "read volume change data.",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      }
+    ]
+  }
+]

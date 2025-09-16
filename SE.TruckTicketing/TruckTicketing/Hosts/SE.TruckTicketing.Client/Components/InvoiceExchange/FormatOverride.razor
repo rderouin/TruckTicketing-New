@@ -1,0 +1,22 @@
+﻿@inherits BaseTruckTicketingComponent
+
+<div class="p-1">
+    <strong>Overrides</strong>
+</div>
+
+<div class="d-flex align-items-center p-1">
+    <RadzenLabel Text="Override expression"
+                 class="me-2">
+    </RadzenLabel>
+    <RadzenSwitch @bind-Value="Model.DestinationUsesValueExpression"
+                  Change="NotifyParent">
+    </RadzenSwitch>
+</div>
+
+<div class="p-1 expression-box @(Model.DestinationUsesValueExpression ? "expression-box-active" : "expression-box-disabled")">
+    <RadzenTextArea @bind-Value="Model.DestinationValueExpression"
+                    Rows="4"
+                    Disabled="@(!Model.DestinationUsesValueExpression)"
+                    class="w-100">
+    </RadzenTextArea>
+</div>

@@ -1,0 +1,119 @@
+﻿@inherits BaseTruckTicketingComponent
+
+<PageLoadingContainer IsLoading="@(EmailTemplateEvent is null)">
+    <LoadingView>
+        <div class="d-flex align-items-center gap-4">
+            <div class="spinner-border text-primary"
+                 role="status">
+            </div>
+            <span>
+                Loading email template...
+            </span>
+        </div>
+    </LoadingView>
+    <LoadedView>
+        <RadzenTemplateForm TItem="FormModel"
+                            Data="@Model"
+                            Submit="@HandleSubmit">
+
+            <div class="d-flex flex-column mb-3">
+                <RadzenLabel Text="To"
+                             Component="ToTextBox"/>
+
+                <RadzenTextBox id="ToTextBox"
+                               Name="ToTextBox"
+                               @bind-Value="@Model.ToRecipients"
+                               class="w-100"/>
+
+                <TridentEmailListValidator Component="ToTextBox"
+                                           class="mt-1 validation-message"/>
+            </div>
+
+            <div class="d-flex flex-column mb-3">
+                <RadzenLabel Text="CC"
+                             Component="CcTextBox"/>
+
+                <RadzenTextBox id="CcTextBox"
+                               Name="CcTextBox"
+                               @bind-Value="@Model.CcRecipients"
+                               class="w-100"/>
+
+                <TridentEmailListValidator Component="CcTextBox"
+                                           class="mt-1 validation-message"/>
+            </div>
+
+            <div class="d-flex flex-column mb-3">
+                <RadzenLabel Text="BCC"
+                             Component="BccTextBox"/>
+
+                <RadzenTextBox id="BccTextBox"
+                               Name="BccTextBox"
+                               @bind-Value="@Model.BccRecipients"
+                               class="w-100"/>
+
+                <TridentEmailListValidator Component="BccTextBox"
+                                           class="mt-1 validation-message"/>
+            </div>
+
+            <div class="d-flex flex-column mb-3">
+                <RadzenLabel Text="Custom Note"
+                             Component="NoteTextArea"/>
+
+                <RadzenTextArea id="NoteTextArea"
+                                Name="NoteTextArea"
+                                @bind-Value="@Model.CustomNote"
+                                class="w-100"/>
+            </div>
+
+            <div class="d-flex flex-column mb-4">
+                <RadzenLabel Text="Additional Attachments"/>
+
+                <TridentFileUploader Multiple="true"
+                                     UseDialog="false"
+                                     UploadOnFileSelect="true"
+                                     UploadUriProvider="@GetAttachmentUploadUri"
+                                     OnUploadComplete="@SetAttachments">
+                    <Template Context="uploader">
+                        <RadzenButton Text="Add Attachments"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Click="@uploader.OpenFileChooser"
+                                      class="mb-3"/>
+                    </Template>
+                </TridentFileUploader>
+            </div>
+
+            @if (ShowConfirmation)
+            {
+                <div class="alert alert-primary"
+                     role="alert">
+                    <h4 class="alert-heading">Empty Request Confirmation</h4>
+                    <p>You have not provided any additional information for this email request. Are you sure you want to proceed?</p>
+                    <hr>
+                    <div class="d-flex align-items-center justify-content-end gap-2">
+                        <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                                      Text="Return"
+                                      Click="@HandleConfirmationDenied"/>
+
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                      Text="Proceed"
+                                      Click="@SendRequest"/>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="d-flex align-items-center justify-content-end gap-2">
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                                  Text="Cancel"
+                                  Click="@OnCancel"/>
+
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                  ButtonType="ButtonType.Submit"
+                                  BusyText="Sending"
+                                  IsBusy="IsSending"
+                                  Text="Send"/>
+                </div>
+            }
+        </RadzenTemplateForm>
+    </LoadedView>
+</PageLoadingContainer>

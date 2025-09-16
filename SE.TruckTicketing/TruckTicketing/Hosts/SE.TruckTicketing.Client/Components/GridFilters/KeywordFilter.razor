@@ -1,0 +1,30 @@
+@using SE.Shared.Common.Extensions
+@inherits FilterComponent<string>
+
+<div class="flex-grow-1">
+    <div class="d-flex align-items-center justify-content-between">
+        <RadzenLabel Text="@Label"
+                     For="@Id"
+                     Class="filter-label"/>
+
+        @if (_keyword.HasText())
+        {
+            <a href="#"
+               @onclick="@ClearSearchTerm"
+               @onclick:preventDefault="true"
+               @onclick:stopPropagation="true"
+               class="text-decoration-none rz-link rz-label">
+                Clear
+            </a>
+        }
+    </div>
+    <div class="d-flex position-relative">
+        <RadzenIcon Icon="search"
+                    Class="text-dark position-absolute top-50 translate-middle-y ml-1"/>
+        <RadzenTextBox @bind-Value="@_keyword"
+                       Class="pl-4 flex-grow-1"
+                       Id="@Id"
+                       Placeholder="@Placeholder"
+                       Change="@HandleKeywordChange"/>
+    </div>
+</div>

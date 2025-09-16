@@ -1,0 +1,64 @@
+﻿@* @using SE.TruckTicketing.Contracts.Models.Operations *@
+@* @using SE.TruckTicketing.Contracts.Models.BillingConfigurations *@
+@* @inherits BaseRazorComponent *@
+@* <div class="card"> *@
+@*     <div class="card-header d-flex justify-content-between"> *@
+@*         <div class="d-flex align-items-center gap-3"> *@
+@*             <h4 class="fw-bold">Signatories</h4> *@
+@*         </div> *@
+@*         <div> *@
+@*             <RadzenButton Click="@(_ => AddSignatoryContact())" *@
+@*                           Text="Add Signatory" *@
+@*                           ButtonStyle="ButtonStyle.Secondary" *@
+@*                           Size="ButtonSize.Small" *@
+@*                           Icon="contact_mail"/> *@
+@*         </div> *@
+@*     </div> *@
+@*     <div class="card-body grid-switch-container"> *@
+@*         <PagableGridView TModel="Signatory" *@
+@*                          Results="@_signatoryContacts" *@
+@*                          class="bs-class" *@
+@*                          EnableSearch="false" *@
+@*                          EnablePaging="false" *@
+@*                          EnableSorting="true" *@
+@*                          EnableRowExpansion="false" *@
+@*                          EnableFilters="false" *@
+@*                          OnDataLoad="LoadSignatoryContacts"> *@
+@*             <Columns> *@
+@*                 <ColumnDefinition TItem="Signatory" *@
+@*                                   Property="@nameof(Signatory.ContactName)" *@
+@*                                   Title="Contact Name" *@
+@*                                   PropertyType="typeof(string)"> *@
+@*                 </ColumnDefinition> *@
+@*                 <ColumnDefinition TItem="Signatory" *@
+@*                                   Property="@nameof(Signatory.ContactEmail)" *@
+@*                                   Title="Email" *@
+@*                                   PropertyType="typeof(string)"> *@
+@*                 </ColumnDefinition> *@
+@*                 <ColumnDefinition TItem="Signatory" *@
+@*                                   Property="@nameof(Signatory.ContactPhoneNumber)" *@
+@*                                   Title="Phone Number" *@
+@*                                   PropertyType="typeof(string)"> *@
+@*                 </ColumnDefinition> *@
+@*                 <ColumnDefinition TItem="Signatory" *@
+@*                                   Property="@nameof(Signatory.ContactAddress)" *@
+@*                                   Title="Address" *@
+@*                                   PropertyType="typeof(string)"> *@
+@*                 </ColumnDefinition> *@
+@*                 <ColumnDefinition TItem="Signatory" *@
+@*                                   Property="@nameof(EmailDeliveryContact)" *@
+@*                                   Title="Actions" *@
+@*                                   Width="8rem" *@
+@*                                   EnableSorting="false"> *@
+@*                     <Template Context="data"> *@
+@*                         <RadzenButton Click="() => DeleteButton_Click(data)" *@
+@*                                       ButtonStyle="ButtonStyle.Danger" *@
+@*                                       Size="ButtonSize.Small"> *@
+@*                             Delete *@
+@*                         </RadzenButton> *@
+@*                     </Template> *@
+@*                 </ColumnDefinition> *@
+@*             </Columns> *@
+@*         </PagableGridView> *@
+@*     </div> *@
+@* </div> *@

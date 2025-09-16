@@ -1,0 +1,47 @@
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+<div>
+    @if (Model.IsDeliveredToErp ?? false)
+    {
+        <RadzenBadge Text="Sales Order Created In F&O"
+                     BadgeStyle="BadgeStyle.Success"
+                     Variant="Variant.Outlined"
+                     Class="mb-2"/>
+    }
+</div>
+<CascadingValue Value="@Model">
+    <RadzenTabs>
+        <Tabs>
+            <RadzenTabsItem Text="General">
+                <GeneralTab/>
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="Attachments">
+                <AttachmentsTab/>
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="Notes">
+                <div class="d-flex flex-column h-100">
+                    <div class="d-flex m-2 justify-content-end">
+                        <RadzenButton Click="@(OpenChangeCollectionsOwnerDialog)"
+                                      Text="Change Collection Owner"
+                                      Disabled="@(!IsAuthorizedFor(Permissions.Resources.InvoiceCollectionNotes, Permissions.Operations.Write))"
+                                      ButtonStyle="ButtonStyle.Secondary"/>
+                    </div>
+                </div>
+                <Notes @ref="_notes"
+                       ThreadId="@ThreadId"
+                       ShowNew="@(!IsPostedInvoice)"
+                       NewCommentIsReadOnly="@true"
+                       OnNoteUpdate="@HandleNoteUpdate"
+                       OnDataLoad="@OnDataLoad"/>
+            </RadzenTabsItem>
+            @if (Model.Id != Guid.Empty)
+            {
+                <RadzenTabsItem Text="History">
+                    <TridentChangeDataGridWrapper Id="Model.Id"
+                                                  EntityType="Invoice"
+                                                  EntityName="Invoice"/>
+                </RadzenTabsItem>
+            }
+        </Tabs>
+    </RadzenTabs>
+</CascadingValue>

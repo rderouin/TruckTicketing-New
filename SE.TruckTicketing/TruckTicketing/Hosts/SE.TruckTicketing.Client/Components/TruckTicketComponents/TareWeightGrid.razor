@@ -1,0 +1,72 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex gap-2 align-items-start">
+            <h3 class="fw-bold">Tare Weight</h3>
+        </div>
+        <div class="d-flex gap-2 align-items-end">
+            <RadzenButton Click=@(args => UploadTareWeight())
+                          Text="Upload Tare Weight Data"
+                          ButtonStyle="ButtonStyle.Primary"
+                          Size="ButtonSize.Medium" />
+            <RadzenButton Icon="save_alt"
+                          title="Export to CSV"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Click="@Export"
+                          Disabled="@(!_tareWeights.Results.Any())" />
+        </div>
+    </div>
+    <div class="card-body grid-switch-container">
+        <PagableGridView TModel="TruckTicketTareWeight"
+                         @ref="_grid"
+                         Results="@_tareWeights"
+                         EnableSearch="false"
+                         EnablePaging="true"
+                         EnableSorting="true"
+                         OnDataLoad="LoadTareWeight"
+                         EnableRowExpansion="false"
+                         EnableFilters="false"
+                         GridPageSize="10">
+            <Columns>
+                <ColumnDefinition TItem="TruckTicketTareWeight"
+                                  Property="@nameof(TruckTicketTareWeight.IsActivated)"
+                                  Title="Activated"
+                                  PropertyType="typeof(string)"
+                                  Width="5rem">
+                    <Template Context="context">
+                        <RadzenSwitch @bind-Value="@context.IsActivated"
+                                      class="grid-switch"
+                                      Change="() => ChangeActivateFlag(context)" />
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="TruckTicketTareWeight"
+                                  Property="@nameof(TruckTicketTareWeight.FacilityName)"
+                                  Title="Facility Name"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="TruckTicketTareWeight"
+                                  Property="@nameof(TruckTicketTareWeight.TruckingCompanyName)"
+                                  Title="Trucking Company Name"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="TruckTicketTareWeight"
+                                  Property="@nameof(TruckTicketTareWeight.TruckNumber)"
+                                  Title="Truck Number"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="TruckTicketTareWeight"
+                                  Property="@nameof(TruckTicketTareWeight.TrailerNumber)"
+                                  Title="Trailer Number"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="TruckTicketTareWeight"
+                                  Property="@nameof(TruckTicketTareWeight.TareWeight)"
+                                  Title="Tare Weight"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

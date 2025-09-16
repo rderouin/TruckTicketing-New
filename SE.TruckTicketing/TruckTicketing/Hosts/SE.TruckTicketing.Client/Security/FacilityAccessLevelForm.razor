@@ -1,0 +1,50 @@
+@using SE.TruckTicketing.Contracts.Models.Accounts
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<RadzenTemplateForm TItem="UserProfileFacilityAccess"
+                    Data="Model"
+                    Submit="OnSubmit">
+    <div class="row mb-3">
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Facility"
+                         Component="FacilityDropdown"
+                         class="required"/>
+            <FacilityDropDown Id="FacilityDropDown"
+                              TValue="Guid"
+                              Placeholder="Select Facility..."
+                              TextProperty="@nameof(Facility.Name)"
+                              ValueProperty="@nameof(Facility.Id)"
+                              PageSize="10"
+                              OnItemSelect="@HandleFacilityChange"
+                              class="w-100"/>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Access Level"
+                         Component="AccessLevelRadioList"
+                         class="required m-0"/>
+
+            <RadzenRadioButtonList TValue="string"
+                                   Class="w-100"
+                                   Id="FacilityAccessLevelList"
+                                   @bind-Value="@Model.Level"
+                                   Data="@(new[] { FacilityAccessLevels.InheritedRoles, FacilityAccessLevels.ReadOnly })"/>
+        </div>
+    </div>
+    <div class="d-flex align-items-end justify-content-between">
+        <div class="d-flex flex-column">
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Add Access Level"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          Click="OnCancel"/>
+        </div>
+    </div>
+</RadzenTemplateForm>

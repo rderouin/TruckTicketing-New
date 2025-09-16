@@ -1,0 +1,53 @@
+﻿@using SE.Shared.Common.Extensions
+@inherits BaseTruckTicketingComponent
+
+<EditForm Model="@Model"
+          OnValidSubmit="@SaveButton_Clicked">
+    <div class="card">
+        <div class="card-header d-flex align-content-center">
+            <h4 class="fw-bold">Attachment Details</h4>
+        </div>
+        <div class="card-body">
+            <div class="w-100">
+                <PageLoadingContainer IsLoading="IsLoading">
+                    <LoadedView>
+                        <div class="d-flex justify-content-center">
+
+                            <InputFile OnChange="InputFileChange"
+                                       class="form-control w-auto"
+                                       disabled="@_isUploading"/>
+
+                            @if (_isUploading)
+                            {
+                                <div class="spinner-border"
+                                     role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            }
+
+                        </div>
+
+                        @if (_uploadErrorMessage.HasText())
+                        {
+                            <div class="d-flex justify-content-center text-danger m-2">
+                                @_uploadErrorMessage
+                            </div>
+                        }
+                    </LoadedView>
+                </PageLoadingContainer>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end gap-2">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Save"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          Click="HandleCancel"/>
+        </div>
+    </div>
+</EditForm>

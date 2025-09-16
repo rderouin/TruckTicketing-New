@@ -1,0 +1,136 @@
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using Trident.Api.Search
+@using Trident.Contracts.Api.Client
+<RadzenTemplateForm TItem="EdiFieldDefinitionValue"
+                    Submit="@(() => {})"
+                    InvalidSubmit="@(() => {})"
+                    Data="@_model"
+                    @ref="_form">
+    <div class="row">
+        @foreach (var item in _ediFieldDefinitionValues)
+        {
+            <div class="col-3">
+                <RadzenLabel Text=@item.FieldDefinition.EDIFieldName
+                             class="@(item.FieldDefinition.IsRequired ? "required" : "")"/>
+
+                <RadzenTextBox class="w-100 mb-1"
+                               Name="@item.FieldDefinition.EDIFieldName.Replace(" ", "")"
+                               Change=@(args => HandleEdiValueChange(args, item.FieldDefinition))
+                               @bind-Value=@item.Value.EDIFieldValueContent/>
+
+                @if (!ReadOnly && item.FieldDefinition.IsRequired)
+                {
+                    <RadzenRequiredValidator Component="@item.FieldDefinition.EDIFieldName.Replace(" ", "")"
+                                             Text="Required"/>
+                }
+
+                @if (!ReadOnly && item.FieldDefinition.ValidationRequired)
+                {
+                    <RadzenRegexValidator Component="@item.FieldDefinition.EDIFieldName.Replace(" ", "")"
+                                          Text="@item.FieldDefinition.ValidationErrorMessage"
+                                          Pattern="@item.FieldDefinition.ValidationPattern"/>
+                }
+            </div>
+        }
+    </div>
+</RadzenTemplateForm>
+
+@code {
+
+    private RadzenTemplateForm<EdiFieldDefinitionValue> _form;
+
+    [Parameter]
+    public Guid? CustomerId { get; set; }
+
+    private Guid? _customerId;
+
+    [Parameter]
+    public bool ReadOnly { get; set; }
+
+    private EdiFieldDefinitionValue _model = new();
+
+    [Parameter]
+    public List<EDIFieldValue> Data { get; set; } = new();
+
+    private SearchResultsModel<EDIFieldDefinition, SearchCriteriaModel> _ediFieldDefinitions = new();
+
+    private class EdiFieldDefinitionValue
+    {
+        public EDIFieldDefinition FieldDefinition { get; set; }
+
+        public EDIFieldValue Value { get; set; }
+    }
+
+    private IEnumerable<EdiFieldDefinitionValue> _ediFieldDefinitionValues = Array.Empty<EdiFieldDefinitionValue>();
+
+    [Inject]
+    private IServiceProxyBase<EDIFieldDefinition, Guid> EdiFieldDefinitionService { get; set; }
+
+    [Parameter]
+    public EventCallback<List<EDIFieldValue>> OnChange { get; set; }
+
+    private async Task HandleEdiValueChange(string value, EDIFieldDefinition fieldDefinition)
+    {
+        var isValid = _form.EditContext.Validate();
+        var ediFieldValue = Data.FirstOrDefault(e => e.EDIFieldDefinitionId == fieldDefinition.Id);
+
+        if (ediFieldValue is null)
+        {
+            ediFieldValue = new()
+            {
+                EDIFieldDefinitionId = fieldDefinition.Id,
+                EDIFieldName = fieldDefinition.EDIFieldName,
+            };
+
+            Data.Add(ediFieldValue);
+        }
+
+        ediFieldValue.EDIFieldValueContent = value;
+
+        if (OnChange.HasDelegate)
+        {
+            await OnChange.InvokeAsync(_ediFieldDefinitionValues.Select(e => e.Value).ToList());
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_customerId != CustomerId)
+        {
+            _customerId = CustomerId;
+            await LoadEdiFieldDefinitions();
+        }
+
+        _ediFieldDefinitionValues = ReadOnly ? Data.Select(e => new EdiFieldDefinitionValue
+        {
+            FieldDefinition = new()
+            {
+                Id = e.EDIFieldDefinitionId,
+                EDIFieldName = e.EDIFieldName,
+            },
+            Value = e,
+        }).ToArray() : _ediFieldDefinitions.Results.Select(e => new EdiFieldDefinitionValue
+        {
+            FieldDefinition = e,
+            Value = EdiValueFor(e.Id),
+        }).ToArray();
+    }
+
+    private async Task LoadEdiFieldDefinitions()
+    {
+        var searchCriteria = new SearchCriteriaModel
+        {
+            PageSize = 100,
+        };
+
+        searchCriteria.AddFilter(nameof(EDIFieldDefinition.CustomerId), CustomerId);
+        _ediFieldDefinitions = CustomerId is null ? new()
+                                   : await EdiFieldDefinitionService.Search(searchCriteria) ?? _ediFieldDefinitions;
+    }
+
+    private EDIFieldValue EdiValueFor(Guid fieldDefinitionId)
+    {
+        return Data.FirstOrDefault(e => e.EDIFieldDefinitionId == fieldDefinitionId) ?? new();
+    }
+
+}

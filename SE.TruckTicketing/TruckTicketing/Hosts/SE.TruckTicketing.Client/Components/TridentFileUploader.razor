@@ -1,0 +1,28 @@
+@inherits BaseTruckTicketingComponent
+
+@if (Template is not null)
+{
+    @Template(this)
+}
+else
+{
+    <RadzenButton Text="@TriggerText"
+                  Disabled="@DisableUpload"
+                  ButtonStyle="ButtonStyle.Primary"
+                  Click="@OpenFileChooser"/>
+}
+
+<InputFile OnChange="@LoadFiles"
+           @ref="_inputFileControl"
+           multiple="@Multiple"
+           style="position: fixed; top: -100%"
+           accept="@Accept">
+</InputFile>
+
+@if (ShowUploaderForm)
+{
+    <TridentFileUploaderContexts ViewModel="@_viewModel"
+                                 OnCancel="@CloseDialog"
+                                 OnUpload="@HandleUpload"
+                                 OnUploadComplete="@HandleUploadComplete"/>
+}

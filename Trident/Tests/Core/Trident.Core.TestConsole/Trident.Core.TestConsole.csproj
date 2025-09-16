@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup> 
+    <ProjectReference Include="..\..\..\Core\Trident.EFCore\Trident.EFCore.csproj" />
+    <ProjectReference Include="..\..\..\Core\Trident.Azure\Trident.Azure.csproj" />
+    <ProjectReference Include="..\..\..\Core\Trident.Contracts\Trident.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Core\Trident.Serilog\Trident.Serilog.csproj" />
+    <ProjectReference Include="..\..\..\Core\Trident.Web\Trident.Web.csproj" />
+    <ProjectReference Include="..\..\..\Core\Trident\Trident.csproj" />
+    <ProjectReference Include="..\..\Trident.TestTargetProject\Trident.Test.Domain.csproj" />
+    <ProjectReference Include="..\Trident.Core.TestRepositories\Trident.Core.TestRepositories.csproj" />
+  </ItemGroup>
+
+</Project>

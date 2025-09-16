@@ -1,0 +1,75 @@
+@page "/facility-density-defaults"
+@using Humanizer
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@inherits BaseRazorComponent
+
+
+<div class="">
+    <div class="bg-white p-4">
+        <div class="breadcrumb-container text-uppercase">
+            Facilities (Sites)
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+            <h3>Manage Facility Density Defaults</h3>
+        </div>
+    </div>
+
+    <GridFiltersContainer Expandable="@false"
+                          @ref="_gridFilterContainer"
+                          OnFilterChange="@(async criteria => await _grid.SetExternalSearchCriteriaModel(criteria))">
+        <div class="d-flex flex-grow-1 gap-3">
+            <KeywordFilter Label="Search"
+                           Placeholder="Search by facility name or site id..."/>
+
+            <SelectFilter Label="Facility Type"
+                          Placeholder="All types"
+                          FilterPath="@nameof(Facility.Type)"
+                          Data="@(DataDictionary.For<FacilityType>(false).SelectOptions())"/>
+        </div>
+    </GridFiltersContainer>
+
+    <div class="p-4 grid-switch-container">
+        <PagableGridView TModel="Facility"
+                         @ref="_grid"
+                         Results="@_results"
+                         EnableSearch="false"
+                         EnablePaging="true"
+                         EnableSorting="true"
+                         OnDataLoad="LoadData"
+                         EnableRowExpansion="false"
+                         EnableFilters="false"
+                         IsLoading="@_isLoading">
+            <Columns>
+                <ColumnDefinition TItem="Facility"
+                                  Property="@nameof(Facility.LegalEntity)"
+                                  Title="Legal Entity"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="Facility"
+                                  Property="@nameof(Facility.SiteId)"
+                                  Title="Site Id"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="Facility"
+                                  Property="@nameof(Facility.Name)"
+                                  Title="Name"
+                                  PropertyType="typeof(string)">
+                    <Template Context="data">
+                        <span>
+                            <RadzenLink Path="@("/facility-density-defaults/" + data.Id)"
+                                        Text="@data.Name"
+                                        class="text-decoration-none"/>
+                        </span>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="Facility"
+                                  Property="@nameof(Facility.Type)"
+                                  Title="Facility Type">
+                    <Template Context="data">
+                        @data.Type.Humanize()
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

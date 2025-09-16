@@ -1,0 +1,44 @@
+﻿@typeparam TCutParameters
+@inherits BaseTruckTicketingComponent
+
+<div class="card-header px-0">
+    Adjusted Volume (m³)
+</div>
+<br/>
+<RadzenNumeric id="OilVolumeNumeric"
+               Name="OilVolumeNumeric"
+               ShowUpDown="false"
+               TValue="double?"
+               Format="N2"
+               Value="@ViewModel.Oil.AdjustedVolume"
+               Disabled="true"/>
+<br/>
+
+<RadzenNumeric id="WaterVolumeNumeric"
+               Name="WaterVolumeNumeric"
+               ShowUpDown="false"
+               TValue="double?"
+               Format="N2"
+               Value="@ViewModel.Water.AdjustedVolume"
+               Disabled="true"/>
+<br/>
+
+<RadzenNumeric id="SolidsVolumeNumeric"
+               Name="SolidsVolumeNumeric"
+               ShowUpDown="false"
+               TValue="double?"
+               Format="N2"
+               Value="@ViewModel.Solids.AdjustedVolume"
+               Disabled="true"/>
+<hr class="text-muted"/>
+
+<div class="d-flex align-items-center gap-2">
+    <RadzenNumeric id="TotalVolumeNumeric"
+                   Name="TotalVolumeNumeric"
+                   ShowUpDown="false"
+                   class="w-100"
+                   TValue="double?"
+                   Format="N2"
+                   Value="@ViewModel.Total.ComputedAdjustedVolume"
+                   Disabled="true"/>
+</div>

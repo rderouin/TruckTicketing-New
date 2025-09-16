@@ -1,0 +1,28 @@
+﻿@inherits RangeFilterComponent<DateTime>
+
+<div class="flex-grow-1">
+    <div class="d-flex justify-content-between align-items-center">
+        <RadzenLabel Text="@Label" For="@Id" Class="filter-label" />
+
+        @if (!IsValid)
+        {
+            <div class="d-flex gap-1 text-danger align-items-center"
+                 style="font-size: 0.75rem">
+                <RadzenIcon Icon="report" />
+                <span>Invalid Range</span>
+            </div>
+        }
+    </div>
+    <div class="filter-input-container flex gap-2 align-items-center">
+        <RadzenDatePicker TValue="DateTime?"
+                          Placeholder="@Placeholder"
+                          Id="@Id"
+                          Name="@Id"
+                          DateFormat="@Format"
+                          Class="flex-grow-1"
+                          @bind-Value="@Start"
+                          AllowClear="true"
+                          AllowInput="false"
+                          Change="@HandleDateChange" />
+    </div>
+</div>

@@ -1,0 +1,28 @@
+﻿@inherits BaseRazorComponent
+
+@if (ShowNew)
+{
+    <div class="row mb-3">
+        <NoteItem IsNew="@true"
+                  Note="@_newNote"
+                  Placeholder="@Placeholder"
+                  ReadOnly="@NewCommentIsReadOnly"
+                  OnNoteUpdate="@OnNoteUpdated"/>
+    </div>
+}
+
+<div class="d-flex flex-column pt-2 pr-1 notes-container">
+    <div class="d-flex m-2 justify-content-end">
+        <RadzenButton Icon="save_alt"
+                      Click=@(args => DownloadAllNotes())
+                      Text="Download Notes"
+                      ButtonStyle="ButtonStyle.Secondary"/>
+    </div>
+
+    <Virtualize ItemsProvider="LoadNotes"
+                Context="note"
+                @ref="_virtualizedNotes">
+        <NoteItem Note="note"
+                  OnNoteUpdate="@OnNoteUpdated"/>
+    </Virtualize>
+</div>

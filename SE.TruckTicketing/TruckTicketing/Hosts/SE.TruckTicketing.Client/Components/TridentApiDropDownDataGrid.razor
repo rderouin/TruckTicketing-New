@@ -1,0 +1,70 @@
+﻿@typeparam TModel where TModel : class, Trident.Contracts.Api.Client.IGuidModelBase
+@typeparam TValue
+@inherits TridentApiDropDown<TModel, TValue>
+
+@if (!Multiple)
+{
+    <RadzenDropDownDataGrid id="@Id"
+                            Name="@Name"
+                            class="@Class"
+                            @ref="DropDownDataGrid"
+                            TValue="TValue"
+                            LoadData="@OnLoadData"
+                            AllowFiltering="@AllowFiltering"
+                            AllowClear="@AllowClear"
+                            AllowSorting="true"
+                            Placeholder="@Placeholder"
+                            PageSize="@PageSize"
+                            PageNumbersCount="3"
+                            ShowPagingSummary="@true"
+                            Change="@Change"
+                            @bind-Value="@Value"
+                            Data="@Data"
+                            Count="@Count"
+                            Responsive="@true"
+                            Disabled="@Disabled"
+                            TextProperty="@TextProperty"
+                            ValueProperty="@ValueProperty"
+                            FilterCaseSensitivity="@FilterCaseSensitivity">
+        <Columns>
+            @Columns
+        </Columns>
+    </RadzenDropDownDataGrid>
+}
+else
+{
+    <RadzenDropDownDataGrid id="@Id"
+                            class="@Class"
+                            Name="@Name"
+                            @ref="MultiSelectDropDownDataGrid"
+                            LoadData="@OnLoadData"
+                            AllowFiltering="@AllowFiltering"
+                            AllowClear="@AllowClear"
+                            AllowSorting="true"
+                            Placeholder="@Placeholder"
+                            PageSize="@PageSize"
+                            Change="@Change"
+                            PageNumbersCount="3"
+                            ShowPagingSummary="@true"
+                            @bind-Value="@MultiSelectValue"
+                            Data="@Data"
+                            Count="@Count"
+                            Responsive="@true"
+                            Multiple="@true"
+                            Disabled="@Disabled"
+                            TextProperty="@TextProperty"
+                            ValueProperty="@ValueProperty"
+                            FilterCaseSensitivity="@FilterCaseSensitivity">
+        <Columns>
+            <RadzenDropDownDataGridColumn Width="45px"
+                                          Sortable="false">
+                <Template Context="data">
+                    <RadzenCheckBox TriState="false"
+                                    TValue="bool"
+                                    Value="@(Values != null && Values.Contains(ValuePropertySelector((TModel)data)))"/>
+                </Template>
+            </RadzenDropDownDataGridColumn>
+            @Columns
+        </Columns>
+    </RadzenDropDownDataGrid>
+}

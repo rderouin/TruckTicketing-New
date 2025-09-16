@@ -1,0 +1,185 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using SE.TruckTicketing.Contracts.Models
+@inherits BaseRazorComponent
+@page "/truck-ticketing/producer-report"
+
+<EditForm Model="@Request">
+    <TridentValidationSummary TModel="LoadSummaryReportRequest"/>
+    <div class="card">
+        <div class="card-header d-flex align-content-center">
+            <h4 class="fw-bold">Producer Report</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mt-4 mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="From Date"
+                                 Component="FromDatePicker"
+                                 class="required"/>
+                    <RadzenDatePicker TValue="DateTimeOffset"
+                                      Name="FromDatePicker"
+                                      DateFormat="MM/dd/yyyy"
+                                      @bind-Value="@Request.FromDate"/>
+
+
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="To Date"
+                                 Component="ToDatePicker"
+                                 class="required"/>
+                    <RadzenDatePicker TValue="DateTimeOffset"
+                                      Name="ToDatePicker"
+                                      DateFormat="MM/dd/yyyy"
+                                      @bind-Value="@Request.ToDate"/>
+
+
+                </div>
+                <div class="col d-flex flex-column">
+
+                    <RadzenLabel Text="Generator"
+                                 Component="GeneratorDropDown"
+                                 class="required"/>
+                    <TridentApiDropDownDataGrid id="GeneratorDropDown"
+                                                TModel="Account"
+                                                TValue="Guid"
+                                                Placeholder="Select Generators..."
+                                                TextProperty="@nameof(Account.Name)"
+                                                ValueProperty="@nameof(Account.Id)"
+                                                Multiple="@true"
+                                                PageSize="10"
+                                                Class="w-100"
+                                                AllowClear="true"
+                                                OnDataLoading="OnGeneratorLoading"
+                                                OnChange="@(OnGeneratorChange)">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn Property="@nameof(Account.Name)"
+                                                          Title="Generator"/>
+                        </Columns>
+                    </TridentApiDropDownDataGrid>
+
+                </div>
+
+
+            </div>
+            <div class="row mt-4 mb-3">
+                <div class="col d-flex flex-column">
+
+                    <RadzenLabel Text="Source Location"
+                                 Component="SourceLocationDropDown"/>
+                    <TridentApiDropDownDataGrid id="SourceLocationDropDown"
+												@ref="SourceLocationDataGrid"
+                                                TModel="SourceLocation"
+                                                TValue="Guid"
+                                                Placeholder="All Source Location..."
+                                                TextProperty="@nameof(SourceLocation.FormattedIdentifier)"
+                                                ValueProperty="@nameof(SourceLocation.Id)"
+                                                Multiple="@true"
+                                                AllowClear="true"
+                                                PageSize="10"
+                                                Class="w-100"
+                                                OnDataLoading="OnSourceLocationLoading"
+                                                OnChange="@(OnSourceLocationChange)">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.FormattedIdentifier)"
+                                                          Title="Source Location"/>
+                            
+                        </Columns>
+                    </TridentApiDropDownDataGrid>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Facility"
+                                 Component="FacilityDropdown"/>
+					
+                    <TridentApiDropDownDataGrid id="FacilityDropdown"
+                                                TModel="Facility"
+                                                TValue="Guid"
+                                                Placeholder="All Facilities"
+                                                TextProperty="@nameof(Facility.Display)"
+                                                ValueProperty="@nameof(Facility.Id)"
+                                                Multiple="@true"
+                                                AllowClear="true"
+                                                PageSize="10"
+                                                Class="w-100"
+                                                OnDataLoading="OnFacilitiesLoading"
+                                                OnChange="@(OnFacilityChange)">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn Property="@nameof(Facility.Display)"
+                                                          Title="Facility"/>
+                        </Columns>
+                    </TridentApiDropDownDataGrid>
+
+                </div>
+                <div class="col d-flex flex-column">
+
+                    <RadzenLabel Text="Facility Service"
+                                 Component="FacilityServiceDropdown"/>
+
+                    <FacilityServiceTypeDropdown @ref="_serviceTypeDropDown"
+                                                 TValue="Guid"
+                                                 Name="FacilityService"
+                                                 ValueProperty="@nameof(ServiceType.Id)"
+                                                 TextProperty="@nameof(ServiceType.Name)"
+                                                 class="w-100"
+                                                 PageSize="10"
+                                                 Multiple="@true"
+                                                 AllowClear="true"
+                                                 OnChange="OnServiceTypeChange"
+                                                 FacilityIds="@Request.FacilityIds"
+                                                 Placeholder="All Service Types">
+                    </FacilityServiceTypeDropdown>
+                </div>
+              </div>
+           
+
+            <div class="row mt-4 mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Trucking Company"
+                                 Component="TruckingCompanyListBox"/>
+
+                    <TridentApiDropDownDataGrid id="TruckingCompanyListBox"
+                                                TModel="Account"
+                                                TValue="Guid"
+                                                Placeholder="All Trucking Companies..."
+                                                TextProperty="@nameof(Account.Name)"
+                                                ValueProperty="@nameof(Account.Id)"
+                                                Multiple="@true"
+                                                AllowClear="true"
+                                                PageSize="10"
+                                                Class="w-100"
+                                                OnDataLoading="OnTruckingCompanyLoading"
+                                                OnChange="@(OnTruckingCompanyChange)">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn Property="@nameof(Account.Name)"
+                                                          Title="Trucking Company"/>
+                        </Columns>
+                    </TridentApiDropDownDataGrid>
+
+                </div>
+             
+
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Price per Load"
+                                 Component="PricePerLoadSwitch"/>
+                    <RadzenSwitch Name="PricePerLoadSwitch"
+                                  @bind-Value="@Request.PriceOnLoad"/>
+
+
+                </div>
+            </div>
+
+
+            <div class="row mt-4 mb-3">
+                <div class="col d-flex justify-content-end gap-2">
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                  Text="Generate"
+                                  Disabled="@GenerateButtonDisable"
+                                  Click="HandleGenerate"
+                                  IsBusy="_isLoading"
+                                  BusyText="Generating Producer Report"/>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>

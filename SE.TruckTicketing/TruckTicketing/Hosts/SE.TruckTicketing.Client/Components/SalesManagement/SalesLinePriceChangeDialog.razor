@@ -1,0 +1,87 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.Shared.Common.Utilities
+@inherits BaseRazorComponent
+
+<RadzenTemplateForm TItem="IEnumerable<SalesLine>"
+                    Data="@SalesLines"
+                    Submit="@HandleSubmit"
+                    Id="@(nameof(SalesLinePriceChangeDialog))">
+    <div class="row mt-3 mb-3">
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Reason for price change"
+                         Component="ReasonDropDown"
+                         Class="required"/>
+            <p style="font-size: 0.8rem">
+                Please give a reason for manually adjusting the calculated price for the selected sales line(s).
+            </p>
+            <br/>
+            <RadzenDropDown TValue="SalesLinePriceChangeReason"
+                            Class="w-100"
+                            id="ReasonDropDown"
+                            Name="ReasonDropDown"
+                            Placeholder="Select reason"
+                            TextProperty="Value"
+                            ValueProperty="Key"
+                            @bind-Value="@ChangeReason"
+                            Data="@(DataDictionary.For<SalesLinePriceChangeReason>())"/>
+            <RadzenRequiredValidator Component="ReasonDropDown"
+                                     DefaultValue="@SalesLinePriceChangeReason.Undefined"
+                                     Text="Reason for change is required"/>
+        </div>
+    </div>
+    <div class="row mt-3 mb-3">
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Comments"
+                         Component="CommentsTextBox"
+                         Class="@RequiredClass"/>
+            <RadzenTextBox id="CommentsTextBox"
+                           Name="CommentsTextBox"
+                           @bind-Value="@ChangeComments"
+                           Class="w-100"
+                           Placeholder="Enter comments"
+                           MaxLength="100"/>
+            @if (CommentsRequired)
+            {
+                <RadzenRequiredValidator Component="CommentsTextBox"
+                                         Text="Comments required if reason for change is 'Other'"/>
+            }
+        </div>
+    </div>
+    @if (IsMultiSelect)
+    {
+        <div class="row mt-3 mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Unit Price ($)"
+                             Component="PriceTextBox"
+                             Class="required"/>
+                <div>
+                    Please enter a new unit price for the selected sales line(s).
+                </div>
+                <RadzenNumeric Name="Price"
+                               id="Price"
+                               Class="w-100"
+                               Placeholder="0.00"
+                               ShowUpDown="false"
+                               TValue="double?"
+                               @bind-Value="NewRate"/>
+                <RadzenRequiredValidator Component="Price"
+                                         Text="Price is required"/>
+                <RadzenNumericRangeValidator Component="Price"
+                                             Min="0.00"
+                                             Text="Price should not be negative"/>
+
+            </div>
+        </div>
+    }
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end gap-2">
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel Price Change"
+                          Click="HandleCancelPriceChange"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Done"/>
+        </div>
+    </div>
+</RadzenTemplateForm>

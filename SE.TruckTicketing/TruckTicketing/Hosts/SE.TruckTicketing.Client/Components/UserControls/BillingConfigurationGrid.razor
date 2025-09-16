@@ -1,0 +1,215 @@
+﻿@using SE.TruckTicketing.Client.Utilities
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Security
+@using Trident.Search
+@inherits BaseTruckTicketingComponent
+
+<style>
+   .grid-switch-container td .rz-cell-data {
+       display: inline;
+   }
+   
+   .rz-checkbox, .rzi {
+        vertical-align: middle;
+   }
+   
+    td i.rzi {
+        translate: 0 7px;
+    }
+</style>
+
+
+<div class="">
+    @if (DisplayAddButton)
+    {
+        <div class="bg-white p-4">
+            <div class="d-flex align-items-center justify-content-end">
+                <div>
+                    <RadzenLink Icon="add_outline"
+                                Path="@_addNewBillingConfigurationPath"
+                                Text="Add Billing Configuration"
+                                class="@($"rz-button rz-button-md btn-primary text-decoration-none {AddBillingConfigLink_Css}")" />
+                </div>
+            </div>
+        </div>
+    }
+    <GridFiltersContainer Expandable="@true"
+                          @ref="_gridFilterContainer"
+                          OnFilterChange="@(async criteria => await _grid.SetExternalSearchCriteriaModel(criteria))">
+        <div class="d-flex flex-grow-1 gap-3">
+            <KeywordFilter Label="Search"
+                           Placeholder="Search by billing configuration name, billing contact number, generator, etc..."/>
+            <DropDownDataGridFilter Label="Facility"
+                                    CompareOperator="CompareOperators.contains"
+                                    FilterPath="@nameof(BillingConfiguration.Facilities).AsPrimitiveCollectionFilterKey()"
+                                    Placeholder="All facilities"
+                                    TItem="Facility"
+                                    DefaultSortProperty="@nameof(Facility.Name)"
+                                    TextProperty="@nameof(Facility.SiteId)"
+                                    BeforeDataLoad="@(criteria => criteria.Filters[nameof(Facility.IsActive)] = true)">
+                <Columns>
+                    <RadzenDropDownDataGridColumn Property="@nameof(Facility.SiteId)"
+                                                  Title="Site Id"
+                                                  Width="50px"/>
+                    <RadzenDropDownDataGridColumn Property="@nameof(Facility.Name)"
+                                                  Title="Name"
+                                                  Width="100px"/>
+                </Columns>
+            </DropDownDataGridFilter>
+            <DropDownDataGridFilter Label="Generator"
+                                    FilterPath="@nameof(BillingConfiguration.CustomerGeneratorId)"
+                                    Placeholder="All generators"
+                                    TItem="Account"
+                                    DefaultSortProperty="@nameof(Account.Name)"
+                                    TextProperty="@nameof(Account.Name)"
+                                    BeforeDataLoad="@BeforeGeneratorFilterDataLoad">
+                <Columns>
+                    <RadzenDropDownDataGridColumn Property="@nameof(Account.Name)"
+                                                  Title="Generator Name"
+                                                  Width="100px"/>
+                </Columns>
+            </DropDownDataGridFilter>
+        </div>
+        <GridFiltersExpandedContainer>
+            <div class="d-flex flex-grow-1 gap-3">
+                <ActiveBillingConfigurationFilter Label="Active/In-Active Billing Configurations"
+                                                  Data="@_activeBillingConfigurationListBoxData"/>
+            </div>
+        </GridFiltersExpandedContainer>
+    </GridFiltersContainer>
+
+    <PageLoadingContainer IsLoading="_ediFieldsLoading">
+        <LoadedView>
+            <div class="grid-switch-container @ClassNames(("px-4", DisplayAddButton), ("pb-4", DisplayAddButton))">
+                <PagableGridView @ref="_grid"
+                                 TModel="BillingConfiguration"
+                                 Results="@_billingConfigurations"
+                                 EnablePaging="true"
+                                 EnableSorting="true"
+                                 EnableFilters="false"
+                                 EnableSearch="false"
+                                 OnDataLoad="LoadData"
+                                 IsLoading="@_isLoading"
+                                 GridPageSize="10">
+                    <Columns>
+                        <ColumnDefinition TItem="BillingConfiguration"
+                                          Property="@nameof(BillingConfiguration.IsValid)"
+                                          Width="4rem"
+                                          Title="Active"
+                                          PropertyType="typeof(bool)">
+                            <Template Context="context">
+                                <div>
+                                    <div class="w-100 d-flex justify-content-center">
+                                        @if ((context.StartDate is null || context.StartDate < DateTimeOffset.Now) && (context.EndDate is null || context.EndDate > DateTimeOffset.Now))
+                                        {
+                                            <RadzenIcon Icon="check_circle"
+                                                        class="text-success"/>
+                                        }
+                                        else
+                                        {
+                                            <RadzenIcon Icon="cancel"
+                                                        class="text-danger"/>
+                                        }
+                                    </div>
+                                </div>
+                            </Template>
+                        </ColumnDefinition>
+                        <ColumnDefinition TItem="BillingConfiguration"
+                                          Property="@nameof(BillingConfiguration.IsDefaultConfiguration)"
+                                          Width="4rem"
+                                          Title="Default"
+                                          PropertyType="typeof(bool)">
+                            <Template Context="context">
+                                <div>
+                                    <RadzenCheckBox @bind-Value="@context.IsDefaultConfiguration"
+                                                    TValue="bool"
+                                                    Disabled="@(!IsAuthorizedFor(Permissions.Resources.DefaultBillingConfig, Permissions.Operations.Write))"
+                                                    Change="@(args => OnDefaultBillngConfigurationChange(args, context))"/>
+                                </div>
+                            </Template>
+                        </ColumnDefinition>
+                        <ColumnDefinition TItem="BillingConfiguration"
+                                          Property="@nameof(BillingConfiguration.Name)"
+                                          Title="Name"
+                                          PropertyType="typeof(string)"/>
+                        <ColumnDefinition TItem="BillingConfiguration"
+                                          Property="@nameof(BillingConfiguration.CustomerGeneratorName)"
+                                          Title="Generator"
+                                          PropertyType="typeof(string)"/>
+                        <ColumnDefinition TItem="BillingConfiguration"
+                                          Property="@nameof(BillingConfiguration.BillingContactName)"
+                                          Title="Billing Contact"
+                                          PropertyType="typeof(string)"/>
+                        @foreach (var ediField in _loadEDIFieldDefinition.Results)
+                        {
+                            @if (ediField.Id != default)
+                            {
+                                <ColumnDefinition TItem="BillingConfiguration"
+                                                  Property="Id"
+                                                  Title="@ediField?.EDIFieldName"
+                                                  PropertyType="typeof(string)">
+                                    <Template Context="context">
+                                        @GetEDIValue(ediField.Id, context)
+                                    </Template>
+                                </ColumnDefinition>
+                            }
+                        }
+                        <ColumnDefinition TItem="BillingConfiguration"
+                                          Property="@nameof(BillingConfiguration.UpdatedBy)"
+                                          Title="Modified By"
+                                          PropertyType="typeof(string)"/>
+                        <ColumnDefinition TItem="BillingConfiguration"
+                                          Property="@nameof(BillingConfiguration.UpdatedAt)"
+                                          Title="Modified Date & Time"
+                                          PropertyType="typeof(string)">
+                            <Template Context="context">
+                                @context.UpdatedAt.ToString("MM/dd/yyyy | hh:mm tt")
+                            </Template>
+                        </ColumnDefinition>
+                        <ColumnDefinition TItem="BillingConfiguration"
+                                          Property="@nameof(BillingConfiguration.LastComment)"
+                                          Title="Last Comment"
+                                          PropertyType="typeof(string)"/>
+                        <ColumnDefinition TItem="BillingConfiguration"
+                                          Property="@nameof(BillingConfiguration.IsEdiValid)"
+                                          Title="Valid EDI"
+                                          Width="4.2rem">
+                            <Template Context="data">
+                                <div>
+                                    <div class="d-flex  justify-content-center">
+                                        @if (data.IsEdiValid)
+                                        {
+                                            <RadzenIcon Icon="check_circle"
+                                                        class="text-success"/>
+                                        }
+                                        else
+                                        {
+                                            <RadzenIcon Icon="cancel"
+                                                        class="text-danger"/>
+                                        }
+                                    </div>
+                                </div>
+                            </Template>
+                        </ColumnDefinition>
+                        <ColumnDefinition TItem="BillingConfiguration"
+                                          Property="@nameof(BillingConfiguration.Id)"
+                                          Title="Actions"
+                                          Width="8rem"
+                                          EnableSorting="false">
+                            <Template Context="data">
+                                <RadzenButton Click="() => EditButton_Click(data)"
+                                              ButtonStyle="ButtonStyle.Secondary"
+                                              Size="ButtonSize.Small"
+                                              Text="Edit"/>
+                                <RadzenButton Click="() => CloneButton_Click(data)"
+                                              ButtonStyle="ButtonStyle.Secondary"
+                                              Size="ButtonSize.Small"
+                                              Text="Clone"/>
+                            </Template>
+                        </ColumnDefinition>
+                    </Columns>
+                </PagableGridView>
+            </div>
+        </LoadedView>
+    </PageLoadingContainer>
+</div>

@@ -1,0 +1,19 @@
+# Template to build the solution
+
+parameters:
+- name: projects
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'Restore Packages'
+  inputs:
+    command: 'restore'
+    projects: ${{ parameters.projects }}
+    verbosityRestore: 'Normal'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Solution'
+  inputs:
+    command: 'build'
+    projects: ${{ parameters.projects }}
+    arguments: '--configuration Release --no-restore'

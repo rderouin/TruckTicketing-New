@@ -1,0 +1,57 @@
+{
+  "Blobs": [
+    {
+      "BlobPath": "be855f88-4dd9-4f92-86ad-f0afdd6bf3a1/",
+      "ContainerName": "attachments",
+      "ContentType": "application/pdf",
+      "FileName": "test1.pdf"
+    }
+  ],
+  "CorrelationId": "{5AB4B47B-CFA2-45A4-8D1E-753706F576B1}",
+  "Identifiers": "",
+  "MessageDate": "2022-11-30T14:18:30+00:00",
+  "MessageType": "Customer",
+  "Operation": "Update",
+  "Payload": {
+    "AccountNum": "000001",
+    "Addresses": [
+      {
+        "AddressType": "",
+        "City": "",
+        "Country": "CA",
+        "IsPrimary": false,
+        "Province": "",
+        "State": "",
+        "Street": "",
+        "ZipCode": ""
+      }
+    ],
+    "Name": "Alberta Oilsands Inc",
+    "Blocked": "No",
+    "CustGroup": "IFS_TRADE",
+    "CustName": "KQ Test Customer",
+    "DataAreaId": "MAEC",
+    "Email": "",
+    "InventLocation": "",
+    "InventSite": "DAndy",
+    "InvoiceAccount": "",
+    "PriceGroup": "",
+    "SalesGroup": "",
+    "WatchListStatus": "Yellow",
+    "BillingType": "EDIInvoiceTicket",
+    "AccountStatus": "Open",
+    "CreditStatus": "Approved",
+    "BillingTransferRecipientName": "",
+    "MailingRecipientName": "",
+    "DUNSNumber": "343324",
+    "GSTNumber": "",
+    "OperatorLicenseCode": "",
+    "HasPriceBook": true,
+    "IsEdiFieldsEnabled": true,
+    "IsElectronicBillingEnabled": true,
+    "EnableCreditMessagingRedFlag": false,
+    "id": "{7393B1AD-AAD4-4C1F-BF60-B067D0F4527D}"
+  },
+  "Source": "D365FO",
+  "SourceId": "{7393B1AD-AAD4-4C1F-BF60-B067D0F4527D}"
+}

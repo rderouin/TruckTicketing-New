@@ -1,0 +1,53 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-bold">Add Email Recipient</h4>
+        </div>
+        <div>
+            <RadzenButton Click="@(args => AddEmailRecipient())"
+                          Text="Add Email Recipient"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Size="ButtonSize.Small"
+                          Icon="contact_mail"/>
+        </div>
+    </div>
+    <div class="card-body">
+        <PagableGridView TModel="EmailDeliveryContact"
+                         Results="@_associatedEmailDeliveryContacts"
+                         class="bs-class"
+                         EnableSearch="false"
+                         EnablePaging="false"
+                         EnableSorting="true"
+                         EnableRowExpansion="false"
+                         EnableFilters="false"
+                         OnDataLoad="LoadEmailDeliveryContacts">
+            <Columns>
+                <ColumnDefinition TItem="EmailDeliveryContact"
+                                  Property="@nameof(EmailDeliveryContact.SignatoryContact)"
+                                  Title="Signatory Contact"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="EmailDeliveryContact"
+                                  Property="@nameof(EmailDeliveryContact.EmailAddress)"
+                                  Title="Email Address"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="EmailDeliveryContact"
+                                  Property="@nameof(EmailDeliveryContact)"
+                                  Title="Actions"
+                                  Width="4rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="() => DeleteButton_Click(data)"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small">
+                            Delete
+                        </RadzenButton>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

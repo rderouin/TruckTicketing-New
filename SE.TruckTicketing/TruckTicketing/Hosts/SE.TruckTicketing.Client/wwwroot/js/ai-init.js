@@ -1,0 +1,1 @@
+window.aiConnectionString = "InstrumentationKey=65a2b60b-e525-4a30-b895-f0b791e59ccf;IngestionEndpoint=https://canadacentral-1.in.applicationinsights.azure.com/;LiveEndpoint=https://canadacentral.livediagnostics.monitor.azure.com/";

@@ -1,0 +1,74 @@
+{
+  "DocumentType": "Configuration",
+  "EntityType": "NavigationConfiguration",
+  "Id": "4a159d5b-b31e-4bff-9a66-8cd4ccaaa2c6",
+  "id": "NavigationConfiguration|4a159d5b-b31e-4bff-9a66-8cd4ccaaa2c6",
+  "ProfileName": "TruckTicketing",
+  "NavigationItems": [
+    {
+      "Id": "f3434134-5913-4ca5-9747-424a4c2c7735",
+      "RelativeUrl": "/Dashboard",
+      "ClaimType": "DashboardMenu",
+      "ClaimValue": "r",
+      "Icon": "dashboard-icon.svg",
+      "Text": "Dashboard",
+      "Order": 0
+    },
+    {
+      "Id": "4d2a3414-f8d0-48ed-ace3-a7b809f77522",
+      "RelativeUrl": "/TruckTickets",
+      "ClaimType": "TruckTicketsQueueManagement",
+      "ClaimValue": "r",
+      "Icon": "tt-manager-icon.svg",
+      "Text": "Truck Ticket Queue Management",
+      "Order": 10
+    },
+    {
+      "Id": "0251f057-2132-49ac-80a9-2695fe8c75e9",
+      "RelativeUrl": "/AnyUrl",
+      "ClaimType": "TTManagerMenu",
+      "ClaimValue": "r",
+      "Icon": "tt-manager-icon.svg",
+      "Text": "TT Manager",
+      "Order": 20
+    },
+    {
+      "Id": "873ecad5-dcc9-49a1-8fee-f79f1afa7f70",
+      "RelativeUrl": "",
+      "ClaimType": "SystemConfigMenu",
+      "ClaimValue": "r",
+      "Icon": "system-config-icon.svg",
+      "Text": "System Configuration",
+      "Order": 25,
+      "NavigationItems": [
+        {
+          "Id": "ecc6d061-affa-4998-bf3d-85ad494172cd",
+          "RelativeUrl": "/RoleAdmin",
+          "ClaimType": "Roles",
+          "ClaimValue": "r",
+          "Icon": "role-admin-icon.svg",
+          "Text": "Roles/Permissions",
+          "Order": 25
+        },
+        {
+          "Id": "54608799-56b2-413b-8f82-05c9613b7f67",
+          "RelativeUrl": "/Users",
+          "ClaimType": "UserAdminMenu",
+          "ClaimValue": "r",
+          "Icon": "user-admin-icon.svg",
+          "Text": "User Admin",
+          "Order": 26
+        },
+        {
+          "Id": "591bf03d-7acd-4415-9b9b-ee0e95b6d339",
+          "RelativeUrl": "/InvoiceExchange",
+          "ClaimType": "InvoiceExchangeMenu",
+          "ClaimValue": "r",
+          "Icon": "user-admin-icon.svg",
+          "Text": "Invoice Exchange Configuration",
+          "Order": 27
+        }
+      ]
+    }
+  ]
+}

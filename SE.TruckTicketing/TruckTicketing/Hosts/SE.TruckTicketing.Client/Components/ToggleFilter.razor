@@ -1,0 +1,10 @@
+﻿@using Trident.Api.Search
+@inherits FilterComponent<bool>
+
+<div>
+    <RadzenLabel Text="@Label"
+                 Class="filter-label" />
+    <div class="d-flex position-relative">
+        <RadzenSwitch @bind-value="@_enableFilter" Change="@HandleChange" MouseEnter="@(args => ShowTooltip(args))" />
+    </div>
+</div>

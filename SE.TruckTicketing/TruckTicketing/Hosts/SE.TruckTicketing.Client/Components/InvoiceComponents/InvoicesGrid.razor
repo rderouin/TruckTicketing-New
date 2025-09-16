@@ -1,0 +1,510 @@
+﻿@using SE.Shared.Common.Extensions
+@using SE.Shared.Common.Lookups
+@using SE.TruckTicketing.Client.Components.SalesManagement
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.Invoices
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<style>
+    .invoice-grid-container th.rz-frozen-cell:last-of-type, td.rz-frozen-cell:last-of-type {
+        position: sticky !important;
+        width: 9em !important;
+        right: 0 !important;
+        top: auto !important;
+    }
+
+    .lc-scroll {
+        overflow: auto;
+        position: absolute;
+        max-width: 97vw;
+        top: 50px;
+        bottom: 50px;
+    }
+
+    td:has(.redhighlight) {
+        background-color: #F88 !important;
+    }
+
+    .rz-frozen-cell:has(.redhighlight) {
+        background-color: #F88 !important;
+        border-right-color: #F88 !important;
+        border-right: 0px;
+    }
+</style>
+
+<div class="invoice-grid-container">
+    <div class="d-flex justify-content-end gap-1">
+        <RadzenButton Icon="save_alt"
+                      title="Export to CSV"
+                      ButtonStyle="ButtonStyle.Light"
+                      Click="@Export"
+                      Style="position:absolute; top:2px;" />
+    </div>
+    <PagableGridView TModel="Invoice"
+                     Results="@_results"
+                     OnDataLoad="@LoadData"
+                     GridPageSize="10"
+                     EnableSorting="true"
+                     EnablePaging="true"
+                     IsLoading="@_isLoading"
+                     EnableSearch="false"
+                     EnableFilters="false"
+                     @ref="_grid"
+                     ColumnWidth="150px"
+                     EnableRowExpansion="false"
+                     SelectionMode="DataGridSelectionMode.Multiple"
+                     EnableMultiLineSelect="true"
+                     ChildStateChange="@ChildStateChange"
+                     RowClick="@ChildStateChange"
+                     class="mb-2 lc-scroll">
+        <Template Context="context">
+            <SalesManagementGrid @ref="SelectedSalesManagementGrid"
+                                 BeforeDataLoad="@(criteria => criteria.AddFilter(nameof(SalesLine.InvoiceId), context.Id))"
+                                 ChildStateChange="ChildStateChanged" />
+        </Template>
+        <Columns>
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.OriginalProformaInvoiceNumber)"
+                              HideColumn="true"
+                              SortOrder="SortOrder.Descending" />
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.ProformaInvoiceNumber)"
+                              Title="Proforma Invoice Number"
+                              Frozen="true"
+                              PropertyType="typeof(string)">
+                <Template Context="data">
+                    <span class="@RedHighlight(data)">
+                        <a href="#"
+                           @onclick="@(() => OpenInvoiceDialog(data.Id))"
+                           @onclick:preventDefault="true"
+                           @onclick:stopPropagation="true"
+                           class="text-decoration-none rz-link">
+                            @if ((data.MaxTruckTicketCountThreshold != null && data.TruckTicketCount > data.MaxTruckTicketCountThreshold) ||
+                            (data.MaxInvoiceAmountThreshold != null && data.InvoiceAmount > data.MaxInvoiceAmountThreshold))
+                            {
+                                <span style="color: orange;">
+                                    @data.ProformaInvoiceNumber
+                                </span>
+                            }
+                            else
+                            {
+                                @data.ProformaInvoiceNumber
+                            }
+                        </a>
+                    </span>
+                </Template>
+            </ColumnDefinition>
+
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.IsReversal)"
+                              Title="Reversal"
+                              Frozen="true"
+                              EnableSorting="false"
+                              Width="70px"
+                              CanToggleVisibility="false">
+                <Template Context="data">
+                    <div class="d-flex justify-content-center @RedHighlight(data)">
+                        @if (data.IsReversed)
+                        {
+                            <RadzenBadge Text="R"
+                                     BadgeStyle="BadgeStyle.Danger"
+                                     IsPill="true" />
+                        }
+                        else if (data.IsReversal)
+                        {
+                            <RadzenBadge Text="CN"
+                                     BadgeStyle="BadgeStyle.Info"
+                                     IsPill="true" />
+                        }
+                    </div>
+                </Template>
+
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.HasAllLoadConfirmationApprovals)"
+                              PropertyType="typeof(bool)"
+                              Title="LC Approval Status"
+                              Frozen="true"
+                              Width="50px">
+                <Template Context="data">
+                    <div class="d-flex justify-content-center @RedHighlight(data)">
+                        @if (data.HasAllLoadConfirmationApprovals)
+                        {
+                            <RadzenIcon Icon="check_circle"
+                                        class="text-success" />
+                        }
+                        else
+                        {
+                            <RadzenIcon Icon="cancel"
+                                        class="text-danger" />
+                        }
+                    </div>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.Status)"
+                              Title="Status"
+                              Frozen="true"
+                              Width="120px"
+                              PropertyType="typeof(string)">
+                <Template Context="data">
+                    <div class="d-flex justify-content-between align-items-center @RedHighlight(data)">
+                        <span class="m-1">@data.Status</span>
+                        @if (data.IsDeliveredToErp is true && data.GlInvoiceNumber.HasText() && data.RequiresPdfRegeneration is false)
+                        {
+                            <RadzenIcon Icon="done_all"
+                                    Style="color:green;"
+                                    MouseEnter="@(args => ShowTooltipForDeliveredWithGlInvoice(args))" />
+                        }
+                        else if (data.IsDeliveredToErp is true && (!data.GlInvoiceNumber.HasText() || data.RequiresPdfRegeneration))
+                        {
+                            <RadzenIcon Icon="done"
+                                    Style="color:green;"
+                                    MouseEnter="@(args => ShowTooltipForDeliveredInvoice(args))" />
+                        }
+                    </div>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.GlInvoiceNumber)"
+                              Title="GL Invoice Number"
+                              CanToggleVisibility="false">
+                <Template Context="data">
+                    <span class="@RedHighlight(data)"
+                          title="@data.GlInvoiceNumber">
+                        @data.GlInvoiceNumber
+                    </span>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.FacilityName)"
+                              Title="Facility"
+                              PropertyType="typeof(string)">
+                <Template Context="data">
+                    <span class="@RedHighlight(data)" title="@data.SiteId">@data.SiteId</span>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.CustomerName)"
+                              Title="Customer"
+                              PropertyType="typeof(string)">
+                <Template Context="data">
+                    <span class="@RedHighlight(data)">
+                        <a href="#"
+                           @onclick="@(() => OpenCustomerDialog(data.CustomerId))"
+                           @onclick:preventDefault="true"
+                           @onclick:stopPropagation="true"
+                           class="text-decoration-none rz-link">
+                            @if (data.CustomerCreditStatus is CreditStatus.RequiresRenewal)
+                            {
+                                <span title="This customer required a credit status renewal when this proforma invoice was created."
+                                      style="color: red !important;">
+                                    @data.CustomerName
+                                </span>
+                            }
+                            else
+                            {
+                                @data.CustomerName
+                            }
+                        </a>
+                    </span>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.GeneratorNames)"
+                              Title="Generators"
+                              PropertyType="typeof(string)">
+                <Template Context="data">
+                    <span class="@RedHighlight(data)"
+                          title="@data.GeneratorNames">
+                        @data.GeneratorNames
+                    </span>
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.BillingConfigurationNames)"
+                              Title="Billing Configuration Name"
+                              PropertyType="typeof(string)">
+                <Template Context="data">
+                    <span class="@RedHighlight(data)">
+                        <a href="#"
+                           @onclick="@(() => OpenBillingConfiguration(data.BillingConfigurations, data.BillingConfigurationNames))"
+                           @onclick:preventDefault="true"
+                           @onclick:stopPropagation="true"
+                           class="text-decoration-none rz-link">
+                            @if (data.BillingConfigurations?.Count > 1)
+                            {
+                                <span>Multiple</span>
+                            }
+                            else
+                            {
+                                @data.BillingConfigurationNames
+                            }
+                        </a>
+                    </span>
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.TicketDateRange)"
+                              Title="Ticket Range"
+                              PropertyType="typeof(string)">
+                <Template Context="data">
+                    <span class="@RedHighlight(data)"
+                          title="@data.TicketDateRange">
+                        @data.TicketDateRange
+                    </span>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.InvoiceStartDate)"
+                              Title="Start Date"
+                              PropertyType="typeof(DateTimeOffset)">
+                <Template Context="data">
+                    <span class="@RedHighlight(data)"
+                          title="@data.InvoiceStartDate.Date.ToString("MM/dd/yyyy")">
+                        @data.InvoiceStartDate.Date.ToString("MM/dd/yyyy")
+                    </span>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.InvoiceEndDate)"
+                              Title="End Date"
+                              PropertyType="typeof(DateTimeOffset)">
+                <Template Context="data">
+                    <span class="@RedHighlight(data)"
+                          title="@data.InvoiceEndDate?.Date.ToString("MM/dd/yyyy")">
+                        @data.InvoiceEndDate?.Date.ToString("MM/dd/yyyy")
+                    </span>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.DistributionMethod)"
+                              Title="Distribution"
+                              PropertyType="typeof(string)">
+                <Template Context="data">
+                    <span class="@RedHighlight(data)"
+                          title="@data.DistributionMethod">
+                        @data.DistributionMethod
+                    </span>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.CollectionOwner)"
+                              Title="Collection Owner"
+                              PropertyType="typeof(string)">
+                <Template Context="data">
+                    <span class="@RedHighlight(data)">
+                        <a href="#"
+                           style="@GetPointerEventsStyle(data)"
+                           @onclick="@(() => OpenChangeCollectionsOwnerDialog(data))"
+                           @onclick:preventDefault="true"
+                           @onclick:stopPropagation="true"
+                           class="text-decoration-none rz-link">
+                            @data.CollectionOwner
+                        </a>
+                    </span>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.CollectionReason)"
+                              Title="Collection Reason"
+                              PropertyType="typeof(string)">
+                <Template Context="data">
+                    <span class="@RedHighlight(data)" title="@data.CollectionReason">@data.CollectionReason</span>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.LastDistributionDate)"
+                              Title="Distribution Date"
+                              PropertyType="typeof(DateTimeOffset)">
+                <Template Context="data">
+                    <span class="@RedHighlight(data)" title="@data.LastDistributionDate?.Date.ToString("MM/dd/yyyy")">@data.LastDistributionDate?.Date.ToString("MM/dd/yyyy")</span>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.LastSentByName)"
+                              Title="Sent By"
+                              PropertyType="typeof(string)">
+                <Template Context="data">
+                    <span class="@RedHighlight(data)" title="@data.LastSentByName">@data.LastSentByName</span>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.Paid)"
+                              Title="Paid"
+                              PropertyType="typeof(bool)"
+                              EnableSorting="false">
+                <Template Context="data">
+                    <div class="d-flex justify-content-center @RedHighlight(data)">
+                        @if (data.Paid)
+                        {
+                            <RadzenIcon Icon="check_circle"
+                                        class="text-success" />
+                        }
+                        else
+                        {
+                            <RadzenIcon Icon="cancel"
+                                        class="text-danger" />
+                        }
+                    </div>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.TransactionComplete)"
+                              Title="Transaction Complete"
+                              PropertyType="typeof(bool)"
+                              EnableSorting="false">
+                <Template Context="data">
+                    <div class="d-flex justify-content-center @RedHighlight(data)">
+                        @if (data.TransactionComplete)
+                        {
+                            <RadzenIcon Icon="check_circle"
+                                        class="text-success" />
+                        }
+                        else
+                        {
+                            <RadzenIcon Icon="cancel"
+                                        class="text-danger" />
+                        }
+                    </div>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="Invoice"
+                              Property="@nameof(Invoice.Id)"
+                              Title="Actions"
+                              Width="9rem"
+                              Frozen="true"
+                              EnableSorting="false">
+                <Template Context="data">
+
+                    @if (IsReversalInProgress(data.Id))
+                    {
+                        <span class="text-danger">Reversing...</span>
+                    }
+                    else
+                    {
+                        <div class="@RedHighlight(data)">
+                            @if (IsRunningInvoiceAction(data.Id))
+                            {
+                                <div class="spinner-border"
+                                     role="status">
+                                    <span class="visually-hidden">Busy...</span>
+                                </div>
+                            }
+
+
+                            @switch (data.Status)
+                            {
+                                case InvoiceStatus.Posted:
+                                    <RadzenSplitButton class="primary"
+                                           Click="@(i => PostedButtonClick(i, data))"
+                                           Disabled="@IsRunningInvoiceAction(data.Id)"
+                                           Text="View">
+                                        <ChildContent>
+                                            <RadzenSplitButtonItem Text="Regenerate" Value="Regenerate" />
+                                            <RadzenSplitButtonItem Text="Resend" Value="Resend" />
+                                            <RadzenSplitButtonItem Text="Email" Value="Email" />
+                                            <RadzenSplitButtonItem Text="Advanced Email" Value="AdvancedEmail" />
+                                            <RadzenSplitButtonItem Text="Mark as 'Paid/Unsettled'"
+                                                       Visible="@IsAuthorizedFor(Permissions.Resources.InvoicePaidUnsettledTransition, Permissions.Operations.Execute)"
+                                                       Value="PaidUnSettled" />
+                                            <RadzenSplitButtonItem Text="Reverse"
+                                                       Value="Reverse"
+                                                       Visible="@(!data.IsReversal && !data.IsReversed && IsAuthorizedFor(Permissions.Resources.InvoiceReversal, Permissions.Operations.Execute))" />
+                                        </ChildContent>
+                                    </RadzenSplitButton>
+                                    break;
+                                case InvoiceStatus.UnPosted:
+                                    <RadzenSplitButton class="primary"
+                                           Click="@(i => UnPostedButtonClick(i, data))"
+                                           Disabled="@IsRunningInvoiceAction(data.Id)"
+                                           Text="Post & Send">
+                                        <ChildContent>
+                                            <RadzenSplitButtonItem Text="Post Only"
+                                                       Value="PostOnly" />
+                                            <RadzenSplitButtonItem Text="Resend Sales Order to FO"
+                                                       Value="Publish" />
+                                            <RadzenSplitButtonItem Text="Void"
+                                                       Value="Void" />
+                                        </ChildContent>
+                                    </RadzenSplitButton>
+                                    break;
+                                case InvoiceStatus.AgingUnSent:
+                                    <RadzenSplitButton class="primary"
+                                           Click="@(i => AgingUnsentButtonClick(i, data))"
+                                           Disabled="@IsRunningInvoiceAction(data.Id)"
+                                           Text="View">
+                                        <ChildContent>
+                                            <RadzenSplitButtonItem Text="Send"
+                                                       Value="PostSend" />
+                                            <RadzenSplitButtonItem Text="Regenerate"
+                                                       Value="Regenerate" />
+                                            <RadzenSplitButtonItem Text="Mark as 'Paid/Unsettled'"
+                                                       Visible="@IsAuthorizedFor(Permissions.Resources.InvoicePaidUnsettledTransition, Permissions.Operations.Execute)"
+                                                       Value="PaidUnSettled" />
+                                            <RadzenSplitButtonItem Text="Reverse"
+                                                       Value="Reverse"
+                                                       Visible="@(!data.IsReversal && !data.IsReversed && IsAuthorizedFor(Permissions.Resources.InvoiceReversal, Permissions.Operations.Execute))" />
+                                        </ChildContent>
+                                    </RadzenSplitButton>
+                                    break;
+                                case InvoiceStatus.PostedRejected:
+                                    <RadzenSplitButton class="primary"
+                                           Click="@(i => PostRejectedButtonClick(i, data))"
+                                           Disabled="@IsRunningInvoiceAction(data.Id)"
+                                           Text="Repost">
+                                        <ChildContent>
+                                            <RadzenSplitButtonItem Text="Regenerate"
+                                                       Value="Regenerate" />
+                                            <RadzenSplitButtonItem Text="Reverse"
+                                                       Value="Reverse"
+                                                       Visible="@(!data.IsReversal && !data.IsReversed && IsAuthorizedFor(Permissions.Resources.InvoiceReversal, Permissions.Operations.Execute))" />
+                                        </ChildContent>
+                                    </RadzenSplitButton>
+                                    break;
+                                case InvoiceStatus.Void:
+                                    <RadzenSplitButton class="primary"
+                                           Disabled="true"
+                                           Text="Voided">
+                                        <ChildContent>
+                                            <RadzenSplitButtonItem Text="Voided"
+                                                       Value="Voided" />
+                                        </ChildContent>
+                                    </RadzenSplitButton>
+                                    break;
+                                default:
+                                    <RadzenSplitButton class="primary"
+                                           Click="@(i => DefaultButtonClick(i, data))"
+                                           Disabled="@IsRunningInvoiceAction(data.Id)"
+                                           Text="View">
+                                        <ChildContent>
+                                        </ChildContent>
+                                    </RadzenSplitButton>
+                                    break;
+                            }
+                        </div>
+                    }
+                </Template>
+            </ColumnDefinition>
+        </Columns>
+    </PagableGridView>
+</div>

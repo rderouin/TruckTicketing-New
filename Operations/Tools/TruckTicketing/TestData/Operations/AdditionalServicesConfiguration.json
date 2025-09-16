@@ -1,0 +1,37 @@
+{
+  "Id": "14380d3c-f522-402d-a5d9-7f13708b57f2",
+  "ApplyZeroDollarPrimarySalesLine": false,
+  "ApplyZeroOilVolume": false,
+  "ApplyZeroSolidsVolume": false,
+  "ApplyZeroTotalVolume": false,
+  "ApplyZeroWaterVolume": false,
+  "CreatedAt": "0001-01-01T00:00:00+00:00",
+  "CreatedBy": null,
+  "CreatedById": null,
+  "CustomerId": "4985833b-aaaf-41fc-b8a4-604919c48c05",
+  "CustomerName": "Hayes Customer",
+  "DocumentType": "AdditionalServicesConfiguration",
+  "EntityType": "AdditionalServicesConfiguration",
+  "FacilityId": "ae62f28e-fd0b-4594-b235-0e254bc4771a",
+  "FacilityName": "LF Facility",
+  "FacilityType": "Lf",
+  "IsActive": true,
+  "Name": "Additional Service Config 1",
+  "PullVolumeQty": false,
+  "SiteId": "TAFA",
+  "UpdatedAt": "0001-01-01T00:00:00+00:00",
+  "UpdatedBy": null,
+  "UpdatedById": null,
+  "id": "AdditionalServicesConfiguration|14380d3c-f522-402d-a5d9-7f13708b57f2",
+  "AdditionalServices": [
+    {
+      "Id": "7543a5eb-9d15-407a-8b43-08dac4c08983",
+      "Name": "Waste - Processing",
+      "Number": "706060",
+      "ProductId": "a71ce21f-3e55-4333-953b-9cc27d4ffc57",
+      "Quantity": 5,
+      "UnitOfMeasure": "ml"
+    }
+  ],
+  "MatchCriteria": []
+}

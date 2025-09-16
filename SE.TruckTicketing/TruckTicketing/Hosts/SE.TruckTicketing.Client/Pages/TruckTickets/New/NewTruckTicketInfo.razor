@@ -1,0 +1,694 @@
+﻿@using SE.Shared.Common.Extensions
+@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Api.Models.SpartanProductParameters
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.FacilityServices
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using AccountTypes = SE.TruckTicketing.Contracts.Lookups.AccountTypes
+@inherits BaseTruckTicketingComponent
+
+@if (ViewModel.TruckTicket is not null)
+{
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h4 class="fw-bold">General Info</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Facility"
+                                 Component="FacilityDropDown"
+                                 class="required"/>
+                    <FacilityDropDown Id="FacilityDropDown"
+                                      @ref="@_facilityDropDown"
+                                      TValue="Guid"
+                                      Placeholder="Select Facility..."
+                                      @bind-Value="@ViewModel.TruckTicket.FacilityId"
+                                      OnDataLoading="@SetFacilityFilters"
+                                      TextProperty="@nameof(Facility.Name)"
+                                      ValueProperty="@nameof(Facility.Id)"
+                                      PageSize="10"
+                                      CacheItemsById="@UseCache"
+                                      OnItemSelect="@HandleFacilityChange"
+                                      OnItemLoad="@HandleFacilityLoad"
+                                      Disabled="@(!string.IsNullOrWhiteSpace(ViewModel.TruckTicket.TicketNumber))"
+                                      class="w-100"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Ticket Number"
+                                 Component="TicketNumberTextBox"
+                                 class="@(ViewModel.TruckTicket.TruckTicketType == TruckTicketType.SP && ViewModel.TruckTicket.Source == TruckTicketSource.Manual ? "required" : "")"/>
+                    <RadzenTextBox Id="TicketNumberTextBox"
+                                   @bind-Value="@ViewModel.TruckTicket.TicketNumber"
+                                   Class="w-100"
+                                   ReadOnly="@(!(ViewModel.TruckTicket.TruckTicketType == TruckTicketType.SP && ViewModel.TruckTicket.Source == TruckTicketSource.Manual))"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Well Classification"
+                                 Component="WellClassificationDropDown"
+                                 class="required"/>
+                    <RadzenDropDown id="WellClassificationDropDown"
+                                    TValue="WellClassifications"
+                                    @bind-Value="@ViewModel.TruckTicket.WellClassification"
+                                    TextProperty="Value"
+                                    ValueProperty="Key"
+                                    Placeholder="Select Well Classification..."
+                                    Multiple="false"
+                                    Disabled="@(ViewModel.Facility?.Type == FacilityType.Lf || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                    Change="@(wellClass => ViewModel.SetWellClassification((WellClassifications)wellClass))"
+                                    Data="@(DataDictionary.For<WellClassifications>())"
+                                    class="w-100"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <div>
+                        <RadzenLabel Text="Source Location"
+                                     Component="SourceLocationDropDown"
+                                     class="required d-inline"/>
+                        @if (ViewModel.TruckTicket.FacilityId != default && !(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced))
+                        {
+                            <a href="#"
+                               @onclick="@(() => ViewOrUpdateSourceLocation(false))"
+                               @onclick:preventDefault="true"
+                               @onclick:stopPropagation="true"
+                               class="text-decoration-none float-end pl-2 rz-label">
+                                    NEW
+                            </a>
+                        }
+                        @if (ViewModel.TruckTicket.FacilityId != default && ViewModel.TruckTicket.SourceLocationId != default && !(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced))
+                        {
+                            <a href="#"
+                               @onclick="@(() => ViewOrUpdateSourceLocation(true))"
+                               @onclick:preventDefault="true"
+                               @onclick:stopPropagation="true"
+                               class="text-decoration-none float-end rz-label">
+                                    VIEW
+                            </a>
+                        }
+                    </div>
+                    <DropDownLoadingContainer IsLoading="@(ViewModel.IsInitializing)">
+                        <LoadedView>
+                            <div class="d-flex align-items-center gap-2">
+                                <SourceLocationDropDown @ref="@_sourceLocationDropDown"
+                                                        Name="SourceLocationDropDown"
+                                                        TValue="Guid"
+                                                        Placeholder="Select Source Location..."
+                                                        @bind-Value="@ViewModel.TruckTicket.SourceLocationId"
+                                                        ValueProperty="@nameof(SourceLocation.Id)"
+                                                        PageSize="10"
+                                                        CacheItemsById="@UseCache"
+                                                        OnItemLoad="@HandleSourceLocationLoad"
+                                                        OnItemSelect="@OnSourceLocationChange"
+                                                        OnDataLoading="@HandleSourceLocationLoading"
+                                                        PreLoadedSearchCriteriaModel="@_sourceLocationSearchCriteriaModel"
+                                                        IsCacheRefresh="@ViewModel.IsSourceLocationDropDownCacheRefresh"
+                                                        GetSearchCriteriaModel="@(criteria => _sourceLocationSearchCriteriaModel = criteria)"
+                                                        FinishRefreshingCache="@(() => ViewModel.IsSourceLocationDropDownCacheRefresh = false)"
+                                                        Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                                        class="w-100"/>
+                                <RadzenButton Icon="refresh"
+                                              ButtonStyle="ButtonStyle.Secondary"
+                                              Click="@SourceLocationRefreshSearchCache"
+                                              Disabled="@(ViewModel.IsRefreshDisabled || ViewModel.IsRefresh)"
+                                              IsBusy="@ViewModel.IsSourceLocationDropDownCacheRefresh"/>
+                            </div>
+                        </LoadedView>
+                    </DropDownLoadingContainer>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Generator"
+                                 Component="GeneratorTextBox"/>
+                    <RadzenTextBox Id="GeneratorTextBox"
+                                   @bind-Value="@ViewModel.TruckTicket.GeneratorName"
+                                   Class="w-100"
+                                   Disabled="true"/>
+                </div>
+
+                @if (ViewModel.ShowMaterialApproval)
+                {
+                    <div class="col d-flex flex-column">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <RadzenLabel Text="Material Approval Number"
+                                         Component="MaterialApprovalNumberDropDown"
+                                         class="@(ViewModel.IsScaleTicketView ? "required" : "")"/>
+
+                            @if (ViewModel.HasMaterialApprovalErrors)
+                            {
+                                <div class="d-flex gap-2" style="text-align: left">
+                                    <p class = "text-decoration-none float-end rz-label" style="color:red">Material Approval Hazard State is Undefined</p>
+                                </div>
+                            }
+
+                            <div class="d-flex gap-2">
+                                @if (ViewModel.HasMaterialApprovalValue && ViewModel.TruckTicket.FacilityId != default && ViewModel.TruckTicket.SourceLocationId != default && !(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced))
+                                {
+                                    <a href="#"
+                                        @onclick="@(() => ViewOrUpdateMaterialApproval(true))"
+                                        @onclick:preventDefault="true"
+                                        @onclick:stopPropagation="true"
+                                        class="text-decoration-none float-end rz-label">
+                                                VIEW
+                                    </a>
+                                }
+                                @if (ViewModel.TruckTicket.FacilityId != default && ViewModel.TruckTicket.SourceLocationId != default && !(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced))
+                                {
+                                    <a href="#"
+                                        @onclick="@(() => ViewOrUpdateMaterialApproval(false))"
+                                        @onclick:preventDefault="true"
+                                        @onclick:stopPropagation="true"
+                                        class="text-decoration-none float-end rz-label">
+                                                NEW
+                                    </a>
+                                }
+                            </div>
+                        </div>
+
+                        <RadzenDropDown @ref="_materialApprovalDropDown"
+                                        Name="MaterialApprovalNumberDropDown"
+                                        Data="@ViewModel.MaterialApprovals"
+                                        TValue="Guid?"
+                                        Placeholder="Select Material Approval..."
+                                        @bind-Value="@ViewModel.TruckTicket.MaterialApprovalId"
+                                        TextProperty="@nameof(MaterialApproval.MaterialApprovalNumber)"
+                                        ValueProperty="@nameof(MaterialApproval.Id)"
+                                        PageSize="10"
+                                        class="w-100"
+                                        Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                        Change="@(HandleMaterialApprovalChange)"/>
+
+                        <MaterialApprovalOperatorNotesAcknowledgmentDialog @ref="@_materialApprovalAcknowledgment"
+                                                                           TruckTicket="@ViewModel.TruckTicket"
+                                                                           OnMaterialApprovalAccept="@HandleMaterialApprovalAccept"
+                                                                           OnAcknowledgementDecline="@HandleMaterialApprovalAcknowledgementDecline"/>
+                    </div>
+                }
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="WIQ Number"
+                                 Component="WiqNumberTextBox"/>
+                    <RadzenTextBox Id="WiqNumberTextBox"
+                                   @bind-Value="@ViewModel.TruckTicket.WiqNumber"
+                                   Class="w-100"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h4 class="fw-bold">Load Info</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Load Date"
+                                 Component="LoadDatePicker"
+                                 class="required"/>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <RadzenDatePicker TValue="DateTimeOffset?"
+                                      Name="LoadDatePicker"
+                                      DateFormat="MM/dd/yyyy"
+                                      Class="w-100 flex-grow-1"
+                                      Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                      Change="@(args => HandleLoadDateChange(args))"
+                                      @bind-Value="@ViewModel.TruckTicket.LoadDate"/>
+
+                        @if (ViewModel.TruckTicket.TruckTicketType is TruckTicketType.WT or TruckTicketType.SP)
+                        {
+                            <RadzenButton ButtonStyle="ButtonStyle.Info"
+                                          Class="flex-grow-0"
+                                          Visible="@(ViewModel.TruckTicket.Status is not TruckTicketStatus.Approved and not TruckTicketStatus.Invoiced and not TruckTicketStatus.Void)"
+                                          Click="@(() => HandleLoadDateChange(DateTimeOffset.UtcNow.ToAlbertaOffset().AddDays(-1)))"
+                                          Text="YESTERDAY"/>
+                        }
+                        else
+                        {
+                            <RadzenButton ButtonStyle="ButtonStyle.Info"
+                                          Class="flex-grow-0"
+                                          Visible="@(ViewModel.TruckTicket.Status is not TruckTicketStatus.Approved and not TruckTicketStatus.Invoiced and not TruckTicketStatus.Void)"
+                                          Click="@(() => HandleLoadDateChange(DateTimeOffset.UtcNow.ToAlbertaOffset()))"
+                                          Text="TODAY"/>
+                        }
+                    </div>
+                </div>
+
+                @if (!ViewModel.IsScaleTicketView)
+                {
+                    <div class="col d-flex flex-column">
+                        @if (ViewModel.TruckTicket?.CountryCode == CountryCode.US)
+                        {
+                            <RadzenLabel Text="Unload Oil Density (LB/GAL)"
+                                         Component="UnloadOilDensityTextBox"/>
+                        }
+                        else
+                        {
+                            <RadzenLabel Text="Unload Oil Density (KG/M&sup3;)"
+                                         Component="UnloadOilDensityTextBox"/>
+                        }
+                        <RadzenNumeric Id="UnloadOilDensityTextBox"
+                                       Name="UnloadOilDensityTextBox"
+                                       @bind-Value="@ViewModel.TruckTicket.UnloadOilDensity"
+                                       Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced)"
+                                       Class="w-100"/>
+                    </div>
+                }
+
+                @if (!ViewModel.IsScaleTicketView && ViewModel.Facility is not { CountryCode: CountryCode.US, Type: FacilityType.Swd or FacilityType.Fst })
+                {
+                    <div class="col-3 d-flex flex-column">
+                        <RadzenLabel Text="Dow / Non-Dow"
+                                     Component="DowNonDowDropdown"
+                                     class="required"/>
+                        <RadzenDropDown TValue="DowNonDow"
+                                        Class="w-100"
+                                        Id="DowNonDowDropdown"
+                                        @bind-Value="@ViewModel.TruckTicket.DowNonDow"
+                                        Placeholder="Select Dow or Non-Dow"
+                                        TextProperty="Value"
+                                        ValueProperty="Key"
+                                        Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced)"
+                                        Data="@(GetDowNonDowDropDownOptions())"/>
+                    </div>
+                }
+            </div>
+
+            @if (ViewModel.TruckTicket.TruckTicketType == TruckTicketType.SP && ViewModel.TruckTicket.Source != TruckTicketSource.Manual)
+            {
+                <div class="row mb-3">
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Spartan Product Parameter"
+                             Component="SpartanProductDropDown"/>
+                        <DropDownLoadingContainer IsLoading="@ViewModel.IsInitializing">
+                            <LoadedView>
+                                <div class="d-flex align-items-center gap-2">
+                                    <TridentApiDropDownDataGrid @ref="@_spartanProductParameterDropDown"
+                                                                Name="SpartanProductDropDown"
+                                                                TModel="SpartanProductParameter"
+                                                                TValue="Guid"
+                                                                Placeholder="Select Spartan Product Parameter..."
+                                                                @bind-Value="@ViewModel.TruckTicket.SpartanProductParameterId"
+                                                                TextProperty="@nameof(SpartanProductParameter.Display)"
+                                                                ValueProperty="@nameof(SpartanProductParameter.Id)"
+                                                                OnDataLoading="@(criteria => criteria.Filters[nameof(SpartanProductParameter.LegalEntityId)] = ViewModel.TruckTicket.LegalEntityId)"
+                                                                Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced)"
+                                                                PageSize="10"
+                                                                CacheItemsById="@UseCache"
+                                                                GetSearchCriteriaModel="@(criteria => _spartanProductParameterSearchCriteriaModel = criteria)"
+                                                                PreLoadedSearchCriteriaModel="@_spartanProductParameterSearchCriteriaModel"
+                                                                IsCacheRefresh="@ViewModel.IsSpartanProductParameterDropDownCacheRefresh"
+                                                                FinishRefreshingCache="@(() => ViewModel.IsSpartanProductParameterDropDownCacheRefresh = false)"
+                                                                class="w-100">
+                                        <Columns>
+                                            <RadzenDropDownDataGridColumn Property="@nameof(SpartanProductParameter.ProductName)"
+                                                                          Title="Product Name"
+                                                                          Width="100px"/>
+                                            <RadzenDropDownDataGridColumn Property="@nameof(SpartanProductParameter.LocationOperatingStatus)"
+                                                                          Title="Location Operating Status"
+                                                                          Width="100px"/>
+                                            <RadzenDropDownDataGridColumn Property="@nameof(SpartanProductParameter.MinFluidDensity)"
+                                                                          Title="Fluid Density (Min)"
+                                                                          Width="100px">
+                                                <Template Context="data">
+                                                    <span>@($"{data.MinFluidDensity:N1}")</span>
+                                                </Template>
+                                            </RadzenDropDownDataGridColumn>
+                                            <RadzenDropDownDataGridColumn Property="@nameof(SpartanProductParameter.MinFluidDensity)"
+                                                                  Title="Fluid Density (Max)"
+                                                                  Width="100px">
+                                                <Template Context="data">
+                                                    <span>@($"{data.MaxFluidDensity:N1}")</span>
+                                                </Template>
+                                            </RadzenDropDownDataGridColumn>
+                                            <RadzenDropDownDataGridColumn Property="@nameof(SpartanProductParameter.MinFluidDensity)"
+                                                                          Title="Water Percentage (Min)"
+                                                                          Width="100px">
+                                                <Template Context="data">
+                                                    <span>@($"{data.MinWaterPercentage:N6}")</span>
+                                                </Template>
+                                            </RadzenDropDownDataGridColumn>
+
+                                            <RadzenDropDownDataGridColumn Property="@nameof(SpartanProductParameter.MinFluidDensity)"
+                                                                          Title="Water Percentage (Max)"
+                                                                          Width="100px">
+                                                <Template Context="data">
+                                                    <span>@($"{data.MaxWaterPercentage:N6}")</span>
+                                                </Template>
+                                            </RadzenDropDownDataGridColumn>
+                                        </Columns>
+                                    </TridentApiDropDownDataGrid>
+
+                                    <RadzenButton Icon="refresh"
+                                                  ButtonStyle="ButtonStyle.Secondary"
+                                                  Click="@SpartanProductParameterRefreshSearchCache"
+                                                  Disabled="@(ViewModel.IsRefreshDisabled || ViewModel.IsRefresh)"
+                                                  IsBusy="@ViewModel.IsSpartanProductParameterDropDownCacheRefresh"/>
+                                </div>
+                            </LoadedView>
+                        </DropDownLoadingContainer>
+                    </div>
+                </div>
+            }
+
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <RadzenLabel Text="Facility Service"
+                                     Component="FacilityService"
+                                     class="required"/>
+
+                        @if (ViewModel.TruckTicket.EnforceSpartanFacilityServiceLock is true)
+                        {
+                            <a href="#"
+                               @onclick="@RemoveSpartanFacilityServiceLock"
+                               @onclick:preventDefault="true"
+                               @onclick:stopPropagation="true"
+                               class="text-decoration-none rz-link rz-label">
+                                Remove Spartan Facility Service Lock for @ViewModel.TruckTicket.LockedSpartanFacilityServiceName
+                            </a>
+                        }
+                    </div>
+                    <DropDownLoadingContainer IsLoading="@ViewModel.IsInitializing">
+                        <LoadedView>
+                            <div class="d-flex align-items-center gap-2">
+                                <TridentApiDropDownDataGrid @ref="_facilityServiceDropDown"
+                                                            TValue="Guid?"
+                                                            Name="FacilityService"
+                                                            TModel="FacilityServiceSubstanceIndex"
+                                                            ValueProperty="@nameof(FacilityServiceSubstanceIndex.Id)"
+                                                            TextProperty="@nameof(FacilityServiceSubstanceIndex.Display)"
+                                                            @bind-Value="@ViewModel.TruckTicket.FacilityServiceSubstanceId"
+                                                            OnDataLoading="@HandleFacilityServiceLoading"
+                                                            class="w-100"
+                                                            PageSize="10"
+                                                            CacheItemsById="@UseCache"
+                                                            Disabled="@DisableFacilityServiceSubstanceIndex"
+                                                            OnItemSelect="@OnFacilityServiceChange"
+                                                            OnItemLoad="@HandleFacilityServiceLoad"
+                                                            Placeholder="Select a facility service / substance..."
+                                                            GetSearchCriteriaModel="@(criteria => _facilityServiceSearchCriteriaModel = criteria)"
+                                                            PreLoadedSearchCriteriaModel="@_facilityServiceSearchCriteriaModel"
+                                                            IsCacheRefresh="@ViewModel.IsSpartanProductParameterDropDownCacheRefresh"
+                                                            FinishRefreshingCache="@(() => ViewModel.IsFacilityServiceDropDownCacheRefresh = false)">
+                                    <Columns>
+                                        <RadzenDropDownDataGridColumn Property="@nameof(FacilityServiceSubstanceIndex.FacilityServiceNumber)"
+                                                                  Title="Facility Service Number"
+                                                                  Width="15%"/>
+                                        <RadzenDropDownDataGridColumn Property="@nameof(FacilityServiceSubstanceIndex.ServiceTypeName)"
+                                                                  Title="Service Type"
+                                                                  Width="35%"/>
+                                        <RadzenDropDownDataGridColumn Property="@nameof(FacilityServiceSubstanceIndex.Substance)"
+                                                                  Title="Substance"
+                                                                  Width="35%"/>
+                                        <RadzenDropDownDataGridColumn Property="@nameof(FacilityServiceSubstanceIndex.WasteCode)"
+                                                                  Title="Waste Code"
+                                                                  Width="15%"/>
+                                    </Columns>
+                                </TridentApiDropDownDataGrid>
+
+
+                                <RadzenButton Icon="refresh"
+                                              ButtonStyle="ButtonStyle.Secondary"
+                                              Click="@FacilityServiceRefreshSearchCache"
+                                              Disabled="@(ViewModel.IsRefreshDisabled || ViewModel.IsRefresh)"
+                                              IsBusy="@ViewModel.IsFacilityServiceDropDownCacheRefresh"/>
+                            </div>
+                        </LoadedView>
+                    </DropDownLoadingContainer>
+                </div>
+            </div>
+            <div class="row">
+
+                @if (ViewModel.Facility?.ShowDestination == true)
+                {
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Destination"
+                                     Component="DestinationTextBox"/>
+                        <RadzenTextBox Name="DestinationTextBox"
+                                       @bind-Value="@ViewModel.TruckTicket.Destination"
+                                       Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced)"
+                                       Class="w-100"/>
+                    </div>
+                }
+
+                @if (ViewModel.TruckTicket?.CountryCode == CountryCode.US)
+                {
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="TNorms"
+                                     Component="TNormsTextBox"/>
+                        <RadzenTextBox Name="TNormsTextBox"
+                                       Id="TNormsTextBox"
+                                       @bind-Value="@ViewModel.TruckTicket.Tnorms"
+                                       Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                       Class="w-100"/>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h4 class="fw-bold">Trucking Info</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <div class="d-inline">
+                        <RadzenLabel Text="Trucking Company"
+                                     Component="TruckingCompanyDropDown"
+                                     class="required d-inline"/>
+                        <a href="#"
+                           @onclick="@(OnCreateNewTruckingAccount)"
+                           @onclick:preventDefault="true"
+                           @onclick:stopPropagation="true"
+                           class="text-decoration-none float-end pl-2 rz-label">
+                                NEW
+                        </a>
+                    </div>
+                    <DropDownLoadingContainer IsLoading="@ViewModel.IsInitializing">
+                        <LoadedView>
+                            <div class="d-flex align-items-center gap-2">
+                                <AccountsDropDown id="TruckingCompanyDropDown"
+                                                  TValue="Guid"
+                                                  @ref="@_truckingCompanyDropDown"
+                                                  AccountType="@AccountTypes.TruckingCompany"
+                                                  Placeholder="Select Trucking Company..."
+                                                  @bind-Value="@ViewModel.TruckTicket.TruckingCompanyId"
+                                                  TextProperty="@nameof(Account.Name)"
+                                                  ValueProperty="@nameof(Account.Id)"
+                                                  PageSize="10"
+                                                  CacheItemsById="@UseCache"
+                                                  OnItemSelect="@ViewModel.SetTruckingCompany"
+                                                  OnDataLoading="@OnTruckingCompanyLoading"
+                                                  OnItemLoad="@HandleTruckingCompanyLoad"
+                                                  Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced)"
+                                                  PreLoadedSearchCriteriaModel="@_truckingCompanySearchCriteriaModel"
+                                                  IsCacheRefresh="@ViewModel.IsTruckingCompanyDropDownCacheRefresh"
+                                                  class="w-100"
+                                                  GetSearchCriteriaModel="@(criteria => _truckingCompanySearchCriteriaModel = criteria)"
+                                                  FinishRefreshingCache="@(() => ViewModel.IsTruckingCompanyDropDownCacheRefresh = false)"/>
+                                <RadzenButton Icon="refresh"
+                                              ButtonStyle="ButtonStyle.Secondary"
+                                              Click="@TruckingCompanyRefreshSearchCache"
+                                              Disabled="@(ViewModel.IsRefreshDisabled || ViewModel.IsRefresh)"
+                                              IsBusy="@ViewModel.IsTruckingCompanyDropDownCacheRefresh"/>
+                            </div>
+                        </LoadedView>
+                    </DropDownLoadingContainer>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Bill of Lading"
+                                 Component="BillOfLadingTextBox"
+                                 class="required"/>
+                    <RadzenTextBox Id="BillOfLadingTextBox"
+                                   @bind-Value="@ViewModel.TruckTicket.BillOfLading"
+                                   Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced)"
+                                   Class="w-100"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Truck Number"
+                                 Component="TruckNumberTextBox"/>
+                    <RadzenTextBox Id="TruckNumberTextBox"
+                                   @bind-Value="@ViewModel.TruckNumber"
+                                   Change="@(() => ViewModel.TriggerWorkflows())"
+                                   Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                   Class="w-100"/>
+                </div>
+
+                @if (ViewModel.IsScaleTicketView)
+                {
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Trailer Number"
+                                     Component="TrailerNumberTextBox"/>
+                        <RadzenTextBox Id="TrailerNumberTextBox"
+                                       @bind-Value="@ViewModel.TrailerNumber"
+                                       Change="@(() => ViewModel.TriggerWorkflows())"
+                                       Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                       Class="w-100"/>
+                    </div>
+                }
+            </div>
+            <div class="row">
+
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Manifest Number"
+                                 Component="ManifestNumberTextBox"/>
+                    <RadzenTextBox Id="ManifestNumberTextBox"
+                                   @bind-Value="@ViewModel.TruckTicket.ManifestNumber"
+                                   Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced)"
+                                   Class="w-100"/>
+                </div>
+
+                @if (ViewModel.Facility?.ShowClassNumber ?? false)
+                {
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="TDG Class Number"
+                                     Component="ClassNumberTextBox"/>
+                        <RadzenTextBox Id="ClassNumberTextBox"
+                                       @bind-Value="@ViewModel.TruckTicket.ClassNumber"
+                                       Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced)"
+                                       Class="w-100"/>
+                    </div>
+                }
+
+                @if (ViewModel.Facility?.ShowUnNumber ?? false)
+                {
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="UN Number"
+                                     Component="UnNumberTextBox"/>
+                        <RadzenTextBox Id="UnNumberTextBox"
+                                       @bind-Value="@ViewModel.TruckTicket.UnNumber"
+                                       Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced)"
+                                       Class="w-100"/>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    @if (!ViewModel.IsServiceOnlyTicket)
+    {
+        <div class="card">
+            <div class="card-header">
+                <div class="flex-grow-0 d-flex align-items-center justify-content-between">
+                    <h4 class="fw-bold d-inline">Quantities</h4>
+                    <div class="d-flex gap-3">
+                        @if (ViewModel.IsScaleTicketView)
+                        {
+                            <div class="d-flex align-items-center gap-2">
+                                <RadzenLabel Text="Load Sampled"
+                                             Component="LoadSampledSwitch"
+                                             class="m-0"/>
+
+                                <RadzenSwitch Name="LoadSampledSwitch"
+                                              id="LoadSampledSwitch"
+                                              Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced)"
+                                              @bind-Value="@ViewModel.LandfillSampled"/>
+                            </div>
+                        }
+
+                        @if (ViewModel.Facility?.Type != FacilityType.Lf && (ViewModel.Facility?.ShowConversionCalculator ?? false))
+                        {
+                            <RadzenButton ButtonStyle="ButtonStyle.Info"
+                                          ButtonType="ButtonType.Submit"
+                                          Text="Open Conversion Calculator"
+                                          Click="OpenConversionCalculator"
+                                          class="my-2"
+                                          Disabled="@ViewModel.DisableConversionCalculator"/>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <NewTruckTicketLoadQuantities Facility="@ViewModel.Facility"
+                                      ServiceType="ViewModel.ServiceType"
+                                      @ref="_quantitiesComponent" />
+            </div>
+        </div>
+    }
+
+    <NewTruckTicketSales ShowAdditionalServicesOnly/>
+
+    @if (ViewModel.Facility is not { CountryCode: CountryCode.US, Type: FacilityType.Swd or FacilityType.Fst })
+    {
+        <div class="card">
+            <div class="card-header">
+                <h4 class="fw-bold">Ticket Info</h4>
+            </div>
+            <div class="card-body">
+                @if (ViewModel.Facility is not { CountryCode: CountryCode.US, Type: FacilityType.Swd or FacilityType.Fst })
+                {
+                    <div class="row mb-3">
+                        <div class="col d-flex flex-column">
+                            <RadzenLabel Text="Time In"
+                                         Component="TimeInDatePicker"
+                                         class="required"/>
+
+                            <div class="d-flex align-items-center gap-2">
+                                <CustomTimePicker Name="TimeInDatePicker"
+                                                  DateFormat="hh:mm tt"
+                                                  Class="w-100"
+                                                  Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced)"
+                                                  @bind-Time="@(ViewModel.TruckTicket.TimeIn)"/>
+
+                                <RadzenButton ButtonStyle="ButtonStyle.Info"
+                                              Class="flex-grow-0"
+                                              Click="@SetTimeInToCurrentTime"
+                                              Visible="@(ViewModel.TruckTicket.Status is not TruckTicketStatus.Invoiced and not TruckTicketStatus.Void)"
+                                              Text="NOW"/>
+                            </div>
+                        </div>
+
+                        <div class="col d-flex flex-column">
+                            <RadzenLabel Text="Time Out"
+                             Component="TimeOutPicker"
+                                         class="required"/>
+                            <div class="d-flex align-items-center gap-2">
+                                <CustomTimePicker Name="TimeOutPicker"
+                                                  DateFormat="hh:mm tt"
+                                                  Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced)"
+                                                  Class="w-100"
+                                                  @bind-Time="@(ViewModel.TruckTicket.TimeOut)"/>
+
+                                <RadzenButton ButtonStyle="ButtonStyle.Info"
+                                              Class="flex-grow-0"
+                                              Visible="@(ViewModel.TruckTicket.Status is not TruckTicketStatus.Invoiced and not TruckTicketStatus.Void)"
+                                              Click="@(() => ViewModel.TruckTicket.TimeOut = DateTimeOffset.Now)"
+                                              Text="NOW"/>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (ViewModel.IsScaleTicketView)
+                {
+                    <div class="row mb-3">
+                        <div class="col d-flex flex-column">
+                            <RadzenLabel Text="Quadrant"
+                                         Component="QuadrantTextBox"/>
+                            <RadzenTextBox Id="QuadrantTextBox"
+                                           @bind-Value="@ViewModel.TruckTicket.Quadrant"
+                                           Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced)"
+                                           Class="w-100"/>
+                        </div>
+                        <div class="col d-flex flex-column">
+                            <RadzenLabel Text="Level"
+                                         Component="LevelTextBox"/>
+                            <RadzenTextBox Id="LevelTextBox"
+                                           @bind-Value="@ViewModel.TruckTicket.Level"
+                                           Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced)"
+                                           Class="w-100"/>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}

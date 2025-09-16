@@ -1,0 +1,40 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+
+@if (_attachments.Results.Count() > 0)
+{
+    <section class="mb-5">
+        <h4 class="fw-bold">Attachments</h4>
+        <div class="grid-switch-container">
+            <PagableGridView TModel="AccountAttachment"
+                            Results="@_attachments"
+                            EnableSearch="false"
+                            EnablePaging="false"
+                            EnableSorting="true"
+                            OnDataLoad="LoadAttachments"
+                            EnableRowExpansion="false"
+                            EnableFilters="false"
+                            GridPageSize="10">
+                <Columns>
+                    <ColumnDefinition TItem="AccountAttachment"
+                                    Property="@nameof(AccountAttachment.FileName)"
+                                    Title="Account Attachment Name"
+                                    PropertyType="typeof(string)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="AccountAttachment"
+                                    Property="@nameof(AccountAttachment)"
+                                    Title="Actions"
+                                    Width="9rem"
+                                    EnableSorting="false">
+                        <Template Context="data">
+                            <RadzenButton Click="() => OpenViewDialog(data)"
+                                        ButtonStyle="ButtonStyle.Secondary"
+                                        Size="ButtonSize.Small"
+                                        Text="Download"/>
+                        </Template>
+                    </ColumnDefinition>
+                </Columns>
+            </PagableGridView>
+        </div>
+    </section>
+}

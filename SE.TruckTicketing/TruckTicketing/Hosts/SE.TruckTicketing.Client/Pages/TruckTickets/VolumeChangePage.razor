@@ -1,0 +1,137 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.Shared.Common.Utilities
+@inherits BaseTruckTicketingComponent
+@page "/truck-ticketing/volume-changes"
+
+<div class="bg-white p-4">
+    <div class="d-flex align-items-center justify-content-between">
+        <h3>Ticket Volume Changes</h3>
+    </div>
+</div>
+
+<div>
+    <GridFiltersContainer Expandable="@false"
+                          @ref="_gridFilterContainer"
+                          OnFilterChange="@(async criteria => await LoadVolumeChanges(criteria))">
+        <div class="d-flex flex-grow-1 gap-3">
+            <KeywordFilter Label="Search"
+                           Placeholder="Search by facility name or original process..."/>
+            <DateRangeFilter Label="Ticket Date Range"
+                             FilterPath="@nameof(VolumeChange.TicketDate)"/>
+            <DropDownDataGridFilter Label="Facility"
+                                    FilterPath="@nameof(TruckTicket.FacilityId)"
+                                    Placeholder="All facilities"
+                                    TItem="Facility"
+                                    DefaultSortProperty="@nameof(Facility.Name)"
+                                    TextProperty="@nameof(Facility.SiteId)"
+                                    BeforeDataLoad="@(criteria => criteria.Filters[nameof(Facility.IsActive)] = true)">
+                <Columns>
+                    <RadzenDropDownDataGridColumn Property="@nameof(Facility.SiteId)"
+                                                  Title="Site Id"
+                                                  Width="50px"/>
+                    <RadzenDropDownDataGridColumn Property="@nameof(Facility.Name)"
+                                                  Title="Name"
+                                                  Width="100px"/>
+                </Columns>
+            </DropDownDataGridFilter>
+            <SelectFilter Label="Original Process"
+                          Placeholder="All"
+                          FilterPath="@nameof(VolumeChange.ProcessOriginal)"
+                          Data="@(DataDictionary.For<Stream>(false).SelectOptions())"/>
+        </div>
+    </GridFiltersContainer>
+</div>
+
+<div class="grid-switch-container p-4">
+    <div class="d-flex justify-content-end gap-1">
+        <RadzenButton Icon="save_alt"
+                      title="Export to CSV"
+                      ButtonStyle="ButtonStyle.Light"
+                      Text="Export to CSV"
+                      Click="@Export"/>
+    </div>
+    <PagableGridView TModel="VolumeChange"
+                     Results="@_results"
+                     OnDataLoad="@LoadVolumeChanges"
+                     GridPageSize="10"
+                     EnableSorting="true"
+                     EnableFilters="false"
+                     EnableSearch="false"
+                     EnablePaging="true"
+                     IsLoading="_isLoading"
+                     @ref="_grid">
+        <Columns>
+            <ColumnDefinition TItem="VolumeChange"
+                              Property="@nameof(VolumeChange.TicketDate)"
+                              Title="Ticket Date"
+                              SortOrder="@SortOrder.Descending"
+                              PropertyType="typeof(DateTimeOffset)"
+                              ExportAs="@(v => (v as DateTime?)?.ToString("d"))">
+                <Template Context="context">
+                    @context.TicketDate.Date.ToString("MM/dd/yyyy")
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="VolumeChange"
+                              Property="@nameof(VolumeChange.TicketNumber)"
+                              Title="Ticket Number"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="VolumeChange"
+                              Property="@nameof(VolumeChange.TruckTicketStatus)"
+                              Title="Ticket Status"
+                              PropertyType="typeof(string)"
+                              ExportAs="@(v => Enum.Parse<TruckTicketStatus>(v.ToString()).ToString())"/>
+            <ColumnDefinition TItem="VolumeChange"
+                              Property="@nameof(VolumeChange.ProcessOriginal)"
+                              Title="Original Process"
+                              PropertyType="typeof(string)"
+                              ExportAs="@(v => Enum.Parse<Stream>(v.ToString()).ToString())"/>
+            <ColumnDefinition TItem="VolumeChange"
+                              Property="@nameof(VolumeChange.OilVolumeOriginal)"
+                              Title="Original Oil"
+                              PropertyType="typeof(double)"/>
+            <ColumnDefinition TItem="VolumeChange"
+                              Property="@nameof(VolumeChange.WaterVolumeOriginal)"
+                              Title="Original Water"
+                              PropertyType="typeof(double)"/>
+            <ColumnDefinition TItem="VolumeChange"
+                              Property="@nameof(VolumeChange.SolidVolumeOriginal)"
+                              Title="Original Solid"
+                              PropertyType="typeof(double)"/>
+            <ColumnDefinition TItem="VolumeChange"
+                              Property="@nameof(VolumeChange.TotalVolumeOriginal)"
+                              Title="Original Total"
+                              PropertyType="typeof(double)"/>
+            <ColumnDefinition TItem="VolumeChange"
+                              Property="@nameof(VolumeChange.ProcessAdjusted)"
+                              Title="Adjusted Process"
+                              PropertyType="typeof(string)"
+                              ExportAs="@(v => Enum.Parse<Stream>(v.ToString()).ToString())"/>
+            <ColumnDefinition TItem="VolumeChange"
+                              Property="@nameof(VolumeChange.OilVolumeAdjusted)"
+                              Title="Adjusted Oil"
+                              PropertyType="typeof(double)"/>
+            <ColumnDefinition TItem="VolumeChange"
+                              Property="@nameof(VolumeChange.WaterVolumeAdjusted)"
+                              Title="Adjusted Water"
+                              PropertyType="typeof(double)"/>
+            <ColumnDefinition TItem="VolumeChange"
+                              Property="@nameof(VolumeChange.SolidVolumeAdjusted)"
+                              Title="Adjusted Solid"
+                              PropertyType="typeof(double)"/>
+            <ColumnDefinition TItem="VolumeChange"
+                              Property="@nameof(VolumeChange.TotalVolumeAdjusted)"
+                              Title="Adjusted Total"
+                              PropertyType="typeof(double)"/>
+            <ColumnDefinition TItem="VolumeChange"
+                              Property="@nameof(VolumeChange.VolumeChangeReason)"
+                              Title="Reason"
+                              PropertyType="typeof(string)"
+                              ExportAs="@(v => Enum.Parse<VolumeChangeReason>(v.ToString()).ToString())"/>
+            <ColumnDefinition TItem="VolumeChange"
+                              Property="@nameof(VolumeChange.VolumeChangeReasonText)"
+                              Title="Additional Reason"
+                              PropertyType="typeof(string)"/>
+        </Columns>
+    </PagableGridView>
+</div>

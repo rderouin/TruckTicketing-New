@@ -1,0 +1,26 @@
+@page "/tt-status"
+@inherits BaseTruckTicketingComponent
+@using SE.TruckTicketing.Client.Components.TruckTicketComponents
+
+<div class="bg-white p-4">
+    <div class="breadcrumb-container mb-5">
+        Truck Ticket Status Management
+    </div>
+    <div class="row">
+        <div class="d-flex align-items-center justify-content-between col-6">
+            <div>
+                <VoidStatusReasonsGrid></VoidStatusReasonsGrid>            
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="d-flex align-items-center justify-content-between col-6">
+            <div>
+                <HoldStatusReasonsGrid></HoldStatusReasonsGrid>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

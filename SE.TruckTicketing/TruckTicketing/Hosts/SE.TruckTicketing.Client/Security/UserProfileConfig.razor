@@ -1,0 +1,135 @@
+@page "/access-management/user-profiles/{UserProfileId:guid?}"
+@using SE.TruckTicketing.Contracts.Models.Accounts
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<PageLoadingContainer IsLoading="@_IsLoading">
+    <LoadedView>
+        @if (UserProfile is null)
+        {
+            <div class="d-flex align-items-center justify-content-center h-100">
+                <div class="text-center">
+                    <h1 class="display-1 fw-bold">404</h1>
+                    <p class="fs-3"> <span class="text-danger">Oh no!</span> User profile not found.</p>
+                    <p class="lead">
+                        The user profile doesn’t exist.
+                    </p>
+                </div>
+            </div>
+        }
+        else
+        {
+            <RadzenTemplateForm TItem="UserProfile"
+                                Data="UserProfile"
+                                Submit="HandleSubmit">
+                <div class="bg-white sticky-footer-page">
+                    <p class="breadcrumb">
+                        @UserProfile.Email
+                    </p>
+                    <h3 class="title">Managing User Profile for @UserProfile.DisplayName</h3>
+                    <div class="sticky-footer">
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                      ButtonType="ButtonType.Submit"
+                                      Disabled="@(!HasWritePermission(Permissions.Resources.UserProfile))"
+                                      Text="Update User Profile"
+                                      IsBusy="@_isUpdating"
+                                      BusyText="Updating User Profile"
+                                      Icon="save"/>
+                    </div>
+
+                    <TridentValidationSummary Response="_response"
+                                              TModel="UserProfile"/>
+                    <br/>
+
+                    <section class="mb-5">
+                        <h4 class="fw-bold mb-3">Role Assignments</h4>
+
+                        <DualListBox TItem="RoleModel"
+                                     TValue="Guid"
+                                     SourceData="Roles"
+                                     SelectedValues="@(UserProfile.Roles.Select(role => role.RoleId))"
+                                     TextProperty="@nameof(RoleModel.Name)"
+                                     ValueProperty="@nameof(RoleModel.Id)"
+                                     SortExpression="x => x.Name"
+                                     OnSelectChange="HandleRoleAssignmentChange"
+                                     SelectHeading="Unassigned Roles"
+                                     UnselectHeading="Assigned Roles"
+                                     SelectItemText="Assign Role"
+                                     UnselectItemText="Revoke Role"
+                                     Height="25"
+                                     Multiple="true"/>
+                    </section>
+                    <section class="mb-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h4 class="fw-bold mb-3">Facility Access Levels</h4>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="d-flex align-items-center gap-2">
+                                    <RadzenLabel Text="Restrict Access to Specific Facilities"
+                                                 Component="FacilityAccessSwitch"
+                                                 class="m-0"/>
+                                    <RadzenSwitch id="FacilityAccessSwitch"
+                                                  @bind-Value="@UserProfile.EnforceSpecificFacilityAccessLevels"/>
+                                </div>
+                                <RadzenButton Text="Add Specific Facility Access Level"
+                                              Click="OpenSpecificFacilityAccessLevelDialog"
+                                              Visible="@UserProfile.EnforceSpecificFacilityAccessLevels"/>
+                            </div>
+
+                        </div>
+
+                        @if (!UserProfile.EnforceSpecificFacilityAccessLevels)
+                        {
+                            <RadzenLabel Text="Access Level for All Facilities"
+                                         Component="FacilityAccessLevelList"
+                                         class="required m-0"/>
+
+                            <RadzenRadioButtonList TValue="string"
+                                                   Class="w-100"
+                                                   Id="FacilityAccessLevelList"
+                                                   @bind-Value="@UserProfile.AllFacilitiesAccessLevel"
+                                                   Data="@(new[] { FacilityAccessLevels.Admin, FacilityAccessLevels.InheritedRoles, FacilityAccessLevels.ReadOnly })"/>
+                        }
+                        else
+                        {
+                            <PagableGridView TModel="UserProfileFacilityAccess"
+                                             @ref="@_facilityAccessLevelGrid"
+                                             Results="@UserProfileFacilityAccessList"
+                                             EnablePaging="false"
+                                             EnableSorting="false"
+                                             EnableFilters="false"
+                                             EnableSearch="false">
+                                <Columns>
+                                    <ColumnDefinition TItem="UserProfileFacilityAccess"
+                                                      Property="@nameof(UserProfileFacilityAccess.FacilityId)"
+                                                      Title="Facility"
+                                                      PropertyType="typeof(string)"
+                                                      HideColumn="true"/>
+                                    <ColumnDefinition TItem="UserProfileFacilityAccess"
+                                                      Property="@nameof(UserProfileFacilityAccess.FacilityDisplayName)"
+                                                      Title="Facility"
+                                                      PropertyType="typeof(string)"/>
+                                    <ColumnDefinition TItem="UserProfileFacilityAccess"
+                                                      Property="@nameof(UserProfileFacilityAccess.Level)"
+                                                      Title="Level"
+                                                      PropertyType="typeof(string)"/>
+                                    <ColumnDefinition TItem="UserProfileFacilityAccess"
+                                                      Property="@nameof(UserProfileFacilityAccess.FacilityId)"
+                                                      Title="Actions"
+                                                      Width="245px">
+                                        <Template Context="access">
+                                            <RadzenButton Click="@(() => RemoveSpecificFacilityAccessLevel(access))"
+                                                          ButtonType="ButtonType.Button"
+                                                          Text="Revoke Access"
+                                                          ButtonStyle="ButtonStyle.Danger"
+                                                          Size="ButtonSize.Small"/>
+                                        </Template>
+                                    </ColumnDefinition>
+                                </Columns>
+                            </PagableGridView>
+                        }
+                    </section>
+                </div>
+            </RadzenTemplateForm>
+        }
+    </LoadedView>
+</PageLoadingContainer>

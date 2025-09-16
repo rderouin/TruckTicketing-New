@@ -1,0 +1,577 @@
+[
+  {
+    "Id": "afb097a0-36ba-4fa3-b900-58f630dc423b",
+    "id": "afb097a0-36ba-4fa3-b900-58f630dc423b",
+    "Code": "UserProfiles",
+    "Display": "User Profiles",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "UserProfiles",
+    "AllowedOperations": [
+      {
+        "Id": "52676a86-4e8e-4a19-aff4-0bc61aa2ced3",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "f7f18dce-f101-4564-a115-c472fd610903",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "3ab68ff9-7f23-4358-a07e-692f7f75cc3d",
+    "id": "3ab68ff9-7f23-4358-a07e-692f7f75cc3d",
+    "Code": "Roles",
+    "Display": "Accounts Roles",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Roles",
+    "AllowedOperations": [
+      {
+        "Id": "44331e7d-5c73-4ac8-8f42-1d709d41b4ff",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "0d74eaf0-2ee6-474c-b30b-7256fa5387d9",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "f1bb1d1b-d8c5-49f7-ad14-023c980ebc44",
+    "id": "f1bb1d1b-d8c5-49f7-ad14-023c980ebc44",
+    "Code": "Notes",
+    "Display": "Notes",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Notes",
+    "AllowedOperations": [
+      {
+        "Id": "8d2e146e-f379-4787-a4b9-2149f1151e2a",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "51bbbf1d-d361-492e-8f45-9706c89f3931",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "c52843a9-d195-4dd0-9ae7-11d93b393873",
+    "id": "c52843a9-d195-4dd0-9ae7-11d93b393873",
+    "Code": "BillingConfiguration",
+    "Display": "Billing Configuration",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "BillingConfiguration",
+    "AllowedOperations": [
+      {
+        "Id": "0b1d8c2a-50e3-4d06-9184-d897a8100789",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "da065a03-b91e-4516-b3f3-735062d32145",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "e2397872-c247-4437-8116-04f1ad87b9be",
+    "id": "e2397872-c247-4437-8116-04f1ad87b9be",
+    "Code": "BusinessStream",
+    "Display": "Business Stream",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "BusinessStream",
+    "AllowedOperations": [
+      {
+        "Id": "100615f8-f69e-4b13-ab93-4e97a618c80b",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "384281f6-9c4f-4f3b-a6be-f4ad797e33e6",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "5833ba1e-4433-4481-8d9e-ae20cb497cdd",
+    "id": "5833ba1e-4433-4481-8d9e-ae20cb497cdd",
+    "Code": "LegalEntity",
+    "Display": "Legal Entity",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "LegalEntity",
+    "AllowedOperations": [
+      {
+        "Id": "dd2e77be-7cb0-4658-a60b-85a2405bb6e3",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "36e05927-8704-4cc7-99ac-d91169bd3d1d",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "ba4a9fc5-14ca-402e-ac98-62cba0f64951",
+    "id": "ba4a9fc5-14ca-402e-ac98-62cba0f64951",
+    "Code": "Account",
+    "Display": "Account",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Account",
+    "AllowedOperations": [
+      {
+        "Id": "daace6a0-a67f-49d7-b646-8340d06f06ad",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "63f9d98d-1afd-4235-83ae-12f2b3c2755d",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "fb843a53-3ce7-405f-9270-d7bfa670ab31",
+    "id": "fb843a53-3ce7-405f-9270-d7bfa670ab31",
+    "Code": "SpartanParams",
+    "Display": "Spartan Params",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "SpartanParams",
+    "AllowedOperations": [
+      {
+        "Id": "41303e41-66fc-43a6-8148-5b6e01a17e8e",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "efb0583a-f1d9-4d13-b7b4-236f0050265f",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "ba922f64-0c0c-448f-b6a8-889fe8bc809a",
+    "id": "ba922f64-0c0c-448f-b6a8-889fe8bc809a",
+    "Code": "MaterialApproval",
+    "Display": "Material Approval",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "MaterialApproval",
+    "AllowedOperations": [
+      {
+        "Id": "5cd714c1-4437-4f5d-95b3-417734bad525",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "572eed7a-8811-4fe3-b15f-f7d3a4f87986",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "d7431e75-e80d-41ce-8c13-cb04abf02f94",
+    "id": "d7431e75-e80d-41ce-8c13-cb04abf02f94",
+    "Code": "TruckTickets",
+    "Display": "Truck Tickets",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "TruckTickets",
+    "AllowedOperations": [
+      {
+        "Id": "ba844ea8-ed69-4c17-a596-4fb06e0d5c8f",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "8134c87d-2fd5-4eed-890b-23ac3801e97f",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "f7c3a62a-fedc-4b14-969c-f8261a91d784",
+    "id": "f7c3a62a-fedc-4b14-969c-f8261a91d784",
+    "Code": "TicketType",
+    "Display": "Ticket Type",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "TicketType",
+    "AllowedOperations": [
+      {
+        "Id": "7831d2db-2e43-4d7d-ab45-7eb143db0dfa",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "01fe81e4-66d2-4232-a6eb-30406b2926a0",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "801d4bd1-1bba-4ea6-a9fb-c85ea3194b1a",
+    "id": "801d4bd1-1bba-4ea6-a9fb-c85ea3194b1a",
+    "Code": "AdditionalServicesConfiguration",
+    "Display": "Additional Services Configuration",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "AdditionalServicesConfiguration",
+    "AllowedOperations": [
+      {
+        "Id": "8e88e22d-e7da-4d3f-8da5-b5c2358f773e",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "49a1f34d-0732-4039-8791-5b7a24d5612b",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "8c19876c-e784-47a6-86ee-e51e1e42f43b",
+    "id": "8c19876c-e784-47a6-86ee-e51e1e42f43b",
+    "Code": "TruckTicketTareWeight",
+    "Display": "Truck Ticket Tare Weight",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "TruckTicketTareWeight",
+    "AllowedOperations": [
+      {
+        "Id": "f0e437f8-0ad3-4313-8d0d-ba06ec626dde",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "0fdf65f6-a110-4913-b123-52c11736a2da",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "b40293d8-998a-4823-97b4-b51b1a75cd1d",
+    "id": "b40293d8-998a-4823-97b4-b51b1a75cd1d",
+    "Code": "ChangeTracking",
+    "Display": "ChangeTracking",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "ChangeTracking",
+    "AllowedOperations": [
+      {
+        "Id": "7afb983c-c30b-4538-9155-287c6189d178",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "79dd4b26-fb89-4c87-ac09-5a518df88b48",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "3c40ba2f-4258-400e-a848-a1703fa7e13d",
+    "id": "3c40ba2f-4258-400e-a848-a1703fa7e13d",
+    "Code": "InvoiceConfiguration",
+    "Display": "Invoice Configuration",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "InvoiceConfiguration",
+    "AllowedOperations": [
+      {
+        "Id": "7b36a595-5f09-46ab-a764-d84b18598a85",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "c42bd67c-88ae-471b-822b-7d84c9b0ed50",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "0c945ebc-c650-4898-9d37-9a280e824983",
+    "id": "0c945ebc-c650-4898-9d37-9a280e824983",
+    "Code": "LoadConfirmation",
+    "Display": "Load Confirmation",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Roles",
+    "AllowedOperations": [
+      {
+        "Id": "520fb0fb-8e28-42d3-9ee4-4e1886dbc3c7",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "cd8689a0-a393-41d1-aaed-2c4bfe349844",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "4dd27177-0cc5-466d-9563-3242ee556d45",
+    "id": "4dd27177-0cc5-466d-9563-3242ee556d45",
+    "Code": "TruckTicketVoidReason",
+    "Display": "Truck Ticket Void Reason",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "TruckTicketVoidReason",
+    "AllowedOperations": [
+      {
+        "Id": "6e3bdd45-b968-4274-8eaa-6429c02f0f13",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "9923bc00-eabb-4d6c-a5f1-aae370a796eb",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "e0d9e4dc-675b-4f17-bbb3-6305edecbc11",
+    "id": "e0d9e4dc-675b-4f17-bbb3-6305edecbc11",
+    "Code": "LandfillSampleRule",
+    "Display": "Landfill Sample Rule",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "LandfillSampleRule",
+    "AllowedOperations": [
+      {
+        "Id": "ab4427ce-2907-412e-a030-033b2f19e7d3",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "85a6b638-6edc-4f12-a95b-9c47e3278a3e",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "af99f284-3284-4861-a5a7-f88646491bef",
+    "id": "af99f284-3284-4861-a5a7-f88646491bef",
+    "Code": "Substances",
+    "Display": "Substances",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Substances",
+    "AllowedOperations": [
+      {
+        "Id": "247f4483-44a5-433b-bfa7-76f51c81100c",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "11f82d57-2225-4e70-b493-6128872fdb3b",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "006bc26a-1825-4975-a216-f2d49f41b68b",
+    "id": "006bc26a-1825-4975-a216-f2d49f41b68b",
+    "Code": "SalesLine",
+    "Display": "SalesLine",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "SalesLine",
+    "AllowedOperations": [
+      {
+        "Id": "6ae3decc-667d-45a0-afa9-b0db1d0ea30f",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "b9e5462c-81f8-46ae-badf-5e5934252e9f",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "0d307692-9c07-4199-814f-370871c19d23",
+    "id": "0d307692-9c07-4199-814f-370871c19d23",
+    "Code": "TruckTicketHoldReason",
+    "Display": "Truck Ticket Hold Reason",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "TruckTicketHoldReason",
+    "AllowedOperations": [
+      {
+        "Id": "5c18525a-43e0-406c-8187-96927999152d",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "0d116a57-d2d6-4538-8516-92c818f40de4",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "0e93ecb5-a280-4dd6-bd7c-8bdbe7c353d6",
+    "id": "0e93ecb5-a280-4dd6-bd7c-8bdbe7c353d6",
+    "Code": "TradeAgreementsUpload",
+    "Display": "Trade Agreements Upload",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "TradeAgreementsUpload",
+    "AllowedOperations": [
+      {
+        "Id": "b937ae75-2062-4c71-a5c3-151ae4a415bd",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "46a46e28-193e-4c8e-b4a6-16e99f69af62",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      },
+      {
+        "Id": "e01015f2-c4bd-4b4b-9a49-4b5fb49f0bd3",
+        "Display": "Upload",
+        "Name": "Upload",
+        "Value": "u"
+      }
+    ]
+  },
+  {
+    "Id": "8a5d9820-e7d6-4570-b855-e0738cf596b0",
+    "id": "8a5d9820-e7d6-4570-b855-e0738cf596b0",
+    "Code": "Invoice",
+    "Display": "Invoice",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "Invoice",
+    "AllowedOperations": [
+      {
+        "Id": "74f21904-9351-47aa-828b-5818f2b24215",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "9efa017c-fc14-4cde-a093-818838b545cf",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "47cc599b-b864-4c55-9dc9-d078d15215c5",
+    "id": "47cc599b-b864-4c55-9dc9-d078d15215c5",
+    "Code": "VolumeChange",
+    "Display": "Volume Change",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "VolumeChange",
+    "AllowedOperations": [
+      {
+        "Id": "8e15dab9-b735-4449-b7ae-e1580acdbcab",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      },
+      {
+        "Id": "63da53eb-4b67-4816-92e6-82bd51d6e160",
+        "Display": "Write",
+        "Name": "Write",
+        "Value": "w"
+      }
+    ]
+  },
+  {
+    "Id": "5a7c84ec-27bd-4f91-87e7-c1f413af72d9",
+    "id": "5a7c84ec-27bd-4f91-87e7-c1f413af72d9",
+    "Code": "EmailTemplate",
+    "Display": "Email Template",
+    "DocumentType": "Accounts",
+    "EntityType": "Permission",
+    "Name": "EmailTemplate",
+    "AllowedOperations": [
+      {
+        "Id": "b5b71790-3953-4cce-8052-df97525e1fb8",
+        "Display": "Read",
+        "Name": "Read",
+        "Value": "r"
+      }
+    ]
+  }
+]

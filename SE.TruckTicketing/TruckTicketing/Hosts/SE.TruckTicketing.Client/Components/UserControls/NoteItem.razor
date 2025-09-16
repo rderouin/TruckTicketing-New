@@ -1,0 +1,64 @@
+﻿@using Humanizer
+@inherits BaseRazorComponent
+
+<div class="d-flex align-items-start mb-3 note-item">
+    <div class="flex-grow-0 py-2 pr-2">
+        <RadzenGravatar Email="@(IsNew ? _currentUserName : Note.CreatedBy)"/>
+    </div>
+
+    <div class="flex-grow-1 @(_isEditing ? "" : "border border-1 rounded p-2")">
+        @if (!_isEditing)
+        {
+            <div class="d-flex align-items-center pb-1">
+                <div class="flex-grow-1 d-flex align-items-end gap-2">
+                    <strong>
+                        @(_noteIsOwnedByCurrentUser ? "You" : Note.CreatedBy)
+                    </strong>
+                    <small class="text-muted">
+                        commented @(Note.CreatedAt.Humanize()) @(Note.CreatedAt != Note.UpdatedAt ? "(edited)" : "")
+                    </small>
+                </div>
+
+                <div class="flex-grow-0 actions">
+                    <RadzenButton ButtonStyle="ButtonStyle.Light"
+                                  Size="ButtonSize.Small"
+                                  class="px-2"
+                                  Icon="edit_note"
+                                  Visible="@(_noteIsOwnedByCurrentUser && !Note.NotEditable)"
+                                  Click="@OnNoteEdit"
+                                  Title="Edit Comment"/>
+                </div>
+            </div>
+        }
+
+        <div class="grow-wrap"
+             data-replicated-value="@_replicatedValue">
+            <RadzenTextArea @ref="_noteEditor"
+                            @bind-Value="_internalNote.Comment"
+                            Placeholder="@Placeholder"
+                            class="@(_isEditing ? "w-100" : "w-100 display")"
+                            Rows="@(IsNew ? 4 : 2)"
+                            ReadOnly="@(!_isEditing || ReadOnly)"
+                            @oninput="@OnInput"/>
+        </div>
+
+        @if (_isEditing)
+        {
+            <div class="d-flex gap-2 mt-2 justify-content-end">
+                <RadzenButton Size="ButtonSize.Small"
+                              ButtonStyle="ButtonStyle.Light"
+                              Text="Cancel"
+                              Click="@OnEditCancelled"
+                              Visible="@(!IsNew || _isDirty)"/>
+                <RadzenButton Size="ButtonSize.Small"
+                              ButtonStyle="ButtonStyle.Primary"
+                              IsBusy="@_isUpdating"
+                              BusyText="@(IsNew ? "Posting" : "Adding Comment")"
+                              Disabled="@(!_isDirty)"
+                              Text="@(IsNew ? "Add Comment" : "Update")"
+                              Click="@OnNoteUpdated"
+                              Visible="@(!IsNew || _isDirty)"/>
+            </div>
+        }
+    </div>
+</div>

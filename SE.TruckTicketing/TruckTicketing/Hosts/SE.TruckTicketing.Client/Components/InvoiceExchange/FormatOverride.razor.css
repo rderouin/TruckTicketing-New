@@ -1,0 +1,12 @@
+﻿.expression-box ::deep .rz-textarea {
+    color: #eee;
+    font-family: monospace;
+}
+
+.expression-box-active ::deep .rz-textarea {
+    background-color: #333;
+}
+
+.expression-box-disabled ::deep .rz-textarea {
+    background-color: #aaa;
+}

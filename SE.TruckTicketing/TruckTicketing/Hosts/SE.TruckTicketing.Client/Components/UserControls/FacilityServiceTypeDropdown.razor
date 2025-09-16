@@ -1,0 +1,40 @@
+﻿@typeparam TValue
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits TridentApiDropDownDataGrid<ServiceType, TValue>
+<div class="flex gap-2 align-items-center">
+    <RadzenDropDownDataGrid 
+        id="@Id"
+        class="@Class"
+        @ref="MultiSelectDropDownDataGrid"
+        LoadData="@LoadData"
+        AllowFiltering="@AllowFiltering"
+        AllowClear="@AllowClear"
+        AllowSorting="true"
+        Placeholder="@Placeholder"
+        PageSize="@PageSize"
+        Change="@Change"
+        @bind-Value="@MultiSelectValue"
+        Data="@Data"
+        Count="@Count"
+        Responsive="@true"
+        Multiple="@true"
+        Disabled="@Disabled"
+        TextProperty="@TextProperty"
+        ValueProperty="@ValueProperty">
+      
+							
+        <Columns>
+            <RadzenDropDownDataGridColumn Width="5%"
+                                          Sortable="false">
+                <Template Context="data">
+                    <RadzenCheckBox TriState="false"
+                                    TValue="bool"
+                                    Value="@(Values != null && Values.Contains(ValuePropertySelector((ServiceType)data)))" />
+                </Template>
+            </RadzenDropDownDataGridColumn>
+            <RadzenDropDownDataGridColumn Property="@nameof(ServiceType.Name)"
+                                          Title="Service Type Name"
+                                          Width="95%"/>
+        </Columns>
+    </RadzenDropDownDataGrid>
+</div>

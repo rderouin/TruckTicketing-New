@@ -1,0 +1,97 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Lookups
+@inherits BaseTruckTicketingComponent
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex gap-2 align-items-start">
+            <h4 class="fw-bold">Sales Lines</h4>
+        </div>
+        <div class="d-flex gap-2 align-items-end">
+            <div class="d-flex align-items-center p-1">
+                <RadzenLabel Text="Show Reversed"
+                             Component="ShowReversed"
+                             class="m-1">
+                </RadzenLabel>
+                <RadzenSwitch id="ShowReversed"
+                              @bind-Value="@ShowReversed"
+                              Change="@OnShowReversed">
+                </RadzenSwitch>
+            </div>
+            <RadzenButton Click="@(args => AddAdditionalService())"
+                          Text="Add Additional Service"
+                          ButtonStyle="ButtonStyle.Primary"
+                          Size="ButtonSize.Medium"/>
+        </div>
+    </div>
+
+    @* Grid *@
+    <div class="card-body grid-switch-container">
+        <PagableGridView TModel="SalesLine"
+                         @ref="_grid"
+                         Results="@SalesLineResults"
+                         EnableSearch="false"
+                         EnablePaging="false"
+                         EnableSorting="true"
+                         @* OnDataLoad="LoadSalesLines" *@
+                         EnableRowExpansion="false"
+                         EnableFilters="false"
+                         GridPageSize="10">
+            <Columns>
+                <ColumnDefinition TItem="SalesLine"
+                                  Property="@nameof(SalesLine.ProductName)"
+                                  Title="Service Name"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SalesLine"
+                                  Property="@nameof(SalesLine.ProductNumber)"
+                                  Title="Service Number"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SalesLine"
+                                  Property="@nameof(SalesLine)"
+                                  Title="Rate ($)"
+                                  PropertyType="typeof(double)">
+                    <Template Context="data">
+                        <RadzenNumeric Name="TruckTicketSalesLineRateTextBox"
+                                       id="TruckTicketSalesLineRateTextBox"
+                                       Value="@data.Rate"
+                                       class="w-100"
+                                       Disabled="@(data.IsCutLine || data.Status == SalesLineStatus.Posted)"
+                                       Change="@(rate => OnRateChange(rate, data))"
+                                       ShowUpDown="false"
+                                       TValue="double">
+                        </RadzenNumeric>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SalesLine"
+                                  Property="@nameof(SalesLine.Quantity)"
+                                  Title="Quantity"
+                                  PropertyType="typeof(double)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SalesLine"
+                                  Property="@nameof(SalesLine.UnitOfMeasure)"
+                                  Title="UoM"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SalesLine"
+                                  Property="@nameof(SalesLine.TotalValue)"
+                                  Title="Total ($)"
+                                  PropertyType="typeof(double)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SalesLine"
+                                  Title="Action"
+                                  Width="10rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="@(_ => RemoveSalesLine(data))"
+                                      hidden="@(!data.IsAdditionalService)"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small"
+                                      Text="Remove"/>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

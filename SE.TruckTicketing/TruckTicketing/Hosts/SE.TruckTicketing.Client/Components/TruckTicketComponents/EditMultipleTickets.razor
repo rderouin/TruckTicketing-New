@@ -1,0 +1,132 @@
+﻿@using SE.TruckTicketing.UI.ViewModels
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Models.FacilityServices
+@using AccountTypes = SE.TruckTicketing.Contracts.Lookups.AccountTypes
+@inherits BaseTruckTicketingComponent
+
+<RadzenTemplateForm @ref="Form"
+                    TItem="EditMultipleTicketsViewModel"
+                    Data="@Model"
+                    Submit="@Submit">
+    <div class="d-grid gap-3">
+        @if (Model.PropertyBag.CanEditSourceLocation)
+        {
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Source Location"
+                             Component="SourceLocationDropDown"
+                             class="d-inline"/>
+                <SourceLocationDropDown Name="SourceLocationDropDown"
+                                        TValue="Guid"
+                                        Placeholder="Select Source Location..."
+                                        @bind-Value="Model.PropertyBag.SourceLocationId"
+                                        TextProperty="@nameof(SourceLocation.FormattedIdentifier)"
+                                        ValueProperty="@nameof(SourceLocation.Id)"
+                                        PageSize="10"
+                                        AllowClear="true"
+                                        OnItemSelect="@(v => Model.PropertyBag.SourceLocation = v)"
+                                        class="w-100"/>
+            </div>
+        }
+        @if (Model.PropertyBag.CanEditFacilityServiceSubstance)
+        {
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Facility Service"
+                             Component="FacilityService"/>
+
+                <TridentApiDropDownDataGrid TValue="Guid?"
+                                            Name="FacilityService"
+                                            TModel="FacilityServiceSubstanceIndex"
+                                            ValueProperty="@nameof(FacilityServiceSubstanceIndex.Id)"
+                                            TextProperty="@nameof(FacilityServiceSubstanceIndex.FacilityServiceNumber)"
+                                            @bind-Value="@Model.PropertyBag.FacilityServiceSubstanceId"
+                                            OnDataLoading="@(c => c.Filters[nameof(FacilityServiceSubstanceIndex.FacilityId)] = Model.PropertyBag.FacilityId)"
+                                            class="w-100"
+                                            PageSize="10"
+                                            AllowClear="true"
+                                            OnItemSelect="@(v => Model.PropertyBag.FacilityServiceSubstance = v)"
+                                            Placeholder="Select a facility service / substance...">
+                    <Columns>
+                            <RadzenDropDownDataGridColumn Property="@nameof(FacilityServiceSubstanceIndex.FacilityServiceNumber)"
+                                                      Title="Facility Service Number"
+                                                      Width="100px" />
+                            <RadzenDropDownDataGridColumn Property="@nameof(FacilityServiceSubstanceIndex.ServiceTypeName)"
+                                                      Title="Service Type"
+                                                      Width="100px" />
+                            <RadzenDropDownDataGridColumn Property="@nameof(FacilityServiceSubstanceIndex.Substance)"
+                                                      Title="Substance"
+                                                      Width="100px" />
+                            <RadzenDropDownDataGridColumn Property="@nameof(FacilityServiceSubstanceIndex.WasteCode)"
+                                                      Title="Waste Code"
+                                                      Width="100px"/>
+                    </Columns>
+                </TridentApiDropDownDataGrid>
+            </div>
+        }
+        @if (Model.PropertyBag.CanEditTruckingCompany)
+        {
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Trucking Company"
+                             Component="TruckingCompanyDropDown"/>
+                <AccountsDropDown id="TruckingCompanyDropDown"
+                                  TValue="Guid"
+                                  AccountType="@AccountTypes.TruckingCompany"
+                                  Placeholder="Select Trucking Company..."
+                                  @bind-Value="@Model.PropertyBag.TruckingCompanyId"
+                                  TextProperty="@nameof(Account.Name)"
+                                  ValueProperty="@nameof(Account.Id)"
+                                  PageSize="10"
+                                  AllowClear="true"
+                                  OnItemSelect="@(v => Model.PropertyBag.TruckingCompany = v)"
+                                  class="w-100"/>
+            </div>
+        }
+        @if (Model.PropertyBag.CanEditWellClassification)
+        {
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Well Classification"
+                             Component="WellClassificationDropDown"/>
+                <RadzenDropDown id="WellClassificationDropDown"
+                                TValue="WellClassifications"
+                                @bind-Value="@Model.PropertyBag.WellClassification"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Placeholder="Select Well Classification..."
+                                Multiple="false"
+                                Data="@(DataDictionary.For<WellClassifications>())"
+                                class="w-100"/>
+            </div>
+        }
+        @if (Model.PropertyBag.CanEditQuadrant)
+        {
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Quadrant"
+                             Component="QuadrantTextBox"/>
+                <RadzenTextBox Id="QuadrantTextBox"
+                               @bind-Value="@Model.PropertyBag.Quadrant"
+                               Class="w-100"/>
+            </div>
+        }
+        @if (Model.PropertyBag.CanEditLevel)
+        {
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Level"
+                             Component="LevelTextBox"/>
+                <RadzenTextBox Id="LevelTextBox"
+                               @bind-Value="@Model.PropertyBag.Level"
+                               Class="w-100"/>
+            </div>
+        }
+    </div>
+    <div class="d-flex m-3 gap-2 justify-content-end">
+        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                      ButtonType="ButtonType.Submit"
+                      Text="Save"/>
+
+        <RadzenButton ButtonStyle="ButtonStyle.Light"
+                      Text="Cancel"
+                      Click="@Cancel"/>
+    </div>
+</RadzenTemplateForm>

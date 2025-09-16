@@ -1,0 +1,80 @@
+﻿@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using Trident.Extensions
+@inherits BaseRazorComponent
+
+<EditForm EditContext="_editContext">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+                <h4 class="fw-bold">Load Summary Reporting</h4>
+                <RadzenSwitch @bind-Value="@model.LoadSummaryReport"/>
+            </div>
+        </div>
+        @if (model?.LoadSummaryReport == true)
+        {
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-6 d-flex flex-column">
+                        <div class="d-flex align-content-center">
+                            <RadzenLabel Text="Frequency"
+                                         Component="FrequencyButtonList"
+                                         class="required" />
+                        </div>
+                        <RadzenRadioButtonList Name="FrequencyButtonList"
+                                               @bind-Value="@model.LoadSummaryReportFrequency"
+                                               TValue="LoadSummaryReportFrequency"
+                                               Change=@((args) => OnLoadSummaryFrequencyChange(args))
+                                               TextProperty="Value"
+                                               ValueProperty="Key"
+                                               Data="@(DataDictionary.For<LoadSummaryReportFrequency>())">
+
+                        </RadzenRadioButtonList>
+
+                    </div>
+                    <div class="col d-flex flex-column">
+                        @if (ShowWeekDay)
+                        {
+                            <div class="col-6 d-flex flex-column">
+                                <div class="d-flex align-content-center">
+                                    <RadzenLabel Text="Set Week Day"
+                                                 class="required"
+                                                 Component="LoadSummaryReportFrequencyDropdown" />
+                                </div>
+                                <RadzenDropDown TValue="DayOfWeek"
+                                                Class="w-100"
+                                                Name="LoadSummaryReportFrequencyDropdown"
+                                                @bind-Value="@model.LoadSummaryReportFrequencyWeekDay"
+                                                TextProperty="Value"
+                                                ValueProperty="Key"
+                                                Data="@(DataDictionary.For<DayOfWeek>())" />
+                            </div>
+                        }
+                        else if (ShowMonthlyDate)
+                        {
+                            <div class="col-6 d-flex flex-column">
+                                <div class="d-flex align-content-center">
+                                    <RadzenLabel Text="Set Monthly Date"
+                                                 Component="MonthlyDateDropdown"
+                                                 class="required" />
+                                </div>
+                                <RadzenDropDown TValue="int?"
+                                                Class="w-100"
+                                                Name="MonthlyDateDropdown"
+                                                @bind-Value="@model.LoadSummaryReportFrequencyMonthlyDate"
+                                                Data="@_MonthDates" />
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+    <LoadSummaryReportRecipientGrid ReportRecipients="@model.LoadSummaryReportRecipients"
+                            AccountContactList="@AccountContacts"
+                            ReceiveLoadSummaryChange="UpdateReportRecipientReceiveLoadSummary"
+                            ReportRecipientDeleted="LoadSummaryReportRecipientDeleted"
+                            NewReportRecipientAdded="AddNewReportRecipient" />
+</EditForm>

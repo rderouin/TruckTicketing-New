@@ -1,0 +1,51 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.UI.ViewModels
+@inherits BaseRazorComponent
+
+<EditForm Model="@reportRecipient"
+          OnValidSubmit="@HandleSubmit">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Report Recipient"
+                                 Component="SignatoryNameDropdown"/>
+
+                    <RadzenDropDownDataGrid Class="w-100"
+                                            id="SignatoryNameDropdown"
+                                            @bind-Value="reportRecipient.AccountContactId"
+                                            TextProperty="@nameof(AccountContactMap.DisplayName)"
+                                            ValueProperty="@nameof(AccountContactMap.Id)"
+                                            Placeholder="Select email recipient..."
+                                            AllowFilteringByAllStringColumns="@true"
+                                            PageSize="10"
+                                            Count="@(AccountContacts?.Count ?? 0)"
+                                            Data="@AccountContacts?.OrderBy(x => x.ContactName)"
+                                            Change="@(args => OnChange(args))">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn Property="@nameof(AccountContactMap.AccountName)" 
+                                                          Title="Account Name" 
+                                                          Width="100px" />
+                            <RadzenDropDownDataGridColumn Property="@nameof(AccountContactMap.DisplayName)"
+                                                          Title="Contact"
+                                                          Width="100px"/>
+                        </Columns>
+                    </RadzenDropDownDataGrid>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end">
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          Click="HandleCancel"/>
+
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Save"
+                          Disabled="_isSaveDisabled"
+                          class="ml-2"/>
+        </div>
+    </div>
+</EditForm>

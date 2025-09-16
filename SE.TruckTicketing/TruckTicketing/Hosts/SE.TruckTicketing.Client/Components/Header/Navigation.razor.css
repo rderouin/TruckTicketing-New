@@ -1,0 +1,22 @@
+nav > ul {
+    display: flex;
+    line-height: 1.25;
+}
+
+::deep li {
+    margin: var(--spacing-150) 0;
+}
+
+::deep li.active > a {
+    border-bottom-color: var(--color-primary);
+    font-weight: var(--typography-weight-bold);
+}
+
+::deep li > a {
+    all: unset;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    display: block;
+    margin: 0 var(--spacing-75);
+    padding: var(--spacing-50) 0;
+}

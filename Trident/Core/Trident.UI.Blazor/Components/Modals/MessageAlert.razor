@@ -1,0 +1,20 @@
+@inherits BaseRazorComponent
+<style>
+    .rz-html-editor {
+        border-radius: 0;
+        border: 0;
+    }
+
+    .rz-html-editor-toolbar {
+        border-bottom: 0;
+    }
+</style>
+<div>
+    <RadzenHtmlEditor @bind-Value=@Text>
+        @*this hides tool bar*@
+        <div style="display:none"></div>
+    </RadzenHtmlEditor>
+    <div style="text-align:center">
+        <RadzenButton class="btn btn-primary" Click="OkButton_Clicked">OK</RadzenButton>
+    </div>
+</div>

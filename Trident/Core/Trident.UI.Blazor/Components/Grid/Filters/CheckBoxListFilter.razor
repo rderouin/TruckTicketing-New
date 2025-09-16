@@ -1,0 +1,22 @@
+@inherits CheckBoxListFilter
+@typeparam TOutputValue
+
+<div class="form-group col-sm-4">
+    <div class="filter-label">
+        <RadzenLabel Text="@FilterOptions.Label" Component="@Name" Style="font-weight: bold"></RadzenLabel>
+		@if (Value?.Any() ?? false)
+		{
+            <RadzenButton Id="main_Grid_Search" Click="@ResetToDefault" CssClass="move-role-btn">
+                 Clear
+            </RadzenButton>       		
+		}
+    </div>
+    <RadzenCheckBoxList TValue="TOutputValue"
+                        Name="@Name"
+                        Value="@Value"
+                        Data="@ListData"
+                        TextProperty="Display"
+                        ValueProperty="Value"
+                        Change="OnSelectionChanged" />
+   
+</div>

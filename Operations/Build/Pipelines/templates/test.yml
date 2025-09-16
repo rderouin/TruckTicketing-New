@@ -1,0 +1,50 @@
+# Template to execute quality checks
+
+parameters:
+- name: projects
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'Run Tests'
+  inputs:
+    command: 'test'
+    arguments: '--configuration Release --no-restore --no-build --settings:SE.TruckTicketing/test.runsettings --collect:"Code Coverage" --logger trx --logger html --verbosity normal'
+    projects: ${{ parameters.projects }}
+    testRunTitle: 'Run Tests'
+
+- task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@5
+  displayName: Generate Code Coverage Report
+  inputs:
+    reports: '$(Agent.TempDirectory)\**\*.cobertura.xml'
+    targetdir: '$(Build.ArtifactStagingDirectory)\coverage'
+    reporttypes: Cobertura
+
+- publish: $(Build.ArtifactStagingDirectory)\coverage
+  displayName: Publish Code Coverage Report Artifact
+  artifact: coverage
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish Code Coverage Results'
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '$(Build.ArtifactStagingDirectory)\coverage\cobertura.xml'
+
+# Note: Code Coverage does not currently pass (i.e., we need a lot more unit tests), so the build continues even when this step fails.
+# Once code coverage does work, and you want to break the build when code coverage is not met, make the following changes to the script below:
+#   - change "--error-status-code 0" to "--error-status-code 1"
+#   - add "--throw-exception $true"
+# (when --error-status-code is non-zero, DevOps will see this as an error condition and stop the build)
+- task: PowerShell@2
+  displayName: 'Code Coverage'
+  enabled: false
+  inputs:
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    errorActionPreference: 'continue'
+    targetType: 'inline'
+    failOnStderr: false
+    continueOnError: true
+    script: |
+      $analyzerPath = Resolve-Path("Operations\Build\Coverage\MSTest.Analyzer\Capax.CodeCoverage.MSTest.Analyzer.exe")
+      $targetsPath = Resolve-Path("SE.TruckTicketing\CoverageTargets.json")
+      $coveragePath = Resolve-Path("$(Agent.TempDirectory)\**\*.coverage")
+      & $analyzerPath --targets-file $targetsPath --coverage-file $coveragePath --error-status-code 0 --throw-exception $false

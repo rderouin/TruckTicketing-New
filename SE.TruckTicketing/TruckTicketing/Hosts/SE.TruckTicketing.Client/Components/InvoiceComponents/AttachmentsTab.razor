@@ -1,0 +1,49 @@
+@using SE.TruckTicketing.Contracts.Models.Invoices
+@inherits BaseTruckTicketingComponent
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex gap-2 align-items-start">
+            <h4 class="fw-bold">Attachments</h4>
+        </div>
+        <div class="d-flex gap-2 align-items-end">
+        </div>
+    </div>
+    <div class="card-body grid-switch-container">
+        <PagableGridView TModel="InvoiceAttachment"
+                         @ref="_grid"
+                         Results="@Attachments"
+                         EnableSearch="false"
+                         EnablePaging="false"
+                         EnableSorting="true"
+                         EnableRowExpansion="false"
+                         EnableFilters="false"
+                         GridPageSize="50">
+            <Columns>
+                <ColumnDefinition TItem="InvoiceAttachment"
+                                  Property="@nameof(InvoiceAttachment.FileName)"
+                                  Title="Filename"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="InvoiceAttachment"
+                                  Property="@nameof(InvoiceAttachment.ReferenceId)"
+                                  Title="Reference ID"
+                                  Width="6rem"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="InvoiceAttachment"
+                                  Property="@nameof(InvoiceAttachment)"
+                                  Title="Actions"
+                                  Width="10rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="@(() => HandleAttachmentDownload(data))"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Small"
+                                      Text="Download"/>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

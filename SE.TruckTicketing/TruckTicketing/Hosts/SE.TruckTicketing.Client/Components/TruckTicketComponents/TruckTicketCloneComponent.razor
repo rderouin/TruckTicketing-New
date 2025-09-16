@@ -1,0 +1,54 @@
+﻿@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col">
+                <RadzenLabel Text=""
+                             Component="TruckTicketCloneList" />
+                <div class="flex-grow-1">
+                    <RadzenRadioButtonList TValue="@TruckTicketCloneList"
+                                           id="TruckTicketCloneList"
+                                           TextProperty="Value"
+                                           ValueProperty="Key"
+                                           Data="@(DataDictionary.For<TruckTicketCloneList>())"
+                                           Change="@(args => OnTruckTicketCloneListStateChange(args))"
+                                           @bind-Value="@SelectedCloneOption" />
+                </div>
+            </div>
+        </div>
+        @if (CloneToStub)
+        {
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Stub Ticket Number"
+                                 Component="TruckTicketDropDown"
+                                 class="required"/>
+                    <TridentApiDropDown id="TruckTicketDropDown"
+                                        TModel="TruckTicket"
+                                        TValue="Guid"
+                                        Placeholder="Select Stub Number.."
+                                        @bind-Value="@StubTicketId"
+                                        TextProperty="@nameof(TruckTicket.TicketNumber)"
+                                        ValueProperty="@nameof(TruckTicket.Id)"
+                                        OnDataLoading="LoadStubTruckTickets"
+                                        OnItemSelect="SelectStubTicket"/>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="row mt-4 mb-3">
+    <div class="col d-flex justify-content-end">
+        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                      ButtonType="ButtonType.Submit"
+                      Click="@HandleSubmit"
+                      Text="Clone Ticket"
+                      Disabled="@(Disable)" />
+        <RadzenButton ButtonStyle="ButtonStyle.Light"
+                      Text="Cancel"
+                      class="ml-2"
+                      Click="HandleCancel"/>
+    </div>
+</div>

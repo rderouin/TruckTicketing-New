@@ -1,0 +1,81 @@
+﻿@page "/accounts/new"
+@using SE.TruckTicketing.Contracts.Models.Accounts
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using SE.TruckTicketing.Client.Components.Accounts
+@using SE.TruckTicketing.Client.Components.Accounts.Edit
+@using SE.TruckTicketing.Contracts.Security
+
+@inherits BaseTruckTicketingComponent
+
+<PageLoadingContainer IsLoading="_isLoading">
+    <LoadedView>
+        <EditForm EditContext="@_editContext"
+                  OnValidSubmit="OnHandleSubmit"
+                  class="h-100">
+            <div class="d-flex flex-column h-100">
+                <div class="flex-grow-0 p-4">
+                    <div class="d-flex align-items-end justify-content-between">
+                        <h3 class="title flex-grow-1 m-0">@_viewModel.Title</h3>
+                    </div>
+                    <br />
+                    <TridentValidationSummary Response="_response"
+                                              TModel="NewAccountModel" />
+
+                    <TridentValidationSummary Response="_accountWorkflowValidationResponse"
+                                              TModel="Account" />
+
+                    <TridentValidationSummary Response="_customerWorkflowValidationResponse"
+                                              TModel="Account" />
+                </div>
+                <div class="flex-grow-1 p-4"
+                     style="overflow-y: auto">
+                    <RadzenSteps @ref="_steps"
+                                 ShowStepsButtons="false">
+                        <Steps>
+                            <RadzenStepsItem Text="General Info">
+                                <NewAccountTypeGeneralInfo account="_viewModel.Account"
+                                                           SelectedAccountTypes="_viewModel.SelectedAccountTypes"
+                                                           AccountTypeSelectionChange="OnAccountTypeChange"
+                                                           LegalEntityCountryCodeChange="OnLegalEntityCountryCodeChange" />
+                                @if (_viewModel.Account.AccountAddresses.Any(x => x.IsPrimaryAddress) && (_viewModel.IsAccountTypeCustomer || _viewModel.IsAccountTypeGenerator || _viewModel.IsAccountTypeThirdPartyAnalytical
+                                || _viewModel.IsAccountTypeTruckingCompany))
+                                {
+                                    <NewAccountGeneralInfo SelectedAccountTypes="@_viewModel.SelectedAccountTypes"
+                                                       LegalEntityCountryCode="@_viewModel.SelectedLegalEntityCountryCode"
+                                                       accountAddress="@_viewModel.Account.AccountAddresses.First(x => x.IsPrimaryAddress)" />
+                                }
+                                @if (_viewModel.IsAccountTypeCustomer || _viewModel.IsAccountTypeGenerator
+                                || _viewModel.IsAccountTypeThirdPartyAnalytical || _viewModel.IsAccountTypeTruckingCompany)
+                                {
+                                    <AddEditAccountContactGrid Account="@_viewModel.Account"
+                                                               OnAddEditAccountContact="@AddEditAccountContact"/>
+                                    
+                                }
+                            </RadzenStepsItem>
+                        </Steps>
+                    </RadzenSteps>
+                </div>
+                <div class="flex-grow-0 d-flex align-items-end justify-content-end p-4 @ClassNames("", ("footer-panel", !isPageActingAsDialog))">
+                    <div class="d-flex gap-2">
+                        <RadzenButton Text="Close"  
+									  Icon="close"
+                                      class="rz-button rz-button-md btn-secondary text-decoration-none active"
+                                      Click="CloseButton_Click" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                      Text="Previous"
+                                      Click="PreviousClick"
+                                      Disabled="_isPreviousDisabled || !HasWritePermission(Permissions.Resources.Account)" />
+
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                      Text="@_saveButtonText"
+                                      Click="NextClick"
+                                      Disabled="_isNextDisabled || !HasWritePermission(Permissions.Resources.Account)"
+                                      IsBusy="_isValidating"
+                                      BusyText="@_viewModel.NextButtonBusyText" />
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+    </LoadedView>
+</PageLoadingContainer>

@@ -1,0 +1,43 @@
+﻿@typeparam TModel where TModel : class, Trident.Contracts.Api.Client.IGuidModelBase
+@typeparam TValue
+@using Trident.Contracts.Api.Client
+@inherits TridentApiListBox<TModel, TValue>
+
+
+<RadzenDropDownDataGrid id="@Id"
+                        @ref="@_dropDownDataGrid"
+                        Class="flex-grow-1"
+                        AllowFiltering="@true"
+                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" 
+                        FilterOperator="StringFilterOperator.Contains"
+                        AllowClear="true"
+                        AllowSorting="true"
+                        Placeholder="@Placeholder"
+                        PageSize="10"
+                        Change="@Change"
+                        @bind-Value="@Value"
+                        Count="@(Results?.Info?.TotalRecords ?? 0)"
+                        Data="@Results?.Results"
+                        Responsive="@true"
+                        Multiple="@true"
+                        TextProperty="@TextProperty"
+                        ValueProperty="@nameof(IGuidModelBase.Id)"
+                        LoadData="@OnLoadData">
+    <Columns>
+        <RadzenDropDownDataGridColumn Width="50px"
+                                      Sortable="false">
+            <HeaderTemplate>
+                <RadzenCheckBox TriState="false"
+                                TValue="bool"
+                                Value="@(Results is {Results: { } } && Values != null && Values.Any() && Results.Results.Any(m => Values.Contains(m.Id)))"
+                                Change="@HandleHeaderCheckboxChange" />
+            </HeaderTemplate>
+            <Template Context="data">
+                <RadzenCheckBox TriState="false"
+                                TValue="bool"
+                                Value="@(Values != null && Values.Contains((Guid)data.Id))"/>
+            </Template>
+        </RadzenDropDownDataGridColumn>
+        @Columns
+    </Columns>
+</RadzenDropDownDataGrid>

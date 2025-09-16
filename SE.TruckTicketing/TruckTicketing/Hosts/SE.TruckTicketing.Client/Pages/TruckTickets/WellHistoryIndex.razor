@@ -1,0 +1,69 @@
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.Shared.Common.Lookups
+@inherits BaseTruckTicketingComponent
+
+<PagableGridView @ref="_grid"
+                 TModel="SalesLine"
+                 Results="@_results"
+                 EnableSearch="false"
+                 EnablePaging="true"
+                 EnableSorting="true"
+                 OnDataLoad="@LoadSalesLines"
+                 EnableFilters="false"
+                 GridPageSize="10"
+                 IsLoading="@_isLoading"
+                 ColumnWidth="140px">
+    <Columns>
+        <ColumnDefinition TItem="SalesLine"
+                          Property="@nameof(SalesLine.TruckTicketDate)"
+                          Title="Date"
+                          PropertyType="typeof(string)">
+            <Template Context="data">
+                @data.TruckTicketDate.ToString("d")
+            </Template>
+        </ColumnDefinition>
+
+        <ColumnDefinition TItem="SalesLine"
+                          Property="@nameof(SalesLine.FacilitySiteId)"
+                          Title="Facility"
+                          PropertyType="typeof(string)"/>
+
+        <ColumnDefinition TItem="SalesLine"
+                          Property="@nameof(SalesLine.WellClassification)"
+                          Title="Well Classification"
+                          PropertyType="typeof(WellClassifications)"/>
+
+        <ColumnDefinition TItem="SalesLine"
+                          Property="@nameof(SalesLine.ProductName)"
+                          Title="Product"
+                          PropertyType="typeof(string)"/>
+
+        <ColumnDefinition TItem="SalesLine"
+                          Property="@nameof(SalesLine.Substance)"
+                          Title="Substance"
+                          PropertyType="typeof(string)"/>
+
+        <ColumnDefinition TItem="SalesLine"
+                          Property="@nameof(SalesLine.Quantity)"
+                          Title="Quantity"
+                          PropertyType="typeof(double)">
+            <Template Context="data">
+                <span class="float-right">@(data.Quantity.ToString("N4"))</span>
+            </Template>
+        </ColumnDefinition>
+
+        <ColumnDefinition TItem="SalesLine"
+                          Property="@nameof(SalesLine.TruckTicketNumber)"
+                          Title="Ticket Number"
+                          PropertyType="typeof(string)"/>
+
+        <ColumnDefinition TItem="SalesLine"
+                          Property="@nameof(SalesLine.Rate)"
+                          Title="Unit Price"
+                          PropertyType="typeof(double)">
+            <Template Context="data">
+                <span class="float-right">@(data.Rate.ToString("N2"))</span>
+            </Template>
+        </ColumnDefinition>
+    </Columns>
+</PagableGridView>

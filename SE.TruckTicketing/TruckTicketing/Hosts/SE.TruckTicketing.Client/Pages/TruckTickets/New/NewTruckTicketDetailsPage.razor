@@ -1,0 +1,124 @@
+﻿@using SE.Shared.Common.Extensions
+@using SE.Shared.Common.Lookups
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseTruckTicketingComponent
+
+@if (ViewModel.TruckTicket is not null)
+{
+    <div class="d-flex flex-column h-100">
+        <div class="flex-grow-0"
+             style="background-color: rgb(240 248 255 / 40%);">
+            <div class="d-flex align-items-center justify-content-between p-4">
+                <div class="flex-grow-1">
+                    <h3 class="fw-bold">@Title</h3>
+                    <h3 class="fw-bold mb-2">
+                        @if (ViewModel.TruckTicket.TicketNumber.HasText())
+                        {
+                            <span class="px-2 py-1 my-1 @_backgroundColor"
+                                  style="border-radius: 5px; @_textColor">
+                                @(ViewModel.TruckTicket.TicketNumber)
+                            </span>
+                        }
+
+                    </h3>
+                    <div class="d-flex align-items-center gap-2">
+                        <RadzenBadge Text="@(TicketStatus + Reason)"/>
+                        <RadzenBadge Text="@(ViewModel.TruckTicket.ValidationStatus.ToString())"
+                                     BadgeStyle="@(ValidationStatusBadgeStyle)"
+                                     Visible="@(ViewModel.TruckTicket.ValidationStatus is not TruckTicketValidationStatus.Unverified)"/>
+
+                        <RadzenBadge Text="@("Tracking Number: " + ViewModel.TruckTicket.TrackingNumber)"
+                                     Visible="@(ViewModel.TruckTicket.TrackingNumber.HasText())"
+                                     BadgeStyle="BadgeStyle.Info"/>
+
+                        <RadzenBadge Text="Red Flag"
+                                     Visible="@(ViewModel.TruckTicket.CustomerWatchListStatus == WatchListStatus.Red)"
+                                     BadgeStyle="BadgeStyle.Danger"/>
+
+                        <RadzenBadge Text="Yellow Flag"
+                                     Visible="@(ViewModel.TruckTicket.CustomerWatchListStatus == WatchListStatus.Yellow)"
+                                     BadgeStyle="BadgeStyle.Warning"/>
+
+                        <RadzenBadge Text="Invoicing Threshold Breached"
+                                     Visible="@(ViewModel.InvoiceThresholdViolationMessage.HasText())"
+                                     BadgeStyle="BadgeStyle.Warning"/>
+
+                    </div>
+                    @if (ViewModel.InvoiceThresholdViolationMessage.HasText())
+                    {
+                        <div class="d-flex align-items-center gap-2 mt-2">
+                            <RadzenIcon Icon="error"
+                                        IconStyle="IconStyle.Danger"/>
+                            <h6 class="text-danger">
+                                <span>@ViewModel.InvoiceThresholdViolationMessage</span>
+                            </h6>
+                        </div>
+                    }
+                </div>
+                <div class="d-flex align-items-center gap-2 flex-grow-0">
+                    @if (ViewModel.Facility is not null && ViewModel.Facility.Type == FacilityType.Lf)
+                    {
+                        <LandfillSamplingCountdown FacilityId="@ViewModel.Facility.Id"/>
+                    }
+                    <RadzenButton Text="Refresh Ticket"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  Click="@RefreshTruckTicketDetails"
+                                  Disabled="@ViewModel.IsRefreshDisabled"
+                                  Visible="@ViewModel.TruckTicket.TicketNumber.HasText()"
+                                  IsBusy="@IsRefreshing"/>
+                    <RadzenButton Icon="close"
+                                  ButtonStyle="ButtonStyle.Light"
+                                  Click="@ViewModel.CloseActiveTruckTicket"/>
+                </div>
+            </div>
+
+            <div>
+                <TridentValidationSummary TModel="TruckTicketSalesPersistenceResponse"
+                                          Response="@ViewModel.UpsertResponse"/>
+            </div>
+        </div>
+        <div class="flex-grow-1"
+             style="overflow-y: scroll"
+             @ref="truckTicketPageLoadingContainer">
+            <PageLoadingContainer>
+                <LoadedView>
+                    <RadzenTabs @bind-SelectedIndex="_selectedTabIndex">
+                        <Tabs>
+                            <RadzenTabsItem Text="Ticket Info">
+                                <NewTruckTicketInfo/>
+                            </RadzenTabsItem>
+                            <RadzenTabsItem Text="Billing">
+                                <NewTruckTicketBilling/>
+                            </RadzenTabsItem>
+                            <RadzenTabsItem Text="Sales"
+                                            Visible=@(ViewModel.TruckTicket.BillingCustomerId != Guid.Empty)>
+                                <NewTruckTicketSales OnRemoveSalesLines="@HandleOnRemoveSalesLines"/>
+                            </RadzenTabsItem>
+                            <RadzenTabsItem Text="Well History"
+                                            Visible="@(ViewModel.TruckTicket.Id != Guid.Empty)">
+                                <WellHistoryIndex SourceLocationId="@ViewModel.TruckTicket.SourceLocationId"/>
+                            </RadzenTabsItem>
+                            <RadzenTabsItem Text="Attachments"
+                                            Visible="@(ViewModel.TruckTicket.Id != Guid.Empty)">
+                                <TruckTicketAttachments/>
+                            </RadzenTabsItem>
+                            <RadzenTabsItem Text="Notes"
+                                            Visible="@(ViewModel.TruckTicket.Id != Guid.Empty)">
+                                <TruckTicketNotes/>
+                            </RadzenTabsItem>
+                            @if (ViewModel.TruckTicket.Id != Guid.Empty)
+                            {
+                                <RadzenTabsItem Text="Truck Ticket History">
+                                    <TridentChangeDataGridWrapper Id="@ViewModel.TruckTicket.Id"
+                                                                  EntityType="TruckTicket"
+                                                                  EntityName="Truck Ticket"/>
+                                </RadzenTabsItem>
+                            }
+                        </Tabs>
+                    </RadzenTabs>
+                </LoadedView>
+            </PageLoadingContainer>
+        </div>
+    </div>
+}

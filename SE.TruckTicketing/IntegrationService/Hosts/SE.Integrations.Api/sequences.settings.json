@@ -1,0 +1,38 @@
+﻿{
+  "Sequences": {
+    "ScaleTicket": {
+      "MaxRequestBlockSize": "20",
+      "Seed": "10000000",
+      "Suffix": "-LF"
+    },
+    "WorkTicket": {
+      "MaxRequestBlockSize": "20",
+      "Seed": "10000000",
+      "Suffix": "-WT"
+    },
+    "AccountNumber": {
+      "Seed": "10000000",
+      "MaxRequestBlockSize": 2
+    },
+    "MaterialApproval": {
+      "Seed": "10000000",
+      "MaxRequestBlockSize": 2,
+      "Suffix": "-MA"
+    },
+    "InvoiceProposal": {
+      "Seed": "10000000",
+      "MaxRequestBlockSize": 2,
+      "Suffix": "-IP"
+    },
+    "LoadConfirmation": {
+      "Seed": "10000000",
+      "MaxRequestBlockSize": 2,
+      "Suffix": "-LC"
+    },
+    "SalesLine": {
+      "Seed": "10000000",
+      "MaxRequestBlockSize": 2,
+      "Suffix": "-SL"
+    }
+  }
+}

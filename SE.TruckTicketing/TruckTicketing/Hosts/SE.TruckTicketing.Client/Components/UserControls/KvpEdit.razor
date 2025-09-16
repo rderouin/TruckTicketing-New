@@ -1,0 +1,40 @@
+﻿@inherits BaseTruckTicketingComponent
+
+<div class="mt-2">
+    <RadzenLabel Text="HTTP Headers"></RadzenLabel><br/>
+    <div class="http-headers">
+        @foreach (var kvp in Data)
+        {
+            <div class="d-flex align-items-center">
+                <div class="w-100">
+                    <RadzenTextBox Value="@kvp.Key"
+                                   ValueChanged="v => UpdateKey(kvp, v)"
+                                   Placeholder="Enter Header Name"
+                                   class="w-100">
+                    </RadzenTextBox>
+                </div>
+                <div class="m-2">:</div>
+                <div class="w-100">
+                    <RadzenTextBox Value="@kvp.Value"
+                                   ValueChanged="v => UpdateValue(kvp, v)"
+                                   Placeholder="Enter Header Value"
+                                   class="w-100">
+                    </RadzenTextBox>
+                </div>
+                <div>
+                    <RadzenButton Text="Delete"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  Click="() => DeleteValue(kvp)"
+                                  class="ms-2">
+                    </RadzenButton>
+                </div>
+            </div>
+        }
+    </div>
+    <RadzenButton Text="Add"
+                  Icon="add"
+                  ButtonStyle="ButtonStyle.Secondary"
+                  Click="@AddRow"
+                  class="mt-2">
+    </RadzenButton>
+</div>

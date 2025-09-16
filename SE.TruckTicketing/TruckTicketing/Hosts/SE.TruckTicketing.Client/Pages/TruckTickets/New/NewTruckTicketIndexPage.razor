@@ -1,0 +1,269 @@
+﻿@using SE.TruckTicketing.Contracts.Lookups
+@inherits BaseTruckTicketingComponent
+@page "/truck-ticketing/truck-tickets"
+
+<style>
+    #TruckTicketIndex [data-ticket-active='true'] td {
+        font-weight: 800;
+        border: 2px solid rgba(17, 81, 243, 0.2)
+    }
+    
+    #TruckTicketIndex tr td {
+        padding: 0.25em 0.5em;
+    }
+    
+    .small-badge {
+        line-height: 0.75rem;
+        font-size: 0.5rem;
+    }
+</style>
+<GenericInitializationWatcher @ref="GenericInitializationWatcher"/>
+<WellClassificationWatcher @ref="WellClassificationWatcher"/>
+<MaterialApprovalWatcher @ref="MaterialApprovalWatcher"/>
+<TareWeightWatcher @ref="TareWeightWatcher"/>
+<BillingConfigurationWatcher @ref="BillingConfigurationWatcher"/>
+<SalesLinesWatcher @ref="SalesLinesWatcher"/>
+
+<RadzenSplitter>
+<RadzenSplitterPane Collapsible="false">
+    <div class="position-relative h-100"
+         style="overflow-y: auto">
+        <div class="pt-4">
+            <div class="bg-white pb-4 px-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h3 class="fw-bold">Manage Truck Tickets</h3>
+                    <div class="d-flex gap-2">
+                        <RadzenButton Text="Edit Multiple"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Disabled="@(!CanEditMultiple)"
+                                      Click="ShowEditMultipleDialog"/>
+
+                        <RadzenButton Text="Create Pre-Printed Tickets"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Click="@OpenTicketStubDialog"
+                                      Disabled="@(!HasTruckTicketWritePermission)" />
+
+                        <NewTruckTicketStubRequestDialogForm @ref="@StubRequestDialog"
+                                                             OnSuccess="@ReloadTruckTicketDialog"/>
+
+                        <RadzenButton Text="Add Live Scale Ticket"
+                                      ButtonStyle="ButtonStyle.Primary"
+                                      Click="@HandleAddLiveScaleTicketClick"
+                                      Disabled="@(!HasTruckTicketWritePermission)" />
+
+                        <RadzenButton Text="Add Manual Spartan Ticket"
+                                      ButtonStyle="ButtonStyle.Primary"
+                                      Click="@HandleAddManualSpartanTicketClick"
+                                      Disabled="@(!HasTruckTicketWritePermission)" />
+                    </div>
+                </div>
+            </div>
+
+            <div id="TruckTicketIndex">
+                <TruckTicketIndex @ref="@TruckTicketIndex"
+                                  OnTruckTicketSelect="ActivateTruckTicket"
+                                  ChildStateChange="@TruckTicketIndexChange"/>
+            </div>
+
+            <div class="bg-white pt-2">
+                <div class="d-flex align-items-center justify-content-end">
+                    <div class="d-flex gap-2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</RadzenSplitterPane>
+
+<RadzenSplitterPane Collapsed="@(ViewModel.TruckTicket is null)"
+                    Collapsible="false">
+
+    @if (ViewModel.TruckTicket is not null)
+    {
+        <div class="d-flex flex-column h-100">
+            <div class="flex-grow-1"
+                 style="overflow-y: auto">
+                <NewTruckTicketDetailsPage/>
+            </div>
+            <div class="flex-grow-0 d-flex align-items-center justify-content-between p-4 footer-panel">
+                <div class="d-flex gap-3 flex-column">
+                    <div class="d-flex gap-1 flex-column">
+                        <div class="d-flex gap-2 align-items-center">
+                            <span class="rz-label m-0">Billing</span>
+
+                            @if (ViewModel.IsLoadingBillingConfigurations || ViewModel.IsInitializing)
+                            {
+                                <div class="d-flex gap-2 align-items-center">
+
+                                    <div class="spinner-grow"
+                                         style="width: 0.75rem; height: 0.75rem;"
+                                         role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+
+                                    <RadzenBadge Text="Loading"
+                                                 BadgeStyle="BadgeStyle.Info"
+                                                 IsPill="true"
+                                                 class="small-badge"/>
+                                </div>
+                            }
+                            else
+                            {
+                                @if (!ViewModel.TruckTicket.BillingConfigurationId.HasValue)
+                                {
+                                    <RadzenBadge Text="Action Required"
+                                                 BadgeStyle="BadgeStyle.Warning"
+                                                 IsPill="true"
+                                                 class="small-badge"/>
+                                }
+                                else
+                                {
+                                    <RadzenBadge Text="Ready"
+                                                 BadgeStyle="BadgeStyle.Success"
+                                                 IsPill="true"
+                                                 class="small-badge"/>
+                                }
+                            }
+                        </div>
+                        <span class="d-flex align-items-center">
+                            @if (ViewModel.BillingConfigurations.Any())
+                            {
+                                <span class="text-muted"
+                                      style="font-size: 0.75em">
+                                    @if (!ViewModel.TruckTicket.BillingConfigurationId.HasValue)
+                                    {
+                                        <span>
+                                            @ViewModel.BillingConfigurations.Count billing configs loaded. Select a billing config.
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span>
+                                            Using <strong>@ViewModel.TruckTicket?.BillingConfigurationName</strong> billing config for <strong>@ViewModel.TruckTicket?.BillingCustomerName.</strong>
+                                        </span>
+                                    }
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-muted"
+                                      style="font-size: 0.75em">
+                                    No billing configs loaded.
+                                </span>
+                            }
+                        </span>
+                    </div>
+                    <div class="d-flex gap-1 flex-column">
+                        <div class="d-flex gap-2 align-items-center">
+                            <span class="rz-label m-0">Sales Lines</span>
+
+                            @if (ViewModel.IsLoadingSalesLines || ViewModel.IsInitializing)
+                            {
+                                <div class="d-flex gap-2 align-items-center">
+
+                                    <div class="spinner-grow"
+                                         style="width: 0.75rem; height: 0.75rem;"
+                                         role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+
+                                    <RadzenBadge Text="Loading"
+                                                 BadgeStyle="BadgeStyle.Info"
+                                                 IsPill="true"
+                                                 class="small-badge"/>
+                                </div>
+                            }
+                            else
+                            {
+                                @if (!ViewModel.SalesLines.Any())
+                                {
+                                    <RadzenBadge Text="Action Required"
+                                                 BadgeStyle="BadgeStyle.Warning"
+                                                 IsPill="true"
+                                                 class="small-badge"/>
+                                }
+                                else
+                                {
+                                    <RadzenBadge Text="Ready"
+                                                 BadgeStyle="BadgeStyle.Success"
+                                                 IsPill="true"
+                                                 class="small-badge"/>
+                                }
+                            }
+                        </div>
+                        <span class="d-flex align-items-center">
+                            @if (ViewModel.SalesLines.Any())
+                            {
+                                <span class="text-muted"
+                                      style="font-size: 0.75em">
+                                    <span>
+                                        @ViewModel.SalesLines.Count sales line@(ViewModel.SalesLines.Count == 1 ? "" : "s") generated.
+                                    </span>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-muted"
+                                      style="font-size: 0.75em">
+                                    No sales lines generated.<br/>Verify billing and load quantities.
+                                </span>
+                            }
+                        </span>
+                    </div>
+                </div>
+                <div class="d-flex flex-grow-1 gap-2 justify-content-center">
+
+                </div>
+                <div class="d-flex gap-2">
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                                  Text="Download Scale Ticket"
+                                  Click="@HandleDownloadTicketClick"
+                                  Disabled="@_isDownloadingTicket"
+                                  Visible="@(ViewModel.IsScaleTicketView && ViewModel.TruckTicket.Id != Guid.Empty)"/>
+
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                                  Text="Download Work Ticket"
+                                  Click="@HandleDownloadTicketClick"
+                                  Disabled="@_isDownloadingTicket"
+                                  Visible="@(ViewModel.IsWorkTicketView && ViewModel.TruckTicket.Id != Guid.Empty && ViewModel.TruckTicket?.TruckTicketType is TruckTicketType.WT)"/>
+
+                    <RadzenButton Text="Clone Ticket"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  Click="CloneTruckTicket"
+                                  Visible="@ShowCloneTicket"/>
+
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                                  ButtonType="ButtonType.Button"
+                                  Click="SplitTicket"
+                                  Text="Split Ticket"
+                                  IsBusy="@_isSplitting"
+                                  Disabled="@(ViewModel.IsRemovingSalesLines)"
+                                  BusyText="Splitting Ticket"
+                                  Visible="@(IsSplitButtonVisible)"/>
+
+                    <RadzenButton ButtonStyle="ButtonStyle.Light"
+                                  Text="Discard Changes"
+                                  Click="HandleDiscardChanges"
+                                  Visible="@(ViewModel.TruckTicketBackup is not null && ViewModel.TruckTicket.Id != Guid.Empty && ViewModel.TruckTicket.Status is not TruckTicketStatus.Invoiced and not TruckTicketStatus.Void)"/>
+
+                    <TruckTicketActionButton TruckTicket="@ViewModel.TruckTicket"
+                                             Disabled="@(DisableSaveButton || ViewModel.IsInitializing || _isSaving || ViewModel.HasStaleSalesLines() || ViewModel.IsLoadingSalesLines || ViewModel.IsLoadingBillingConfigurations || ViewModel.HasZeroAmountInAdditionalServices())"
+                                             CurrentStatus="@(ViewModel.TruckTicketBackup?.Status)"
+                                             SalesLineCount="@ViewModel.SalesLines.Count"
+                                             Visible="@(ViewModel.TruckTicket.Status is not TruckTicketStatus.Invoiced and not TruckTicketStatus.Void)"
+                                             OnStatusChange="@HandleStatusTransition"/>
+
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                  ButtonType="ButtonType.Button"
+                                  Click="@(() => HandleSave())"
+                                  Text="@(ViewModel.TruckTicket.Id == Guid.Empty ? "Create Ticket" : ViewModel.TruckTicket.Status == TruckTicketStatus.Stub || ViewModel.TruckTicket.Status == TruckTicketStatus.New ? "Open & Save Ticket" : "Save Ticket")"
+                                  IsBusy="@_isSaving"
+                                  Visible="@(ViewModel.TruckTicket.Status is not TruckTicketStatus.Invoiced and not TruckTicketStatus.Void)"
+                                  BusyText="@(ViewModel.TruckTicket.Id == Guid.Empty ? "Creating Ticket" : "Saving Ticket")"
+                                  Disabled="@(DisableSaveButton || ViewModel.IsInitializing || ViewModel.HasStaleSalesLines() || ViewModel.IsLoadingSalesLines || ViewModel.IsLoadingBillingConfigurations || ViewModel.HasZeroAmountInAdditionalServices())" />
+                </div>
+            </div>
+        </div>
+    }
+</RadzenSplitterPane>
+</RadzenSplitter>

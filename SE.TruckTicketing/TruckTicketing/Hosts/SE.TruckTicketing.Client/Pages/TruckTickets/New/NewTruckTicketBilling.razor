@@ -1,0 +1,236 @@
+﻿@using SE.TruckTicketing.Contracts.Security
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Lookups
+@using AccountTypes = SE.Shared.Common.Lookups.AccountTypes
+@using SE.Shared.Common.Lookups
+@using SE.TruckTicketing.Client.Components.BillingControls
+@inherits BaseTruckTicketingComponent
+
+@if (ViewModel.TruckTicket is not null)
+{
+    @if (Model.IsBillingInfoOverridden)
+    {
+        <div class="alert alert-primary d-flex align-items-center"
+             role="alert">
+            <div class="d-flex align-items-center justify-content-between w-100">
+                <p>
+                    You have modified billing information for this ticket. We will create a new manual billing configuration for
+                    this customer that matches before saving this ticket.
+                </p>
+
+                <div class="d-flex gap-2">
+                    <RadzenButton Text="Reset Billing Configuration"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  Click="@HandleBillingConfigurationReset"/>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h4 class="fw-bold">Billing Configuration</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <RadzenLabel Text="Billing Configuration"
+                                     Component="BillingConfigurationDropdown"/>
+                        <a href="#"
+                           @onclick="@(() => OpenBillingDialog())"
+                           @onclick:preventDefault="true"
+                           @onclick:stopPropagation="true"
+                           class="text-decoration-none rz-link rz-label">
+                            View
+                        </a>
+                    </div>
+                    <RadzenDropDownDataGrid @ref="_billingConfigurationDropdown"
+                                            TValue="Guid?"
+                                            Placeholder="Select billing configuration..."
+                                            AllowClear="true"
+                                            AllowFiltering="true"
+                                            Class="w-100"
+                                            id="BillingConfigurationDropdown"
+                                            @bind-Value="@Model.BillingConfigurationId"
+                                            Data="@ViewModel.BillingConfigurations"
+                                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                            TextProperty="@nameof(BillingConfiguration.Name)"
+                                            ValueProperty="@nameof(BillingConfiguration.Id)"
+                                            Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced || !IsAuthorizedFor(Permissions.Resources.TruckTicketBilling, Permissions.Operations.Write))"
+                                            Change="@HandleBillingConfigurationChange">
+
+                        <Columns>
+                            <RadzenDropDownDataGridColumn Property="@nameof(BillingConfiguration.Name)"
+                                                          Title="Name">
+                                <Template>
+                                    @{
+                                        var billingConfiguration = context as BillingConfiguration;
+                                    }
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span>@billingConfiguration!.Name</span>
+                                        <RadzenBadge Text="A"
+                                                     title="Automatic billing config"
+                                                     IsPill="true"
+                                                     style="font-size: .5rem"
+                                                     Visible="@billingConfiguration.IncludeForAutomation"
+                                                     BadgeStyle="BadgeStyle.Info"/>
+                                    </div>
+                                </Template>
+                            </RadzenDropDownDataGridColumn>
+
+
+                            <RadzenDropDownDataGridColumn Property="@nameof(BillingConfiguration.BillingCustomerName)"
+                                                          Title="Customer Name"/>
+
+
+                            <RadzenDropDownDataGridColumn Property="@nameof(BillingConfiguration.BillingContactName)"
+                                                          Title="Billing Contact"/>
+
+                            <RadzenDropDownDataGridColumn Property="@nameof(BillingConfiguration.BillingCustomerName)"
+                                                          Title="Status"
+                                                          Width="6rem">
+                                <Template>
+                                    @{
+                                        var billingConfiguration = context as BillingConfiguration;
+                                    }
+                                    @if (billingConfiguration?.IsEdiValid ?? false)
+                                    {
+                                        <div class="d-flex align-items-center w-100 gap-2">
+                                            <span class="flex-grow-0">
+                                                <RadzenIcon class="text-success"
+                                                            Icon="check_circle"/>
+                                            </span>
+                                            <span>Valid</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex align-items-center gap-2"
+                                             title="This billing configuration has invalid EDI data">
+                                            <span class="flex-grow-0">
+                                                <RadzenIcon class="text-warning"
+                                                            Icon="warning"/>
+                                            </span>
+                                            <span>Invalid</span>
+                                        </div>
+                                    }
+                                </Template>
+                            </RadzenDropDownDataGridColumn>
+
+                            <RadzenDropDownDataGridColumn Property="@nameof(BillingConfiguration.Name)"
+                                                          Title=""
+                                                          Width="4rem">
+                                <Template>
+                                    @{
+                                        var billingConfiguration = context as BillingConfiguration;
+                                    }
+                                    <RadzenButton Text="View"
+                                                  Size="ButtonSize.Small"
+                                                  Click="@(() => OpenBillingDialog(billingConfiguration.Id))"/>
+                                </Template>
+                            </RadzenDropDownDataGridColumn>
+                        </Columns>
+                    </RadzenDropDownDataGrid>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h4 class="fw-bold">Billing Customer</h4>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-4 d-flex flex-column">
+                        <RadzenLabel Text="Billing Customer"
+                                     Component="BillingCustomerDropDown"/>
+                        <DropDownLoadingContainer IsLoading="@(ViewModel.IsSettingBillingConfiguration)">
+                            <LoadedView>
+                                <AccountsDropDown @ref="@_customerDropdown"
+                                                  id="BillingCustomerDropDown"
+                                                  TValue="Guid"
+                                                  AccountType="@AccountTypes.Customer.ToString()"
+                                                  Placeholder="Select billing customer..."
+                                                  @bind-Value="@ViewModel.TruckTicket.BillingCustomerId"
+                                                  TextProperty="@nameof(Account.Name)"
+                                                  ValueProperty="@nameof(Account.Id)"
+                                                  PageSize="10"
+                                                  CacheItemsById="@UseCache"
+                                                  OnItemSelect="HandleBillingCustomerSelect"
+                                                  OnItemLoad="@ViewModel.SetBillingCustomer"
+                                                  Disabled="@true"/>
+                            </LoadedView>
+                        </DropDownLoadingContainer>
+                    </div>
+                    <div class="col-8 d-flex flex-column">
+                        <RadzenLabel Text="Address"
+                                     Component="BillingCustomerAddressTextBox"/>
+
+                        <RadzenTextBox id="BillingCustomerAddressTextBox"
+                                       Value="@ViewModel.BillingCustomerAddress"
+                                       class="w-100"
+                                       Disabled="true"/>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Billing Customer Contact"
+                                     Component="BillingCustomerContactDropDown"/>
+                    <DropDownLoadingContainer IsLoading="@(IsSettingCustomer)">
+                        <LoadedView>
+                        <AccountContactDropDown @ref="_billingContactDropdown"
+                                                id="BillingCustomerContactDropDown"
+                                                TValue="Guid?"
+                                                AccountId="@ViewModel.BillingCustomerId"
+                                                ContactFunction="@AccountContactFunctions.BillingContact"
+                                                Placeholder="Select billing customer contact..."
+                                                PageSize="10"
+                                                AllowClear="false"
+                                                Class="w-100"
+                                                CacheItemsById="@UseCache"
+                                                @bind-Value="@Model.BillingContact.AccountContactId"
+                                                TextProperty="@nameof(AccountContactIndex.Display)"
+                                                ValueProperty="@nameof(AccountContactIndex.Id)"
+                                                OnItemSelect="@HandleBillingContactSelect"
+                                                OnItemLoad="@HandleBillingContactLoad"
+                                                Disabled="@true"/>
+                        </LoadedView>
+                        </DropDownLoadingContainer>
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Phone Number"
+                                     Component="BillingContactPhoneNumberTextBox"/>
+
+                        <RadzenTextBox id="BillingContactPhoneNumberTextBox"
+                                       Value="@Model.BillingContact.PhoneNumber"
+                                       class="w-100"
+                                       Disabled="true"/>
+                    </div>
+
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Email"
+                                     Component="BillingContactEmailTextBox"/>
+
+                        <RadzenTextBox id="BillingContactEmailTextBox"
+                                       Value="@Model.BillingContact.Email"
+                                       class="w-100"
+                                       Disabled="true"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h4 class="fw-bold">Coding Fields</h4>
+        </div>
+        <div class="card-body">
+            <EDIValueEditor @ref="_ediValueEditor"
+                            CustomerId="@Model.BillingCustomerId"
+                            Data="@Model.EdiFieldValues"
+                            IsDisabled="true"
+                            OnChange="HandleEdiValueChange"/>
+
+        </div>
+    </div>
+}

@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="bunit" Version="1.9.8" />
+    <PackageReference Include="bunit.core" Version="1.9.8" />
+    <PackageReference Include="bunit.web" Version="1.9.8" />
+    <PackageReference Include="bunit.web.testcomponents" Version="1.9.8" />
+    <PackageReference Include="FluentAssertions" Version="6.7.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
+    <PackageReference Include="coverlet.collector" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident.Testing\Trident.Testing.csproj" />
+    <ProjectReference Include="..\..\Core\SE.TruckTicketing.UI\SE.TruckTicketing.UI.csproj" />
+  </ItemGroup>
+
+</Project>

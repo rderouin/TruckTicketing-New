@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident.Contracts.Api\Trident.Contracts.Api.csproj"/>
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident\Trident.csproj"/>
+    <ProjectReference Include="..\..\..\Shared\Core\SE.Shared.Common\SE.Shared.Common.csproj"/>
+    <ProjectReference Include="..\..\..\Shared\Core\SE.TruckTicketing.Contracts\SE.TruckTicketing.Contracts.csproj"/>
+  </ItemGroup>
+
+</Project>

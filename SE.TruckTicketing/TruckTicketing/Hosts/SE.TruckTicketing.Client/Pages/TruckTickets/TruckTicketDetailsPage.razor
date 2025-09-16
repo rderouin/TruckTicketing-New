@@ -1,0 +1,138 @@
+﻿@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.Shared.Common.Utilities
+@using SE.Shared.Common.Lookups
+@inherits BaseTruckTicketingComponent
+
+<div class="pb-4">
+</div>
+<div class="d-flex align-items-center justify-content-between pb-3">
+    <div class="flex-grow-1 col-6">
+        <div>
+            @(Model?.TicketNumber)
+        </div>
+        <h3>@Title</h3>
+    </div>
+    <div class="d-flex align-items-end gap-2 flex-grow-0 col-6">
+        <RadzenButton Text="Clone Ticket"
+                      ButtonStyle="ButtonStyle.Primary"
+                      Click="CloneTruckTicket"
+                      Visible="@ShowCloneTicket"/>
+        <div>
+            <RadzenLabel Text="Ticket Status"
+                         Component="TicketStatusDropdown"
+                         class="required"/>
+            <RadzenDropDown TValue="TruckTicketStatus"
+                            Class="w-100"
+                            Id="TicketStatusDropDown"
+                            @bind-Value="@Model.Status"
+                            TextProperty="Value"
+                            ValueProperty="Key"
+                            Disabled="false"
+                            Change="@(args => OnStatusChange(args))"
+                            Data="@(DataDictionary.For<TruckTicketStatus>(false))"/>
+        </div>
+        @if (Model?.Status == TruckTicketStatus.Void)
+        {
+            <div>
+                <RadzenLabel Text="Void Reason"
+                             Component="TicketVoidStatusDropDown"
+                             class="required"/>
+                <TridentApiDropDown Name="TicketVoidStatusDropDown"
+                                    TModel="TruckTicketVoidReason"
+                                    TValue="string"
+                                    Placeholder="Void reason..."
+                                    @bind-Value="@Model.VoidReason"
+                                    TextProperty="@nameof(TruckTicketVoidReason.VoidReason)"
+                                    ValueProperty="@nameof(TruckTicketVoidReason.VoidReason)"
+                                    PageSize="10"
+                                    OnItemSelect="OnVoidReasonChange"
+                                    Class="w-auto"/>
+                <RadzenRequiredValidator Component="TicketVoidStatusDropDown"
+                                         Text="Required"/>
+            </div>
+        }
+        @if (Model?.Status == TruckTicketStatus.Hold)
+        {
+            <div>
+                <RadzenLabel Text="Hold Reason"
+                             Component="TicketHoldStatusDropdown"
+                             class="required"/>
+
+                <TridentApiDropDown Name="TicketHoldStatusDropDown"
+                                    TModel="TruckTicketHoldReason"
+                                    TValue="string"
+                                    Placeholder="Hold reason..."
+                                    @bind-Value="@Model.HoldReason"
+                                    TextProperty="@nameof(TruckTicketHoldReason.HoldReason)"
+                                    ValueProperty="@nameof(TruckTicketHoldReason.HoldReason)"
+                                    PageSize="10"
+                                    OnItemSelect="OnHoldReasonChange"
+                                    Class="w-auto"/>
+                <RadzenRequiredValidator Component="TicketHoldStatusDropDown"
+                                         Text="Required"/>
+            </div>
+        }
+        @if (Model?.HoldReason?.ToLower() == "other" || Model?.VoidReason?.ToLower() == "other")
+        {
+            <div>
+                <RadzenLabel Text="Other Reason"
+                             Component="OtherReasonStatusTextBox"
+                             class="required"/>
+                <RadzenTextBox Name="OtherReasonStatusTextBox"
+                               Value="@Model?.OtherReason"
+                               Class="w-100"
+                               Placeholder="other reason.."/>
+            </div>
+        }
+
+        <div>
+            <RadzenLabel Text="Validation Status"
+                         Component="ValidationStatusDropdown"/>
+            <RadzenTextBox Id="ValidationStatusTextBox"
+                           Value="@Model?.ValidationStatus.ToString()"
+                           Class="w-100"
+                           Placeholder="Validation Status..."
+                           Disabled="true"/>
+        </div>
+        <RadzenButton Icon="close"
+                      ButtonStyle="ButtonStyle.Light"
+                      Click="OnClose"/>
+    </div>
+</div>
+
+<CascadingValue Value="@OnRefresh"
+                Name="TruckTicketRefresh"
+                TValue="EventCallback">
+    <CascadingValue Value="@Model"
+                    Name="TruckTicket"
+                    TValue="TruckTicket">
+        <RadzenTabs Visible="@(Model is not null)">
+            <Tabs>
+                <RadzenTabsItem Text="Ticket Info">
+                    <TruckTicketInfo LoadPreviewSalesLines="LoadPreviewSalesLines"/>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Billing">
+                    <TruckTicketBilling LoadPreviewSalesLines="LoadPreviewSalesLines"/>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Sales">
+                    <TruckTicketSales SalesLineResults="@SalesLineResults"
+                                      LoadSalesLines="LoadSalesLines"/>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Well History">
+                    <WellHistoryIndex SourceLocationId="@Model.SourceLocationId"/>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Attachments" Visible="@(Model.Id != default)">
+                    <TruckTicketAttachments/>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Notes" Visible="@(Model.Id != default)">
+                    <TruckTicketNotes/>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Tare Weight"
+                                Visible="@(Model.FacilityType == FacilityType.Lf && Model.Id != default)">
+                    <TruckTicketTareWeights/>
+                </RadzenTabsItem>
+            </Tabs>
+        </RadzenTabs>
+    </CascadingValue>
+</CascadingValue>

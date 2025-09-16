@@ -1,0 +1,77 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-bold">Account Contacts</h4>
+        </div>
+        <div>
+            <RadzenButton Click="@(args => AddNewContact())"
+                          Text="Add New Account Contact"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Size="ButtonSize.Small"
+                          Icon="contact_mail"/>
+        </div>
+    </div>
+    <div class="card-body grid-switch-container">
+        <PagableGridView TModel="AccountContact"
+                         Results="@_accountContacts"
+                         class="bs-class"
+                         EnableSearch="false"
+                         EnablePaging="false"
+                         EnableSorting="true"
+                         EnableRowExpansion="false"
+                         EnableFilters="false"
+                         OnDataLoad="LoadAccountContacts">
+            <Columns>
+                <ColumnDefinition TItem="AccountContact"
+                                  Property="@nameof(AccountContact.IsPrimaryAccountContact)"
+                                  Width="4rem"
+                                  Title="Primary"
+                                  PropertyType="typeof(bool)"
+                                  EnableSorting="false">
+                    <Template Context="context">
+                        @if (context.IsPrimaryAccountContact)
+                        {
+                            <RadzenIcon Icon="check"
+                                        class="align-content-center"/>
+                        }
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountContact"
+                                  Property="@nameof(AccountContact.Name)"
+                                  Title="First Name"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountContact"
+                                  Property="@nameof(AccountContact.LastName)"
+                                  Title="Last Name"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountContact"
+                                  Property="@nameof(AccountContact.PhoneNumber)"
+                                  Title="Phone Number"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountContact"
+                                  Property="@nameof(AccountContact.Email)"
+                                  Title="Email"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountContact"
+                                  Property="@nameof(AccountAddress)"
+                                  Title="Actions"
+                                  Width="4rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="() => DeleteButton_Click(data)"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small"
+                                      Text="Delete"/>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

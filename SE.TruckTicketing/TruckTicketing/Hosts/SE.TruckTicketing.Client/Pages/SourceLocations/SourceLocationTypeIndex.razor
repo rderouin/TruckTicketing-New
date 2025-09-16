@@ -1,0 +1,86 @@
+﻿@page "/truck-ticketing/source-location-types"
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using SE.TruckTicketing.Contracts.Security;
+@inherits BaseTruckTicketingComponent
+
+<div class="">
+    <div class="bg-white p-4">
+        <div class="breadcrumb-container">
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+            <h3>Manage Source Location Types</h3>
+            <div>
+                <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                              Text="Add Source Location Type"
+                              Disabled="@(!HasWritePermission(Permissions.Resources.SourceLocationType))"
+                              Click="() => OpenSourceLocationTypeDetailsDialog()"
+                              Icon="add_outline">
+                </RadzenButton>
+            </div>
+        </div>
+    </div>
+</div>
+
+<GridFiltersContainer Expandable="@false"
+                      @ref="_gridFilterContainer"
+                      OnFilterChange="@(async criteria => await LoadData(criteria))">
+    <div class="d-flex flex-grow-1 gap-3">
+        <KeywordFilter Label="Search"/>
+    </div>
+</GridFiltersContainer>
+
+
+<div class="p-4 grid-switch-container">
+    <PagableGridView @ref="_grid"
+                     TModel="SourceLocationType"
+                     Results="@_resultsModel"
+                     EnablePaging="true"
+                     EnableSorting="true"
+                     EnableFilters="false"
+                     EnableSearch="false"
+                     OnDataLoad="LoadData"
+                     IsLoading="@_isLoading">
+        <Columns>
+            <ColumnDefinition TItem="SourceLocationType"
+                              Property="@nameof(SourceLocationType.IsActive)"
+                              Title="Active"
+                              Width="55px"
+                              EnableSorting="false"
+                              CanToggleVisibility="false">
+                <Template Context="data">
+                    <RadzenSwitch @bind-Value="@data.IsActive"
+                                  class="grid-switch"
+                                  Disabled="true"/>
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="SourceLocationType"
+                              Property="@nameof(SourceLocationType.Name)"
+                              Title="Name"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="SourceLocationType"
+                              Property="@nameof(SourceLocationType.CountryCode)"
+                              Title="Country Code"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="SourceLocationType"
+                              Property="@nameof(SourceLocationType.Category)"
+                              Title="Type"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="SourceLocationType"
+                              Property="@nameof(SourceLocationType.ShortFormCode)"
+                              Title="Short Form Code"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="SourceLocationType"
+                              Property="@nameof(SourceLocationType.Id)"
+                              Title="Actions"
+                              Width="4rem"
+                              EnableSorting="false">
+                <Template Context="data">
+                    <RadzenButton Click="() => OpenSourceLocationTypeDetailsDialog(data)"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Text="Edit"/>
+                </Template>
+            </ColumnDefinition>
+        </Columns>
+    </PagableGridView>
+</div>

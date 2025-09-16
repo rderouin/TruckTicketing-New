@@ -1,0 +1,64 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+
+<RadzenTemplateForm TItem="TruckTicketHoldReason"
+                    Submit="@HandleSubmit"
+                    Data="@Model">
+    <div class="card">
+        <div class="card-header d-flex align-content-center">
+            <h4 class="fw-bold">Truck Ticket Hold Reason</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="d-flex flex-row align-items-center gap-2">
+                        <div class="col-3">
+                            <RadzenLabel Text="Hold Reason"
+                                         Component="HoldReason"/>
+                        </div>
+                        <div class="flex-grow-1">
+                            <RadzenTextBox id="HoldReason"
+                                           Name="HoldReason"
+                                           @bind-Value="@Model.HoldReason">
+                            </RadzenTextBox>
+                            <RadzenRequiredValidator Component="HoldReason"
+                                                     Text="Required"/>
+                            <RadzenRegexValidator Component="HoldReason"
+                                                  Text="Special Characters are not allowed"
+                                                  Pattern="[a-zA-Z0-9_\s]+"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="d-flex flex-row align-items-center gap-2">
+                        <div class="col-3">
+                            <RadzenLabel Text="Deleted"
+                                         Component="Deleted"/>
+                        </div>
+                        <div class="flex-grow-1">
+                            <RadzenSwitch id="Deleted"
+                                          @bind-Value="@Model.IsDeleted">
+                            </RadzenSwitch>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          IsBusy="@IsBusy"
+                          Text="Save"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          class="ml-2"
+                          Click="HandleCancel"/>
+        </div>
+    </div>
+</RadzenTemplateForm>

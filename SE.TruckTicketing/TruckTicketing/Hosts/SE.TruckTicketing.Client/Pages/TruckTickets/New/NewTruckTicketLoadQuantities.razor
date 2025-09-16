@@ -1,0 +1,347 @@
+﻿@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.Shared.Common.Utilities
+@inherits BaseTruckTicketingComponent
+
+@if (ViewModel.IsScaleTicketView)
+{
+    if (Model.LandfillSamplingStatus != null && ShowSamplingAlert)
+    {
+        <div class="row mb-3">
+            <div class="col">
+                <div class="alert @AlertClass d-flex align-items-center"
+                     role="alert">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="24"
+                         height="24"
+                         fill="currentColor"
+                         class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2"
+                         viewBox="0 0 16 16"
+                         role="img"
+                         aria-label="Warning:">
+                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                    </svg>
+                    <div>@Model.LandfillSamplingStatus.Message</div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row mb-3">
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Gross Weight (T)"
+                         Component="GrossWeightNumeric"
+                         class="required"/>
+            <TridentNumeric id="GrossWeightNumeric"
+                            Name="GrossWeightNumeric"
+                            MaxDecimalPlaces="2"
+                            TValue="double"
+                            @bind-Value="@Model.GrossWeight"
+                            Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                            Change="@(_ => HandleWeightChange(true))"/>
+        </div>
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Tare Weight (T)"
+                         Component="TareWeightNumeric"
+                         class="required"/>
+            <TridentNumeric id="TareWeightNumeric"
+                            Name="TareWeightNumeric"
+                            MaxDecimalPlaces="2"
+                            TValue="double"
+                            @bind-Value="@Model.TareWeight"
+                            Change="@(_ => HandleWeightChange(true))"
+                            Disabled="@(DisableTareWeightField || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"/>
+        </div>
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Net Weight (T)"
+                         Component="NetWeight"/>
+            <RadzenNumeric id="NetWeight"
+                           Name="NetWeight"
+                           Value="@Model.NetWeight"
+                           TValue="double"
+                           ShowUpDown="false"
+                           Format="0.00"
+                           ReadOnly="true"/>
+        </div>
+    </div>
+}
+
+@if (!ViewModel.IsScaleTicketView)
+{
+    <div class="row mb-3">
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Load Volume"
+                         Component="LoadVolumeNumeric"
+                         class="required"/>
+            <TridentNumeric id="LoadVolumeNumeric"
+                            Name="LoadVolumeNumeric"
+                            TValue="double?"
+                            @bind-Value="@Model.LoadVolume"
+                            MaxDecimalPlaces="1"
+                            Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                            Change="@HandleLoadVolumeChange"/>
+        </div>
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Load Entry Method"
+                         Component="EntryMethodDropdown"
+                         class="m-0"/>
+
+            <RadzenRadioButtonList TValue="CutEntryMethod"
+                                   Class="w-100"
+                                   Id="EntryMethodDropdown"
+                                   @bind-Value="@Model.CutEntryMethod"
+                                   TextProperty="Value"
+                                   ValueProperty="Key"
+                                   Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                   Data="@(DataDictionary.For<CutEntryMethod>(false))"/>
+        </div>
+    </div>
+    <div class="row">
+    <div class="col d-flex flex-column">
+        <div class="card-header px-0">
+            @VolumeTitle
+        </div>
+        @if (ViewModel.ServiceType?.IncludesOil ?? true)
+        {
+            <br/>
+            <div class="row">
+                <div class="col d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <RadzenLabel Text="Oil"
+                                     Component="OilVolumeNumeric"/>
+                        <RadzenLabel Text="@GetCutLabelValue(SubstanceThresholdType.Fixed, nameof(Model.OilVolume))"
+                                     Class="text-muted"
+                                     Component="OilVolumeNumeric"/>
+                    </div>
+
+                    <TridentNumeric id="OilVolumeNumeric"
+                                    Name="OilVolumeNumeric"
+                                    TValue="double"
+                                    @bind-Value="@Model.OilVolume"
+                                    MaxDecimalPlaces="1"
+                                    Style="@SetBorder(nameof(Model.OilVolume))"
+                                    Disabled="@(Model.CutEntryMethod != CutEntryMethod.FixedValue || !Model.LoadVolume.HasValue || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                    Change="@(_ => ViewModel.SetCutVolumeChange())"/>
+                    @if (ViewModel.VolumeCutValidationErrors.TryGetValue(nameof(TruckTicket.OilVolume), out var oilMessage))
+                    {
+                        <div class="mt-1 text-danger validation-message">
+                            @oilMessage
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        @if (ViewModel.ServiceType?.IncludesWater ?? true)
+        {
+            <br/>
+
+            <div class="row">
+                <div class="col d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <RadzenLabel Text="Water"
+                                     Component="WaterVolumeNumeric"/>
+                        <RadzenLabel Text="@GetCutLabelValue(SubstanceThresholdType.Fixed, nameof(Model.WaterVolume))"
+                                     Class="text-muted"
+                                     Component="WaterVolumeNumeric"/>
+                    </div>
+                    <TridentNumeric id="WaterVolumeNumeric"
+                                    Name="WaterVolumeNumeric"
+                                    TValue="double"
+                                    @bind-Value="@Model.WaterVolume"
+                                    MaxDecimalPlaces="1"
+                                    Style="@SetBorder(nameof(Model.WaterVolume))"
+                                    Disabled="@(Model.CutEntryMethod != CutEntryMethod.FixedValue || !Model.LoadVolume.HasValue || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                    Change="@(_ => ViewModel.SetCutVolumeChange())"/>
+                    @if (ViewModel.VolumeCutValidationErrors.TryGetValue(nameof(TruckTicket.WaterVolume), out var waterMessage))
+                    {
+                        <div class="mt-1 text-danger validation-message">
+                            @waterMessage
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        @if (ViewModel.ServiceType?.IncludesSolids ?? true)
+        {
+            <br/>
+
+            <div class="row">
+                <div class="col d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <RadzenLabel Text="Solid"
+                                     Component="SolidsVolumeNumeric"/>
+                        <RadzenLabel Text="@GetCutLabelValue(SubstanceThresholdType.Fixed, nameof(Model.SolidVolume))"
+                                     Class="text-muted"
+                                     Component="SolidsVolumeNumeric"/>
+                    </div>
+
+                    <TridentNumeric id="SolidsVolumeNumeric"
+                                    Name="SolidsVolumeNumeric"
+                                    TValue="double"
+                                    @bind-Value="@Model.SolidVolume"
+                                    MaxDecimalPlaces="1"
+                                    Style="@SetBorder(nameof(Model.SolidVolume))"
+                                    Disabled="@(Model.CutEntryMethod != CutEntryMethod.FixedValue || !Model.LoadVolume.HasValue || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                    Change="@(_ => ViewModel.SetCutVolumeChange())" />
+                    @if (ViewModel.VolumeCutValidationErrors.TryGetValue(nameof(TruckTicket.SolidVolume), out var solidMessage))
+                    {
+                        <div class="mt-1 text-danger validation-message">
+                            @solidMessage
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        @if (ViewModel.ServiceType is not null && (ViewModel.ServiceType.IncludesOil || ViewModel.ServiceType.IncludesWater || ViewModel.ServiceType.IncludesSolids))
+        {
+            <hr class="text-muted"/>
+        }
+        <div class="row">
+            <div class="col d-flex flex-column mt-1">
+                <RadzenLabel Text="Total"
+                             Component="TotalVolumeNumeric"/>
+                <RadzenNumeric id="TotalVolumeNumeric"
+                               Name="TotalVolumeNumeric"
+                               ShowUpDown="false"
+                               class="w-100"
+                               TValue="double"
+                               @bind-Value="@Model.TotalVolume"
+                               Format="N2"
+                               Disabled="true"/>
+                @if (ViewModel.IsTotalVolumeInvalid)
+                {
+                    <div class="mt-1 text-danger validation-message">
+                        Total volume must be equal to 'Load Volume'.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col d-flex flex-column">
+        <div class="card-header px-0">
+            Cuts (%)
+        </div>
+        @if (ViewModel.ServiceType?.IncludesOil ?? true)
+        {
+            <br/>
+            <div class="row">
+                <div class="col d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <RadzenLabel Text="Oil"
+                                     Component="OilCutPercentageNumeric"/>
+                        <RadzenLabel Text="@GetCutLabelValue(SubstanceThresholdType.Percentage, nameof(Model.OilVolumePercent))"
+                                     Class="text-muted"
+                                     Component="OilCutPercentageNumeric"/>
+                    </div>
+
+
+                    <TridentNumeric id="OilCutPercentageNumeric"
+                                    Name="OilCutPercentageNumeric"
+                                    TValue="double"
+                                    class="w-100"
+                                    MaxDecimalPlaces="1"
+                                    Style="@SetBorder(nameof(Model.OilVolumePercent))"
+                                    Disabled="@(Model.CutEntryMethod != CutEntryMethod.Percentage || !Model.LoadVolume.HasValue || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                    @bind-Value="@Model.OilVolumePercent"
+                                    Change="@ViewModel.SetCutPercentageChange"/>
+                    @if (ViewModel.VolumeCutValidationErrors.TryGetValue(nameof(TruckTicket.OilVolumePercent), out var oilPercentageMessage))
+                    {
+                        <div class="mt-1 text-danger validation-message">
+                            @oilPercentageMessage
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        @if (ViewModel.ServiceType?.IncludesWater ?? true)
+        {
+            <br/>
+            <div class="row">
+                <div class="col d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <RadzenLabel Text="Water"
+                                     Component="WaterCutPercentageNumeric"/>
+                        <RadzenLabel Text="@GetCutLabelValue(SubstanceThresholdType.Percentage, nameof(Model.WaterVolumePercent))"
+                                     Class="text-muted"
+                                     Component="WaterCutPercentageNumeric"/>
+                    </div>
+
+                    <TridentNumeric id="WaterCutPercentageNumeric"
+                                    Name="WaterCutPercentageNumeric"
+                                    TValue="double"
+                                    class="w-100"
+                                    MaxDecimalPlaces="1"
+                                    Style="@SetBorder(nameof(Model.WaterVolumePercent))"
+                                    Disabled="@(Model.CutEntryMethod != CutEntryMethod.Percentage || !Model.LoadVolume.HasValue || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                    @bind-Value="@Model.WaterVolumePercent"
+                                Change="@ViewModel.SetCutPercentageChange" />
+                    @if (ViewModel.VolumeCutValidationErrors.TryGetValue(nameof(TruckTicket.WaterVolumePercent), out var waterPercentageMessage))
+                    {
+                        <div class="mt-1 text-danger validation-message">
+                            @waterPercentageMessage
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        @if (ViewModel.ServiceType?.IncludesSolids ?? true)
+        {
+            <br/>
+            <div class="row">
+                <div class="col d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <RadzenLabel Text="Solids"
+                                     Component="SolidsCutPercentageNumeric"/>
+                        <RadzenLabel Text="@GetCutLabelValue(SubstanceThresholdType.Percentage, nameof(Model.SolidVolumePercent))"
+                                     Class="text-muted"
+                                     Component="SolidsCutPercentageNumeric"/>
+                    </div>
+
+
+                    <TridentNumeric id="SolidsCutPercentageNumeric"
+                                    Name="SolidsCutPercentageNumeric"
+                                    ShowUpDown="false"
+                                    TValue="double"
+                                    class="w-100"
+                                    MaxDecimalPlaces="1"
+                                    Style="@SetBorder(nameof(Model.SolidVolumePercent))"
+                                    Disabled="@(Model.CutEntryMethod != CutEntryMethod.Percentage || !Model.LoadVolume.HasValue || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                    @bind-Value="@Model.SolidVolumePercent"
+                                Change="@ViewModel.SetCutPercentageChange" />
+                    @if (ViewModel.VolumeCutValidationErrors.TryGetValue(nameof(TruckTicket.SolidVolumePercent), out var solidPercentageMessage))
+                    {
+                        <div class="mt-1 text-danger validation-message">
+                            @solidPercentageMessage
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        @if (ViewModel.ServiceType is not null && (ViewModel.ServiceType.IncludesOil || ViewModel.ServiceType.IncludesWater || ViewModel.ServiceType.IncludesSolids))
+        {
+            <hr class="text-muted"/>
+        }
+        <div class="row">
+            <div class="col d-flex flex-column mt-1">
+                <RadzenLabel Text="Total"
+                             Component="TotalCutPercentageNumeric"/>
+                <RadzenNumeric id="TotalCutPercentageNumeric"
+                               Name="TotalCutPercentageNumeric"
+                               ShowUpDown="false"
+                               class="w-100"
+                               TValue="double"
+                               @bind-Value="@Model.TotalVolumePercent"
+                               Format="N1"
+                               Disabled="true"/>
+
+                @if (ViewModel.IsTotalVolumePercentInvalid)
+                {
+                    <div class="mt-1 text-danger validation-message">
+                        Total percentage must be equal to 100. Adjust @(Model.CutEntryMethod is CutEntryMethod.Percentage ? "cut percentages" : "load volumes").
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    </div>
+}

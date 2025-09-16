@@ -1,0 +1,76 @@
+aside {
+    left: 0px;
+    top: 6rem;
+    bottom: 0px;
+    display: flex;
+    overflow: hidden;
+    position: absolute;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: var(--zSticky);
+    box-shadow: var(--shadow-3r);
+    padding: var(--spacing-150) 0 0;
+    transition: width 300ms ease-in-out;
+    background-color: var(--color-base-0);
+}
+
+::deep .openOnly {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 300ms ease-in-out;
+}
+
+.open ::deep .openOnly {
+    opacity: 1;
+    visibility: unset;
+}
+
+::deep .title {
+    display: flex;
+    align-items: center;
+    padding: 0 var(--spacing-100);
+}
+
+::deep .title span {
+    flex: 1;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-left: var(--spacing-100);
+}
+
+::deep .subnav {
+    flex: 1;
+    width: 100%;
+    display: grid;
+    align-items: stretch;
+    gap: var(--spacing-100);
+    grid-template-columns: auto;
+    margin: var(--spacing-100) 0;
+    grid-template-rows: repeat(auto-fill, var(--spacing-300));
+    overflow-y: scroll;
+}
+
+::deep .subnav li {
+    height: 100%;
+}
+
+::deep .subnav a {
+    all: unset;
+    height: 100%;
+    display: flex;
+    cursor: pointer;
+    line-height: 1.43;
+    font-size: 0.875rem;
+    align-items: center;
+    padding: 0 var(--spacing-150);
+}
+
+::deep .subnav a.active {
+    color: var(--color-primary);
+    transition: background-color 300ms ease-in-out;
+}
+
+::deep .subnav a:hover,
+::deep .subnav a:focus {
+    background-color: var(--color-primary-lighter);
+}

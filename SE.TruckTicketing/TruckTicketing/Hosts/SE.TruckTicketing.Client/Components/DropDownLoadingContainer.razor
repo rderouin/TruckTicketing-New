@@ -1,0 +1,26 @@
+﻿@inherits BaseRazorComponent
+
+@if (IsLoading)
+{
+    @if (LoadingView is not null)
+    {
+        @LoadingView
+    }
+    else
+    {
+        <div class="d-flex align-items-center gap-2">
+            <RadzenTextBox Name="LoadingTextBox"
+                           Class="w-100 flex-grow-1"
+                           Disabled="@true"
+                           Value="Loading..."/>
+            <div class="spinner-border spinner-border-sm text-secondary ml-1"
+                 role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    }
+}
+else
+{
+    @LoadedView
+}

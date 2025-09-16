@@ -1,0 +1,218 @@
+[
+  {
+    "Id": "4985833b-aaaf-41fc-b8a4-604919c48c05",
+    "IsAccountActive": true,
+    "AccountNumber": "13015816",
+    "AccountPrimaryContactEmail": "Dillon.Jacobs@gmail.com",
+    "AccountPrimaryContactId": "b200a0a1-fc69-4c43-c084-08da86a7f449",
+    "AccountPrimaryContactName": "Joey Koepp",
+    "AccountPrimaryContactPhoneNumber": "493-288-8898",
+    "AccountStatus": "Open",
+    "BillingTransferRecipientId": "5ae18981-e182-464f-9b0b-20f8797a0e12",
+    "BillingTransferRecipientName": "BillingTransferRecipientName",
+    "BillingType": "CreditCard",
+    "CreatedAt": "0001-01-01T00:00:00+00:00",
+    "CreatedBy": null,
+    "CreatedById": null,
+    "CreditLimit": 20,
+    "CreditStatus": "Approved",
+    "CustomerNumber": "89975678",
+    "DocumentType": "Account",
+    "EnableNewThirdPartyAnalytical": true,
+    "EnableNewTruckingCompany": true,
+    "EntityType": "Account",
+    "HasPriceBook": true,
+    "IsElectronicBillingEnabled": true,
+    "LegalEntityId": "afe0856a-b373-4ce4-838d-5f93e352634f",
+    "LegalEntity": "Entity",
+    "Name": "Hayes Customer",
+    "NickName": "Dooley, Dooley and Kunze",
+    "UpdatedAt": "2022-08-30T15:04:33.1469459+00:00",
+    "UpdatedBy": "Panth Shah",
+    "UpdatedById": "a6c5e571-3900-4aee-a010-76ede0ccfd23",
+    "WatchListStatus": "YellowFlag",
+    "MailingRecipientName": "MailingRecipientName",
+    "DisplayRedFlagMessage": false,
+    "IncludeExternalDocumentAttachmentInLC": false,
+    "IncludeInternalDocumentAttachmentInLC": false,
+    "DUNSNumber": null,
+    "GSTNumber": null,
+    "OperatorLicenseCode": null,
+    "id": "Account|4985833b-aaaf-41fc-b8a4-604919c48c05",
+    "AccountAddresses": [
+      {
+        "Id": "218a7bf8-4489-4a65-a871-5b2a06b200f7",
+        "AddressType": "Mail",
+        "City": "Denver",
+        "Country": "US",
+        "IsPrimaryAddress": true,
+        "IsDeleted": false,
+        "Province": "CO",
+        "Street": "1269 Columbine St",
+        "ZipCode": "80206"
+      }
+    ],
+    "AccountTypes": {
+      "Key": "c5ae9211-7c33-4b74-a3be-0f3a935829c5",
+      "AccountEntityId": "4985833b-aaaf-41fc-b8a4-604919c48c05",
+      "Raw": "Customer|Generator|TruckingCompany|ThirdPartyAnalytical"
+    },
+    "Contacts": [
+      {
+        "Id": "18de2d61-c1dc-45bf-501d-08da9fc70ade",
+        "Contact": null,
+        "Email": "Mary.Jane@yahoo.com",
+		"IsDeleted": false,
+        "IsActive": true,
+        "IsPrimaryAccountContact": true,
+        "JobTitle": null,
+        "LastName": "Jane",
+        "Name": "Mary",
+        "PhoneNumber": "477-897-8888",
+        "SignatoryType": "Completions",
+        "AccountContactAddress": {
+          "City": "Little Rock",
+          "Country": "US",
+          "Id": "c9e2bdbc-eacd-4b8f-93d8-520c9665aa07",
+          "Province": "AR",
+          "Street": "1901 S Taylor Sr",
+          "ZipCode": "72204"
+        },
+        "ContactFunctions": {
+          "Key": "76f99427-3a18-4acc-a025-9ceb835c45d4",
+          "AccountContactEntityAccountEntityId": "4985833b-aaaf-41fc-b8a4-604919c48c05",
+          "AccountContactEntityId": "18de2d61-c1dc-45bf-501d-08da9fc70ade",
+          "Raw": "General"
+        }
+      },
+      {
+        "Id": "3bf3987f-bc0b-4c60-844a-4d2bc52a91cb",
+        "Contact": null,
+        "Email": "Jonathan.Collins@yahoo.com",
+		"IsDeleted": false,
+        "IsActive": true,
+        "IsPrimaryAccountContact": false,
+        "JobTitle": null,
+        "LastName": "Collins",
+        "Name": "Jonathan",
+        "PhoneNumber": "271-668-1112",
+        "SignatoryType": "Drilling",
+        "AccountContactAddress": {
+          "City": "Lake City",
+          "Country": "US",
+          "Id": "1482c9b3-ce4f-45c4-9629-9c1dc81b9f7b",
+          "Province": "AR",
+          "Street": "1 Highway 69",
+          "ZipCode": "72437"
+        },
+        "ContactFunctions": {
+          "Key": "5fd9743f-77f6-4d17-a5be-7137c5ba2bf4",
+          "AccountContactEntityAccountEntityId": "4985833b-aaaf-41fc-b8a4-604919c48c05",
+          "AccountContactEntityId": "3bf3987f-bc0b-4c60-844a-4d2bc52a91cb",
+          "Raw": "General"
+        }
+      }
+    ],
+    "Attachments": [
+      {
+        "Id": "2ac4e7d1-542c-4973-b2ea-12dc38fd0b62",
+        "ContainerName": "tt-attachments",
+        "FileName": "Sample-Work-Ticket-US-Stub.pdf",
+        "Blob": "66e6ba1e-afc2-4a87-923e-41335a92b98f/Sample-Work-Ticket-US-Stub.pdf"
+      }
+    ]
+  },
+  {
+    "Id": "c8bc98d0-4c54-41e9-af5f-5c0efeb067c6",
+    "AccountNumber": "A10000001",
+    "IsAccountActive": true,
+    "AccountPrimaryContactEmail": null,
+    "AccountPrimaryContactId": null,
+    "AccountPrimaryContactName": null,
+    "AccountPrimaryContactPhoneNumber": null,
+    "AccountStatus": "Undefined",
+    "BillingTransferRecipientId": null,
+    "BillingTransferRecipientName": null,
+    "BillingType": "Undefined",
+    "CreatedAt": "0001-01-01T00:00:00+00:00",
+    "CreatedBy": null,
+    "CreatedById": null,
+    "CreditLimit": null,
+    "CreditStatus": "Undefined",
+    "CustomerNumber": "CUSTNUM-123456",
+    "DocumentType": "Account",
+    "Email": null,
+    "EnableNewThirdPartyAnalytical": false,
+    "EnableNewTruckingCompany": false,
+    "EntityType": "Account",
+    "HasPriceBook": false,
+    "IsBlocked": null,
+    "IsElectronicBillingEnabled": false,
+    "LastIntegrationDateTime": null,
+    "LastTransactionDate": null,
+    "LegalEntity": "LE",
+    "LegalEntityId": "d5a9a53f-33ec-49e5-bcfa-4ae1efc9827f",
+    "MailingRecipientName": null,
+    "Name": "Test Customer",
+    "NickName": null,
+    "UpdatedAt": "0001-01-01T00:00:00+00:00",
+    "UpdatedBy": null,
+    "UpdatedById": null,
+    "WatchListStatus": "Undefined",
+    "DisplayRedFlagMessage": false,
+    "IncludeExternalDocumentAttachmentInLC": false,
+    "IncludeInternalDocumentAttachmentInLC": false,
+    "DUNSNumber": null,
+    "GSTNumber": null,
+    "OperatorLicenseCode": null,
+    "id": "Account|c8bc98d0-4c54-41e9-af5f-5c0efeb067c6",
+    "AccountAddresses": [
+      {
+        "Id": "432c7a60-bfe8-46dc-9785-08daae258134",
+        "AddressType": "Mail",
+        "City": "Toronto",
+        "Country": "CA",
+        "IsPrimaryAddress": true,
+        "IsDeleted": false,
+        "Province": "ON",
+        "Street": "263 Adelaide St",
+        "ZipCode": "T3E 0K6"
+      }
+    ],
+    "AccountTypes": {
+      "Key": "9207c57b-cb50-4d1f-bb1b-024e2a71f4fd",
+      "AccountEntityId": "c8bc98d0-4c54-41e9-af5f-5c0efeb067c6",
+      "Raw": "Customer"
+    },
+    "Contacts": [
+      {
+        "Id": "867286d3-0bd9-45e3-37a4-08daae258139",
+        "Contact": null,
+        "Email": "Bruce.Wayne@example.org",
+        "IsDeleted": false,
+        "IsActive": true,
+        "IsPrimaryAccountContact": true,
+        "JobTitle": null,
+        "LastName": "Wayne",
+        "Name": "Bruce",
+        "PhoneNumber": "1234567890",
+        "SignatoryType": "Drilling",
+        "AccountContactAddress": {
+          "City": "Calgary",
+          "Country": "CA",
+          "Id": "75c5fcd3-dfee-4b69-a451-c77cd0cbbc8c",
+          "Province": "AB",
+          "Street": "764 Silver Springs Blvd",
+          "ZipCode": "T3E 0K6"
+        },
+        "ContactFunctions": {
+          "Key": "6a255120-5b5f-4e84-a714-d3baa3aaeeb4",
+          "AccountContactEntityAccountEntityId": "c8bc98d0-4c54-41e9-af5f-5c0efeb067c6",
+          "AccountContactEntityId": "867286d3-0bd9-45e3-37a4-08daae258139",
+          "Raw": "General"
+        }
+      }
+    ],
+    "Attachments": []
+  }
+]

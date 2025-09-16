@@ -1,0 +1,80 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<RadzenTemplateForm TItem="AdditionalServicesConfigurationAdditionalService"
+                    Data="@AdditionalServiceModel"
+                    Submit="@SaveButton_Clicked">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Product Type"
+                                 class="required"
+                                 Component="AdditionalServiceDropDown"/>
+                    <ProductDropDown id="AdditionalServiceDropDown"
+                                     Name="AdditionalServiceDropDown"
+                                     TModel="Product"
+                                     TValue="Guid"
+                                     Placeholder="Select additional service..."
+                                     @bind-Value="@(AdditionalServiceModel.ProductId)"
+                                     TextProperty="@nameof(Product.Name)"
+                                     ValueProperty="@nameof(Product.Id)"
+                                     PageSize="10"
+                                     OnDataLoading="@(BeforeLoadingProductTypes)"
+                                     OnItemSelect="@(OnProductTypeChange)"
+                                     class="w-100"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-6 d-flex flex-column">
+                    <RadzenLabel Text="Quantity"
+                                 Component="AdditionalServiceQuantityNumeric"/>
+                    <RadzenNumeric id="AdditionalServiceQuantityNumeric"
+                                   Name="AdditionalServiceQuantityNumeric"
+                                   TValue="double"
+                                   @bind-Value="@(AdditionalServiceModel.Quantity)"
+                                   Placeholder="Enter quantity..."
+                                   Min="0"
+                                   Class="w-100"
+                                   ShowUpDown="false"
+                                   Disabled="@AdditionalServiceModel.PullQuantityFromTicket"/>
+                </div>
+                <div class="col-6 d-flex flex-column">
+                    <RadzenLabel Text="Pull Quantity from Ticket Load"
+                                 Component="PullQuantityFromTicketSwitch"/>
+                    <RadzenSwitch id="DefaultBillingContactSwitch"
+                                  @bind-Value="@AdditionalServiceModel.PullQuantityFromTicket"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Unit of Measure"
+                                 class="text-nowrap"
+                                 Component="ProductUnitOfMeasureTextBox"/>
+                    <RadzenTextBox id="ProductUnitOfMeasureTextBox"
+                                   Name="ProductUnitOfMeasureTextBox"
+                                   @bind-Value="@(AdditionalServiceModel.UnitOfMeasure)"
+                                   Disabled="true"
+                                   Class="w-100"/>
+                    <RadzenRequiredValidator Component="ProductUnitOfMeasureTextBox"
+                                             DefaultValue="string.Empty"
+                                             Text="Required"
+                                             class="mt-1 text-danger validation-message"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col d-flex justify-content-end">
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          Click="HandleCancel"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Disabled="@(!HasWritePermission(Permissions.Resources.AdditionalServicesConfiguration))"
+                          class="ml-2"
+                          Text="Save"/>
+        </div>
+    </div>
+</RadzenTemplateForm>

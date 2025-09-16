@@ -1,0 +1,14 @@
+[
+    {
+        "Id": "3b38e7cc-99f3-4456-bd73-4d26c3172fea",
+        "DocumentType": "BusinessStreamEntity",
+        "EntityType": "BusinessStream",
+        "Name": "MI",
+        "id": "BusinessStream|3b38e7cc-99f3-4456-bd73-4d26c3172fea",
+        "_rid": "7-kQAOYDJX8CAAAAAAAAAA==",
+        "_self": "dbs/7-kQAA==/colls/7-kQAOYDJX8=/docs/7-kQAOYDJX8CAAAAAAAAAA==/",
+        "_etag": "\"00000000-0000-0000-e00e-4ec6987401d8\"",
+        "_attachments": "attachments/",
+        "_ts": 1665780506
+    }
+]

@@ -1,0 +1,73 @@
+﻿@using SE.TruckTicketing.Contracts.Security
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseTruckTicketingComponent
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center grid-switch-container">
+        <h4 class="fw-bold">Additional Services</h4>
+        <div class="d-flex gap-2 align-items-center">
+            <RadzenButton Click="@(args => OpenEditDialog(new(), true))"
+                          Text="Add Additional Service"
+                          ButtonStyle="ButtonStyle.Primary"
+                          Size="ButtonSize.Small"
+                          Disabled="@(!HasWritePermission(Permissions.Resources.AdditionalServicesConfiguration))"/>
+        </div>
+    </div>
+    <div class="card-body grid-switch-container">
+        <PagableGridView @ref="_grid"
+                         TModel="AdditionalServicesConfigurationAdditionalService"
+                         Results="@_additionalServices"
+                         class="bs-class"
+                         EnableSearch="false"
+                         EnablePaging="false"
+                         EnableSorting="true"
+                         OnDataLoad="LoadAdditionalServices"
+                         EnableRowExpansion="false"
+                         EnableFilters="false">
+            <Columns>
+                <ColumnDefinition TItem="AdditionalServicesConfigurationAdditionalService"
+                                  Property="@nameof(AdditionalServicesConfigurationAdditionalService.Name)"
+                                  Title="Service Name"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AdditionalServicesConfigurationAdditionalService"
+                                  Property="@nameof(AdditionalServicesConfigurationAdditionalService.Number)"
+                                  Title="Service Number"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AdditionalServicesConfigurationAdditionalService"
+                                  Property="@nameof(AdditionalServicesConfigurationAdditionalService.Quantity)"
+                                  Title="Quantity"
+                                  PropertyType="typeof(double)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AdditionalServicesConfigurationAdditionalService"
+                                  Property="@nameof(AdditionalServicesConfigurationAdditionalService.UnitOfMeasure)"
+                                  Title="Unit of Measure"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AdditionalServicesConfigurationAdditionalService"
+                                  Property="@nameof(AdditionalServicesConfigurationAdditionalService.ReferenceId)"
+                                  Title="Reference ID"
+                                  PropertyType="typeof(string)"
+                                  Width="6rem">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AdditionalServicesConfigurationAdditionalService"
+                                  Property="@nameof(AdditionalServicesConfigurationAdditionalService)"
+                                  Title="Actions"
+                                  Width="8rem"
+                                  EnableSorting="false">
+                    <Template Context="additionalService">
+                        <RadzenButton Click="() => OpenEditDialog(additionalService, false)"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Small"
+                                      Text="Edit"/>
+                        <RadzenButton Click="() => DeleteButton_Click(additionalService)"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small"
+                                      Text="Delete"/>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

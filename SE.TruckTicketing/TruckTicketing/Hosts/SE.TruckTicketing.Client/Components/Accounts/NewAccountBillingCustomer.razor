@@ -1,0 +1,196 @@
+﻿@using Humanizer
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Models
+@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Client.Components.Accounts.Edit
+@inherits BaseRazorComponent
+
+@if (Steps.StepsCollection.Count < 3 && BillingCustomer.Id == default)
+{
+    <div class="card text-center mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Select Default Billing Customer</h5>
+            <p class="card-text">Select a default billing customer for this generator.</p>
+            <br/>
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          Click="SelectCustomer"
+                          Text="Select Customer"/>
+        </div>
+    </div>
+}
+
+@if (BillingCustomer.Id != default)
+{
+    <div class="card mt-4">
+        <div class="card-header d-flex justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+                <h4 class="fw-bold">Default Billing Customer Info</h4>
+            </div>
+            <div>
+                <RadzenButton Click="SelectCustomer"
+                              Text="Select Customer"
+                              ButtonStyle="ButtonStyle.Secondary"
+                              Size="ButtonSize.Small"
+                              Icon="contact_mail"/>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Customer Name"
+                                 Component="AccountNameTextBox"
+                                 class="required"/>
+                    <RadzenTextBox id="AccountNameTextBox"
+                                   @bind-Value="@BillingCustomer.Name"
+                                   class="w-100"
+                                   Disabled=true/>
+
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Customer Address"
+                                 Component="CustomerAddressTextBox"/>
+                    <RadzenTextBox id="CustomerAddressTextBox"
+                                   @bind-Value="@_selectedCustmerPrimaryAddress"
+                                   class="w-100"
+                                   Disabled=true/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Customer Contact"
+                                 Component="CustomerContactTextBox"
+                                 class="required"/>
+                    <RadzenTextBox id="CustomerContactTextBox"
+                                   @bind-Value="_selectedContactName"
+                                   class="w-100"
+                                   Disabled=true/>
+
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Customer Contact Phone Number"
+                                 Component="CustomerContactPhNumberTextBox"/>
+                    <RadzenTextBox id="CustomerContactPhNumberTextBox"
+                                   @bind-Value="@_selectedCustmerPrimaryContact.PhoneNumber"
+                                   class="w-100"
+                                   Disabled=true/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Customer Contact Email"
+                                 Component="CustomerContactEmailTextBox"/>
+                    <RadzenTextBox id="CustomerContactEmailTextBox"
+                                   @bind-Value="@_selectedCustmerPrimaryContact.Email"
+                                   class="w-100"
+                                   Disabled=true/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-4">
+        <div class="card-header d-flex justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+                <h4 class="fw-bold">Billing Configuration</h4>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-4 d-flex flex-column">
+                    <RadzenLabel Text="Billing Type"
+                                 Component="CustomerBillingTypeTextBox"
+                                 class="required"/>
+                    <RadzenTextBox id="CustomerBillingTypeTextBox"
+                                   Value="@BillingCustomer.BillingType.Humanize()"
+                                   class="w-100"
+                                   Disabled=true/>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@if (Steps.StepsCollection.Count == 3)
+{
+    <RadzenTemplateForm TItem="Account"
+                        Data="@BillingCustomer"
+                        @ref="ReferenceToBillingCustomerGeneralInfoForm">
+        <div class="card mt-4">
+            <div class="card-header d-flex justify-content-between">
+                <div class="d-flex align-items-center gap-3">
+                    <h4 class="fw-bold">Default Billing Customer Info</h4>
+                </div>
+                <div>
+                    <RadzenButton Click="SelectCustomer"
+                                  Text="Select Customer"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Icon="contact_mail"/>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Legal Entity"
+                                     Component="legalEntityDropDown"
+                                     Class="required"/>
+                        <TridentApiDropDownDataGrid id="legalEntityDropDown"
+                                                    TModel="LegalEntity"
+                                                    TValue="Guid"
+                                                    Placeholder="Select Legal Entity..."
+                                                @bind-Value="@BillingCustomer.LegalEntityId"
+                                                    TextProperty="@nameof(LegalEntity.Name)"
+                                                    PageSize="10"
+                                                    Disabled="false"
+                                                    OnItemSelect="OnLegalEntitySelect"
+                                                    OnDataLoading="HandleLegalEntityLoading">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="@nameof(LegalEntity.Code)" Title="Code" Width="100px"/>
+                                <RadzenDropDownDataGridColumn Property="@nameof(LegalEntity.Name)" Title="Name"/>
+                            </Columns>
+                        </TridentApiDropDownDataGrid>
+                        <RadzenRequiredValidator Component="legalEntityDropDown"
+                                                 DefaultValue="default"
+                                                 Text="Required"/>
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Account Name"
+                                     Component="CustomerAccountNameTextBox"
+                                     class="required"/>
+                        <RadzenTextBox id="CustomerAccountNameTextBox"
+                                       Name="CustomerAccountNameTextBox"
+                                       @bind-Value="@BillingCustomer.Name"
+                                       class="w-100"/>
+                        <RadzenRequiredValidator Component="CustomerAccountNameTextBox"
+                                                 Text="Required"/>
+
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Account Type(s)"
+                                     Component="AccountTypeCheckBoxList"
+                                     class="required"/>
+                        <div class="d-flex flex-row align-items-center gap-2">
+
+                            <RadzenCheckBoxList TValue="AccountTypes"
+                                                id="AccountTypeCheckBoxList"
+                                                TextProperty="Value"
+                                                ValueProperty="Key"
+                                                Name="AccountTypeCheckBoxList"
+                                                Data=@(DataDictionary.For<AccountTypes>())
+                                            @bind-Value=@SelectedAccountTypes
+                                                Disabled=true/>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <NewAccountGeneralInfo  SelectedAccountTypes="@SelectedAccountTypes"
+                                LegalEntityCountryCode="@_legalEntityCountryCode"
+                                accountAddress="@BillingCustomerAddress"/>
+
+        <AddEditAccountContactGrid Account="@BillingCustomer"
+                                   OnAddEditAccountContact="@AddEditAccountContact">
+        </AddEditAccountContactGrid>
+    </RadzenTemplateForm>
+}

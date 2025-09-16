@@ -1,0 +1,189 @@
+﻿@page "/invoice-exchanges/{Type:int}/{Id:guid}"
+@page "/invoice-exchanges/{Type:int}/add"
+@page "/invoice-exchanges/{Type:int}/override/{OriginalInvoiceExchangeId:guid}"
+@page "/invoice-exchanges/{Type:int}/clone/{InvoiceExchangeIdToClone:guid}"
+@using SE.BillingService.Contracts.Api.Models
+@using SE.Shared.Common.Lookups
+@using SE.BillingService.Contracts.Api.Enums
+@using SE.TruckTicketing.Contracts.Api.Models
+@using SE.TruckTicketing.Contracts.Models
+@using SE.TruckTicketing.Client.Components.InvoiceExchange
+@using SE.TruckTicketing.Client.Components.BillingControls
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<PageLoadingContainer IsLoading="@IsLoading">
+
+    <LoadingView>
+        <div class="d-flex align-items-center gap-4">
+            <div class="spinner-border text-primary"
+                 role="status">
+            </div>
+            <span>
+                Loading...
+            </span>
+        </div>
+    </LoadingView>
+
+    <LoadedView>
+        <EditForm EditContext="@_editContext"
+                  OnValidSubmit="SaveConfig">
+
+            <DataAnnotationsValidator/>
+
+            <div class="bg-white p-4">
+                <h3>Manage Invoice Exchange</h3>
+
+                <span>
+                    Control your invoice exchange field mappings.
+                </span>
+
+                <div class="@ClassNames("", ("mt-4", _editContext.GetValidationMessages().Any()))">
+                    <ValidationSummary/>
+                    <TridentValidationSummary TModel="InvoiceExchangeDto"
+                                              Response="@_response">
+                    </TridentValidationSummary>
+                </div>
+
+                <div class="d-flex mt-4">
+                    @if (_model.Type == InvoiceExchangeType.Global)
+                    {
+                        <div class="ms-3">
+                            <RadzenLabel Text="Platform Code"></RadzenLabel><br/>
+                            <RadzenTextBox @bind-Value="_model.PlatformCode"></RadzenTextBox>
+                        </div>
+                        <div class="ms-3">
+                            <div>
+                                <RadzenLabel Text="Supports Field Tickets"></RadzenLabel>
+                            </div>
+                            <div class="lh-0">
+                                <RadzenSwitch Value="@_model.SupportsFieldTickets"
+                                              ValueChanged="SupportsFieldTicketsUpdated"
+                                              class="d-block">
+                                </RadzenSwitch>
+                            </div>
+                        </div>
+                    }
+                    @if (_model.Type == InvoiceExchangeType.BusinessStream ||
+                         _model.Type == InvoiceExchangeType.LegalEntity ||
+                         _model.Type == InvoiceExchangeType.Customer)
+                    {
+                        <div class="ms-3">
+                            <RadzenLabel Text="Business Stream"></RadzenLabel><br/>
+                            <TridentApiDropDown TValue="Guid?"
+                                                TModel="BusinessStream"
+                                                @ref="_businessStreamDdl"
+                                                TextProperty="Name"
+                                                @bind-Value="_model.BusinessStreamId"
+                                                OnDataLoading="OnBusinessStreamLoading"
+                                                OnItemSelect="OnBusinessStreamSelect"
+                                                AllowClear="true"
+                                                Placeholder="Select a Business Stream...">
+                            </TridentApiDropDown>
+                        </div>
+                    }
+                    @if (_model.Type == InvoiceExchangeType.LegalEntity ||
+                         _model.Type == InvoiceExchangeType.Customer)
+                    {
+                        <div class="ms-3">
+                            <RadzenLabel Text="Legal Entity"></RadzenLabel><br/>
+                            <TridentApiDropDown TValue="Guid?"
+                                                TModel="LegalEntity"
+                                                @ref="_legalEntityDdl"
+                                                TextProperty="Name"
+                                                @bind-Value="_model.LegalEntityId"
+                                                OnDataLoading="OnLegalEntityLoading"
+                                                OnItemSelect="OnLegalEntitySelect"
+                                                AllowClear="true"
+                                                Disabled="@(_model.BusinessStreamId == null)"
+                                                Placeholder="Select a Legal Entity...">
+                            </TridentApiDropDown>
+                        </div>
+                    }
+                    @if (_model.Type == InvoiceExchangeType.Customer)
+                    {
+                        <div class="ms-3">
+                            <RadzenLabel Text="Billing Account"></RadzenLabel><br/>
+                            <AccountsDropDown TValue="Guid?"
+                                              TModel="Account"
+                                              @ref="_accountsDdl"
+                                              TextProperty="Name"
+                                              @bind-Value="_model.BillingAccountId"
+                                              AccountType="@AccountTypes.Customer.ToString()"
+                                              OnDataLoading="OnAccountLoading"
+                                              OnItemSelect="OnAccountSelect"
+                                              AllowClear="true"
+                                              Disabled="@(_model.LegalEntityId == null)"
+                                              Placeholder="Select an Account..."
+                                              ApplyShowAccountFilter="@false">
+                            </AccountsDropDown>
+                        </div>
+                    }
+                </div>
+                <div class="@ClassNames("", ("p-2", _editContext.GetValidationMessages(_editContext.Field(nameof(_model.PlatformCode))).Any()))">
+                    <ValidationMessage For="@(() => _model.PlatformCode)">
+                    </ValidationMessage>
+                </div>
+            </div>
+
+            <div class="m-4">
+                <RadzenTabs @bind-SelectedIndex="SelectedTabIndex"
+                            class="mt-3 mb-3">
+                    <Tabs>
+                        <RadzenTabsItem Text="Invoices">
+                            <FieldMapping SourceFields="@SourceFields"
+                                          PidxFields="@PidxFields"
+                                          PidxNamespace="PIDX-INVOICE"
+                                          ValueFormats="@ValueFormats"
+                                          InvoiceExchangeType="@_model.Type"
+                                          DeliveryConfiguration="@_model.InvoiceDeliveryConfiguration">
+                            </FieldMapping>
+                        </RadzenTabsItem>
+                        @if (_model.SupportsFieldTickets)
+                        {
+                            <RadzenTabsItem Text="Field Tickets">
+                                <FieldMapping SourceFields="@SourceFields"
+                                              PidxFields="@PidxFields"
+                                              PidxNamespace="PIDX-FIELDTICKET"
+                                              ValueFormats="@ValueFormats"
+                                              InvoiceExchangeType="@_model.Type"
+                                              DeliveryConfiguration="@_model.FieldTicketsDeliveryConfiguration">
+                                </FieldMapping>
+                            </RadzenTabsItem>
+                        }
+                        @if (_model.Type == InvoiceExchangeType.Customer)
+                        {
+                            <RadzenTabsItem Text="EDI Spec">
+                                <EDIFieldDefinitions EDIFields="@Fields"
+                                                     SubscriptionStateChanged="@OnEDIFieldsChanged">
+                                </EDIFieldDefinitions>
+                            </RadzenTabsItem>
+                            <RadzenTabsItem Text="Billing Configuration">
+                                <BillingConfigurationGrid DisplayAddButton="true"
+                                                          BillingCustomerId="@_model.BillingAccountId">
+                                </BillingConfigurationGrid>
+                            </RadzenTabsItem>
+                        }
+                    </Tabs>
+                </RadzenTabs>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <RadzenButton Text="Cancel"
+                              ButtonStyle="ButtonStyle.Secondary"
+                              Click="OnCancelClick"
+                              class="mt-4 mb-4">
+                </RadzenButton>
+                <RadzenButton Text="Save"
+                              ButtonType="ButtonType.Submit"
+                              ButtonStyle="ButtonStyle.Primary"
+                              Disabled="@(!HasWritePermission(Permissions.Resources.InvoiceExchangeConfiguration))"
+                              class="m-4">
+                </RadzenButton>
+
+            </div>
+
+        </EditForm>
+    </LoadedView>
+
+</PageLoadingContainer>

@@ -1,0 +1,87 @@
+[
+  {
+    "Id": "32ab9f47-f2aa-4ae5-981f-c2e0583a6899",
+    "AllFacilitiesAccessLevel": "Inherited Roles",
+    "CreatedAt": "2023-04-19T12:46:43.5028694-07:00",
+    "CreatedBy": "Integrations",
+    "DisplayName": "Steve Love",
+    "DocumentType": "Accounts",
+    "Email": "slove@secure-energy.com",
+    "EnforceSpecificFacilityAccessLevels": false,
+    "EntityType": "UserProfile",
+    "ExternalAuthId": "95d050a4-ba55-4a10-9db3-d874c79d2aeb",
+    "FirstName": "Steve",
+    "GivenName": "Steve",
+    "LastName": "Love",
+    "Surname": "Love",
+    "UpdatedAt": "2023-04-19T13:36:30.3474922-07:00",
+    "UpdatedBy": "Steve Love",
+    "UpdatedById": "bfb56fb2-77e1-4dcc-a669-ce5500fef4b3",
+    "id": "UserProfile|32ab9f47-f2aa-4ae5-981f-c2e0583a6899",
+    "Roles": [
+      {
+        "Id": "e5521933-3695-4252-64a8-08db4115c1dd",
+        "RoleId": "aa281cf2-a629-4a43-a5a3-106185a4cbb8",
+        "RoleName": "System Administrator"
+      }
+    ],
+    "SpecificFacilityAccessAssignments": []
+  },
+  {
+    "Id": "4a07d214-9d4c-44e9-a6a2-5d2be56844d9",
+    "AllFacilitiesAccessLevel": "Inherited Roles",
+    "CreatedAt": "2023-04-21T12:55:22.29343-07:00",
+    "CreatedBy": "Integrations",
+    "DisplayName": "Dori-Ann Steinke",
+    "DocumentType": "Accounts",
+    "Email": "dlsteinke@secure-energy.com",
+    "EnforceSpecificFacilityAccessLevels": true,
+    "EntityType": "UserProfile",
+    "ExternalAuthId": "fd3adaa5-959e-4755-87fe-c1545de8703d",
+    "FirstName": "Dori-Ann",
+    "GivenName": "Dori-Ann",
+    "LastName": "Steinke",
+    "Surname": "Steinke",
+    "UpdatedAt": "2024-01-05T08:14:55.5530373-08:00",
+    "UpdatedBy": "David Zeyha",
+    "UpdatedById": "249a9e81-246e-4440-8d1b-5da986a09536",
+    "id": "UserProfile|4a07d214-9d4c-44e9-a6a2-5d2be56844d9",
+    "Roles": [
+      {
+        "Id": "45816143-e7d8-4b1c-5a49-08dc0e0974c3",
+        "RoleId": "3fd1fd22-e869-43aa-bab1-34d4d8160545",
+        "RoleName": "Facility Admin - FST"
+      }
+    ],
+    "SpecificFacilityAccessAssignments": [
+      {
+        "Id": "106ec852-9465-4990-bafe-331f75970ef3",
+        "FacilityDisplayName": "RYFSR Rycroft Transloader Terminal",
+        "FacilityId": "815161af-a23c-48e4-b4f1-672cfb46c141",
+        "IsAuthorized": true,
+        "Level": "Inherited Roles"
+      },
+      {
+        "Id": "7ce54191-48c2-4bcc-b674-d4e078a9ce87",
+        "FacilityDisplayName": "RLFST Rainbow Lake FST",
+        "FacilityId": "cc55c7a8-7655-4193-b345-a6664ec81867",
+        "IsAuthorized": true,
+        "Level": "Inherited Roles"
+      },
+      {
+        "Id": "ee984671-dff3-4f1b-a12b-f2f6b91f1e71",
+        "FacilityDisplayName": "SRFST Spirit River FST",
+        "FacilityId": "e02763db-b291-48e8-a75d-1bfb7422253a",
+        "IsAuthorized": true,
+        "Level": "Inherited Roles"
+      },
+      {
+        "Id": "cea765bd-8758-4c5e-aea4-511bccce5993",
+        "FacilityDisplayName": "KDFST Kindersley West FST",
+        "FacilityId": "c36769da-0a19-42df-8f95-b3212f53de98",
+        "IsAuthorized": true,
+        "Level": "Inherited Roles"
+      }
+    ]
+  }
+]

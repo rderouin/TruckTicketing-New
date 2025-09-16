@@ -1,0 +1,145 @@
+﻿@using SE.Shared.Common.Extensions
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseTruckTicketingComponent
+<div class="card">
+        <div class="card-header d-flex align-content-center">
+            <h4 class="fw-bold">@(IsProcessComplete ? "Tare Weight Data Exception Results" : "Tare Weight Data")</h4>
+        </div>
+        <div class="card-body" hidden="@_uploadedData.Results.Any()">
+            <div class="w-100">
+                <PageLoadingContainer IsLoading="IsLoading">
+                    <LoadedView>
+                        <div class="d-flex justify-content-center">
+
+                            <InputFile OnChange="InputFileChange"
+                                       class="form-control w-auto"
+                                       disabled="@_isUploading" />
+
+                            @if (_isUploading)
+                            {
+                                <div class="spinner-border"
+                                 role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            }
+
+                        </div>
+
+                        @if (_uploadErrorMessage.HasText())
+                        {
+                            <div class="d-flex justify-content-center text-danger m-2">
+                                @_uploadErrorMessage
+                            </div>
+                        }
+                    </LoadedView>
+                </PageLoadingContainer>
+
+            </div>
+        </div>
+
+        <div class="card-body grid-switch-container" hidden="@(!(_uploadedData.Results.Any() && !IsProcessComplete))">
+            <PagableGridView TModel="TruckTicketTareWeightCsv"
+                             @ref="@_gridUploadedData"
+                             Results="@_uploadedData"
+                             EnableSearch="false"
+                             EnablePaging="true"
+                             EnableSorting="true"
+                             OnDataLoad="LoadTareWeight"
+                             EnableRowExpansion="false"
+                             EnableFilters="false"
+                             GridPageSize="10">
+                <Columns>
+                    <ColumnDefinition TItem="TruckTicketTareWeightCsv"
+                                      Property="@nameof(TruckTicketTareWeightCsv.FacilitySiteId)"
+                                      Title="Facility Site Id"
+                                      PropertyType="typeof(string)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="TruckTicketTareWeightCsv"
+                                      Property="@nameof(TruckTicketTareWeightCsv.TruckNumber)"
+                                      Title="Truck Number"
+                                      PropertyType="typeof(string)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="TruckTicketTareWeightCsv"
+                                      Property="@nameof(TruckTicketTareWeightCsv.TruckingCompanyName)"
+                                      Title="Trucking Company Name"
+                                      PropertyType="typeof(string)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="TruckTicketTareWeightCsv"
+                                      Property="@nameof(TruckTicketTareWeightCsv.TrailerNumber)"
+                                      Title="Trailer Number"
+                                      PropertyType="typeof(string)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="TruckTicketTareWeightCsv"
+                                      Property="@nameof(TruckTicketTareWeightCsv.TruckingCompanyAccountName)"
+                                      Title="Trucking Company Account Name"
+                                      PropertyType="typeof(string)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="TruckTicketTareWeightCsv"
+                                      Property="@nameof(TruckTicketTareWeightCsv.TareWeight)"
+                                      Title="Tare Weight"
+                                      PropertyType="typeof(string)">
+                    </ColumnDefinition>
+                </Columns>
+            </PagableGridView>
+        </div>
+
+        <div class="card-body grid-switch-container" hidden="@(!(_unProcessedData.Results.Any()))">
+            <PagableGridView TModel="TruckTicketTareWeightCsvResult"
+                             Results="@_unProcessedData"
+                             @ref="@_gridResultData"
+                             OnDataLoad="LoadTareWeightResult"
+                             EnableSearch="false"
+                             EnablePaging="true"
+                             EnableSorting="true"
+                             EnableRowExpansion="false"
+                             EnableFilters="false"
+                             GridPageSize="10">
+                <Columns>
+                    <ColumnDefinition TItem="TruckTicketTareWeightCsvResult"
+                                      Property="@nameof(TruckTicketTareWeightCsvResult.FacilitySiteId)"
+                                      Title="Facility Site Id"
+                                      PropertyType="typeof(string)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="TruckTicketTareWeightCsvResult"
+                                      Property="@nameof(TruckTicketTareWeightCsvResult.TruckNumber)"
+                                      Title="Truck Number"
+                                      PropertyType="typeof(string)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="TruckTicketTareWeightCsvResult"
+                                      Property="@nameof(TruckTicketTareWeightCsvResult.TruckingCompanyName)"
+                                      Title="Trucking Company Name"
+                                      PropertyType="typeof(string)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="TruckTicketTareWeightCsvResult"
+                                      Property="@nameof(TruckTicketTareWeightCsvResult.TrailerNumber)"
+                                      Title="Trailer Number"
+                                      PropertyType="typeof(string)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="TruckTicketTareWeightCsvResult"
+                                      Property="@nameof(TruckTicketTareWeightCsvResult.TareWeight)"
+                                      Title="Tare Weight"
+                                      PropertyType="typeof(string)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="TruckTicketTareWeightCsvResult"
+                                      Property="@nameof(TruckTicketTareWeightCsvResult.Result)"
+                                      Title="Result"
+                                      PropertyType="typeof(string)">
+                    </ColumnDefinition>
+                </Columns>
+            </PagableGridView>
+        </div>
+    </div>
+
+
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end gap-2">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Upload"
+                          Visible="@(!IsProcessComplete)"
+                      Click="@UploadButtonClicked" />
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Close"
+                          Click="HandleCancel" />
+        </div>
+    </div>

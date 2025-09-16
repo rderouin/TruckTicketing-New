@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident.Azure\Trident.Azure.csproj" />
+    <ProjectReference Include="..\SE.Shared.Domain\SE.Shared.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

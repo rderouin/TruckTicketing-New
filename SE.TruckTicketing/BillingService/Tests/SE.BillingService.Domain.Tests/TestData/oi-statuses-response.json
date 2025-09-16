@@ -1,0 +1,49 @@
+{
+  "meta": {
+    "startSequence": 1,
+    "number": 5,
+    "completeIndicator": true,
+    "links": [
+      {
+        "rel": "full",
+        "href": "/docp/supply-chain/v1/receipts/?$select=receiptNumber,status,itemID&$filter=receiptNumber in ('JCFST017384N-WT','JCFST47785-SP','SADLF050763-LF','JCFST017327A-WT','WNSWD012710-WT')"
+      }
+    ]
+  },
+  "receipts": [
+    {
+      "itemID": "64318",
+      "receiptNumber": "JCFST017327A-WT",
+      "status": "CANCELLED",
+      "displayStatus": "CANCELLED",
+      "dLSLocationEnforcement": "1"
+    },
+    {
+      "itemID": "64444",
+      "receiptNumber": "JCFST017384N-WT",
+      "status": "SUBMITTED",
+      "displayStatus": "SUBMITTED",
+      "dLSLocationEnforcement": "1"
+    },
+    {
+      "itemID": "64679",
+      "receiptNumber": "JCFST47785-SP",
+      "status": "APPROVED",
+      "displayStatus": "APPROVED",
+      "dLSLocationEnforcement": "1"
+    },
+    {
+      "itemID": "65770",
+      "receiptNumber": "SADLF050763-LF",
+      "status": "DISPUTED",
+      "displayStatus": "DISPUTED",
+      "dLSLocationEnforcement": "1"
+    },
+    {
+      "itemID": "79551",
+      "receiptNumber": "WNSWD012710-WT",
+      "status": "SAVED",
+      "displayStatus": "SAVED"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+﻿{
+  "EntityUpdatesPublisher": {
+    "PublishEntities": [
+      {
+        "EntityType": "Invoice"
+      }
+    ]
+  }
+}

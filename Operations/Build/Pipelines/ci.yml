@@ -1,0 +1,23 @@
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none
+
+variables:
+  projects: 'SE.TruckTicketing/SE.TruckTicketing.sln'
+  testProjects: '**/*.Test?(s).csproj'
+
+pool:
+  vmImage: 'windows-latest'
+
+stages:
+  - stage: 'Build'
+    jobs:
+    - job: 'Build'
+      steps:
+      - template: './templates/build.yml'
+        parameters:
+          projects: $(projects)
+      - template: './templates/test.yml'
+        parameters:
+          projects: $(testProjects)

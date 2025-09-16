@@ -1,0 +1,24 @@
+﻿{
+  "EntityUpdatesPublisher": {
+    "PublishEntities": [
+      {
+        "EntityType": "TradeAgreementUpload"
+      },
+      {
+        "EntityType": "Invoice"
+      },
+      {
+        "EntityType": "Account"
+      },
+      {
+        "EntityType": "AccountContactIndex"
+      },
+      {
+        "EntityType": "EDIFieldDefinition"
+      },
+      {
+        "EntityType": "MaterialApproval"
+      }
+    ]
+  }
+}

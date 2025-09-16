@@ -1,0 +1,63 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.Shared.Common.Utilities
+@inherits BaseRazorComponent
+
+<RadzenTemplateForm TItem="TruckTicket"
+                    Data="@Model"
+                    Submit="@HandleSubmit"
+                    id="@FormId">
+    <div class="row mt-3 mb-3">
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Reason"
+                         Component="ReasonDropDown"
+                         Class="required"/>
+            <RadzenDropDown TValue="VolumeChangeReason"
+                            Class="w-100"
+                            id="ReasonDropDown"
+                            Name="ReasonDropDown"
+                            @bind-Value="@Model.VolumeChangeReason"
+                            Placeholder="Select reason"
+                            TextProperty="Value"
+                            ValueProperty="Key"
+                            Data="@(DataDictionary.For<VolumeChangeReason>())"/>
+            <RadzenRequiredValidator Component="ReasonDropDown"
+                                     DefaultValue="VolumeChangeReason.Undefined"
+                                     Text="Required"/>
+        </div>
+    </div>
+    <div class="row mt-3 mb-3">
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Comments"
+                         Component="CommentsTextBox"
+                         Class="@RequiredClass"/>
+            <RadzenTextBox id="CommentsTextBox"
+                           Name="CommentsTextBox"
+                           @bind-Value="@Model.VolumeChangeReasonText"
+                           Class="w-100"
+                           Placeholder="Enter comments"
+                           MaxLength="50"/>
+            <RadzenRequiredValidator Component="CommentsTextBox"
+                                     Text="Required"
+                                     Visible="@CommentsRequired" />
+            <RadzenLengthValidator Component="CommentsTextBox" 
+                                   Min="5" 
+                                   Text="Must be at least 5 characters"
+                                   Visible="@CommentsRequired" />
+            <RadzenLengthValidator Component="CommentsTextBox" 
+                                   Max="50" 
+                                   Text="Cannot be more than 50 characters"
+                                   Visible="@CommentsRequired" />
+        </div>
+    </div>
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end gap-2">
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Discard Volume Changes"
+                          Click="HandleDiscardChanges" />
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Save"/>
+        </div>
+    </div>
+</RadzenTemplateForm>

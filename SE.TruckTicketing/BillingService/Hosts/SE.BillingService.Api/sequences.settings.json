@@ -1,0 +1,9 @@
+﻿{
+  "Sequences": {
+    "InvoiceNumber": {
+      "Seed": "10000000",
+      "MaxRequestBlockSize": 2,
+      "Suffix": "-IV"
+    }
+  }
+}

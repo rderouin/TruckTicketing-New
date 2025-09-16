@@ -1,0 +1,83 @@
+﻿@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@inherits BaseRazorComponent
+
+<div class="bg-white mt-4 mb-4">
+    <div class="breadcrumb-container">
+        Create Source Locations
+    </div>
+    <div class="d-flex align-items-center justify-content-between">
+        <h3>Add Account | Source Location</h3>
+        <div class="d-flex align-items-center gap-1">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          Text="Add Source Location"
+                          Click="() => OpenSourceLocationDetailsDialog()"
+                          Icon="add_outline"
+                          Disabled="_isCreateNewSourceLocationButtonDiabled">
+            </RadzenButton>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <PagableGridView TModel="SourceLocation"
+                         Results="@_sourceLocations"
+                         class="bs-class"
+                         EnableSearch="false"
+                         EnablePaging="true"
+                         EnableSorting="true"
+                         EnableRowExpansion="false"
+                         EnableFilters="false"
+                         OnDataLoad="LoadSourceLocation"
+                         @ref="_grid">
+            <Columns>
+                <ColumnDefinition TItem="SourceLocation"
+                                  Property="@nameof(SourceLocation.FormattedIdentifier)"
+                                  Title="Source Location">
+                    <Template Context="data">
+                        @if (data.Id != default)
+                        {
+                            <span>
+                                <a @onclick="@(() => OpenSourceLocationDetailsDialog(data))"
+                                   class="text-decoration-none">
+                                    @data.FormattedIdentifier
+                                </a>
+                            </span>
+                        }
+                        else
+                        {
+                            <span>@data.FormattedIdentifier</span>
+                        }
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SourceLocation"
+                                  Property="@nameof(SourceLocation.SourceLocationTypeName)"
+                                  Title="Source Location Type"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="SourceLocation"
+                                  Property="@nameof(SourceLocation.ProvinceOrState)"
+                                  Title="Province/State"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="SourceLocation"
+                                  Property="@nameof(SourceLocation.GeneratorAccountNumber)"
+                                  Title="Generator Account Number"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="SourceLocation"
+                                  Property="@nameof(SourceLocation.GeneratorName)"
+                                  Title="Generator Name"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="SourceLocation"
+                                  Property="@nameof(SourceLocation)"
+                                  Title="Actions"
+                                  Width="4rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="() => DeleteButton_Click(data)"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small"
+                                      Text="Delete"/>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

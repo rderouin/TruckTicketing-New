@@ -1,0 +1,31 @@
+﻿@using SE.Shared.Common.Extensions
+@inherits BaseTruckTicketingComponent
+
+@if (_isLoading || _facilityId == Guid.Empty)
+{
+    <div class="spinner-border text-primary"
+         role="status">
+        <span class=""></span>
+    </div>
+}
+else if (_landfillSamplingValues.Length > 0)
+{
+    <div class="d-flex gap-3 align-items-center mr-2">
+
+        @foreach (var sampling in _landfillSamplingValues)
+        {
+            var backgroundColor = IsClass1Product(sampling.ProductNumberFilter) ? "rz-badge-danger" : string.Empty;
+            var textColor = backgroundColor.HasText() ? "text-white" : "text-muted";
+            <div class="d-flex flex-column align-items-end pr-2 @backgroundColor"
+                 style="border-right: 5px solid; ">
+                <h6 class="form-label m-0 @textColor">Sampling Countdown</h6>
+                <p class=" fw-bold @textColor">@sampling.SamplingRuleType.ToString() @ClassFor(sampling.ProductNumberFilter)</p>
+                <div class="d-flex align-items-end gap-2">
+                    <p class="display-6 @textColor">@ValueFormatString(sampling.SamplingRuleType, sampling.Value, sampling.Threshold)</p>
+                </div>
+                <p class="@textColor">Threshold: @sampling.Threshold</p>
+            </div>
+        }
+
+    </div>
+}

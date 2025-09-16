@@ -1,0 +1,109 @@
+@using SortOrder = Trident.Contracts.Enums.SortOrder
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Models.Accounts
+@inherits BaseTruckTicketingComponent
+
+<section class="mb-5">
+    <div class="mb-3">
+        <h4 class="fw-bold">@Title</h4>
+    </div>
+    <div class="grid-switch-container">
+        <GridFiltersContainer Expandable="@false"
+                              @ref="_gridFiltersContainer"
+                              PageSize="10"
+                              OrderBy="@nameof(Change.ChangedAt)"
+                              SortOrder="SortOrder.Desc"
+                              OnFilterChange="@(async criteria => await _grid.SetExternalSearchCriteriaModel(criteria))">
+            <div class="d-flex flex-grow-1 gap-3">
+                <SelectFilter Label="Entity Field"
+                              Placeholder="All Fields"
+                              FilterPath="@nameof(Change.AgnosticPath)"
+                              Data="@GetFieldOptions()"/>
+                <TextFilter Label="Reference ID"
+                            Placeholder="Search by Reference ID"
+                            FilterName="@nameof(Change.Tag)">
+                </TextFilter>
+                <DropDownDataGridFilter TItem="UserProfile"
+                                        Label="User"
+                                        Placeholder="All users"
+                                        FilterPath="@nameof(Change.ChangedById)"
+                                        TextProperty="@nameof(UserProfile.DisplayName)"
+                                        ValueProperty="@nameof(UserProfile.Email)"
+                                        ValuePropertySelector="@(profile => profile.Email)"
+                                        DefaultSortProperty="@nameof(UserProfile.DisplayName)">
+                    <Columns>
+                        <RadzenDropDownDataGridColumn Property="@nameof(UserProfile.DisplayName)"
+                                                      Title="Full Name"
+                                                      Width="100px"/>
+                        <RadzenDropDownDataGridColumn Property="@nameof(UserProfile.Email)"
+                                                      Title="E-mail"
+                                                      Width="100px"/>
+                    </Columns>
+                </DropDownDataGridFilter>
+                <DateRangeFilter Label="Change Date"
+                                 FilterPath="@nameof(Change.ChangedAt)"/>
+            </div>
+        </GridFiltersContainer>
+        <div class="pt-4">
+            <PagableGridView @ref="_grid"
+                             TModel="Change"
+                             Results="@_results"
+                             EnablePaging="@true"
+                             EnableSorting="@true"
+                             EnableRowExpansion="@false"
+                             EnableSearch="@false"
+                             EnableFilters="@false"
+                             OnDataLoad="@OnLoadData"
+                             GridPageSize="@(_results.Info.PageSize ?? 10)"
+                             IsLoading="@_isLoading">
+                <Columns>
+                    <ColumnDefinition TItem="Change"
+                                      Property="@nameof(Change.FieldName)"
+                                      Title="Changed Field"
+                                      PropertyType="typeof(string)">
+                        <Template Context="data">
+                            @FieldNameToDisplayName(data.AgnosticPath)
+                        </Template>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="Change"
+                                      Property="@nameof(Change.ValueBefore)"
+                                      Title="Changed From"
+                                      PropertyType="typeof(string)">
+                        <Template Context="data">
+                            @FormatValue(data.AgnosticPath, data.ValueBefore)
+                        </Template>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="Change"
+                                      Property="@nameof(Change.ValueAfter)"
+                                      Title="Changed To"
+                                      PropertyType="typeof(string)">
+                        <Template Context="data">
+                            @FormatValue(data.AgnosticPath, data.ValueAfter)
+                        </Template>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="Change"
+                                      Property="@nameof(Change.Tag)"
+                                      Title="Reference ID"
+                                      PropertyType="typeof(string)">
+                        <Template Context="data">
+                            @FormatTag(data.Tag, data.FieldLocation, data.FieldName)
+                        </Template>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="Change"
+                                      Property="@nameof(Change.ChangedBy)"
+                                      Title="Changed By"
+                                      PropertyType="typeof(string)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="Change"
+                                      Property="@nameof(Change.ChangedAt)"
+                                      Title="Change Date"
+                                      PropertyType="typeof(string)">
+                        <Template Context="data">
+                            @data.ChangedAt.ToLocalTime().ToString("f")
+                        </Template>
+                    </ColumnDefinition>
+                </Columns>
+            </PagableGridView>
+        </div>
+    </div>
+</section>

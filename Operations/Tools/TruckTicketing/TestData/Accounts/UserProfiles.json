@@ -1,0 +1,82 @@
+  [
+    {
+    "Id": "29474959-7516-4b86-a8e3-094b93ecfd61",
+    "id": "UserProfile|29474959-7516-4b86-a8e3-094b93ecfd61",
+    "DocumentType": "Accounts",
+    "EntityType": "UserProfile",
+    "FirstName": "Andy",
+    "LastName": "Aiyer",
+    "UserName": "aaiyer@hitachisolutions.com",
+    "GivenName": "Andy Dev",
+    "Surname": "AIYER",
+    "DisplayName": "Andy Aiyer",
+    "Email": "aaiyer@hitachisolutions.com",
+    "LocalAuthId": "",
+    "ExternalAuthId": "",
+    "EnforceSpecificFacilityAccessLevels": false,
+    "CreatedAt": "2022-12-07T22:38:06.9967297+00:00",
+    "CreatedBy": "Manish Mawatwal",
+    "CreatedById": "9fc1cae5-2625-4ceb-b3bd-c2fdf3920028",
+    "UpdatedAt": "2022-12-07T22:38:06.9967297+00:00",
+    "UpdatedBy": "Manish Mawatwal",
+    "UpdatedById": "9fc1cae5-2625-4ceb-b3bd-c2fdf3920028",
+    "AllFacilitiesAccessLevel": "Inherited Roles",
+    "Roles": [
+        {
+            "Id": "50ea5441-b277-4a09-a48f-af81b34fa93c",
+            "RoleId": "50ea5441-b277-4a09-a48f-af81b34fa93c",
+            "RoleName": "Sample Role 1"
+        }
+    ],
+    "SpecificFacilityAccessAssignments": [
+        {
+            "Id": "b5275a5f-fe43-4850-b943-8f705e45b8de",
+            "FacilityId": "ae62f28e-fd0b-4594-b235-0e254bc4771a",
+            "FacilityDisplayName": "LF Facility",
+            "IsAuthorized": true,
+            "Level": "Inherited Roles"
+        }
+    ]
+  },
+  {
+    "Id": "8a644097-3f57-4ef9-a515-7588a6faa937",
+    "AllFacilitiesAccessLevel": "Inherited Roles",
+    "CreatedAt": "0001-01-01T00:00:00+00:00",
+    "CreatedBy": null,
+    "CreatedById": null,
+    "DisplayName": "Manish Mawatwal",
+    "DocumentType": "Accounts",
+    "Email": "mmawatwal@hitachisolutions.com",
+    "EnforceSpecificFacilityAccessLevels": false,
+    "EntityType": "UserProfile",
+    "ExternalAuthId": "0e92db6e-59d5-481a-9245-363f89bacda6",
+    "FirstName": "Manish",
+    "GivenName": "Manish Dev",
+    "LastName": "Mawatwal",
+    "LocalAuthId": "64323053-1ebc-4300-927d-6c24e47bab46",
+    "Surname": "MMAWAT",
+    "UpdatedAt": "0001-01-01T00:00:00+00:00",
+    "UpdatedBy": null,
+    "UpdatedById": null,
+    "id": "UserProfile|8a644097-3f57-4ef9-a515-7588a6faa937",
+    "Roles": [],
+    "SpecificFacilityAccessAssignments": [
+        {
+            "Id": "8fb1ca5e-f10e-4ac4-9ed4-08dadb44d67c",
+            "FacilityDisplayName": "LF Facility",
+            "FacilityId": "ae62f28e-fd0b-4594-b235-0e254bc4771a",
+            "IsAuthorized": true,
+            "Level": "Inherited Roles",
+            "Name": null
+        },
+        {
+            "Id": "f4555a02-ad6d-4f10-9ed5-08dadb44d67c",
+            "FacilityDisplayName": "FST Facility-TAFA-Fst-Canada",
+            "FacilityId": "91db5628-a028-494f-b212-32031c201b26",
+            "IsAuthorized": false,
+            "Level": "Administrator",
+            "Name": null
+        }
+    ]
+}
+]

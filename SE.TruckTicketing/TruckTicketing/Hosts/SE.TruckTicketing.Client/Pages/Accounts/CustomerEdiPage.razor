@@ -1,0 +1,98 @@
+﻿@page "/customers/{Id:guid}/edi"
+@using SE.BillingService.Contracts.Api.Models
+@using SE.TruckTicketing.Client.Components.BillingControls
+@inherits BaseTruckTicketingComponent
+
+<PageLoadingContainer IsLoading="@IsLoading">
+    <LoadingView>
+        <div class="d-flex align-items-center justify-content-center h-100">
+            <div class="spinner-grow"
+                 role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </LoadingView>
+    <LoadedView>
+        @if (Customer is null)
+        {
+            <div class="d-flex align-items-center justify-content-center h-100">
+                <div class="text-center">
+                    <h1 class="display-1 fw-bold">404</h1>
+                    <p class="fs-3"> <span class="text-danger">Oh no!</span> Customer not found.</p>
+                    <p class="lead">
+                        The customer you’re looking for doesn’t exist.
+                    </p>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="p-4">
+                <p class="breadcrumb"> CUSTOMER @Customer.CustomerNumber </p>
+                <header class="d-flex gap-4">
+                    <h3 class="title flex-grow-1">@Customer.Name</h3>
+                </header>
+
+                <br/>
+
+                <EDIFieldsDefinition Model="@Customer"/>
+
+                <section class="mb-5">
+                    <header class="d-flex mb-3">
+                        <h4 class="fw-bold flex-grow-1">Invoice Exchange Mappings</h4>
+                    </header>
+                    <div class="grid-switch-container">
+                        <PagableGridView TModel="InvoiceExchangeDto"
+                                         IsLoading="@IsLoadingInvoiceExchanges"
+                                         Results="@InvoiceExchanges"
+                                         OnDataLoad="@LoadInvoiceExchanges"
+                                         EnablePaging="true"
+                                         EnableSorting="true"
+                                         EnableFilters="false"
+                                         EnableSearch="true">
+                            <Columns>
+                                <ColumnDefinition TItem="InvoiceExchangeDto"
+                                                  Title="Platform"
+                                                  Property="@nameof(InvoiceExchangeDto.PlatformCode)">
+                                </ColumnDefinition>
+                                <ColumnDefinition TItem="InvoiceExchangeDto"
+                                                  Title="Business Stream"
+                                                  Property="@nameof(InvoiceExchangeDto.BusinessStreamName)">
+                                </ColumnDefinition>
+                                <ColumnDefinition TItem="InvoiceExchangeDto"
+                                                  Title="Legal Entity"
+                                                  Property="@nameof(InvoiceExchangeDto.LegalEntityName)">
+                                </ColumnDefinition>
+                                <ColumnDefinition TItem="InvoiceExchangeDto"
+                                                  Title="Account Name"
+                                                  Property="@nameof(InvoiceExchangeDto.BillingAccountName)">
+                                </ColumnDefinition>
+                                <ColumnDefinition TItem="InvoiceExchangeDto"
+                                                  Title="Account Number"
+                                                  Property="@nameof(InvoiceExchangeDto.BillingAccountNumber)">
+                                </ColumnDefinition>
+                                <ColumnDefinition TItem="InvoiceExchangeDto"
+                                                  Title="Account DUNS"
+                                                  Property="@nameof(InvoiceExchangeDto.BillingAccountDunsNumber)">
+                                </ColumnDefinition>
+                                <ColumnDefinition TItem="InvoiceExchangeDto"
+                                                  FilterEnabled="false"
+                                                  EnableSorting="false"
+                                                  Title=""
+                                                  Width="5rem">
+                                    <Template Context="data">
+                                        <span>
+                                            <RadzenLink Path="@($"/invoice-exchanges/{data.Type}/{data.Id}")"
+                                                        Text="Edit"
+                                                        class="text-decoration-none"/>
+                                        </span>
+                                    </Template>
+                                </ColumnDefinition>
+                            </Columns>
+                        </PagableGridView>
+                    </div>
+                </section>
+            </div>
+        }
+    </LoadedView>
+</PageLoadingContainer>

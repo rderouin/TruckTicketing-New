@@ -1,0 +1,83 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+
+<EditForm Model="@TruckTicketAdditionalServiceModel"
+          OnValidSubmit="@SaveButton_Clicked">
+    <div class="card">
+        <div class="card-header d-flex align-content-center">
+            <h4 class="fw-bold">Additional Service Details</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="d-flex flex-row align-items-center gap-2">
+                        <div class="col-3">
+                            <RadzenLabel Text="Service Name"
+                                         Component="ServiceNameText"/>
+                        </div>
+                        <div class="flex-grow-1">
+                            <RadzenTextBox id="ServiceNameText"
+                                           @bind-Value="@TruckTicketAdditionalServiceModel.AdditionalServiceName"
+                                           Disabled="true">
+                            </RadzenTextBox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="d-flex flex-row align-items-center gap-2">
+                        <div class="col-3">
+                            <RadzenLabel Text="Product Type"
+                                         Component="TTTruckTicketAdditionalServiceDropDown"/>
+                        </div>
+                        <div class="flex-grow-1">
+                            <TridentApiDropDown id="TTAdditionalServiceDropDown"
+                                                TModel="Product"
+                                                TValue="Guid"
+                                                Placeholder="Select Additional Service..."
+                                                @bind-Value="@(TruckTicketAdditionalServiceModel.ProductId)"
+                                                TextProperty="@nameof(Product.Name)"
+                                                ValueProperty="@nameof(Product.Id)"
+                                                PageSize="10"
+                                                OnItemSelect="@(args => OnProductTypeChange(args))"
+                                                class="w-100"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="d-flex flex-row align-items-center gap-2">
+                        <div class="col-3">
+                            <RadzenLabel Text="Quantity"
+                                         Component="TTTruckTicketAdditionalServiceQuantity"/>
+                        </div>
+                        <div class="flex-grow-1">
+                            <RadzenNumeric TValue="double"
+                                           Format="0.0000"
+                                           @bind-Value="@(TruckTicketAdditionalServiceModel.AdditionalServiceQuantity)"
+                                           Placeholder="Enter quantity"
+                                           Class="mr-1"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Save"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          class="ml-2"
+                          Click="HandleCancel"/>
+        </div>
+    </div>
+</EditForm>

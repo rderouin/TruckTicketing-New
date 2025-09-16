@@ -1,0 +1,26 @@
+<CascadingValue Value="@_filterContext">
+    <div class="d-flex gap-2 p-3 filters">
+        <section class="d-flex flex-column gap-3 flex-grow-1">
+            @ChildContent
+        </section>
+        <footer class="mt-4 flex-grow-0 gap-2">
+            <RadzenButton Icon="refresh"
+                          Click="Reload"
+                          ButtonStyle="ButtonStyle.Light"
+                          title="Refresh grid"/>
+
+            <RadzenButton Icon="clear_all"
+                          Click="ResetFilters"
+                          ButtonStyle="ButtonStyle.Light"
+                          title="Clear all filters"/>
+        </footer>
+        @if (Expandable)
+        {
+            <footer class="mt-4 flex-grow-0">
+                <RadzenButton Icon="@(Expanded ? "close" : "filter_alt")"
+                              Click="ToggleExpanded"
+                              title="Show more filters"/>
+            </footer>
+        }
+    </div>
+</CascadingValue>

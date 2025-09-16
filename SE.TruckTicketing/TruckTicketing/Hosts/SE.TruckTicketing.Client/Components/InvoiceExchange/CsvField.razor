@@ -1,0 +1,31 @@
+﻿@inherits BaseTruckTicketingComponent
+
+<div class="p-1">
+    <strong>CSV Formatting</strong>
+</div>
+
+<div class="p-1">
+    <RadzenLabel Text="Header title"></RadzenLabel><br/>
+    <RadzenTextBox @bind-Value="Model.DestinationHeaderTitle"
+                   class="w-100">
+    </RadzenTextBox>
+</div>
+
+<div class="p-1">
+    <RadzenLabel Text="Position"></RadzenLabel><br/>
+    <RadzenNumeric TValue="int"
+                   @bind-Value="Model.DestinationFieldPosition"
+                   Min="0"
+                   Max="10000"
+                   class="w-100">
+    </RadzenNumeric>
+</div>
+
+@if (ShowFormatSelection)
+{
+    <div class="p-1">
+        <FormatPicker FormatsSource="@FormatsSource"
+                      Model="@Model">
+        </FormatPicker>
+    </div>
+}

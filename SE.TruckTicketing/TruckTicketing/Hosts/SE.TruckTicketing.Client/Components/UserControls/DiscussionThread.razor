@@ -1,0 +1,89 @@
+﻿@using Humanizer
+@inherits BaseRazorComponent
+
+<div class="d-flex align-items-start mb-3">
+    <div class="flex-grow-0 py-2 pr-2">
+        <RadzenGravatar Email="@GetCurrentUser()"/>
+    </div>
+    <div class="flex-grow-1">
+        <RadzenTextArea Placeholder="Add a comment and save the changes"
+                        @oninput="e => runningComment = e.Value.ToString()"
+                        onkeyup="@CommentAdded"
+                        @bind-Value="@commentValue"
+                        class="w-100"
+                        Cols="30"
+                        Rows="3"/>
+    </div>
+</div>
+
+@foreach (var textmsg in listOfComments)
+{
+    <div class="d-flex align-items-start mb-3">
+        <div class="flex-grow-0 py-2 pr-2">
+            <RadzenGravatar Email="@textmsg.CreatedBy"/>
+        </div>
+        <div class="flex-grow-1">
+            @if (!updatedList.ContainsKey(textmsg.Id))
+            {
+                <div class="d-flex align-items-center pb-1">
+                    <div class="flex-grow-1">
+                        <small class="font-weight-bold pr-1">
+                            @(IsThisMyComment(textmsg.CreatedById) ? "You" : textmsg.CreatedBy)
+                        </small>
+                        <small class="text-muted">
+                            commented @textmsg.CreatedAt.Humanize() @(textmsg.CreatedAt != textmsg.UpdatedAt ? "(edited)" : "")
+                        </small>
+                    </div>
+                    <div class="flex-grow-0">
+                        <RadzenButton ButtonStyle="ButtonStyle.Light"
+                                      Size="ButtonSize.Small"
+                                      class="px-2"
+                                      Visible=@(IsThisMyComment(textmsg.CreatedById) && !updatedList.ContainsKey(textmsg.Id))
+                                      Click=@(args => EditThisCommentButtonClicked(textmsg.Id, textmsg.Comment))>
+                            <span class="oi oi-pencil"></span>
+                        </RadzenButton>
+                    </div>
+                </div>
+            }
+            <RadzenTextArea Disabled=@(!updatedList.ContainsKey(textmsg.Id))
+            @bind-Value=@textmsg.Comment
+                            class="w-100"
+                            Cols="30"
+                            Rows="3"/>
+            @if (updatedList.ContainsKey(textmsg.Id))
+            {
+                <div class="d-flex justify-content-end">
+                    <RadzenButton ButtonStyle="ButtonStyle.Light"
+                                  class="m-1"
+                                  Text="Cancel"
+                                  Click=@(args => CancelTheChange(textmsg.Id))>
+                    </RadzenButton>
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                  class="m-1"
+                                  Text="Update"
+                                  Click=@(args => UpdateCommentButtonClicked(textmsg.Id))>
+                    </RadzenButton>
+                </div>
+            }
+        </div>
+
+    </div>
+}
+
+<div class="d-flex justify-content-end">
+    @if (totalCommentsCounts - listOfComments.Count > 0)
+    {
+        <RadzenButton class="m-1"
+                      Click="@ShowMoreCommentsAsync"
+                      Text="Show More">
+        </RadzenButton>
+    }
+
+    @if (listOfComments.Count > 10)
+    {
+        <RadzenButton class="m-1"
+                      Click="@ShowLessCommentsAsync"
+                      Text="Show Less">
+        </RadzenButton>
+    }
+</div>

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TruckTicketingCLI": {
+      "commandName": "Project",
+      "commandLineArgs": "rebuild-all --update"
+    }
+  }
+}

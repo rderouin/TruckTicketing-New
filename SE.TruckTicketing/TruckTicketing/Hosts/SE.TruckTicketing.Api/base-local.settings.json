@@ -1,0 +1,12 @@
+{
+  "IsEncrypted": false,
+  "Host": {
+    "LocalHttpPort": 6004,
+    "CORS": "*"
+  },
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
+  },
+  "AzureAppConfigurationConnectionString": "Endpoint=https://blablabla.azconfig.io;Id=WF7c-ll-s0:cEL+X5A7XTAXin/sperV;Secret=b0CsCk4EwgzOPSQtFWStm9bPJowChvoe3TwnXp+jzVA="
+}

@@ -1,0 +1,41 @@
+﻿@typeparam TValue    
+@using SE.Shared.Common.Lookups
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits TridentApiDropDownDataGrid<SE.TruckTicketing.Contracts.Models.Operations.Account, TValue>
+
+<RadzenDropDownDataGrid id="@Id"
+                        class="@Class"
+                        @ref="DropDownDataGrid"
+                        TValue="TValue"
+                        LoadData="@OnLoadData"
+                        AllowFiltering="@AllowFiltering"
+                        AllowClear="@AllowClear"
+                        AllowSorting="true"
+                        Placeholder="@Placeholder"
+                        PageSize="@PageSize"
+                        Change="@Change"
+                        ShowPagingSummary="@true"
+                        @bind-Value="@Value"
+                        Data="@Data"
+                        Count="@Count"
+                        Responsive="@true"
+                        Disabled="@Disabled"
+                        TextProperty="@TextProperty"
+                        ValueProperty="@ValueProperty"
+                        Name="@Name">
+    <Columns>
+        @if (AccountType == AccountTypes.Customer.ToString())
+        {
+            <RadzenDropDownDataGridColumn Property="@nameof(Account.CustomerNumber)"
+                                          Title="Customer Number"
+                                          Width="40px"/>
+        }
+        <RadzenDropDownDataGridColumn Property="@nameof(Account.Name)"
+                                      Title="Name"
+                                      Width="100px"/>
+        
+        <RadzenDropDownDataGridColumn Property="@nameof(Account.LegalEntity)"
+                                      Title="Legal Entity"
+                                      Width="100px" />
+    </Columns>
+</RadzenDropDownDataGrid>

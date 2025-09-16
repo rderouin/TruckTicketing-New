@@ -1,0 +1,110 @@
+﻿[
+  {
+    "RelativeUrl": "/accounts",
+    "Text": "Accounts"
+  },
+  {
+  "RelativeUrl": "/truck-ticketing/source-locations",
+  "Text": "Source Locations"
+  },
+  {
+    "RelativeUrl": "/material-approvals",
+    "Text": "Material Approvals"
+  },
+  {
+    "RelativeUrl": "/truck-ticketing/truck-tickets",
+    "Text": "Tickets"
+  },
+  {
+    "RelativeUrl": "/sales-management",
+    "Text": "Sales"
+  },
+  {
+    "RelativeUrl": "/facilities",
+    "Text": "System Set Up",
+    "Children": [
+      {
+        "RelativeUrl": "/facilities",
+        "Text": "Facilities"
+      },
+      {
+        "RelativeUrl": "/service-type-view",
+        "Text": "Service Types"
+      },
+      {
+        "RelativeUrl": "/spartan-params",
+        "Text": "Spartan Product Parameters"
+      },
+      {
+        "RelativeUrl": "/truck-ticketing/source-location-types",
+        "Text": "Source Location Types"
+      },
+      {
+        "RelativeUrl": "/access-management/user-profiles",
+        "Text": "User Role Assignments"
+      },
+      {
+        "RelativeUrl": "/access-management/roles",
+        "Text": "User Roles"
+      }
+    ]
+  },
+  {
+    "RelativeUrl": "/additional-services",
+    "Text": "Configurations",
+    "Children": [
+      {
+        "RelativeUrl": "/additional-services",
+        "Text": "Additional Services"
+      },
+      {
+        "RelativeUrl": "/invoice-exchanges",
+        "Text": "Invoice Exchanges"
+      },
+      {
+        "RelativeUrl": "/trade-agreement-uploads",
+        "Text": "Trade Agreement Uploads"
+      },
+      {
+        "RelativeUrl": "/email-templates",
+        "Text": "Email Templates"
+      },
+      {
+        "RelativeUrl": "/truck-ticketing/volume-changes",
+        "Text": "Volume Changes"
+      },
+      {
+        "RelativeUrl": "/truck-ticketing/lf-loadsummary-reports",
+        "Text": "Load Summary Report"
+      },
+      {
+        "RelativeUrl": "/truck-ticketing/fstdailyreport",
+        "Text": "FST Daily Work Report"
+      },
+      {
+        "RelativeUrl": "/truck-ticketing/landfill-reports",
+        "Text": "Landfill Daily Report"
+      },
+      {
+        "RelativeUrl": "/facility-density-defaults",
+        "Text": "Facility Density Defaults"
+      },
+      {
+        "RelativeUrl": "/truck-ticketing/producer-report",
+        "Text": "Producer Report"
+      },
+      {
+        "RelativeUrl": "/truck-ticketing/tare-weights",
+        "Text": "Tare Weights"
+      },
+      {
+        "RelativeUrl": "/user-profile/signature-collection",
+        "Text": "Signature Collection"
+      },
+      {
+        "RelativeUrl": "/webapp-settings",
+        "Text": "Web Application Settings"
+      }
+    ]
+  }
+]

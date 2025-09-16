@@ -1,0 +1,97 @@
+﻿@typeparam TModel
+@inherits BaseTruckTicketingComponent
+
+<div class="d-flex flex-column h-100">
+
+    <div class="w-100">
+
+        <RadzenLabel Text="@Name"
+                     Component="@Name"
+                     class="@(IsRequired ? "required" : String.Empty)"/>
+
+        @foreach (var email in _allSelectedContacts)
+        {
+            <RadzenBadge class="small-badge p-1"
+                         BadgeStyle="BadgeStyle.Light">
+                @email
+                <RadzenButton icon="close"
+                              class="p-0"
+                              ButtonStyle="ButtonStyle.Light"
+                              Click="@(() => RemoveEmail(email))"/>
+            </RadzenBadge>
+        }
+
+        <RadzenTextBox Name="@Name"
+                       id="@Name"
+                       Visible="false"
+                       Change="@Change"
+                       @bind-Value="@Value">
+        </RadzenTextBox>
+
+        @if (IsRequired)
+        {
+            <RadzenRequiredValidator Component="@Name"
+                                     Text="At least one email address needs to be added or selected."
+                                     class="validation-message"/>
+        }
+
+    </div>
+
+    <div class="d-flex justify-content-end">
+        <div class="p-2">
+            <RadzenButton Text="Select Contact"
+                          Click="@ShowAddExistingContact">
+            </RadzenButton>
+        </div>
+        <div class="p-2">
+            <RadzenButton Text="Add Custom Email"
+                          Click="@ShowAddCustomEmail">
+            </RadzenButton>
+        </div>
+    </div>
+
+    @if (_showAddExistingContact)
+    {
+        <div class="d-flex justify-content-end">
+            <div class="p-2">
+                <RadzenLabel Text="@ContactDropdownLabel"
+                             Component="ContactDropdown"/>
+                <RadzenDropDown AllowClear="true"
+                                AllowFiltering="true"
+                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                @bind-Value="@_selectedContacts"
+                                Change=@OnContactDropDownChange
+                                class="w-100"
+                                Data="@Contacts"
+                                id="ContactDropdown"
+                                Multiple="true"
+                                Name="ContactDropdown"
+                                TextProperty="@TextProperty"
+                                ValueProperty="@ValueProperty"/>
+            </div>
+        </div>
+    }
+
+    @if (_showAddCustomEmail)
+    {
+        <div class="d-flex justify-content-end">
+            <div class="p-2">
+                <RadzenLabel Text="Add Email"
+                             Component="AddEmailTextBox"/>
+                <RadzenTextBox id="AddEmailTextBox"
+                               Name="AddEmailTextBox"
+                               @bind-Value="@CustomEmailAddress"/>
+                <RadzenEmailValidator @ref="_customEmailValidator"
+                                      class="p-2 d-flex justify-content-end  rz-messages-error"
+                                      Component="AddEmailTextBox"
+                                      Text="Enter email in valid format"/>
+            </div>
+            <div class="p-2">
+                <RadzenButton Icon="add_circle_outline"
+                              Click="AddCustomEmailAddress"
+                              ButtonStyle="ButtonStyle.Primary"/>
+            </div>
+        </div>
+    }
+
+</div>

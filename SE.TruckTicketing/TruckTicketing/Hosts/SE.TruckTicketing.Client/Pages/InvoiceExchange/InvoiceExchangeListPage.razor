@@ -1,0 +1,127 @@
+﻿@page "/invoice-exchanges"
+@using Humanizer
+@using SE.BillingService.Contracts.Api.Enums
+@using SE.BillingService.Contracts.Api.Models
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<PageLoadingContainer IsLoading="@IsLoading">
+
+    <LoadingView>
+        <div class="d-flex align-items-center gap-4">
+            <div class="spinner-border text-primary"
+                 role="status">
+            </div>
+            <span>
+                Loading Invoice Exchanges...
+            </span>
+        </div>
+    </LoadingView>
+
+    <LoadedView>
+        <div class="bg-white p-4">
+            <div class="d-flex align-items-center justify-content-between">
+
+                <h3>Invoice Exchanges</h3>
+
+                <div>
+                    <RadzenButton Text="Create Invoice Exchange"
+                                  Icon="add_outline"
+                                  ButtonStyle="ButtonStyle.Primary"
+                                  Disabled="@(!HasWritePermission(Permissions.Resources.InvoiceExchangeConfiguration))"
+                                  Click="() => OpenConfigPage(InvoiceExchangeType.Global, null, null)">
+                    </RadzenButton>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="p-4 grid-switch-container">
+            <PagableGridView TModel="InvoiceExchangeDto"
+                             IsLoading="@IsGridLoading"
+                             Results="@SearchResults"
+                             OnDataLoad="OnDataGridLoad"
+                             EnablePaging="true"
+                             EnableSorting="true"
+                             EnableFilters="false"
+                             EnableSearch="true">
+                <Columns>
+                    <ColumnDefinition TItem="InvoiceExchangeDto"
+                                      Title="Platform"
+                                      Property="@nameof(InvoiceExchangeDto.PlatformCode)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="InvoiceExchangeDto"
+                                      Title="Level"
+                                      Property="@nameof(InvoiceExchangeDto.Type)">
+                        <Template>
+                            @context.Type.Humanize()
+                        </Template>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="InvoiceExchangeDto"
+                                      Title="Adapter Type - Invoices"
+                                      Property="@nameof(InvoiceExchangeDto.InvoiceDeliveryConfiguration.MessageAdapterType)">
+                        <Template>
+                            @context.InvoiceDeliveryConfiguration.MessageAdapterType.Humanize()
+                        </Template>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="InvoiceExchangeDto"
+                                      Title="Adapter Type - Field Tickets"
+                                      Property="@nameof(InvoiceExchangeDto.FieldTicketsDeliveryConfiguration.MessageAdapterType)">
+                        <Template>
+                            @context.FieldTicketsDeliveryConfiguration.MessageAdapterType.Humanize()
+                        </Template>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="InvoiceExchangeDto"
+                                      Title="Business Stream"
+                                      Property="@nameof(InvoiceExchangeDto.BusinessStreamName)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="InvoiceExchangeDto"
+                                      Title="Legal Entity"
+                                      Property="@nameof(InvoiceExchangeDto.LegalEntityName)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="InvoiceExchangeDto"
+                                      Title="Account Name"
+                                      Property="@nameof(InvoiceExchangeDto.BillingAccountName)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="InvoiceExchangeDto"
+                                      Title="Account Number"
+                                      Property="@nameof(InvoiceExchangeDto.BillingAccountNumber)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="InvoiceExchangeDto"
+                                      Title="Account DUNS"
+                                      Property="@nameof(InvoiceExchangeDto.BillingAccountDunsNumber)">
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="InvoiceExchangeDto"
+                                      FilterEnabled="false"
+                                      EnableSorting="false"
+                                      Title="Actions">
+                        <Template>
+                            <RadzenSplitButton Text="Edit"
+                                               Icon="edit"
+                                               Click="i => RowSplitButtonClick(i, context)">
+                                <ChildContent>
+                                    <RadzenSplitButtonItem Text="Delete"
+                                                           Icon="delete"
+                                                           Value="delete"/>
+                                    <RadzenSplitButtonItem Text="Add Business Stream Override"
+                                                           Icon="location_city"
+                                                           Value="@nameof(InvoiceExchangeType.BusinessStream)"/>
+                                    <RadzenSplitButtonItem Text="Add Legal Entity Override"
+                                                           Icon="business_center"
+                                                           Value="@nameof(InvoiceExchangeType.LegalEntity)"/>
+                                    <RadzenSplitButtonItem Text="Add Account Override"
+                                                           Icon="person"
+                                                           Value="@nameof(InvoiceExchangeType.Customer)"/>
+                                    <RadzenSplitButtonItem Text="Clone"
+                                                           Icon="content_copy"
+                                                           Value="clone"/>
+                                </ChildContent>
+                            </RadzenSplitButton>
+                        </Template>
+                    </ColumnDefinition>
+                </Columns>
+            </PagableGridView>
+        </div>
+    </LoadedView>
+
+</PageLoadingContainer>

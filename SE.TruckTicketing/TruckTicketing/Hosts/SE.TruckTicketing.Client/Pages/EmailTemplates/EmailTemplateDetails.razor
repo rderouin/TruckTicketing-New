@@ -1,0 +1,300 @@
+﻿@using SE.TruckTicketing.Contracts.Models.ContentGeneration
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<RadzenTemplateForm TItem="EmailTemplateDetailsViewModel"
+                    Data="@ViewModel"
+                    Submit="@OnSubmit">
+<div class="bg-white sticky-footer-page">
+<p class="breadcrumb"> </p>
+<header class="d-flex gap-4">
+    <h3 class="title flex-grow-1">@ViewModel.Title</h3>
+</header>
+
+<div class="sticky-footer">
+    <div class="d-flex gap-3 justify-content-end">
+        <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                      Text="Close"
+                      Click="@OnCancel"/>
+
+        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                        ButtonType="ButtonType.Submit"
+                      Text="@ViewModel.SubmitButtonText"
+                      IsBusy="@_isSaving"
+                      Disabled="@(!HasWritePermission(Permissions.Resources.EmailTemplate))"
+                      BusyText="@ViewModel.SubmitButtonBusyText"/>
+    </div>
+
+</div>
+
+<TridentValidationSummary Response="@ViewModel.Response"
+                          TModel="EmailTemplate"/>
+<br/>
+
+<section class="mb-4">
+<h4 class="fw-bold mb-3">General Info</h4>
+<div class="row mb-3">
+    <div class="col d-flex flex-column">
+        <RadzenLabel Text="Template Name"
+                     Component="TemplateNameTextBox"
+                     class="required"/>
+
+        <RadzenTextBox id="TemplateNameTextBox"
+                       @bind-Value="@ViewModel.EmailTemplate.Name"
+                       MaxLength="100"
+                       class="w-100"/>
+    </div>
+    <div class="col d-flex flex-column">
+        <RadzenLabel Text="Event"
+                     Component="EventDropDown"
+                     class="required"/>
+
+        <TridentApiDropDownDataGrid id="EventDropDown"
+                                    class="w-100"
+                                    TModel="EmailTemplateEvent"
+                                    TValue="Guid"
+                                    Placeholder="Select event..."
+                                    PageSize="10"
+                                    @bind-Value="@ViewModel.EmailTemplate.EventId"
+                                    TextProperty="@nameof(EmailTemplateEvent.Name)"
+                                    OnItemLoad="@HandleEmailTemplateEventChange"
+                                    OnItemSelect="@HandleEmailTemplateEventChange"
+                                    OnDataLoading="@(criteria => criteria.OrderBy = nameof(EmailTemplateEvent.Name))">
+            <Columns>
+                <RadzenDropDownDataGridColumn Property="@nameof(EmailTemplateEvent.Name)"
+                                              Title="Event"/>
+            </Columns>
+        </TridentApiDropDownDataGrid>
+    </div>
+
+    <div class="col d-flex flex-column">
+        <RadzenLabel Text="Facilities"
+                     Component="FacilityDropDown"/>
+
+        <RadzenDropDownDataGrid id="FacilityDropDown"
+                                @ref="_facilityDropDownDataGrid"
+                                class="w-100"
+                                Placeholder="Select facilities..."
+                                Multiple="true"
+                                Data="@_facilities"
+                                LoadData="@LoadFacilities"
+                                Count="@_facilities.Length"
+                                PageSize="10"
+                                AllowFiltering="true"
+                                AllowSorting="false"
+                                AllowClear="true"
+                                @bind-Value="@ViewModel.FacilitySiteIds"
+                                ValueProperty="@nameof(Facility.SiteId)"
+                                TextProperty="@nameof(Facility.SiteId)">
+            <Columns>
+                <RadzenDropDownDataGridColumn Width="25px"
+                                              Sortable="false">
+                    <HeaderTemplate>
+                        <RadzenCheckBox TriState="false"
+                                        TValue="bool"
+                                        Value="@(_facilities != null && _facilities.Any(m => ViewModel.EmailTemplate.FacilitySiteIds?.Contains(m.SiteId) ?? false))"
+                                        Change="@HandleFacilityDropDownHeaderCheckboxChange"/>
+                    </HeaderTemplate>
+                    <Template Context="data">
+                        <RadzenCheckBox TriState="false"
+                                        TValue="bool"
+                                        Value="@(ViewModel.EmailTemplate.FacilitySiteIds?.Contains((string)data.SiteId) ?? false)"/>
+                    </Template>
+                </RadzenDropDownDataGridColumn>
+
+                <RadzenDropDownDataGridColumn Property="@nameof(Facility.SiteId)"
+                                              Title="Site"
+                                              Width="50px"/>
+
+                <RadzenDropDownDataGridColumn Property="@nameof(Facility.Name)"
+                                              Title="Name"
+                                              Width="100px"/>
+            </Columns>
+        </RadzenDropDownDataGrid>
+    </div>
+
+    <div class="col d-flex flex-column">
+        <RadzenLabel Text="Customer"
+                     Component="CustomerDropDown"/>
+        <AccountsDropDown id="CustomerDropDown"
+                          Name="CustomerDropDown"
+                          TValue="Guid"
+                          AccountType="@AccountTypes.Customer"
+                          Placeholder="Select customer..."
+                          AllowClear="@true"
+                          @bind-Value="@ViewModel.CustomerId"
+                          TextProperty="@nameof(Account.Name)"
+                          ValueProperty="@nameof(Account.Id)"
+                          PageSize="10"/>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col d-flex flex-column">
+        <RadzenLabel Text="Is Active"
+                     Component="IsActiveSwitch"/>
+
+        <RadzenSwitch id="IsActiveSwitch"
+                      @bind-Value="@ViewModel.EmailTemplate.IsActive"/>
+    </div>
+
+    <div class="col d-flex flex-column">
+        <RadzenLabel Text="Enable Reply Tracking"
+                     Component="ReplyTrackingSwitch"/>
+
+        <RadzenSwitch id="ReplyTrackingSwitch"
+                      @bind-Value="@ViewModel.EmailTemplate.EnableReplyTracking"/>
+    </div>
+
+    <div class="col d-flex flex-column">
+        <RadzenLabel Text="Reply Type"
+                     Component="ReplyTypeDropdown"
+                     class="required"/>
+
+        <RadzenDropDown id="ReplyTypeDropdown"
+                        TValue="EmailTemplateReplyType"
+                        @bind-Value="@ViewModel.EmailTemplate.ReplyType"
+                        TextProperty="Value"
+                        ValueProperty="Key"
+                        Placeholder="Select reply type..."
+                        Data="@(DataDictionary.For<EmailTemplateReplyType>(false, true))"
+                        class="w-100"/>
+    </div>
+
+    <div class="col d-flex flex-column">
+        <RadzenLabel Text="Custom Reply Email"
+                     Component="CustomReplyEmailTextBox"/>
+
+        <RadzenTextBox id="CustomReplyEmailTextBox"
+                       @bind-Value="@ViewModel.EmailTemplate.CustomReplyEmail"
+                       class="w-100"/>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-6 d-flex flex-column">
+        <RadzenLabel Text="Cc Type"
+                     Component="CcTypeDropdown" />
+
+        <RadzenDropDown id="CcTypeDropdown"
+                        TValue="EmailTemplateCcType?"
+                        @bind-Value="@ViewModel.EmailTemplate.CcType"
+                        TextProperty="Value"
+                        ValueProperty="Key"
+                        Placeholder="Select cc type..."
+                        Data="@(DataDictionary.For<EmailTemplateCcType>(false, true))"
+                        class="w-100" />
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-4 d-flex flex-column">
+        <RadzenLabel Text="Bcc Type"
+                     Component="BccTypeDropdown"
+                     class="required"/>
+
+        <RadzenDropDown id="BccTypeDropdown"
+                        TValue="EmailTemplateBccType"
+                        @bind-Value="@ViewModel.EmailTemplate.BccType"
+                        TextProperty="Value"
+                        ValueProperty="Key"
+                        Placeholder="Select bcc type..."
+                        Data="@(DataDictionary.For<EmailTemplateBccType>(false, true))"
+                        class="w-100"/>
+    </div>
+
+    <div class="col-4 d-flex flex-column">
+        <RadzenLabel Text="Custom Bcc Emails"
+                     Component="CustomBccEmailsTextBox"/>
+
+        <RadzenTextBox id="CustomBccEmailsTextBox"
+                       @bind-Value="@ViewModel.EmailTemplate.CustomBccEmails"
+                       class="w-100"/>
+    </div>
+    <div class="col-4 d-flex flex-column">
+        <RadzenLabel Text="Override Sender"
+                     Component="OverrideSenderTextBox" />
+        <div class="d-flex gap-2 align-items-center">
+            <RadzenSwitch id="OverrideSenderSwitch"
+                          @bind-Value="@ViewModel.EmailTemplate.UseCustomSenderEmail"/>
+            <div class="col">
+                <RadzenTextBox id="OverrideSenderTextBox"
+                               Name="OverrideSenderTextBox"
+                               @bind-Value="@ViewModel.EmailTemplate.SenderEmail"
+                               Disabled="@DisableSenderEmailTextBox"
+                               MouseEnter="@(args => ShowSenderEmailTooltip(args))"
+                               class="w-100"/>
+                <RadzenRegexValidator Component="OverrideSenderTextBox"
+                                      Text="Enter email in valid format"
+                                      Pattern="@EmailValidationPattern"/>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<section>
+    <h4 class="fw-bold mb-3">Email Content</h4>
+    <div class="d-flex gap-3">
+        <div class="flex-grow-1">
+            <div class="d-flex flex-column mb-3">
+                <RadzenLabel Text="Subject"
+                             Component="SubjectTextBox"/>
+
+                <RadzenTextBox id="SubjectTextBox"
+                               @bind-Value="@ViewModel.EmailTemplate.Subject"
+                               MaxLength="400"
+                               class="w-100"/>
+            </div>
+
+            <div class="d-flex flex-column">
+                <RadzenLabel Text="Body"
+                             Component="BodyTextArea"/>
+
+                <RadzenTextArea id="BodyTextArea"
+                                @bind-Value="@ViewModel.EmailTemplate.Body"
+                                MaxLength="4000"
+                                Style="height: 365px"
+                                class="w-100"/>
+            </div>
+        </div>
+        <div class="flex-grow-1">
+            <div class="d-flex flex-column mb-3">
+                <RadzenLabel Text="Available Fields"/>
+
+                <RadzenListBox @ref="EmailTemplateEventFieldsListBox"
+                               TValue="object"
+                               Data="@EmailTemplateEventFieldsFiltered"
+                               LoadData="@LoadEmailTemplateFields"
+                               AllowFiltering="true"
+                               Style="height: 200px"
+                               Class="w-100">
+                        <Template Context="data">
+                                <div class="d-flex justify-content-between align-items-center"
+                                     title="@(((EmailTemplateEventField)data).TooltipContent)">
+                                    <span>@(((EmailTemplateEventField)data).UiToken)</span>
+                            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                                          Size="ButtonSize.Small"
+                                          Text="Copy"
+                                          Icon="content_copy"
+                                            Click="@(() => HandleEventFieldCopy((EmailTemplateEventField)data))" />
+                        </div>
+                    </Template>
+                </RadzenListBox>
+            </div>
+
+            <div class="d-flex flex-column mb-3">
+                <RadzenLabel Text="Included Attachments"/>
+
+                <RadzenListBox @bind-Value="@ViewModel.EmailTemplate.IncludedAttachmentIds"
+                               Data="@EmailTemplateEventAttachments"
+                               TextProperty="@nameof(EmailTemplateEventAttachment.Name)"
+                               ValueProperty="@nameof(EmailTemplateEventAttachment.Id)"
+                               Style="height:200px"
+                               Class="w-100"/>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+</RadzenTemplateForm>

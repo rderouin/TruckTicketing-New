@@ -1,0 +1,14 @@
+﻿{
+  "EnterpriseId": "bee5fc57-4615-4f53-a168-f7acf64824df",
+  "CorrelationId": "{5A63E7ED-57B6-41DC-84A3-2FB64359CDBD}",
+  "Identifiers": "",
+  "MessageDate": "7/19/2022 06:08:35 pm",
+  "MessageType": "MaterialApprovalLoadSummaryReport",
+  "Operation": "Update",
+  "Payload": {
+    "EnterpriseId": "bee5fc57-4615-4f53-a168-f7acf64824df",
+    "Container": "materialapproval-loadsummary"
+  },
+  "Source": "D365FO",
+  "SourceId": "bee5fc57-4615-4f53-a168-f7acf64824df"
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "Id": "00000000-0000-0000-0000-000000000000",
+    "DocumentType": "ValueFormat",
+    "EntityType": "ValueFormat",
+    "Name": "Constant",
+    "SourceType": null,
+    "ValueExpression": "",
+    "id": "ValueFormat|00000000-0000-0000-0000-000000000000"
+  },
+  {
+    "Id": "098f674b-f206-46e0-aa8f-69a81dad3a03",
+    "DocumentType": "ValueFormat",
+    "EntityType": "ValueFormat",
+    "Name": "Date (MM/dd/yyyy)",
+    "SourceType": "System.DateTime",
+    "ValueExpression": "{0:MM/dd/yyyy}",
+    "id": "ValueFormat|098f674b-f206-46e0-aa8f-69a81dad3a03"
+  },
+  {
+    "Id": "affe1530-46ac-4b0c-a2d7-8390e5c60616",
+    "DocumentType": "ValueFormat",
+    "EntityType": "ValueFormat",
+    "Name": "Date and Time (MM/dd/yyyy hh:mm:ss tt)",
+    "SourceType": "System.DateTime",
+    "ValueExpression": "{0:MM/dd/yyyy hh:mm:ss tt}",
+    "id": "ValueFormat|affe1530-46ac-4b0c-a2d7-8390e5c60616"
+  },
+  {
+    "Id": "f7527eda-d7b1-44c5-a900-fcbbf97ade34",
+    "DocumentType": "ValueFormat",
+    "EntityType": "ValueFormat",
+    "Name": "ISO Date (yyyy-MM-dd)",
+    "SourceType": "System.DateTime",
+    "ValueExpression": "{0:yyyy-MM-dd}",
+    "id": "ValueFormat|f7527eda-d7b1-44c5-a900-fcbbf97ade34"
+  },
+  {
+    "Id": "b3579686-6d67-4552-a96f-230db89f3a1c",
+    "DocumentType": "ValueFormat",
+    "EntityType": "ValueFormat",
+    "Name": "ISO Date and Time",
+    "SourceType": "System.DateTime",
+    "ValueExpression": "{0:O}",
+    "id": "ValueFormat|b3579686-6d67-4552-a96f-230db89f3a1c"
+  },
+  {
+    "Id": "389bf622-9b51-46fd-83e2-a2911f25b6e9",
+    "DocumentType": "ValueFormat",
+    "EntityType": "ValueFormat",
+    "Name": "RFC1123 Date",
+    "SourceType": "System.DateTime",
+    "ValueExpression": "{0:R}",
+    "id": "ValueFormat|389bf622-9b51-46fd-83e2-a2911f25b6e9"
+  },
+  {
+    "Id": "cc97ed8e-bbcc-49d1-a0dc-e0a0996cc696",
+    "DocumentType": "ValueFormat",
+    "EntityType": "ValueFormat",
+    "Name": "Currency (#,###.##)",
+    "SourceType": "System.Decimal",
+    "ValueExpression": "{0:N2}",
+    "id": "ValueFormat|cc97ed8e-bbcc-49d1-a0dc-e0a0996cc696"
+  },
+  {
+    "Id": "73578338-2f4c-4787-8d7e-dc46e3d8d807",
+    "DocumentType": "ValueFormat",
+    "EntityType": "ValueFormat",
+    "Name": "Percent (##.##%)",
+    "SourceType": "System.Double",
+    "ValueExpression": "{0:P}",
+    "id": "ValueFormat|73578338-2f4c-4787-8d7e-dc46e3d8d807"
+  },
+  {
+    "Id": "14f36aa4-5e1e-4b2e-87a3-e2d021a31f1f",
+    "DocumentType": "ValueFormat",
+    "EntityType": "ValueFormat",
+    "Name": "Exponential (#.######e-###)",
+    "SourceType": "System.Double",
+    "ValueExpression": "{0:E}",
+    "id": "ValueFormat|14f36aa4-5e1e-4b2e-87a3-e2d021a31f1f"
+  }]

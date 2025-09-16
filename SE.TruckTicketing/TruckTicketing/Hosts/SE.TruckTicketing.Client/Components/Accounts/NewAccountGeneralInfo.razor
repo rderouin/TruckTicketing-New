@@ -1,0 +1,127 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.Shared.Common.Utilities
+@using AccountTypes = SE.Shared.Common.Lookups.AccountTypes
+@inherits BaseRazorComponent
+
+<RadzenTemplateForm TItem="AccountAddress"
+                    Data="@accountAddress"
+                    @ref="ReferenceToAccountAddressForm">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="fw-bold">Address</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Street"
+                                 Component="AddressStreetTextBox"
+                                 class="@ClassNames(("required", SelectedAccountTypes.Contains(AccountTypes.Customer)))" />
+                    <RadzenTextBox id="AddressStreetTextBox"
+                                   Name="AddressStreetTextBox"
+                                   @bind-Value="@accountAddress.Street"
+                                   class="w-100"/>
+                    @if (SelectedAccountTypes.Contains(AccountTypes.Customer))
+                    {
+                    <RadzenRequiredValidator Component="AddressStreetTextBox"
+                                             Text="Required"/>
+                    }
+
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="City"
+                                 Component="AddressCityTextBox"
+                                 class="@ClassNames(("required", SelectedAccountTypes.Contains(AccountTypes.Customer)))"/>
+                    <RadzenTextBox id="AddressCityTextBox"
+                                   Name="AddressCityTextBox"
+                                   @bind-Value="@accountAddress.City"
+                                   class="w-100"/>
+                    @if (SelectedAccountTypes.Contains(AccountTypes.Customer))
+                    {                    <RadzenRequiredValidator Component="AddressCityTextBox"
+                                                                  Text="Required"/>
+
+                    }
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Country"
+                                 Component="AccountAddressCountryDropDown"
+                                 class="@ClassNames(("required", SelectedAccountTypes.Contains(AccountTypes.Customer)))"/>
+                    <RadzenDropDown TValue="CountryCode"
+                                    id="AccountAddressCountryDropDown"
+                                    Name="AccountAddressCountryDropDown"
+                                    @bind-Value="@SelectedCountry"
+                                    TextProperty="Value"
+                                    ValueProperty="Key"
+                                    Placeholder="Select Country..."
+                                    Multiple="false"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    Data="@(DataDictionary.For<CountryCode>())"
+                                    class="w-100"/>
+                    @if (SelectedAccountTypes.Contains(AccountTypes.Customer))
+                    {
+                        <RadzenRequiredValidator Component="AccountAddressCountryDropDown"
+                                                 DefaultValue="CountryCode.Undefined"
+                                                 Text="Required"/>
+                    }
+
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="@StateProvinceLabel"
+                                 Component="AccountStateProvinceDropDown"
+                                 class="@ClassNames(("required", SelectedAccountTypes.Contains(AccountTypes.Customer)))"/>
+                    <RadzenDropDown TValue="StateProvince"
+                                    AllowClear="true"
+                                    AllowFiltering="true"
+                                    id="AccountStateProvinceDropDown"
+                                    Name="AccountStateProvinceDropDown"
+                                    @bind-Value="@accountAddress.Province"
+                                    TextProperty="Value"
+                                    ValueProperty="Key"
+                                    Placeholder="@StateProvincePlaceHolder"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    Multiple="false"
+                                    Data="@(StateProviceData)"
+                                    class="w-100"/>
+                    @if (SelectedAccountTypes.Contains(AccountTypes.Customer))
+                    {
+                        <RadzenRequiredValidator Component="AccountStateProvinceDropDown"
+                                                 DefaultValue="StateProvince.Unspecified"
+                                                 Text="Required"/>
+                    }
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="@ZipPostalCodeLabel"
+                                 Component="AddressPostalCodeTextBox"
+                                 class="@ClassNames(("required", SelectedAccountTypes.Contains(AccountTypes.Customer)))"/>
+                    <RadzenMask id="AddressPostalCodeTextBox"
+                                Name="AddressPostalCodeTextBox"
+                                Mask="@PostalCodeMask"
+                                CharacterPattern="@PostalCodePattern"
+                                @bind-Value="@accountAddress.ZipCode"
+                                class="w-100"/>
+                    @if (SelectedAccountTypes.Contains(AccountTypes.Customer))
+                    {
+                        <RadzenRequiredValidator Component="AddressPostalCodeTextBox"
+                                                 Text="Required"/>
+                    }
+
+                    @if (accountAddress.Country == CountryCode.CA)
+                    {
+                        <RadzenRegexValidator Component="AddressPostalCodeTextBox"
+                                              Text="Enter Canadian postal code in valid format : #-#-#"
+                                          Pattern="^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d" />
+                    }
+                    else
+                    {
+                        <RadzenRegexValidator Component="AddressPostalCodeTextBox"
+                                              Text="Enter US postal code in valid format : [0-9]^5?-[0-9]^4"
+                                              Pattern="^\d{5}(?:[-\s]\d{4})?$"/>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</RadzenTemplateForm>

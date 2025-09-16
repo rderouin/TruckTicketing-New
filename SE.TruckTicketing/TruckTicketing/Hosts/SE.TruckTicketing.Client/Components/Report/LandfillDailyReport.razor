@@ -1,0 +1,89 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+@page "/truck-ticketing/landfill-reports"
+
+<EditForm Model="@Request">
+    <TridentValidationSummary TModel="LandfillDailyReportRequest"/>
+    <div class="card">
+        <div class="card-header d-flex align-content-center">
+            <h4 class="fw-bold">Landfill daily Report</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mt-3 mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Facility"
+                                 Component="FacilityDropdown"/>
+
+                    <TridentApiDropDownDataGrid id="FacilityDropdown"
+                                                TModel="Facility"
+                                                TValue="Guid"
+                                                Placeholder="Select facilities.."
+                                                TextProperty="@nameof(Facility.Display)"
+                                                ValueProperty="@nameof(Facility.Id)"
+                                                Multiple="@true"
+                                                PageSize="10"
+                                                Class="w-100"
+                                                OnDataLoading="BeforeFacilityLoad"
+                                                OnChange="@(OnFacilityChange)">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn Property="@nameof(Facility.Display)"
+                                                          Title="Facility"/>
+                        </Columns>
+                    </TridentApiDropDownDataGrid>
+                </div>
+            </div>
+            <div class="row mt-4 mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="From Date"
+                                 Component="FromDatePicker"
+                                 Class="required"/>
+                    <RadzenDatePicker TValue="DateTimeOffset"
+                                      Name="FromDatePicker"
+                                      DateFormat="MM/dd/yyyy"
+                                      @bind-Value="@Request.FromDate"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="To Date"
+                                 Component="ToDatePicker"
+                                 Class="required"/>
+                    <RadzenDatePicker TValue="DateTimeOffset"
+                                      Name="ToDatePicker"
+                                      DateFormat="MM/dd/yyyy"
+                                      @bind-Value="@Request.ToDate"/>
+
+
+                </div>
+            </div>
+            <div class="row mt-4 mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Class"
+                                 Component="ClassDropDown" />
+                    <RadzenDropDown @bind-Value="@SelectedClassViewModel"
+                                    Data="@ClassViewModels"
+                                    TextProperty="Value"
+                                    ValueProperty="Id"
+                                    Multiple="false"
+                                    Placeholder="Class"
+                                    class="w-400" />
+                </div>
+            </div>
+            <div class="row mt-4 mb-3">
+                <div class="col d-flex justify-content-end gap-2">
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                  Text="Generate Landfill Daily Report (PDF)"
+                                  Click="HandleGeneratePdf"
+                                  Disabled="@GenerateButtonDisable"
+                                  IsBusy="_isPdfLoading"
+                                  BusyText="Generating Landfill Daily Report"/>
+
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                  Text="Generate Landfill Daily Report (Excel)"
+                                  Click="HandleGenerateExcel"
+                                  Disabled="@GenerateButtonDisable"
+                                  IsBusy="_isExcelLoading"
+                                  BusyText="Generating Landfill Daily Report" />
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>

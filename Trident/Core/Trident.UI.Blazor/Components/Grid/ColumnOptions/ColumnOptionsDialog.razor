@@ -1,0 +1,22 @@
+﻿@inherits BaseRazorComponent
+
+@code {
+    [Parameter]
+    public DialogOptions DialogOptions { get; set; }
+
+    [Parameter]
+    public RenderFragment<DialogService> ChildContent { get; set; }
+
+    public void ShowColumnOptions()
+    {
+        DialogService.Open("Column Options", ChildContent, DialogOptions ?? new()
+        {
+            ShowClose = true,
+            CloseDialogOnOverlayClick = true,
+            Top = "4.6rem",
+            Width = "30rem",
+            Height = "calc(100vh - 6.2rem)",
+            Left = "calc(100vw - 34.5rem)"
+        });
+    }
+}

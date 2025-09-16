@@ -1,0 +1,41 @@
+{
+  "Blobs": "",
+  "EnterpriseId": "ba248238-f375-4e78-b57e-b327227ea24d",
+  "CorrelationId": "{6C5CB3FA-A800-42A9-8AA8-926F591CC202}",
+  "Identifiers": "",
+  "MessageDate": "7/20/2022 02:41:11 pm",
+  "MessageType": "Customer",
+  "Operation": "Update",
+  "Payload": {
+    "ItemId": "123456",
+    "ItemType": "No",
+    "ItemName": "Product Name",
+    "DataAreaId": "mesc",
+    "SalesUnitId": "DisposalUnit",
+    "DefaultOrderSettings": [
+      {
+        "SalesSite": "Site 1",
+        "SalesStopped": false
+      }
+    ],
+    "ProductCategories": [
+      {
+        "CategoryId": "Category 1",
+        "CategoryHierarchyId": "CategoryHierarchy"
+      }
+    ],
+    "ProductVariants": [
+      {
+        "Substance": "SubstanceName1",
+        "WasteCode": "WasteCode1"
+      },
+      {
+        "Substance": "SubstanceName2",
+        "WasteCode": "WasteCode2"
+      }
+    ],
+    "CanBeUsedInTT":  true
+  },
+  "Source": "D365FO",
+  "SourceId": "ba248238-f375-4e78-b57e-b327227ea24d"
+}

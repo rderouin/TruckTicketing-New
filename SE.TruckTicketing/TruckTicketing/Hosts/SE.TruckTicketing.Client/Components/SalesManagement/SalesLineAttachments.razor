@@ -1,0 +1,25 @@
+﻿@inherits BaseTruckTicketingComponent
+
+<div class="d-flex flex-column h-100">
+    <div class="flex-grow-1">
+        @foreach (var attachment in SalesLine.Attachments)
+        {
+            <div class="d-flex align-items-center mb-3">
+                <span class="flex-grow-1">@attachment.File</span>
+                <RadzenButton IsBusy="@(_downloadingAttachmentId == attachment.Id)"
+                              Text="View Attachment"
+                              ButtonStyle="ButtonStyle.Secondary"
+                              Size="ButtonSize.Small"
+                              Click="@(_ => OpenAttachment(attachment))"/>
+            </div>
+        }
+    </div>
+    <div class="py-3 flex-grow-0 w-100 d-flex justify-content-end">
+        <TridentFileUploader DialogTitle="Upload Attachment"
+                             TriggerText="Upload Attachment"
+                             CompleteButtonText="Done"
+                             Accept=".doc, .docx, .xls, .xlsx, .pdf, .bmp, .gif, .jpeg, .jpg, .png, .tif, .tiff, .rtf, .txt, .msg"
+                             UploadUriProvider="@GetAttachmentUploadUrl"
+                             OnUploadComplete="@HandleAttachmentUploadCompletion"/>
+    </div>
+</div>

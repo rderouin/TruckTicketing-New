@@ -1,0 +1,10 @@
+﻿@using Trident.Api.Search
+@inherits FilterComponent<bool>
+
+<div>
+    <RadzenLabel Text="Ignore Filters"
+                 Class="filter-label" />
+    <div class="d-flex position-relative">
+        <RadzenSwitch @bind-value="@_ignoreFilters" Change="@HandleChange" MouseEnter="@(args => ShowIgnoreTooltip(args))" />
+    </div>
+</div>

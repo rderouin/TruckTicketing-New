@@ -1,0 +1,232 @@
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+
+using Microsoft.Extensions.Logging;
+
+using Newtonsoft.Json;
+
+using Trident.Contracts.Api.Client;
+using Trident.Contracts.Api.Validation;
+using Trident.Extensions;
+
+namespace Trident.UI.Client;
+
+public abstract class HttpServiceBase<TThis> : HttpServiceBaseBase, IHttpServiceBase
+    where TThis : IServiceProxy
+{
+    public HttpServiceBase(ILogger<TThis> logger,
+                           IHttpClientFactory httpClientFactory)
+    {
+        logger.GuardIsNotNull(nameof(logger));
+        httpClientFactory.GuardIsNotNull(nameof(httpClientFactory));
+
+        Logger = logger;
+        HttpClientFactory = httpClientFactory;
+        NoAuthClient = httpClientFactory.CreateClient();
+    }
+
+    protected static ConcurrentDictionary<string, HttpClient> HttpNamedClients { get; } = new();
+
+    protected ILogger<TThis> Logger { get; }
+
+    protected IHttpClientFactory HttpClientFactory { get; }
+
+    protected HttpClient NoAuthClient { get; }
+
+    protected HttpClient GetClientOrDefault(string serviceName = null)
+    {
+        if (!string.IsNullOrWhiteSpace(serviceName))
+        {
+            return HttpNamedClients.GetOrAdd(serviceName, name => HttpClientFactory.CreateClient(name));
+        }
+
+        return NoAuthClient;
+    }
+
+    protected void logInfo(string message,
+                           Guid requestId,
+                           string opereration,
+                           string stage,
+                           string responseType,
+                           string service,
+                           string url,
+                           string data,
+                           HttpStatusCode statusCode = HttpStatusCode.Unused)
+    {
+        Logger.LogInformation("Begin Client Send Request", new
+        {
+            RequestId = requestId,
+            Opereration = opereration,
+            Stage = stage,
+            ResponseType = responseType,
+            SendRequest = service,
+            Url = url,
+            Data = data,
+            HttpStatusCode = statusCode == HttpStatusCode.Unused
+                                 ? null
+                                 : (HttpStatusCode?)statusCode,
+        });
+    }
+
+    protected void logWarn(string message,
+                           Guid requestId,
+                           string opereration,
+                           string stage,
+                           string responseType,
+                           string service,
+                           string url,
+                           string data,
+                           HttpStatusCode statusCode = HttpStatusCode.Unused)
+    {
+        Logger.LogWarning("Begin Client Send Request", new
+        {
+            RequestId = requestId,
+            Opereration = opereration,
+            Stage = stage,
+            ResponseType = responseType,
+            SendRequest = service,
+            Url = url,
+            Data = data,
+            HttpStatusCode = statusCode == HttpStatusCode.Unused
+                                 ? null
+                                 : (HttpStatusCode?)statusCode,
+        });
+    }
+
+    protected async Task<Response<M>> SendRequest<M>(string service, string method, string route, object data = null)
+        where M : class
+    {
+        return await SendRequest<Response<M>, M, ErrorCodes>(service, method, route, data);
+    }
+
+    protected async Task<T> SendRequest<T, M, TErrorCodes>(string service,
+                                                           string method,
+                                                           string route,
+                                                           object data = null)
+        where T : Response<M, TErrorCodes>, new()
+        where M : class
+        where TErrorCodes : struct, Enum
+    {
+        var output = new T();
+        var requestId = Guid.NewGuid();
+        var url = string.Empty;
+        method = method.ToUpper();
+
+        try
+        {
+            var dataJson = JsonConvert.SerializeObject(data);
+            var client = GetClientOrDefault(service);
+            url = $"{client.BaseAddress}/{route}".Replace("//", "/");
+            logInfo("Begin Client Send Request", requestId, nameof(SendRequest), "Begin Request",
+                    typeof(M).FullName, service, url, dataJson);
+
+            var httpMethod = new HttpMethod(method);
+            var request = httpMethod != HttpMethod.Get
+                              ? new(httpMethod, route)
+                              {
+                                  Content = new StringContent(dataJson),
+                              }
+                              : new HttpRequestMessage(httpMethod, route);
+
+            request.Headers.Add("Request-Id", requestId.ToString());
+
+            var response = await client.SendAsync(request);
+
+            output.StatusCode = response.StatusCode;
+            output.ResponseContent = await response.Content.ReadAsStringAsync();
+            output.HttpContent = response.Content;
+
+            logInfo("Client Response Recieved", requestId, nameof(SendRequest), "Response Recieved",
+                    typeof(M).FullName, service, url, output.ResponseContent, output.StatusCode);
+
+            if (response.IsSuccessStatusCode)
+            {
+                output.Model = typeof(M).IsAssignableTo(typeof(string))
+                                   ? (M)(object)output.ResponseContent
+                                   : JsonConvert.DeserializeObject<M>(output.ResponseContent);
+
+                logInfo("Model Deserialized Successfully", requestId, nameof(SendRequest),
+                        "Deserialized Message", typeof(M).FullName, service, url, output.ResponseContent,
+                        output.StatusCode);
+
+                return output;
+            }
+
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                output = MapValidationResults<T, M, TErrorCodes>(output, response);
+
+                logInfo("BadRequest Validation Model Deserialized Successfully", requestId, nameof(SendRequest),
+                        "Deserialized Message", typeof(M).FullName, service, url, output.ResponseContent,
+                        output.StatusCode);
+            }
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                output = MapValidationResults<T, M, TErrorCodes>(output, response);
+
+                logWarn("Resource Not Found", requestId, nameof(SendRequest),
+                        "Deserialized Message", typeof(M).FullName, service, url, null, output.StatusCode);
+            }
+
+            return output;
+        }
+        catch (Exception ex)
+        {
+            output.Exception = ex;
+
+            Logger.LogError(ex, "Exception occured while processing your request.", new
+            {
+                RequestId = requestId,
+                Opereration = nameof(SendRequest),
+                ResponseType = typeof(M).FullName,
+                SendRequest = service,
+                Method = method,
+                Url = url,
+                Exception = ex,
+            });
+        }
+
+        return output;
+    }
+
+    private T MapValidationResults<T, M, TErrorCodes>(T output, HttpResponseMessage response)
+        where T : Response<M, TErrorCodes>
+        where M : class
+        where TErrorCodes : struct, Enum
+    {
+        if (response.StatusCode == HttpStatusCode.BadRequest)
+        {
+            if (output.ResponseContent.Contains(nameof(ValidationResult<TErrorCodes>.ErrorCode),
+                                                StringComparison.InvariantCultureIgnoreCase))
+            {
+                var validationResults = JsonConvert.DeserializeObject<List<ValidationResult<TErrorCodes, M>>>(output.ResponseContent);
+                output.ValidationErrors = validationResults;
+
+                if (validationResults != null &&
+                    validationResults.Count(r => !string.IsNullOrEmpty(r.Message) && r.ErrorCode != null) > 0)
+                {
+                    output.ValidationSummary = ParseValidationResults(validationResults);
+                }
+            }
+        }
+
+        return output;
+    }
+
+    private static string ParseValidationResults(IEnumerable<ValidationResult> validationResults)
+    {
+        return string.Join(Environment.NewLine, validationResults.Select(r => r.Message));
+    }
+}
+
+public abstract class HttpServiceBaseBase
+{
+    public static bool DisableCache { get; set; }
+}

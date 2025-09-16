@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pidx:Invoice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" pidx:transactionPurposeIndicator="Add" pidx:version="1.0" xmlns:pidx="http://www.api.org/pidXML/v1.0">
+    <pidx:InvoiceProperties>
+        <pidx:InvoiceNumber>KNEWD000000031</pidx:InvoiceNumber>
+        <pidx:InvoiceDate>2023-03-22</pidx:InvoiceDate>
+        <pidx:PartnerInformation partnerRoleIndicator="BillTo">
+            <pidx:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">074450664</pidx:PartnerIdentifier>
+        </pidx:PartnerInformation>
+        <pidx:PartnerInformation partnerRoleIndicator="RemitTo">
+            <pidx:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">079209039</pidx:PartnerIdentifier>
+        </pidx:PartnerInformation>
+        <pidx:PartnerInformation partnerRoleIndicator="ShipToParty">
+            <pidx:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">074450664</pidx:PartnerIdentifier>
+            <pidx:ContactInformation contactInformationIndicator="BuyerDepartment">
+                <pidx:ContactName>Scooby Doo</pidx:ContactName>
+            </pidx:ContactInformation>
+        </pidx:PartnerInformation>
+        <pidx:PartnerInformation partnerRoleIndicator="Vendor">
+            <pidx:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">079209039</pidx:PartnerIdentifier>
+        </pidx:PartnerInformation>
+        <pidx:InvoiceTypeCode>DebitMemo</pidx:InvoiceTypeCode>
+        <pidx:PrimaryCurrency>
+            <pidx:CurrencyCode>USD</pidx:CurrencyCode>
+        </pidx:PrimaryCurrency>
+        <pidx:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-03-20T00:00:00Z</pidx:ServiceDateTime>
+        <pidx:SpecialInstructions instructionIndicator="RoutingInstructions">Save</pidx:SpecialInstructions>
+        <pidx:ReferenceInformation referenceInformationIndicator="Other">
+            <pidx:ReferenceNumber>118</pidx:ReferenceNumber>
+            <pidx:Description>CompanyCode</pidx:Description>
+        </pidx:ReferenceInformation>
+        <pidx:ReferenceInformation referenceInformationIndicator="Other">
+            <pidx:ReferenceNumber>Produced Water Disposal</pidx:ReferenceNumber>
+            <pidx:Description>SummaryComments</pidx:Description>
+        </pidx:ReferenceInformation>
+        <pidx:Attachment>
+            <pidx:AttachmentPurposeCode>Template</pidx:AttachmentPurposeCode>
+            <pidx:FileName>KNEWD000000031.pdf</pidx:FileName>
+        </pidx:Attachment>
+    </pidx:InvoiceProperties>
+    <pidx:InvoiceDetails>
+        <pidx:InvoiceLineItem>
+            <pidx:LineItemNumber>1</pidx:LineItemNumber>
+            <pidx:InvoiceQuantity>
+                <pidx:Quantity>104.9</pidx:Quantity>
+                <pidx:UnitOfMeasureCode>BBL</pidx:UnitOfMeasureCode>
+            </pidx:InvoiceQuantity>
+            <pidx:LineItemInformation>
+                <pidx:LineItemIdentifier identifierIndicator="AssignedBySeller">704031</pidx:LineItemIdentifier>
+                <pidx:LineItemName>Produced Water Disposal</pidx:LineItemName>
+                <pidx:LineItemDescription>Produced Water Disposal</pidx:LineItemDescription>
+            </pidx:LineItemInformation>
+            <pidx:PurchaseOrderLineItemNumber />
+            <pidx:FieldTicketInformation>
+                <pidx:FieldTicketNumber>26087</pidx:FieldTicketNumber>
+            </pidx:FieldTicketInformation>
+            <pidx:PurchaseOrderInformation>
+                <pidx:PurchaseOrderNumber />
+            </pidx:PurchaseOrderInformation>
+            <pidx:JobLocationInformation>
+                <pidx:JobLocationDescription>WISNESS 152-96-28A-33-1H</pidx:JobLocationDescription>
+                <pidx:WellInformation>
+                    <pidx:WellIdentifier>WISNESS 152-96-28A-33-1H</pidx:WellIdentifier>
+                </pidx:WellInformation>
+            </pidx:JobLocationInformation>
+            <pidx:Pricing>
+                <pidx:UnitPrice>
+                    <pidx:MonetaryAmount>0.5</pidx:MonetaryAmount>
+                    <pidx:UnitOfMeasureCode>BBL</pidx:UnitOfMeasureCode>
+                </pidx:UnitPrice>
+            </pidx:Pricing>
+            <pidx:Tax>
+                <pidx:TaxTypeCode>StateAndLocalSalesTax</pidx:TaxTypeCode>
+                <pidx:TaxExemptCode>NonExempt</pidx:TaxExemptCode>
+                <pidx:TaxLocation>
+                    <pidx:AddressInformation>
+                        <pidx:StateProvince>XT</pidx:StateProvince>
+                        <pidx:PostalCountry>
+                            <pidx:CountryCode />
+                        </pidx:PostalCountry>
+                    </pidx:AddressInformation>
+                </pidx:TaxLocation>
+                <pidx:TaxAmount>
+                    <pidx:MonetaryAmount>5.25</pidx:MonetaryAmount>
+                </pidx:TaxAmount>
+            </pidx:Tax>
+            <pidx:Tax>
+                <pidx:TaxTypeCode>StateAndLocalSalesTax</pidx:TaxTypeCode>
+                <pidx:TaxExemptCode>NonExempt</pidx:TaxExemptCode>
+                <pidx:TaxLocation>
+                    <pidx:AddressInformation>
+                        <pidx:StateProvince>ST</pidx:StateProvince>
+                        <pidx:PostalCountry>
+                            <pidx:CountryCode />
+                        </pidx:PostalCountry>
+                    </pidx:AddressInformation>
+                </pidx:TaxLocation>
+                <pidx:TaxAmount>
+                    <pidx:MonetaryAmount>2.62</pidx:MonetaryAmount>
+                </pidx:TaxAmount>
+            </pidx:Tax>
+            <pidx:LineItemTotal>
+                <pidx:MonetaryAmount>55.08</pidx:MonetaryAmount>
+                <pidx:CurrencyCode>USD</pidx:CurrencyCode>
+            </pidx:LineItemTotal>
+            <pidx:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-03-20T00:00:00Z</pidx:ServiceDateTime>
+            <pidx:ServiceDateTime dateTypeIndicator="ServicePeriodEnd">2023-03-20T00:00:00Z</pidx:ServiceDateTime>
+            <pidx:ReferenceInformation referenceInformationIndicator="AFENumber">
+                <pidx:ReferenceNumber>ABC123</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="OperatorGeneralLedgerCode">
+                <pidx:ReferenceNumber>123.123</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="CostCenter">
+                <pidx:ReferenceNumber />
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="JobNumber">
+                <pidx:ReferenceNumber />
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="CustomerAccountingReference">
+                <pidx:ReferenceNumber />
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="ContractNumber">
+                <pidx:ReferenceNumber />
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="Other">
+                <pidx:ReferenceNumber>0.5</pidx:ReferenceNumber>
+                <pidx:Description>ListUnitCost</pidx:Description>
+            </pidx:ReferenceInformation>
+            <pidx:InvoiceSubLineItem>
+                <pidx:FieldTicketInformation>
+                    <pidx:FieldTicketDate>2023-03-20</pidx:FieldTicketDate>
+                </pidx:FieldTicketInformation>
+            </pidx:InvoiceSubLineItem>
+        </pidx:InvoiceLineItem>
+    </pidx:InvoiceDetails>
+    <pidx:InvoiceSummary>
+        <pidx:TotalLineItems>1</pidx:TotalLineItems>
+        <pidx:InvoiceTotal>
+            <pidx:MonetaryAmount>49.82</pidx:MonetaryAmount>
+        </pidx:InvoiceTotal>
+    </pidx:InvoiceSummary>
+</pidx:Invoice>

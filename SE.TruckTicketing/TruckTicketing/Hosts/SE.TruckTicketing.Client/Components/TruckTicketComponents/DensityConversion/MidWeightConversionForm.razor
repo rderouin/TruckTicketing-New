@@ -1,0 +1,188 @@
+﻿@using SE.TruckTicketing.Contracts.Lookups
+@using SE.Shared.Common.Utilities
+@inherits BaseTruckTicketingComponent
+
+<RadzenTemplateForm TItem="MidWeightConversionCalculatorViewModel"
+                    Data="@ViewModel"
+                    Submit="@HandleSubmit"
+                    id="@FormId"
+                    @ref="Form">
+    <div class="row mb-3">
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Gross Weight (Tonnes)"
+                         Component="GrossWeightNumeric"
+                         class="required"/>
+            <TridentNumeric id="GrossWeightNumeric"
+                            Name="GrossWeightNumeric"
+                            TValue="double?"
+                            MaxDecimalPlaces="2"
+                            Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                            @bind-Value="@ViewModel.GrossWeight"/>
+            <RadzenRequiredValidator Component="GrossWeightNumeric"
+                                     Text="Gross Weight is required"
+                                     class="mt-1 text-danger validation-message"/>
+            <RadzenNumericRangeValidator Component="GrossWeightNumeric"
+                                         Min="0"
+                                         Text="Gross Weight should be positive"
+                                         class="mt-1 text-danger validation-message"/>
+        </div>
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Mid Weight (Tonnes)"
+                         Component="MidWeightNumeric"
+                         class="required"/>
+            <TridentNumeric id="MidWeightNumeric"
+                            Name="MidWeightNumeric"
+                            TValue="double?"
+                            MaxDecimalPlaces="2"
+                            Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                            @bind-Value="@ViewModel.MidWeight"/>
+            <RadzenRequiredValidator Component="MidWeightNumeric"
+                                     Text="Mid Weight is required"
+                                     class="mt-1 text-danger validation-message"/>
+            <RadzenNumericRangeValidator Component="MidWeightNumeric"
+                                         Min="0"
+                                         Text="Mid Weight should be positive"
+                                         class="mt-1 text-danger validation-message"/>
+            <RadzenNumericRangeValidator Component="MidWeightNumeric"
+                                         Max="@(ViewModel.GrossWeight ?? double.MaxValue)"
+                                         Text="Mid Weight must be less than Gross Weight"
+                                         class="mt-1 text-danger validation-message"/>
+        </div>
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Tare Weight (Tonnes)"
+                         Component="TareWeightNumeric"
+                         class="required"/>
+            <TridentNumeric id="TareWeightNumeric"
+                            Name="TareWeightNumeric"
+                            TValue="double?"
+                            MaxDecimalPlaces="2"
+                            Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                            @bind-Value="@ViewModel.TareWeight"/>
+            <RadzenRequiredValidator Component="TareWeightNumeric"
+                                     Text="Tare Weight is required"
+                                     class="mt-1 text-danger validation-message"/>
+            <RadzenNumericRangeValidator Component="TareWeightNumeric"
+                                         Min="0"
+                                         Text="Tare Weight should be positive"
+                                         class="mt-1 text-danger validation-message"/>
+            <RadzenNumericRangeValidator Component="TareWeightNumeric"
+                                         Max="@(ViewModel.MidWeight ?? double.MaxValue)"
+                                         Text="Tare Weight must be less than Mid Weight"
+                                         class="mt-1 text-danger validation-message"/>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Net Weight (Tonnes)"
+                         Component="NetWeight"/>
+            <RadzenNumeric id="NetWeight"
+                           Name="NetWeight"
+                           Value="@ViewModel.NetWeight"
+                           TValue="double?"
+                           ShowUpDown="false"
+                           Format="N2"
+                           Disabled="true"/>
+        </div>
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Dry Solids Weight (Tonnes)"
+                         Component="DrySolidsWeight"/>
+            <RadzenNumeric id="DrySolidsWeight"
+                           Name="DrySolidsWeight"
+                           Value="@ViewModel.DrySolidsWeight"
+                           TValue="double?"
+                           ShowUpDown="false"
+                           Format="N2"
+                           Disabled="true"/>
+        </div>
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Fluids Weight (Tonnes)"
+                         Component="FluidsWeight"/>
+            <RadzenNumeric id="FluidsWeight"
+                           Name="FluidsWeight"
+                           Value="@ViewModel.FluidsWeight"
+                           TValue="double?"
+                           ShowUpDown="false"
+                           Format="N2"
+                           Disabled="true"/>
+        </div>
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Load Entry Method"
+                         Component="EntryMethodDropdown"
+                         class="m-0"/>
+
+            <RadzenRadioButtonList TValue="CutEntryMethod"
+                                   Class="w-100"
+                                   Id="EntryMethodDropdown"
+                                   @bind-Value="@ViewModel.CutEntryMethod"
+                                   TextProperty="Value"
+                                   ValueProperty="Key"
+                                   Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                   Data="@(DataDictionary.For<CutEntryMethod>(false))"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col d-flex flex-column">
+            <CutPercentages ViewModel="@ViewModel"
+                            TCutParameters="MidWeightConversionCalculatorViewModel.Parameters"
+                            OnParameterChange="@HandleCutParameterChange"/>
+        </div>
+        <div class="col d-flex flex-column">
+            <Weights ViewModel="@ViewModel"
+                     Title="Fluid Weights (Tonnes)"
+                     TCutParameters="MidWeightConversionCalculatorViewModel.Parameters"
+                     OnParameterChange="@HandleCutParameterChange"/>
+        </div>
+
+        <div class="col d-flex flex-column">
+            <div class="card-header px-0">
+                Dry Solids Weight (Tonnes)
+            </div>
+            <br/>
+            <RadzenTextBox class="w-100"
+                           Disabled="true"/>
+            <br/>
+            <RadzenTextBox class="w-100"
+                           Disabled="true"/>
+            <br/>
+            <RadzenNumeric id="SolidsWeightNumeric"
+                           Name="SolidsWeightNumeric"
+                           ShowUpDown="false"
+                           TValue="double?"
+                           Format="N2"
+                           Value="@ViewModel.DrySolidsWeight"
+                           Disabled="true"/>
+            <hr class="text-muted"/>
+            <RadzenTextBox class="w-100"
+                           Disabled="true"/>
+            <br/>
+        </div>
+        <div class="col d-flex flex-column">
+            <ConversionFactors ViewModel="@ViewModel"
+                               TCutParameters="MidWeightConversionCalculatorViewModel.Parameters"
+                               OnParameterChange="@StateHasChanged"/>
+        </div>
+        <div class="col d-flex flex-column">
+            <AdjustedVolumes ViewModel="@ViewModel"
+                             TCutParameters="MidWeightConversionCalculatorViewModel.Parameters"/>
+        </div>
+
+    </div>
+
+    <hr/>
+
+    <div class="row mt-4">
+        <div class="col d-flex justify-content-end gap-2">
+            <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                          Text="Reset to Default"
+                          Disabled="@(!ViewModel.IsDensityFactorsOverridden || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                          Click="ResetDensityFactorToDefault"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          Click="@(() => HandleSubmit(ViewModel))"
+                          Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                          Text="Update Cuts"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          Click="OnCancel"/>
+        </div>
+    </div>
+</RadzenTemplateForm>

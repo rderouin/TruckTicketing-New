@@ -1,0 +1,60 @@
+@page "/UserProfileFacilityAccessEdit"
+@inherits BaseRazorComponent
+
+<EditForm Model="userProfileFacilityAccess">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-6 d-flex flex-column">
+                    <RadzenLabel Text="Facility:"
+                                 Component="FacilityDropDown"/>
+                    <InputSelect TValue="string"
+                                 Value="@userProfileFacilityAccess.FacilityId"
+                                 ValueChanged="OnFacilityChanged"
+                                 ValueExpression="@(() => userProfileFacilityAccess.FacilityId)"
+                                 class="form-select"
+                                 id="facility">
+                        <option value=""></option>
+                        @foreach (var facility in _facilityList)
+                        {
+                            <option value="@facility.Id">@facility.Text</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Is Authorized:"/>
+                    <RadzenSwitch @bind-Value="@userProfileFacilityAccess.IsAuthorized"
+                                  TValue="bool"/>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Access Level:"/>
+                    <RadzenRadioButtonList @bind-Value="@userProfileFacilityAccess.Level"
+                                           Data="@_facilityAccessLevelsOptions"
+                                           TValue="string"
+                                           TextProperty="TextToDisplay"
+                                           ValueProperty="DataValue"
+                                           Orientation="Orientation.Horizontal"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex justify-content-end mb-2">
+                    <RadzenButton Click="() => CancelButton_Clicked()"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  class="m-2"
+                                  Text="Cancel">
+                    </RadzenButton>
+                    <RadzenButton Click="() => SaveButton_Clicked()"
+                                  ButtonStyle="ButtonStyle.Primary"
+                                  class="m-2"
+                                  Text="Save">
+                    </RadzenButton>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>

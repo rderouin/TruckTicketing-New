@@ -1,0 +1,6 @@
+﻿@inherits BaseRazorComponent
+
+<MaterialApprovalOperatorNotesAcknowledgmentDialog @ref="@_materialApprovalAcknowledgment"
+                                                   TruckTicket="@ViewModel?.TruckTicket"
+                                                   OnMaterialApprovalAccept="@HandleMaterialApprovalAccept"
+                                                   OnAcknowledgementDecline="@HandleMaterialApprovalAcknowledgementDecline"/>

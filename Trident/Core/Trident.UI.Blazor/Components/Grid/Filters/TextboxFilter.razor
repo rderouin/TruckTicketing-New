@@ -1,0 +1,17 @@
+@inherits TextboxFilter
+@typeparam TOutputValue
+
+<h6 id="@(InstanceId + "_textbox")" class="small-grey-label col-sm-12 mb-2">
+    @FilterOptions.Label
+</h6>
+<div class="form-group col-sm-6">
+    <div class="filter-label">
+        @if (Value != null)
+        {
+            <RadzenButton Id="main_Grid_Search" Click="@ResetToDefault" ButtonType="ButtonType.Button">
+                 Clear
+            </RadzenButton>           
+        }
+    </div>
+    <RadzenTextBox Name="@(InstanceId + "_textbox")" Change="ValueChanged" Value="@(Value as string)" class="form-control" />
+</div>

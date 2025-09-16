@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Core\SE.Shared.Domain\SE.Shared.Domain.csproj"/>
+    <ProjectReference Include="..\SE.TokenService.Contracts.Api\SE.TokenService.Contracts.Api.csproj"/>
+
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident.Contracts\Trident.Contracts.csproj"/>
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident.IoC\Trident.IoC.csproj"/>
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident\Trident.csproj"/>
+  </ItemGroup>
+
+</Project>

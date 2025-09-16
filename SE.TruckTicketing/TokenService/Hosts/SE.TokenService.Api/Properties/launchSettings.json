@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "SE.TokenService.Api": {
+      "commandName": "Project",
+      "commandLineArgs": "start --port 6003",
+      "launchBrowser": false
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "SE.TruckTicketing.Api": {
+      "commandName": "Project",
+      "commandLineArgs": "start --port 6004",
+      "launchBrowser": false
+    }
+  }
+}

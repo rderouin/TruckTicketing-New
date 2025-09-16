@@ -1,0 +1,17 @@
+{
+  // default for all found in coverage
+  "DefaultTarget": 97,
+  // override default using 
+  // key: "string" - identifies the namespace
+  // value: "int" - threshold for that namespace
+  // example: 
+  //   NamespaceTargets: { "foo.namespace.bar": 85 }
+  "NamespaceTargets": {},
+  // list of any modules to exclude from analysis
+  "ExcludeModules": [],
+  // list of any namespaces to exclude from analysis 
+  "ExcludeNamespaces": [],
+  // list of any classes to exclude, a StartsWith check is done
+  // so be aware of the value specified, this is different from namespace and modules
+  "ExcludeClasses": []
+}

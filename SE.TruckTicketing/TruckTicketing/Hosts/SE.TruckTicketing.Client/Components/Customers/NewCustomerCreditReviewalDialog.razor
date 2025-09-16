@@ -1,0 +1,70 @@
+﻿@inherits BaseRazorComponent
+@namespace SE.TruckTicketing.Client.Components.Customers
+
+<RadzenTemplateForm TItem="NewCustomerCreditReviewalDialogViewModel"
+                    Submit="@OnOKButtonClick"
+                    Data="@ViewModel"
+                    @ref="ReferenceToForm">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="d-flex align-items-center gap-3">
+                    <h4>This customer's credit must be renewed. Please resend the credit application to start the renewal process. Click "Acknowledge" to confirm actions.</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="card mt-3">
+            <div class="card-body">
+                <div class="d-flex align-items-center gap-3">
+                    <h5>Configure Email to Send</h5>
+                </div>
+                <div class="row mb-3 mt-3">
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="CC"
+                                     Component="ToEmailListBox"
+                                     class="required"/>
+                        <RadzenListBox Name="ToEmailListBox"
+                                       id="ToEmailListBox"
+                                       @bind-Value="@ViewModel.SelectedEmails"
+                                       Data="@ViewModel.ToEmailAddressList"
+                                       class="w-100"
+                                       Multiple="true"
+                                       TextProperty="@nameof(DisplayEmailAddress.DisplayName)"
+                                       ValueProperty="@nameof(DisplayEmailAddress.Email)"/>
+
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Add Email"
+                                     Component="AddEmailTextBox"/>
+
+                        <RadzenTextBox id="AddEmailTextBox"
+                                       Name="AddEmailTextBox"
+                                       @bind-Value="@ViewModel.AddEmailAddressValue"
+                                       class="w-100"/>
+                    </div>
+                    <div class="col mt-3">
+                        <RadzenButton Icon="add_circle_outline"
+                                      Click="@OnAddEmailTextBoxClick"
+                                      ButtonStyle="ButtonStyle.Primary"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Acknowledge and Send Email"
+                          IsBusy="@IsSaving"
+                          BusyText="Acknowledging"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          class="ml-2"
+                          Click="HandleCancel"/>
+        </div>
+    </div>
+</RadzenTemplateForm>

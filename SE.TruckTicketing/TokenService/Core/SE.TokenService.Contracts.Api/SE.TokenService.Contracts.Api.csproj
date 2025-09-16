@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Accounts\"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident.Contracts.Api\Trident.Contracts.Api.csproj"/>
+    <ProjectReference Include="..\..\..\Shared\Core\SE.TruckTicketing.Contracts\SE.TruckTicketing.Contracts.csproj"/>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,13 @@
+﻿@inherits BaseTruckTicketingComponent
+
+<CascadingValue Value="@Model">
+    <RadzenTabs>
+        <Tabs>
+            <RadzenTabsItem Text="Notes">
+                <Notes ThreadId="@ThreadId"
+                       OnNoteUpdate="@HandleNoteUpdate"
+                       OnDataLoad="@OnDataLoad"/>
+            </RadzenTabsItem>
+        </Tabs>
+    </RadzenTabs>
+</CascadingValue>

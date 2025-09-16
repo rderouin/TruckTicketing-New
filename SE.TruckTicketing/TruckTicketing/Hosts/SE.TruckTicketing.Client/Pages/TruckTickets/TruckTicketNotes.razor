@@ -1,0 +1,17 @@
+@inherits BaseTruckTicketingComponent
+
+@if (ViewModel.TruckTicket is not null)
+{
+    <div class="card">
+        <div class="card-header d-flex align-content-center">
+            <h4 class="fw-bold">Notes</h4>
+        </div>
+        <div class="card-body">
+            <Notes @ref="_notes"
+                   ShowNew="@true"
+                   ThreadId="@ThreadId"
+                   OnNoteUpdate="@HandleNoteUpdate"
+                   OnDataLoad="@LoadNotes"/>
+        </div>
+    </div>
+}

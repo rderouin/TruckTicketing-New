@@ -1,0 +1,205 @@
+﻿@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Lookups
+@inherits BaseRazorComponent
+
+<div class="card mt-4">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-bold">Configure Billing</h4>
+            <RadzenSwitch @bind-Value="Account.IsElectronicBillingEnabled"
+                          Change="@OnConfigureBillingChange"/>
+        </div>
+    </div>
+    @if (Account.IsElectronicBillingEnabled)
+    {
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Billing Type"
+                                 Component="AccountBillingTypeDropDown"
+                                 class="required"/>
+                    <RadzenDropDown id="AccountBillingTypeDropDown"
+                                    TValue="BillingType"
+                                    Name="AccountBillingTypeDropDown"
+                                    @bind-Value=@Account.BillingType
+                                    TextProperty="Value"
+                                    ValueProperty="Key"
+                                    Placeholder="Select Billing Type..."
+                                    Multiple="false"
+                                    Data="@(DataDictionary.For<BillingType>())"
+                                    class="w-100"
+                                    Change="@OnBillingTypeChange"/>
+                </div>
+                @if (Account.BillingType == BillingType.Mail)
+                {
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Same As Account Address"
+                                     Component="SameAsAccountAddressSwitch"/>
+                        <RadzenSwitch @bind-Value="@SameAsAccountAddress"
+                                      Change="@(args => MailSameAsAccountAddress(args))"/>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+</div>
+@if (Account.BillingType == BillingType.Mail && !SameAsAccountAddress && Account.IsElectronicBillingEnabled)
+{
+    <RadzenTemplateForm TItem="AccountAddress"
+                        Data="@MailingAddress"
+                        @ref="ReferenceToAddressForm">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="fw-bold">Mailing Address</h4>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Mailing Recipient Name"
+                                     Component="MailingRecipientNameTextBox"/>
+                        <RadzenTextBox id="MailingRecipientNameTextBox"
+                                       Name="MailingRecipientNameTextBox"
+                                       @bind-Value="@MailingRecipient"
+                                       class="w-100"/>
+
+
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Street"
+                                     Component="MailingAddressStreetTextBox"
+                                     class="required"/>
+                        <RadzenTextBox id="MailingAddressCityTextBox"
+                                       Name="MailingAddressCityTextBox"
+                                       @bind-Value="@MailingAddress.Street"
+                                       class="w-100"/>
+                        <RadzenRequiredValidator Component="MailingAddressCityTextBox"
+                                                 Text="Required"/>
+
+
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="City"
+                                     Component="MailingAddressCityTextBox"
+                                     class="required"/>
+                        <RadzenTextBox id="MailingAddressCityTextBox"
+                                       Name="MailingAddressCityTextBox"
+                                       @bind-Value="@MailingAddress.City"
+                                       class="w-100"/>
+                        <RadzenRequiredValidator Component="MailingAddressCityTextBox"
+                                                 Text="Required"/>
+
+
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Country"
+                                     Component="AccountAddressCountryDropDown"
+                                     class="required"/>
+                        <RadzenDropDown TValue="CountryCode"
+                                        id="AccountAddressCountryDropDown"
+                                        Name="AccountAddressCountryDropDown"
+                                        @bind-Value=@SelectedCountry
+                                        TextProperty="Value"
+                                        ValueProperty="Key"
+                                        Placeholder="Select Country..."
+                                        Multiple="false"
+                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        Data="@(DataDictionary.For<CountryCode>())"
+                                        class="w-100"/>
+                        <RadzenRequiredValidator Component="AccountAddressCountryDropDown"
+                                                 DefaultValue="CountryCode.Undefined"
+                                                 Text="Required"/>
+
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="@StateProvinceLabel"
+                                     Component="AccountStateProvinceDropDown"
+                                     class="required"/>
+                        <RadzenDropDown TValue="StateProvince"
+                                        AllowClear="true"
+                                        AllowFiltering="true"
+                                        id="AccountStateProvinceDropDown"
+                                        Name="AccountStateProvinceDropDown"
+                                        @bind-Value=@MailingAddress.Province
+                                        TextProperty="Value"
+                                        ValueProperty="Key"
+                                        Placeholder="@StateProvincePlaceHolder"
+                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        Multiple="false"
+                                        Data="@(StateProviceData)"
+                                        class="w-100"/>
+                        <RadzenRequiredValidator Component="AccountStateProvinceDropDown"
+                                                 DefaultValue="StateProvince.Unspecified"
+                                                 Text="Required"/>
+                    </div>
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="@ZipPostalCodeLabel"
+                                     Component="AddressPostalCodeTextBox"
+                                     class="required"/>
+                        <RadzenMask id="AddressPostalCodeTextBox"
+                                    Name="AddressPostalCodeTextBox"
+                                    Mask="@PostalCodeMask"
+                                    CharacterPattern="@PostalCodePattern"
+                                    @bind-Value="@MailingAddress.ZipCode"
+                                    class="w-100"/>
+                        <RadzenRequiredValidator Component="AddressPostalCodeTextBox"
+                                                 Text="Required"/>
+                        @if (MailingAddress.Country == CountryCode.CA)
+                        {
+                            <RadzenRegexValidator Component="AddressPostalCodeTextBox"
+                                                  Text="Enter Canadian postal code in valid format : #-#"
+                                                  Pattern="^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d" />
+                        }
+                        else
+                        {
+                            <RadzenRegexValidator Component="AddressPostalCodeTextBox"
+                                                  Text="Enter US postal code in valid format : [0-9]^5?-[0-9]^4"
+                                                  Pattern="^\d{5}(?:[-\s]\d{4})?$"/>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </RadzenTemplateForm>
+}
+
+@if (Account.BillingType == BillingType.Email)
+{
+    <BillingConfigEmailRecipientGrid BillingCustomerAccountContactList="@_billingCustomerContacts"
+                                     EmailDeliveryContacts="@billingConfiguration.EmailDeliveryContacts"
+                                     EmailDeliveryContactDeleted="EmailContactDeleted"
+                                     NewEmailDeliveryAdded="EmailContactAdded"
+                                     BillingCustomer="@Account"/>
+}
+
+<BillingConfigEDIFieldDefinitions EDIFields="@billingConfiguration.EDIValueData"
+                                  EDIFieldDefinitions="@EdiFieldDefinitions"
+                                  Account="@Account" />
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-bold">Field Ticket Upload</h4>
+            <RadzenSwitch @bind-Value="billingConfiguration.FieldTicketsUploadEnabled"/>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-bold">Load Confirmation</h4>
+            <RadzenSwitch @bind-Value="billingConfiguration.LoadConfirmationsEnabled"/>
+        </div>
+    </div>
+</div>
+<BillingApplicantSignatoryGrid SignatoryContacts="@billingConfiguration.Signatories"
+                               BillingCustomerAccount="@Account"
+                               GeneratorAccount="@BillingCustomer"
+                               SignatoryContactAddUpdate="AddSignatoryContact"
+                               SignatoryContactDeleted="DeleteSignatoryContact"
+                               IsAccountEdit="false"/>

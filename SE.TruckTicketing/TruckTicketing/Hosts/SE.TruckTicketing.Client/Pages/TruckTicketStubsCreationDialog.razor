@@ -1,0 +1,49 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+
+<EditForm Model="@Request">
+    <TridentValidationSummary TModel="TruckTicketStubCreationRequest"
+                              Response="@ViewModel.Response"/>
+
+    <div class="row mt-3 mb-3">
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Facility"
+                         Component="FacilityDropdown"/>
+
+            <FacilityDropDown TValue="Guid"
+                              TModel="Facility"
+                              Class="w-100"
+                              id="FacilityDropdown"
+                              OnDataLoading="OnFacilitiesLoading"
+                              @bind-Value="@Request.FacilityId"
+                              TextProperty="@nameof(Facility.Display)"
+                              ValueProperty="@nameof(Facility.Id)"/>
+        </div>
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Ticket Count"
+                         Component="TicketCountNumeric"/>
+            <RadzenNumeric TValue="int"
+                           Name="TicketCountNumeric"
+                           @bind-Value="@Request.Count"
+                           Class="w-100"/>
+        </div>
+    </div>
+
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end gap-2">
+            <RadzenSplitButton class="primary"
+                               Click="@OnCreateButtonClick"
+                               Text="Create & Download Ticket Stubs"
+                               Disabled="@_isProcessing">
+                <ChildContent>
+                    <RadzenSplitButtonItem Text="Create Ticket Stubs"
+                                           Value="1"/>
+                </ChildContent>
+            </RadzenSplitButton>
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          Click="HandleCancel"/>
+        </div>
+    </div>
+
+</EditForm>

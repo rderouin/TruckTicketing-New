@@ -1,0 +1,20 @@
+﻿@typeparam TModel
+@typeparam TValue
+
+@inherits BaseTruckTicketingComponent
+@if (Template is null)
+{
+    <RadzenDataList @ref="DataList" id="@Id" Style="@Style" class="@Class"
+                    WrapItems="@WrapItems" AllowPaging="@AllowPaging"
+                    Data="@Data" PageSize="@PageSize" PagerHorizontalAlign="@PagerHorizontalAlign" ShowPagingSummary="@ShowPagingSummary"/>
+}
+else
+{
+    <RadzenDataList @ref="DataList" id="@Id" Style="@Style" class="@Class"
+                    WrapItems="@WrapItems" AllowPaging="@AllowPaging"
+                    Data="@Data" PageSize="@PageSize" PagerHorizontalAlign="@PagerHorizontalAlign" ShowPagingSummary="@ShowPagingSummary" >
+        <Template Context="context">
+            @Template((TModel)context)
+        </Template>
+    </RadzenDataList>
+}

@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Autofac.Configuration" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Trident.Contracts\Trident.Contracts.csproj"/>
+        <ProjectReference Include="..\Trident.Extensions\Trident.Extensions.csproj"/>
+        <ProjectReference Include="..\Trident.IoC\Trident.IoC.csproj"/>
+    </ItemGroup>
+
+</Project>

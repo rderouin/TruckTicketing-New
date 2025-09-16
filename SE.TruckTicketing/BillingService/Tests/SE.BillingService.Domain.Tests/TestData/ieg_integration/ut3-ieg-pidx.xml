@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FieldTicket p1:transactionPurposeIndicator="Add" xmlns:p1="http://www.api.org/pidXML" xmlns="http://www.api.org/pidXML">
+    <p1:FieldTicketProperties>
+        <p1:FieldTicketNumber>SWFST10000216-LC</p1:FieldTicketNumber>
+        <p1:FieldTicketDate>2023-03-31</p1:FieldTicketDate>
+        <p1:PartnerInformation partnerRoleIndicator="BillTo">
+            <p1:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">255070534</p1:PartnerIdentifier>
+            <p1:ContactInformation contactInformationIndicator="BuyerDepartment">
+                <p1:ContactName>Lise Boucher </p1:ContactName>
+            </p1:ContactInformation>
+        </p1:PartnerInformation>
+        <p1:PartnerInformation partnerRoleIndicator="RemitTo">
+            <p1:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber" />
+        </p1:PartnerInformation>
+        <p1:PrimaryCurrency>
+            <p1:CurrencyCode>CAD</p1:CurrencyCode>
+        </p1:PrimaryCurrency>
+        <p1:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+        <p1:SpecialInstructions instructionIndicator="RoutingInstructions">Save</p1:SpecialInstructions>
+        <p1:Comment>Attn:   </p1:Comment>
+    </p1:FieldTicketProperties>
+    <p1:FieldTicketDetails>
+        <p1:FieldTicketLineItem>
+            <p1:LineItemNumber>706062</p1:LineItemNumber>
+            <p1:LineItemInformation>
+                <p1:LineItemIdentifier identifierIndicator="AssignedBySeller">706062</p1:LineItemIdentifier>
+                <p1:LineItemDescription>Waste - Solids Disposal</p1:LineItemDescription>
+            </p1:LineItemInformation>
+            <p1:FieldTicketQuantity>
+                <p1:Quantity>10</p1:Quantity>
+                <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+            </p1:FieldTicketQuantity>
+            <p1:PartnerInformation partnerRoleIndicator="Other" definitionOfOther="NonBillingInquiries">
+                <p1:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">255070534</p1:PartnerIdentifier>
+                <p1:ContactInformation contactInformationIndicator="OrderContact">
+                    <p1:ContactName>Lise Boucher </p1:ContactName>
+                </p1:ContactInformation>
+            </p1:PartnerInformation>
+            <p1:JobLocationInformation>
+                <p1:WellInformation>
+                    <p1:WellIdentifier />
+                </p1:WellInformation>
+            </p1:JobLocationInformation>
+            <p1:Pricing>
+                <p1:UnitPrice>
+                    <p1:MonetaryAmount>492.4</p1:MonetaryAmount>
+                    <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+                </p1:UnitPrice>
+            </p1:Pricing>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodEnd">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ReferenceInformation referenceInformationIndicator="AFENumber">
+                <p1:ReferenceNumber />
+            </p1:ReferenceInformation>
+            <p1:ReferenceInformation referenceInformationIndicator="OperatorGeneralLedgerCode" />
+            <p1:ReferenceInformation referenceInformationIndicator="CostCenter" />
+            <p1:ReferenceInformation referenceInformationIndicator="JobNumber" />
+            <p1:ReferenceInformation referenceInformationIndicator="CustomerAccountingReference" />
+            <p1:ReferenceInformation referenceInformationIndicator="ContractNumber" />
+        </p1:FieldTicketLineItem>
+        <p1:FieldTicketLineItem>
+            <p1:LineItemNumber>706061</p1:LineItemNumber>
+            <p1:LineItemInformation>
+                <p1:LineItemIdentifier identifierIndicator="AssignedBySeller">706061</p1:LineItemIdentifier>
+                <p1:LineItemDescription>Waste - Water Disposal</p1:LineItemDescription>
+            </p1:LineItemInformation>
+            <p1:FieldTicketQuantity>
+                <p1:Quantity>10</p1:Quantity>
+                <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+            </p1:FieldTicketQuantity>
+            <p1:PartnerInformation partnerRoleIndicator="Other" definitionOfOther="NonBillingInquiries">
+                <p1:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">255070534</p1:PartnerIdentifier>
+                <p1:ContactInformation contactInformationIndicator="OrderContact">
+                    <p1:ContactName>Lise Boucher </p1:ContactName>
+                </p1:ContactInformation>
+            </p1:PartnerInformation>
+            <p1:JobLocationInformation>
+                <p1:WellInformation>
+                    <p1:WellIdentifier />
+                </p1:WellInformation>
+            </p1:JobLocationInformation>
+            <p1:Pricing>
+                <p1:UnitPrice>
+                    <p1:MonetaryAmount>491.65</p1:MonetaryAmount>
+                    <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+                </p1:UnitPrice>
+            </p1:Pricing>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodEnd">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ReferenceInformation referenceInformationIndicator="AFENumber">
+                <p1:ReferenceNumber />
+            </p1:ReferenceInformation>
+            <p1:ReferenceInformation referenceInformationIndicator="OperatorGeneralLedgerCode" />
+            <p1:ReferenceInformation referenceInformationIndicator="CostCenter" />
+            <p1:ReferenceInformation referenceInformationIndicator="JobNumber" />
+            <p1:ReferenceInformation referenceInformationIndicator="CustomerAccountingReference" />
+            <p1:ReferenceInformation referenceInformationIndicator="ContractNumber" />
+        </p1:FieldTicketLineItem>
+        <p1:FieldTicketLineItem>
+            <p1:LineItemNumber>902406</p1:LineItemNumber>
+            <p1:LineItemInformation>
+                <p1:LineItemIdentifier identifierIndicator="AssignedBySeller">902406</p1:LineItemIdentifier>
+                <p1:LineItemDescription>Waste - Oil Credit</p1:LineItemDescription>
+            </p1:LineItemInformation>
+            <p1:FieldTicketQuantity>
+                <p1:Quantity>-10</p1:Quantity>
+                <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+            </p1:FieldTicketQuantity>
+            <p1:PartnerInformation partnerRoleIndicator="Other" definitionOfOther="NonBillingInquiries">
+                <p1:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">255070534</p1:PartnerIdentifier>
+                <p1:ContactInformation contactInformationIndicator="OrderContact">
+                    <p1:ContactName>Lise Boucher </p1:ContactName>
+                </p1:ContactInformation>
+            </p1:PartnerInformation>
+            <p1:JobLocationInformation>
+                <p1:WellInformation>
+                    <p1:WellIdentifier />
+                </p1:WellInformation>
+            </p1:JobLocationInformation>
+            <p1:Pricing>
+                <p1:UnitPrice>
+                    <p1:MonetaryAmount>493.05</p1:MonetaryAmount>
+                    <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+                </p1:UnitPrice>
+            </p1:Pricing>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodEnd">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ReferenceInformation referenceInformationIndicator="AFENumber">
+                <p1:ReferenceNumber />
+            </p1:ReferenceInformation>
+            <p1:ReferenceInformation referenceInformationIndicator="OperatorGeneralLedgerCode" />
+            <p1:ReferenceInformation referenceInformationIndicator="CostCenter" />
+            <p1:ReferenceInformation referenceInformationIndicator="JobNumber" />
+            <p1:ReferenceInformation referenceInformationIndicator="CustomerAccountingReference" />
+            <p1:ReferenceInformation referenceInformationIndicator="ContractNumber" />
+        </p1:FieldTicketLineItem>
+        <p1:FieldTicketLineItem>
+            <p1:LineItemNumber>706060</p1:LineItemNumber>
+            <p1:LineItemInformation>
+                <p1:LineItemIdentifier identifierIndicator="AssignedBySeller">706060</p1:LineItemIdentifier>
+                <p1:LineItemDescription>Waste - Processing</p1:LineItemDescription>
+            </p1:LineItemInformation>
+            <p1:FieldTicketQuantity>
+                <p1:Quantity>30</p1:Quantity>
+                <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+            </p1:FieldTicketQuantity>
+            <p1:PartnerInformation partnerRoleIndicator="Other" definitionOfOther="NonBillingInquiries">
+                <p1:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">255070534</p1:PartnerIdentifier>
+                <p1:ContactInformation contactInformationIndicator="OrderContact">
+                    <p1:ContactName>Lise Boucher </p1:ContactName>
+                </p1:ContactInformation>
+            </p1:PartnerInformation>
+            <p1:JobLocationInformation>
+                <p1:WellInformation>
+                    <p1:WellIdentifier />
+                </p1:WellInformation>
+            </p1:JobLocationInformation>
+            <p1:Pricing>
+                <p1:UnitPrice>
+                    <p1:MonetaryAmount>75</p1:MonetaryAmount>
+                    <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+                </p1:UnitPrice>
+            </p1:Pricing>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodEnd">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ReferenceInformation referenceInformationIndicator="AFENumber">
+                <p1:ReferenceNumber />
+            </p1:ReferenceInformation>
+            <p1:ReferenceInformation referenceInformationIndicator="OperatorGeneralLedgerCode" />
+            <p1:ReferenceInformation referenceInformationIndicator="CostCenter" />
+            <p1:ReferenceInformation referenceInformationIndicator="JobNumber" />
+            <p1:ReferenceInformation referenceInformationIndicator="CustomerAccountingReference" />
+            <p1:ReferenceInformation referenceInformationIndicator="ContractNumber" />
+        </p1:FieldTicketLineItem>
+        <p1:FieldTicketLineItem>
+            <p1:LineItemNumber>706062</p1:LineItemNumber>
+            <p1:LineItemInformation>
+                <p1:LineItemIdentifier identifierIndicator="AssignedBySeller">706062</p1:LineItemIdentifier>
+                <p1:LineItemDescription>Waste - Solids Disposal</p1:LineItemDescription>
+            </p1:LineItemInformation>
+            <p1:FieldTicketQuantity>
+                <p1:Quantity>10</p1:Quantity>
+                <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+            </p1:FieldTicketQuantity>
+            <p1:PartnerInformation partnerRoleIndicator="Other" definitionOfOther="NonBillingInquiries">
+                <p1:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">255070534</p1:PartnerIdentifier>
+                <p1:ContactInformation contactInformationIndicator="OrderContact">
+                    <p1:ContactName>Lise Boucher </p1:ContactName>
+                </p1:ContactInformation>
+            </p1:PartnerInformation>
+            <p1:JobLocationInformation>
+                <p1:WellInformation>
+                    <p1:WellIdentifier />
+                </p1:WellInformation>
+            </p1:JobLocationInformation>
+            <p1:Pricing>
+                <p1:UnitPrice>
+                    <p1:MonetaryAmount>492.4</p1:MonetaryAmount>
+                    <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+                </p1:UnitPrice>
+            </p1:Pricing>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodEnd">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ReferenceInformation referenceInformationIndicator="AFENumber">
+                <p1:ReferenceNumber />
+            </p1:ReferenceInformation>
+            <p1:ReferenceInformation referenceInformationIndicator="OperatorGeneralLedgerCode" />
+            <p1:ReferenceInformation referenceInformationIndicator="CostCenter" />
+            <p1:ReferenceInformation referenceInformationIndicator="JobNumber" />
+            <p1:ReferenceInformation referenceInformationIndicator="CustomerAccountingReference" />
+            <p1:ReferenceInformation referenceInformationIndicator="ContractNumber" />
+        </p1:FieldTicketLineItem>
+        <p1:FieldTicketLineItem>
+            <p1:LineItemNumber>706061</p1:LineItemNumber>
+            <p1:LineItemInformation>
+                <p1:LineItemIdentifier identifierIndicator="AssignedBySeller">706061</p1:LineItemIdentifier>
+                <p1:LineItemDescription>Waste - Water Disposal</p1:LineItemDescription>
+            </p1:LineItemInformation>
+            <p1:FieldTicketQuantity>
+                <p1:Quantity>19.9</p1:Quantity>
+                <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+            </p1:FieldTicketQuantity>
+            <p1:PartnerInformation partnerRoleIndicator="Other" definitionOfOther="NonBillingInquiries">
+                <p1:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">255070534</p1:PartnerIdentifier>
+                <p1:ContactInformation contactInformationIndicator="OrderContact">
+                    <p1:ContactName>Lise Boucher </p1:ContactName>
+                </p1:ContactInformation>
+            </p1:PartnerInformation>
+            <p1:JobLocationInformation>
+                <p1:WellInformation>
+                    <p1:WellIdentifier />
+                </p1:WellInformation>
+            </p1:JobLocationInformation>
+            <p1:Pricing>
+                <p1:UnitPrice>
+                    <p1:MonetaryAmount>491.65</p1:MonetaryAmount>
+                    <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+                </p1:UnitPrice>
+            </p1:Pricing>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodEnd">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ReferenceInformation referenceInformationIndicator="AFENumber">
+                <p1:ReferenceNumber />
+            </p1:ReferenceInformation>
+            <p1:ReferenceInformation referenceInformationIndicator="OperatorGeneralLedgerCode" />
+            <p1:ReferenceInformation referenceInformationIndicator="CostCenter" />
+            <p1:ReferenceInformation referenceInformationIndicator="JobNumber" />
+            <p1:ReferenceInformation referenceInformationIndicator="CustomerAccountingReference" />
+            <p1:ReferenceInformation referenceInformationIndicator="ContractNumber" />
+        </p1:FieldTicketLineItem>
+        <p1:FieldTicketLineItem>
+            <p1:LineItemNumber>902406</p1:LineItemNumber>
+            <p1:LineItemInformation>
+                <p1:LineItemIdentifier identifierIndicator="AssignedBySeller">902406</p1:LineItemIdentifier>
+                <p1:LineItemDescription>Waste - Oil Credit</p1:LineItemDescription>
+            </p1:LineItemInformation>
+            <p1:FieldTicketQuantity>
+                <p1:Quantity>-0.1</p1:Quantity>
+                <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+            </p1:FieldTicketQuantity>
+            <p1:PartnerInformation partnerRoleIndicator="Other" definitionOfOther="NonBillingInquiries">
+                <p1:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">255070534</p1:PartnerIdentifier>
+                <p1:ContactInformation contactInformationIndicator="OrderContact">
+                    <p1:ContactName>Lise Boucher </p1:ContactName>
+                </p1:ContactInformation>
+            </p1:PartnerInformation>
+            <p1:JobLocationInformation>
+                <p1:WellInformation>
+                    <p1:WellIdentifier />
+                </p1:WellInformation>
+            </p1:JobLocationInformation>
+            <p1:Pricing>
+                <p1:UnitPrice>
+                    <p1:MonetaryAmount>493.05</p1:MonetaryAmount>
+                    <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+                </p1:UnitPrice>
+            </p1:Pricing>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodEnd">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ReferenceInformation referenceInformationIndicator="AFENumber">
+                <p1:ReferenceNumber />
+            </p1:ReferenceInformation>
+            <p1:ReferenceInformation referenceInformationIndicator="OperatorGeneralLedgerCode" />
+            <p1:ReferenceInformation referenceInformationIndicator="CostCenter" />
+            <p1:ReferenceInformation referenceInformationIndicator="JobNumber" />
+            <p1:ReferenceInformation referenceInformationIndicator="CustomerAccountingReference" />
+            <p1:ReferenceInformation referenceInformationIndicator="ContractNumber" />
+        </p1:FieldTicketLineItem>
+        <p1:FieldTicketLineItem>
+            <p1:LineItemNumber>706060</p1:LineItemNumber>
+            <p1:LineItemInformation>
+                <p1:LineItemIdentifier identifierIndicator="AssignedBySeller">706060</p1:LineItemIdentifier>
+                <p1:LineItemDescription>Waste - Processing</p1:LineItemDescription>
+            </p1:LineItemInformation>
+            <p1:FieldTicketQuantity>
+                <p1:Quantity>30</p1:Quantity>
+                <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+            </p1:FieldTicketQuantity>
+            <p1:PartnerInformation partnerRoleIndicator="Other" definitionOfOther="NonBillingInquiries">
+                <p1:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">255070534</p1:PartnerIdentifier>
+                <p1:ContactInformation contactInformationIndicator="OrderContact">
+                    <p1:ContactName>Lise Boucher </p1:ContactName>
+                </p1:ContactInformation>
+            </p1:PartnerInformation>
+            <p1:JobLocationInformation>
+                <p1:WellInformation>
+                    <p1:WellIdentifier />
+                </p1:WellInformation>
+            </p1:JobLocationInformation>
+            <p1:Pricing>
+                <p1:UnitPrice>
+                    <p1:MonetaryAmount>75</p1:MonetaryAmount>
+                    <p1:UnitOfMeasureCode>M3</p1:UnitOfMeasureCode>
+                </p1:UnitPrice>
+            </p1:Pricing>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodEnd">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ReferenceInformation referenceInformationIndicator="AFENumber">
+                <p1:ReferenceNumber />
+            </p1:ReferenceInformation>
+            <p1:ReferenceInformation referenceInformationIndicator="OperatorGeneralLedgerCode" />
+            <p1:ReferenceInformation referenceInformationIndicator="CostCenter" />
+            <p1:ReferenceInformation referenceInformationIndicator="JobNumber" />
+            <p1:ReferenceInformation referenceInformationIndicator="CustomerAccountingReference" />
+            <p1:ReferenceInformation referenceInformationIndicator="ContractNumber" />
+        </p1:FieldTicketLineItem>
+        <p1:FieldTicketLineItem>
+            <p1:LineItemNumber>707077</p1:LineItemNumber>
+            <p1:LineItemInformation>
+                <p1:LineItemIdentifier identifierIndicator="AssignedBySeller">707077</p1:LineItemIdentifier>
+                <p1:LineItemDescription>Truck Flush</p1:LineItemDescription>
+            </p1:LineItemInformation>
+            <p1:FieldTicketQuantity>
+                <p1:Quantity>1</p1:Quantity>
+                <p1:UnitOfMeasureCode>EA</p1:UnitOfMeasureCode>
+            </p1:FieldTicketQuantity>
+            <p1:PartnerInformation partnerRoleIndicator="Other" definitionOfOther="NonBillingInquiries">
+                <p1:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">255070534</p1:PartnerIdentifier>
+                <p1:ContactInformation contactInformationIndicator="OrderContact">
+                    <p1:ContactName>Lise Boucher </p1:ContactName>
+                </p1:ContactInformation>
+            </p1:PartnerInformation>
+            <p1:JobLocationInformation>
+                <p1:WellInformation>
+                    <p1:WellIdentifier />
+                </p1:WellInformation>
+            </p1:JobLocationInformation>
+            <p1:Pricing>
+                <p1:UnitPrice>
+                    <p1:MonetaryAmount>150</p1:MonetaryAmount>
+                    <p1:UnitOfMeasureCode>EA</p1:UnitOfMeasureCode>
+                </p1:UnitPrice>
+            </p1:Pricing>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ServiceDateTime dateTypeIndicator="ServicePeriodEnd">2023-03-14T07:00:01Z</p1:ServiceDateTime>
+            <p1:ReferenceInformation referenceInformationIndicator="AFENumber">
+                <p1:ReferenceNumber />
+            </p1:ReferenceInformation>
+            <p1:ReferenceInformation referenceInformationIndicator="OperatorGeneralLedgerCode" />
+            <p1:ReferenceInformation referenceInformationIndicator="CostCenter" />
+            <p1:ReferenceInformation referenceInformationIndicator="JobNumber" />
+            <p1:ReferenceInformation referenceInformationIndicator="CustomerAccountingReference" />
+            <p1:ReferenceInformation referenceInformationIndicator="ContractNumber" />
+        </p1:FieldTicketLineItem>
+    </p1:FieldTicketDetails>
+    <p1:FieldTicketSummary>
+        <p1:TotalLineItems>9</p1:TotalLineItems>
+        <p1:FieldTicketTotal>
+            <p1:MonetaryAmount>24218.53</p1:MonetaryAmount>
+        </p1:FieldTicketTotal>
+    </p1:FieldTicketSummary>
+</FieldTicket>

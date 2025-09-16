@@ -1,0 +1,212 @@
+﻿@page "/truck-ticketing/source-locations"
+@using SE.Shared.Common.Extensions
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using SE.TruckTicketing.Contracts.Security
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Lookups
+@inherits BaseTruckTicketingComponent
+
+<style>
+    .grid-switch-container td {
+        padding: 0.25em 0.5em;
+    }
+</style>
+
+<div class="position-relative h-100"
+     style="overflow-y: auto; padding-bottom: 7.5rem">
+    @if (DisplayAddButton)
+    {
+        <div class="pt-4 px-4">
+            <div class="bg-white pb-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h3 class="flex-grow-1">Manage Source Locations</h3>
+
+                    <div class="d-flex align-items-end gap-4 flex-grow-0 align-self-end">
+                        <div class="flex-grow-0">
+                            <RadzenLabel Text="PETROLEUM REGISTRIES - SESU"
+                                         Component="SESUGroup"/>
+                            <div id="SESUGroup"
+                                 class="d-flex gap-2">
+                                <RadzenLink Path="@GetRegistryUrls("MBOGC")"
+                                            Text="MBOGC"
+                                            Target="_blank"
+                                            class="rz-button rz-button-md btn-secondary text-decoration-none"/>
+                                <RadzenLink Path="@GetRegistryUrls("NDIC")"
+                                            Text="NDIC"
+                                            Target="_blank"
+                                            class="rz-button rz-button-md btn-secondary text-decoration-none"/>
+                            </div>
+                        </div>
+                        <div class="flex-grow-0">
+                            <RadzenLabel Text="PETROLEUM REGISTRIES - SESC"
+                                         Component="SESCGroup"/>
+
+                            <div id="SESCGroup"
+                                 class="d-flex gap-2">
+                                <RadzenLink Path="@GetRegistryUrls("IRIS")"
+                                            Text="IRIS"
+                                            Target="_blank"
+                                            class="rz-button rz-button-md btn-secondary text-decoration-none"/>
+                                <RadzenLink Path="@GetRegistryUrls("BCOGC")"
+                                            Text="BCOGC"
+                                            Target="_blank"
+                                            class="rz-button rz-button-md btn-secondary text-decoration-none"/>
+                                <RadzenLink Path="@GetRegistryUrls("PETRINEX")"
+                                            Text="PETRINEX"
+                                            Target="_blank"
+                                            class="rz-button rz-button-md btn-secondary text-decoration-none"/>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-1">
+                            <RadzenLink Icon="add_outline"
+                                        Path="/truck-ticketing/source-locations/new"
+                                        Text="Add Source Location"
+                                        class="@($"rz-button rz-button-md btn-primary text-decoration-none {AddSourceLocationLink_Css}")" />
+
+                            <RadzenButton Icon="tune"
+                                          title="Show Column Options"
+                                          ButtonStyle="ButtonStyle.Light"
+                                          Click="@(() => _grid.ShowColumnOptions())"/>
+
+                            <RadzenButton Icon="save_alt"
+                                          title="Export to CSV"
+                                          ButtonStyle="ButtonStyle.Light"
+                                          Click="@Export"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <TridentValidationSummary Response="_sourceLocationReAssociationResponse"
+                                      TModel="SourceLocation"/>
+            <br/>
+            <GridFiltersContainer Expandable="@true"
+                                  @ref="_gridFilterContainer"
+                                  OnFilterChange="@(async criteria => await LoadData(criteria))">
+                <div class="d-flex flex-grow-1 gap-3">
+                    <KeywordFilter Label="Search"/>
+                    <DropDownDataGridFilter Label="Generator"
+                                            FilterPath="@nameof(SourceLocation.GeneratorId)"
+                                            Placeholder="All generators"
+                                            TItem="Account"
+                                            DefaultSortProperty="@nameof(Account.Name)"
+                                            TextProperty="@nameof(Account.Name)"
+                                            BeforeDataLoad="@BeforeGeneratorFilterDataLoad">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn Property="@nameof(Account.Name)"
+                                                          Title="Generator Name"
+                                                          Width="100px"/>
+                        </Columns>
+                    </DropDownDataGridFilter>
+                </div>
+            </GridFiltersContainer>
+        </div>
+    }
+
+    <div class="@ClassNames("", ("px-4", DisplayAddButton), ("pb-4", DisplayAddButton)) grid-switch-container">
+        <PagableGridView TModel="SourceLocation"
+                         Results="@_sourceLocations"
+                         EnablePaging="true"
+                         EnableSorting="true"
+                         EnableFilters="false"
+                         EnableSearch="false"
+                         OnDataLoad="LoadData"
+                         IsLoading="@_isLoading"
+                         @ref="_grid"
+                         SelectionMode="@_selectionMode"
+                         EnableMultiLineSelect="@EnableMultiLineSelect"
+                         ChildStateChange="SourceLocationsSelected">
+            <Columns>
+                @if (Columns == null)
+                {
+                    <ColumnDefinition TItem="SourceLocation"
+                                      Property="@nameof(SourceLocation.IsActive)"
+                                      Title="Active"
+                                      Width="55px"
+                                      EnableSorting="false"
+                                      CanToggleVisibility="false">
+                        <Template Context="data">
+                            <RadzenSwitch @bind-Value="@data.IsActive"
+                                          class="grid-switch"
+                                          Disabled="true"/>
+                        </Template>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="SourceLocation"
+                                      Property="@nameof(SourceLocation.ProvinceOrState)"
+                                      Title="Province/State"
+                                      Width="10rem"
+                                      ExportAs="@(v => Enum.Parse<StateProvince>(v.ToString()).ToString())"
+                                      PropertyType="typeof(string)"/>
+
+                    <ColumnDefinition TItem="SourceLocation"
+                                      Property="@nameof(SourceLocation.FormattedIdentifier)"
+                                      Title="Source Location">
+                        <Template Context="data">
+                            <span>
+                                <RadzenLink Path="@("/truck-ticketing/source-locations/edit/" + data.Id)"
+                                            Text="@(data.CountryCode == CountryCode.CA ? data.FormattedIdentifier : data.SourceLocationName)"
+                                            class="text-decoration-none"/>
+                            </span>
+                        </Template>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="SourceLocation"
+                                      Property="@nameof(SourceLocation.SourceLocationCode)"
+                                      Title="Source Location Code">
+                        <Template Context="data">
+                            <span>
+                                @(data.AssociatedSourceLocationCode.HasText() ? data.AssociatedSourceLocationCode : data.SourceLocationCode)
+                            </span>
+                        </Template>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="SourceLocation"
+                                      Property="@nameof(SourceLocation.SourceLocationTypeName)"
+                                      Title="Source Location Type"
+                                      PropertyType="typeof(string)"/>
+                    <ColumnDefinition TItem="SourceLocation"
+                                      Property="@nameof(SourceLocation.GeneratorAccountNumber)"
+                                      Title="Generator Account Number"
+                                      PropertyType="typeof(string)"/>
+                    <ColumnDefinition TItem="SourceLocation"
+                                      Property="@nameof(SourceLocation.GeneratorName)"
+                                      Title="Generator Name"
+                                      PropertyType="typeof(string)"/>
+                    <ColumnDefinition TItem="SourceLocation"
+                                      Property="@nameof(SourceLocation.ContractOperatorName)"
+                                      Title="Contract Operator Name"
+                                      PropertyType="typeof(string)"/>
+                    <ColumnDefinition TItem="SourceLocation"
+                                      Property="@nameof(SourceLocation.AssociatedSourceLocationId)"
+                                      Title="Associated Surface Location">
+                        <Template Context="data">
+                            <span>
+                                <RadzenLink Path="@("/truck-ticketing/source-locations/edit/" + data.AssociatedSourceLocationId)"
+                                            Text="@data.AssociatedSourceLocationFormattedIdentifier"
+                                            class="text-decoration-none"/>
+                            </span>
+                        </Template>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="SourceLocation"
+                                      Property="@nameof(SourceLocation.SourceLocationVerified)"
+                                      Title="Verified"
+                                      Width="5rem"
+                                      PropertyType="typeof(bool)">
+                        <Template Context="data">
+                            @(data.SourceLocationVerified ? "Yes" : "No")
+                        </Template>
+                    </ColumnDefinition>
+                }
+                else
+                {
+                    @Columns
+                }
+            </Columns>
+        </PagableGridView>
+    </div>
+    <div class="sticky-footer">
+        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                      Text="Re-Assign Source Location(s)"
+                      Disabled="@(_disableSourceLocationReassignment || !IsAuthorizedFor(Permissions.Resources.SourceLocationOwnershipInfoBulk, Permissions.Operations.Write))"
+                      Click="@(args => ReassignSourceLocations())"/>
+    </div>
+</div>

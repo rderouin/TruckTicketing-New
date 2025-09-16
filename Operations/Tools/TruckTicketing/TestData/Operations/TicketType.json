@@ -1,0 +1,25 @@
+[
+    {
+      "Id": "720e8b2b-41e7-4562-baab-d701a0c9dde0",
+      "DocumentType": "TicketTypeEntity",
+      "EntityType": "TicketType",
+      "TicketTypeCode": "LF",
+      "TicketTypeName": "Scale Tickets",
+      "id": "TicketType|720e8b2b-41e7-4562-baab-d701a0c9dde0"
+    },
+    {
+      "Id": "f4c4695b-7350-4250-8315-5c7c8e1e6efd",
+      "DocumentType": "TicketTypeEntity",
+      "EntityType": "TicketType",
+      "TicketTypeCode": "WT",
+      "TicketTypeName": "Work Tickets",
+      "id": "TicketType|f4c4695b-7350-4250-8315-5c7c8e1e6efd"
+    },
+    {
+      "Id": "61e13228-30da-4e99-bc6b-32418af628ff",
+      "DocumentType": "TicketTypeEntity",
+      "EntityType": "TicketType",
+      "TicketTypeCode": "SP",
+      "TicketTypeName": "Spartan Tickets",
+      "id": "TicketType|61e13228-30da-4e99-bc6b-32418af628ff"
+    }]

@@ -1,0 +1,7 @@
+﻿@using SE.TruckTicketing.Client.Pages.Accounts
+@inherits BaseRazorComponent
+
+<CascadingValue Value="@AccountType">
+    <NewAccountPage AddAccount="@OnAddAccount"
+					CloseDialog="@IsDialogClose"></NewAccountPage>
+</CascadingValue>

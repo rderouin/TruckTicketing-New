@@ -1,0 +1,19 @@
+@using Trident.UI.Blazor.Models
+@using SE.TruckTicketing.Client.Configuration.Navigation
+<CascadingValue TValue="Task<AuthenticationState>"
+                Value="@_currentAuthenticationStateTask"
+                Name="authenticationStateTask">
+    <CascadingValue TValue="ApplicationContext"
+                    Value="@ApplicationContext"
+                    Name="Application">
+        <CascadingValue TValue="UserNavigationContext"
+                        Value="@UserNavigationContext"
+                        Name="UserNavigationContext">
+            <CascadingValue TValue="NavigationHistoryManager"
+                            Value="@NavigationHistoryManager"
+                            Name="NavigationHistoryManager">
+                @ChildContent
+            </CascadingValue>
+        </CascadingValue>
+    </CascadingValue>
+</CascadingValue>

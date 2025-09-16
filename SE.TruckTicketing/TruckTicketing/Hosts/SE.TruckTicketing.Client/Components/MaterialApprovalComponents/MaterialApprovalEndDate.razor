@@ -1,0 +1,26 @@
+﻿@using SE.Shared.Common.Extensions
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="End Date"
+                             Component="EndDatePicker"
+                             class="required"/>
+
+                <div class="d-flex align-items-center gap-2">
+                    <RadzenDatePicker TValue="DateTimeOffset?"
+                                      Name="EndDatePicker"
+                                      DateFormat="MM/dd/yyyy"
+                                      Class="w-100 flex-grow-1"
+                                      Change="@(args => HandleEndDateChange(args))"
+                                      @bind-Value="@Model.EndDate"/>
+
+                    <RadzenButton ButtonStyle="ButtonStyle.Info"
+                                  Class="flex-grow-0"
+                                  Click="@(() => HandleEndDateChange(DateTimeOffset.UtcNow.ToAlbertaOffset()))"
+                                  Text="TODAY"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

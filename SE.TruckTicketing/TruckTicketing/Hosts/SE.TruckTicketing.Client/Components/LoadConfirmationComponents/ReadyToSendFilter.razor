@@ -1,0 +1,12 @@
+﻿@using Trident.Api.Search
+@inherits FilterComponent<bool>
+
+<div>
+    <RadzenLabel Text="Ready To Send"
+                 Class="filter-label"/>
+    <div class="d-flex position-relative">
+        <RadzenSwitch @bind-value="@_showOnDemandLoadConfirmations" Change="@HandleChange" MouseEnter="@(args => ShowAgedTooltip(args))"/>
+    </div>
+</div>
+
+

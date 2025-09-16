@@ -1,0 +1,108 @@
+[
+    {
+        "Id": "67695bb9-8f33-4252-8704-575074675572",
+        "CountryCode": 1,
+        "DocumentType": "LandfillSamplingRuleEntity",
+        "EntityType": "LandfillSamplingRule",
+        "ProductNumberFilter": "706",
+        "Province": 52,
+        "SamplingRuleType": 1,
+        "Threshold": "20",
+        "WarningThreshold": "16",
+        "WellClassificationFilters": [],
+        "id": "LandfillSamplingRule|67695bb9-8f33-4252-8704-575074675572"
+    },
+    {
+        "Id": "80803931-3212-4eb6-891e-dd10349fa54f",
+        "CountryCode": 1,
+        "DocumentType": "LandfillSamplingRuleEntity",
+        "EntityType": "LandfillSamplingRule",
+        "ProductNumberFilter": "702",
+        "Province": 52,
+        "SamplingRuleType": 1,
+        "Threshold": "5000",
+        "WarningThreshold": "4500",
+        "WellClassificationFilters": [],
+        "id": "LandfillSamplingRule|80803931-3212-4eb6-891e-dd10349fa54f"
+    },
+    {
+        "Id": "20abd210-8f9e-482c-9fff-320e29ca2b8e",
+        "CountryCode": 1,
+        "DocumentType": "LandfillSamplingRuleEntity",
+        "EntityType": "LandfillSamplingRule",
+        "ProductNumberFilter": "701",
+        "Province": 52,
+        "SamplingRuleType": 1,
+        "Threshold": "10000",
+        "WarningThreshold": "9500",
+        "WellClassificationFilters": [],
+        "id": "LandfillSamplingRule|20abd210-8f9e-482c-9fff-320e29ca2b8e"
+    },
+    {
+        "Id": "0d3c5172-1221-4e98-979b-4df58819ad1b",
+        "CountryCode": 1,
+        "DocumentType": "LandfillSamplingRuleEntity",
+        "EntityType": "LandfillSamplingRule",
+        "ProductNumberFilter": null,
+        "Province": 53,
+        "SamplingRuleType": 1,
+        "Threshold": "10000",
+        "WarningThreshold": "9500",
+        "WellClassificationFilters": [],
+        "id": "LandfillSamplingRule|0d3c5172-1221-4e98-979b-4df58819ad1b"
+    },
+    {
+        "Id": "47b45d2c-a99c-4377-99ad-a54959806ecb",
+        "CountryCode": 1,
+        "DocumentType": "LandfillSamplingRuleEntity",
+        "EntityType": "LandfillSamplingRule",
+        "ProductNumberFilter": null,
+        "Province": 54,
+        "SamplingRuleType": 1,
+        "Threshold": "5000",
+        "WarningThreshold": "4500",
+        "WellClassificationFilters": [],
+        "id": "LandfillSamplingRule|47b45d2c-a99c-4377-99ad-a54959806ecb"
+    },
+    {
+        "Id": "20d6219c-4c58-41cf-8263-5e0fa3527f40",
+        "CountryCode": 1,
+        "DocumentType": "LandfillSamplingRuleEntity",
+        "EntityType": "LandfillSamplingRule",
+        "ProductNumberFilter": null,
+        "Province": 54,
+        "SamplingRuleType": 1,
+        "Threshold": "5000",
+        "WarningThreshold": "4500",
+        "WellClassificationFilters": [],
+        "id": "LandfillSamplingRule|20d6219c-4c58-41cf-8263-5e0fa3527f40"
+    },
+    {
+        "Id": "5be26c71-a3bf-4b9f-87ff-1f7f725660bd",
+        "CountryCode": 1,
+        "DocumentType": "LandfillSamplingRuleEntity",
+        "EntityType": "LandfillSamplingRule",
+        "ProductNumberFilter": null,
+        "Province": 63,
+        "SamplingRuleType": 2,
+        "Threshold": "30",
+        "WarningThreshold": "28",
+        "WellClassificationFilters": [],
+        "id": "LandfillSamplingRule|5be26c71-a3bf-4b9f-87ff-1f7f725660bd"
+    },
+    {
+        "Id": "f9c4de22-56a8-4c43-abae-a7a1ec9d395e",
+        "CountryCode": 2,
+        "DocumentType": "LandfillSamplingRuleEntity",
+        "EntityType": "LandfillSamplingRule",
+        "ProductNumberFilter": null,
+        "Province": 0,
+        "SamplingRuleType": 3,
+        "Threshold": "100",
+        "WarningThreshold": "90",
+        "WellClassificationFilters": [
+            "Production"
+        ],
+        "id": "LandfillSamplingRule|f9c4de22-56a8-4c43-abae-a7a1ec9d395e"
+    }
+]

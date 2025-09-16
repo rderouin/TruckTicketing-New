@@ -1,0 +1,163 @@
+﻿@page "/spartan-params"
+@using SE.TruckTicketing.Contracts.Api.Models.SpartanProductParameters
+@using SE.TruckTicketing.Contracts.Constants.SpartanProductParameters
+@using SE.TruckTicketing.Contracts.Models
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Security;
+@inherits BaseTruckTicketingComponent
+
+
+<div class="">
+    <div class="bg-white p-4">
+        <div class="breadcrumb-container">
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+            <h3>Manage Spartan Product Parameters</h3>
+            <div>
+                <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                              Text="Add Spartan Product Parameter"
+                              Disabled="@(!HasWritePermission(Permissions.Resources.SpartanProductParameter))"
+                              Click="() => OpenSpartanProductParameterDetailsDialog()"
+                              Icon="add_outline">
+                </RadzenButton>
+            </div>
+        </div>
+    </div>
+
+    <GridFiltersContainer Expandable="@true"
+                          @ref="_gridFilterContainer"
+                          OnFilterChange="@(async criteria => await _grid.SetExternalSearchCriteriaModel(criteria))">
+        <div class="d-flex flex-grow-1 gap-3">
+            <KeywordFilter Label="Search"
+                           Placeholder="Search by products..."/>
+
+            <DropDownDataGridFilter Label="Legal Entity"
+                                    FilterPath="@nameof(SpartanProductParameter.LegalEntityId)"
+                                    Placeholder="All legal entities"
+                                    TItem="LegalEntity"
+                                    DefaultSortProperty="@nameof(LegalEntity.Name)"
+                                    TextProperty="@nameof(LegalEntity.Name)">
+                <Columns>
+                    <RadzenDropDownDataGridColumn Property="@nameof(LegalEntity.Code)"
+                                                  Title="Legal Entity"
+                                                  Width="50px"/>
+                </Columns>
+            </DropDownDataGridFilter>
+
+            <SelectFilter Label="Fluid Identity"
+                          Placeholder="All fluid identities"
+                          FilterPath="@nameof(SpartanProductParameter.FluidIdentity)"
+                          Data="@(DataDictionary.For<FluidIdentity>(false).SelectOptions())"/>
+
+            <SelectFilter Label="Location Operating Status"
+                          Placeholder="All statuses"
+                          FilterPath="@nameof(SpartanProductParameter.LocationOperatingStatus)"
+                          Data="@(DataDictionary.For<LocationOperatingStatus>(false).SelectOptions())"/>
+        </div>
+
+        <GridFiltersExpandedContainer>
+            <div class="d-flex flex-grow-1 gap-3">
+                <NumberRangeFilter Label="Fluid Density (Min)"
+                                   FilterPath="@nameof(SpartanProductParameter.MinFluidDensity)"/>
+
+                <NumberRangeFilter Label="Fluid Density (Max)"
+                                   FilterPath="@nameof(SpartanProductParameter.MaxFluidDensity)"/>
+
+                <NumberRangeFilter Label="Water Percentage (Min)"
+                                   FilterPath="@nameof(SpartanProductParameter.MinFluidDensity)"/>
+
+                <NumberRangeFilter Label="Water Percentage (Max)"
+                                   FilterPath="@nameof(SpartanProductParameter.MaxFluidDensity)"/>
+            </div>
+        </GridFiltersExpandedContainer>
+    </GridFiltersContainer>
+
+    <div class="p-4 grid-switch-container">
+        <PagableGridView TModel="SpartanProductParameter"
+                         @ref="_grid"
+                         Results="@_results"
+                         class="bs-class"
+                         EnableSearch="false"
+                         EnablePaging="true"
+                         EnableSorting="true"
+                         OnDataLoad="LoadData"
+                         EnableRowExpansion="false"
+                         EnableFilters="false">
+            <Columns>
+                <ColumnDefinition TItem="SpartanProductParameter"
+                                  Property="@nameof(SpartanProductParameter.IsActive)"
+                                  Title="Active"
+                                  Width="55px"
+                                  EnableSorting="false"
+                                  CanToggleVisibility="false">
+                    <Template Context="data">
+                        <RadzenSwitch @bind-Value="@data.IsActive"
+                                      class="grid-switch"
+                                      Change="@(isActive => UpdateIsActiveState(data, isActive))"/>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SpartanProductParameter"
+                                  Property="@nameof(SpartanProductParameter.ProductName)"
+                                  Title="Product Name"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="SpartanProductParameter"
+                                  Property="@nameof(SpartanProductParameter.LegalEntity)"
+                                  Title="Legal Entity"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="SpartanProductParameter"
+                                  Property="@nameof(SpartanProductParameter.FluidIdentity)"
+                                  Title="Fluid Identity"
+                                  PropertyType="typeof(string)"
+                                  Width="245px"/>
+                <ColumnDefinition TItem="SpartanProductParameter"
+                                  Property="@nameof(SpartanProductParameter.MinFluidDensity)"
+                                  Title="Fluid Density (Min)"
+                                  PropertyType="typeof(double)"/>
+                <ColumnDefinition TItem="SpartanProductParameter"
+                                  Property="@nameof(SpartanProductParameter.MaxFluidDensity)"
+                                  Title="Fluid Density (Max)"
+                                  PropertyType="typeof(double)"/>
+                <ColumnDefinition TItem="SpartanProductParameter"
+                                  Property="@nameof(SpartanProductParameter.MinWaterPercentage)"
+                                  Title="Water Percentage (Min)"
+                                  PropertyType="typeof(double)"/>
+                <ColumnDefinition TItem="SpartanProductParameter"
+                                  Property="@nameof(SpartanProductParameter.MaxWaterPercentage)"
+                                  Title="Water Percentage (Max)"
+                                  PropertyType="typeof(double)"/>
+                <ColumnDefinition TItem="SpartanProductParameter"
+                                  Property="@nameof(SpartanProductParameter.LocationOperatingStatus)"
+                                  Title="Location Operating Status"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="SpartanProductParameter"
+                                  Property="@nameof(SpartanProductParameter.ShowDensity)"
+                                  Title="Show Density"
+                                  PropertyType="typeof(string)">
+                    <Template Context="context">
+                        @(context.ShowDensity ? "Yes" : "No")
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SpartanProductParameter"
+                                  Property="@nameof(SpartanProductParameter.Id)"
+                                  Title="Actions"
+                                  Width="7.5rem"
+                                  EnableSorting="false"
+                                  PropertyType="typeof(Guid)">
+                    <Template Context="context">
+                        <RadzenButton Click="() => OpenSpartanProductParameterDetailsDialog(context)"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Small">
+                            Edit
+                        </RadzenButton>
+                        <RadzenButton Click="() => DeleteButton_Click(context)"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small">
+                            Delete
+                        </RadzenButton>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+
+</div>

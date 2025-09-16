@@ -1,0 +1,69 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-bold">Receive Load Summary Report</h4>
+        </div>
+        <div>
+            <RadzenButton Click="@(args => AddApplicantSignatory())"
+                          Text="Additional Recipient"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Size="ButtonSize.Small"
+                          Icon="contact_mail"/>
+        </div>
+    </div>
+    <div class="card-body grid-switch-container">
+        <PagableGridView TModel="LoadSummaryReportRecipient"
+                         Results="@_reportRecipients"
+                         class="bs-class"
+                         EnableSearch="true"
+                         EnablePaging="true"
+                         EnableSorting="true"
+                         EnableRowExpansion="false"
+                         EnableFilters="false"
+                         GridPageSize="10"
+                         OnDataLoad="LoadReportRecipients">
+            <Columns>
+                <ColumnDefinition TItem="LoadSummaryReportRecipient"
+                                  Property="@nameof(LoadSummaryReportRecipient.ReceiveLoadSummary)"
+                                  Title="Enabled"
+                                  PropertyType="typeof(string)"
+                                  Width="4rem"
+                                  EnableSorting="false">
+                    <Template Context="context">
+                        <RadzenSwitch @bind-Value="@context.ReceiveLoadSummary"
+                                      class="grid-switch"
+                                      Change="() => ReceiveLoadSummaryUpdateForReportRecipient(context)" />
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="LoadSummaryReportRecipient"
+                                  Property="@nameof(LoadSummaryReportRecipient.ReportRecipientName)"
+                                  Title="Report Recipient"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="LoadSummaryReportRecipient"
+                                  Property="@nameof(LoadSummaryReportRecipient.AccountName)"
+                                  Title="Account Name"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="LoadSummaryReportRecipient"
+                                  Property="@nameof(LoadSummaryReportRecipient.Email)"
+                                  Title="Email Address"
+                                  PropertyType="typeof(string)"/>
+                
+                <ColumnDefinition TItem="LoadSummaryReportRecipient"
+                                  Property="@nameof(LoadSummaryReportRecipient)"
+                                  Title="Actions"
+                                  Width="4rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="() => DeleteButton_Click(data)"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small">
+                            Delete
+                        </RadzenButton>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

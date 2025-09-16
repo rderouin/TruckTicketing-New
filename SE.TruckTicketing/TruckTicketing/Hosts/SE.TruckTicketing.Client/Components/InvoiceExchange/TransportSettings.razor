@@ -1,0 +1,103 @@
+﻿@using SE.BillingService.Contracts.Api.Enums
+@inherits BaseTruckTicketingComponent
+
+<div class="d-flex ms-2 flex-grow-1">
+    <div class="flex-grow-1">
+        <RadzenLabel Text="Transport Type"></RadzenLabel><br/>
+        <RadzenDropDown TValue="InvoiceDeliveryTransportType"
+                        Data="TransportTypes"
+                        ValueProperty="Key"
+                        TextProperty="Value"
+                        @bind-Value="Config.TransportType"
+                        class="w-100">
+        </RadzenDropDown>
+    </div>
+    @if (Config.TransportType == InvoiceDeliveryTransportType.Http)
+    {
+        <div class="ms-2 flex-grow-1">
+            <RadzenLabel Text="HTTP Verb"></RadzenLabel><br/>
+            <RadzenDropDown TValue="HttpVerb"
+                            Data="HttpVerbs"
+                            ValueProperty="Key"
+                            TextProperty="Value"
+                            @bind-Value="Config.HttpVerb"
+                            class="w-100">
+            </RadzenDropDown>
+        </div>
+    }
+    <div class="ms-2 flex-grow-1">
+        @if (IsPrivateKeySupported)
+        {
+            <RadzenLabel Text="@SecretTitle"></RadzenLabel>
+            <br/>
+            <RadzenTextBox @bind-Value="Config.Certificate"
+                           class="w-100">
+            </RadzenTextBox>
+        }
+    </div>
+</div>
+
+@if (Config.TransportType == InvoiceDeliveryTransportType.Http ||
+     Config.TransportType == InvoiceDeliveryTransportType.Sftp)
+{
+    <div class="flex-grow-1 ms-2 mt-2">
+        <RadzenLabel Text="URI"></RadzenLabel><br/>
+        <RadzenTextBox @bind-Value="Config.DestinationEndpointUri"
+                       class="w-100">
+        </RadzenTextBox>
+    </div>
+}
+
+@if (Config.TransportType == InvoiceDeliveryTransportType.Http)
+{
+    <div class="flex-grow-1 ms-2">
+        <KvpEdit Data="@Config.HttpHeaders"></KvpEdit>
+    </div>
+}
+
+@if (Config.TransportType == InvoiceDeliveryTransportType.Sftp)
+{
+    <div class="d-flex ms-2 flex-grow-1 mt-2">
+        <div class="flex-grow-1">
+            <RadzenLabel Text="Username"></RadzenLabel><br/>
+            <RadzenTextBox @bind-Value="Config.ClientId"
+                           class="w-100">
+            </RadzenTextBox>
+        </div>
+        <div class="ms-2 flex-grow-1">
+            <RadzenLabel Text="Password"></RadzenLabel>
+            <br/>
+            <RadzenPassword @bind-Value="Config.ClientSecret"
+                            class="w-100">
+            </RadzenPassword>
+        </div>
+    </div>
+}
+
+@if (IsAttachmentSettings)
+{
+    <div class="flex-grow-1 ms-2 mt-3">
+        <RadzenLabel Text="Custom Payload"></RadzenLabel><br/>
+        <RadzenSwitch @bind-Value="Config.IsCustomPayload"
+                      class="d-block">
+        </RadzenSwitch>
+    </div>
+
+    @if (Config.IsCustomPayload)
+    {
+        <div class="flex-grow-1 ms-2 mt-2">
+            <RadzenLabel Text="ContentType"></RadzenLabel><br/>
+            <RadzenTextBox @bind-Value="Config.ContentType"
+                           class="w-100">
+            </RadzenTextBox>
+        </div>
+        <div class="flex-grow-1 ms-2 mt-2">
+            <RadzenLabel Text="Payload Template"></RadzenLabel><br/>
+            <RadzenTextArea @bind-Value="Config.PayloadTemplate"
+                            Rows="5"
+                            Placeholder="Add templated payload here..."
+                            class="w-100">
+            </RadzenTextArea>
+        </div>
+    }
+}

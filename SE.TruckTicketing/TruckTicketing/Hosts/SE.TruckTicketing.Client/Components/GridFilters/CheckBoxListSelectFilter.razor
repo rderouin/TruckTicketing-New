@@ -1,0 +1,19 @@
+@using Trident.Api.Search
+@using System.Diagnostics
+@inherits FilterComponent<IEnumerable<TOutputValue>>
+@typeparam TOutputValue
+
+<div class="flex-grow-1">
+    <RadzenLabel Text="@Label"
+                 For="@Id"
+                 Class="filter-label" />
+    <div class="filter-input-container flex gap-2 align-items-center">
+        <RadzenCheckBoxList TValue="TOutputValue"
+                            Name="@Id"
+                            @bind-value="@Value"
+                            Data="@Data"
+                            TextProperty="Display"
+                            ValueProperty="Value"
+                            Change="@HandleChange" />
+    </div>
+</div>

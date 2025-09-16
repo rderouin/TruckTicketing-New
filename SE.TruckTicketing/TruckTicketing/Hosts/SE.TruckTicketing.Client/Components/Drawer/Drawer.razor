@@ -1,0 +1,6 @@
+@inherits BaseDrawerComponent
+
+<aside class="@(Open ? "open" : "")"
+       style="width: @(Open ? OpenSize + "rem" : "4.25rem");">
+    @ChildContent
+</aside>

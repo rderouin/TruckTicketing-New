@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="Services\**"/>
+        <EmbeddedResource Remove="Services\**"/>
+        <None Remove="Services\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="..\..\Solution Items\GlobalAssembly.cs" Link="Properties\GlobalAssembly.cs"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Trident.IoC\Trident.IoC.csproj"/>
+    </ItemGroup>
+
+</Project>

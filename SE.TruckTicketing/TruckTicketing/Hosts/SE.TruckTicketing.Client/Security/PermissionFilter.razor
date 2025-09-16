@@ -1,0 +1,16 @@
+﻿@using SE.TruckTicketing.Client.Components.GridFilters
+@using Trident.Api.Search
+@using System.Diagnostics
+@inherits FilterComponent<IEnumerable<Guid>>
+
+<div class="flex-grow-1">
+    <RadzenLabel Text="@Label"
+                 For="@Id"
+                 Class="filter-label" />
+    <div class="filter-input-container flex gap-2 align-items-center">
+        <RadzenDropDown @bind-Value=@SelectedValues Data=@Data TextProperty="Display" Class="flex-grow-1"
+                        ValueProperty="Value"
+                        Multiple=true AllowClear=true Placeholder="All permissions"
+                        Change="@HandleChange"/>
+    </div>
+</div>

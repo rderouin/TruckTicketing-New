@@ -1,0 +1,20 @@
+﻿@inherits DropDownFilter
+@typeparam TOutputValue
+
+<h6 class="small-grey-label col-sm-12 mb-2" style="font-weight:bold">
+    @FilterOptions.Label
+</h6>
+<div class="form-group col-sm-12">
+    <RadzenDropDown @bind-Value="@bindValue" 
+                    Data=@ListData 
+                    TextProperty="Display" 
+                    Change="OnSelectionChanged" 
+                    ValueProperty="Value"
+                    AllowFiltering="@FilterOptions.AllowFiltering"
+                    Multiple="@FilterOptions.IsMultiSelect"
+                    Placeholder="Select...."
+                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                    Class="w-100"/>
+
+   
+</div>

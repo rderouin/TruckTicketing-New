@@ -1,0 +1,88 @@
+﻿@using SE.TruckTicketing.Contracts.Security
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseTruckTicketingComponent
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-bold">Add Signator(ies)</h4>
+        </div>
+        <div>
+            <RadzenButton Click="@(args => AddSignatoryContact())"
+                          Text="Add Signator(ies)"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Size="ButtonSize.Small"
+                          Disabled="@(!HasWritePermission(Permissions.Resources.Account))"
+                          Icon="contact_mail"/>
+        </div>
+    </div>
+    <div class="card-body grid-switch-container">
+        <PagableGridView TModel="SignatoryContact"
+                         Results="@_signatoryContacts"
+                         class="bs-class"
+                         EnableSearch="false"
+                         EnablePaging="false"
+                         EnableSorting="true"
+                         EnableRowExpansion="false"
+                         EnableFilters="false"
+                         OnDataLoad="LoadSignatoryContacts">
+            <Columns>
+                <ColumnDefinition TItem="SignatoryContact"
+                                  Property="@nameof(SignatoryContact.IsAuthorized)"
+                                  Title="Authorized"
+                                  PropertyType="typeof(string)"
+                                  Width="5rem"
+                                  EnableSorting="false">
+                    <Template Context="context">
+                        <RadzenSwitch @bind-Value="@context.IsAuthorized"
+                                      class="grid-switch"
+                                      Change="() => AuthorizeSignatory(context)"/>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SignatoryContact"
+                                  Property="@nameof(SignatoryContact.FirstName)"
+                                  Title="First Name"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SignatoryContact"
+                                  Property="@nameof(SignatoryContact.LastName)"
+                                  Title="Last Name"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SignatoryContact"
+                                  Property="@nameof(SignatoryContact.Email)"
+                                  Title="Email"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SignatoryContact"
+                                  Property="@nameof(SignatoryContact.PhoneNumber)"
+                                  Title="Phone Number"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SignatoryContact"
+                                  Property="@nameof(SignatoryContact.Address)"
+                                  Title="Address"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SignatoryContact"
+                                  Property="@nameof(SignatoryContact.ReferenceId)"
+                                  Title="Reference ID"
+                                  Width="6rem"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="SignatoryContact"
+                                  Property="@nameof(EmailDeliveryContact)"
+                                  Title="Actions"
+                                  Width="4rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="() => DeleteButton_Click(data)"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small">
+                            Delete
+                        </RadzenButton>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

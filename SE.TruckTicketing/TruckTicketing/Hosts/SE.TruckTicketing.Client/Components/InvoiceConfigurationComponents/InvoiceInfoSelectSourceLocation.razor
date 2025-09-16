@@ -1,0 +1,13 @@
+﻿@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@inherits BaseRazorComponent
+
+
+<SourceLocationDropDown id="SourceLocationDropDown"
+                        TValue="Guid?"
+                        Placeholder="Select source location"
+                        @bind-Value="@_selectedSourceLocation"
+                        ValueProperty="@nameof(SourceLocation.Id)"
+                        PageSize="10"
+                        class="w-100"
+                        OnItemSelect="@HandleSourceLocationSelection"
+                        OnDataLoading="@HandleSourceLocationLoading"/>

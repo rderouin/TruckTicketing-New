@@ -1,0 +1,134 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<RadzenTemplateForm TItem="AccountAddress"
+                    Submit="@HandleSubmit"
+                    Data="@AccountAddress"
+                    @ref="ReferenceToForm">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Street"
+                                 Component="AccountAddressStreetTextBox"
+                                 class="required"/>
+                    <RadzenTextBox id="AccountAddressStreetTextBox"
+                                   Name="AccountAddressStreetTextBox"
+                                   @bind-Value="@AccountAddress.Street"
+                                   class="w-100"
+                                   Change="@OnChange"/>
+                    <RadzenRequiredValidator Component="AccountAddressStreetTextBox"
+                                             Text="Required"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="City"
+                                 Component="AccountAddressCityTextBox"
+                                 class="required"/>
+                    <RadzenTextBox id="AccountAddressCityTextBox"
+                                   Name="AccountAddressCityTextBox"
+                                   @bind-Value="@AccountAddress.City"
+                                   class="w-100"
+                                   Change="@OnChange"/>
+                    <RadzenRequiredValidator Component="AccountAddressCityTextBox"
+                                             Text="Required"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-6 d-flex flex-column">
+                    <RadzenLabel Text="Country"
+                                 Component="AccountAddressCountryDropDown"
+                                 class="required"/>
+                    <RadzenDropDown TValue="CountryCode"
+                                    id="AccountAddressCountryDropDown"
+                                    Name="AccountAddressCountryDropDown"
+                                    @bind-Value="@SelectedCountry"
+                                    TextProperty="Value"
+                                    ValueProperty="Key"
+                                    Placeholder="Select Country..."
+                                    Multiple="false"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    Data="@(DataDictionary.For<CountryCode>())"
+                                    class="w-100"/>
+                    <RadzenRequiredValidator Component="AccountAddressCountryDropDown"
+                                             DefaultValue="CountryCode.Undefined"
+                                             Text="Required"/>
+                </div>
+                <div class="col-6 d-flex flex-column">
+                    <RadzenLabel Text="@StateProvinceLabel"
+                                 Component="AccountStateProvinceDropDown"
+                                 class="required"/>
+                    <RadzenDropDown TValue="StateProvince"
+                                    AllowClear="true"
+                                    AllowFiltering="true"
+                                    id="AccountStateProvinceDropDown"
+                                    Name="AccountStateProvinceDropDown"
+                                    @bind-Value="@AccountAddress.Province"
+                                    TextProperty="Value"
+                                    ValueProperty="Key"
+                                    Placeholder="@StateProvincePlaceHolder"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    Multiple="false"
+                                    Data="@(StateProviceData)"
+                                    class="w-100"
+                                    Change="@OnChange"/>
+                    <RadzenRequiredValidator Component="AccountStateProvinceDropDown"
+                                             DefaultValue="StateProvince.Unspecified"
+                                             Text="Required"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="@ZipPostalCodeLabel"
+                                 Component="AccountAddressZipTextBox"
+                                 class="required"/>
+                    <RadzenMask id="AccountAddressZipTextBox"
+                                Name="AccountAddressZipTextBox"
+                                Mask="@PostalCodeMask"
+                                CharacterPattern="@PostalCodePattern"
+                                @bind-Value="@AccountAddress.ZipCode"
+                                class="w-100"
+                                Change="@OnChange"/>
+                    <RadzenRequiredValidator Component="AccountAddressZipTextBox"
+                                             Text="Required"/>
+                    @if (AccountAddress.Country == CountryCode.CA)
+                    {
+                        <RadzenRegexValidator Component="AccountAddressZipTextBox"
+                                              Text="Enter Canadian postal code in valid format"
+                                              Pattern="^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d"/>
+                    }
+                    else
+                    {
+                        <RadzenRegexValidator Component="AccountAddressZipTextBox"
+                                              Text="Enter US postal code in valid format"
+                                              Pattern="^\d{5}(?:[-\s]\d{4})?$"/>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex gap-2 align-items-center">
+            <RadzenLabel Text="Set As Default"
+                         Component="IsDefaultAddressSwitch"
+                         class="m-0"/>
+            <RadzenSwitch id="IsDefaultAddressSwitch"
+                          @bind-Value="AccountAddress.IsPrimaryAddress"/>
+        </div>
+        <div class="col d-flex justify-content-end">
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          Click="HandleCancel"/>
+
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Save"
+                          Disabled="@(IsSaveEnabled || !HasWritePermission(Permissions.Resources.Account))"
+                          class="ml-2"/>
+        </div>
+    </div>
+</RadzenTemplateForm>

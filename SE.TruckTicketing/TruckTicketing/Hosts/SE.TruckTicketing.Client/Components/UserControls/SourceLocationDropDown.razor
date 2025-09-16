@@ -1,0 +1,67 @@
+@typeparam TValue
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@inherits TridentApiDropDownDataGrid<SE.TruckTicketing.Contracts.Models.SourceLocations.SourceLocation, TValue>
+
+<style>
+    .loading-dp::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      margin-top: -10px;
+      margin-left: -10px;
+      border: 2px solid #333;
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 0.5s linear infinite;
+    }
+    
+    /* Keyframes for the spinning animation */
+    @@keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+</style>
+
+<RadzenDropDownDataGrid id="@Id"
+                        class="@(ClassNames(Class, ("loading-dp", IsLoading)))"
+                        @ref="DropDownDataGrid"
+                        TValue="TValue"
+                        LoadData="@OnLoadData"
+                        AllowFiltering="@AllowFiltering"
+                        AllowClear="@AllowClear"
+                        AllowSorting="true"
+                        Placeholder="@Placeholder"
+                        PageSize="@PageSize"
+                        Change="@Change"
+                        ShowPagingSummary="@true"
+                        @bind-Value="@Value"
+                        Data="@Data"
+                        Count="@Count"
+                        Responsive="@true"
+                        Disabled="@Disabled"
+                        TextProperty="@DisplayProperty"
+                        ValueProperty="@ValueProperty"
+                        Name="@Name"
+                        AllowColumnResize=true>
+    <Columns>
+        <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.Display)"
+                                      Title="Source Location"
+                                      Width="60px"/>
+        
+        <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.SourceLocationTypeName)"
+                                      Title="Type"
+                                      Width="30px" />
+
+        <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.GeneratorName)"
+                                      Title="Generator"
+                                      Width="60px"/>
+    </Columns>
+</RadzenDropDownDataGrid>

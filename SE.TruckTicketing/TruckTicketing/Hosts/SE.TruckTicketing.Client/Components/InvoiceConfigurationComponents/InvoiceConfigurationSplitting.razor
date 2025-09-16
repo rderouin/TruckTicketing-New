@@ -1,0 +1,111 @@
+﻿@using SE.Shared.Common.Lookups
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseTruckTicketingComponent
+
+<EditForm EditContext="@_editContext">
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4 class="fw-bold">Splitting</h4>
+            <p>Select which category(ies) you'd like to create separate invoices for.</p>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Categories"
+                        Component="CategoriesCheckBoxList" 
+                        class="mb-3"/>
+                    
+                    <div class="d-flex flex-row align-items-center gap-2">
+
+                        <RadzenCheckBoxList TValue="InvoiceSplittingCategories"
+                                            id="CategoriesCheckBoxList"
+                                            Name="AccountTypeCheckBoxList"
+                                            @bind-Value="@SplittingCategories"
+                                            Orientation="Orientation.Horizontal">
+                            <Items>
+                                <RadzenCheckBoxListItem Text="Source Location" 
+                                                        Value="InvoiceSplittingCategories.SourceLocation"/>
+                                <RadzenCheckBoxListItem Text="Service Type" 
+                                                        Value="InvoiceSplittingCategories.ServiceType"/>
+                                <RadzenCheckBoxListItem Text="Well Classification" 
+                                                        Value="InvoiceSplittingCategories.WellClassification"/>
+                                <RadzenCheckBoxListItem Text="Substance" 
+                                                        Value="InvoiceSplittingCategories.Substance"/>
+                                <RadzenCheckBoxListItem Text="Facility" 
+                                                        Value="InvoiceSplittingCategories.Facility" 
+                                                        Disabled="true"/>
+                            </Items>
+                        </RadzenCheckBoxList>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="EDI Fields"
+                                 Component="EdiFieldBoxList"
+                                 class="mb-3"/>
+
+                    <TridentApiListBox @ref="_ediFieldsListBox"
+                                       id="EdiFieldBoxList"
+                                       TModel="EDIFieldDefinition"
+                                       TValue="Guid"
+                                       Placeholder="Select EDI field..."
+                                       @bind-Value="@EdiFields"
+                                       TextProperty="@nameof(EDIFieldDefinition.EDIFieldName)"
+                                       ValueProperty="@nameof(EDIFieldDefinition.Id)"
+                                       PageSize="10"
+                                       OnDataLoading="BeforeLoadingEdiFields"
+                                       OnItemSelect="@OnEDIFieldSelect"
+                                       Style="height: 12.5rem"
+                                       Class="w-100"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Enable Maximum $ Value Threshold"
+                                 Component="MaximumDollarValueThresholdSwitch"
+                                 class="mb-3"/>
+                    <div class="d-flex row align-items-center gap-2">
+                        <div class="col d-flex flex-column">
+                            <RadzenCheckBox id="MaximumDollarValueThresholdSwitch"
+                                            @bind-Value="@InvoiceConfiguration.IsMaximumDollarValueThresholdEnabled"
+                                            Name="MaximumDollarValueThresholdSwitch" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Enable Maximum Tickets Threshold"
+                                 Component="MaximumTicketsThresholdSwitch"
+                                 class="mb-3"/>
+                    <div class="d-flex row align-items-center gap-2">
+                        <div class="col d-flex flex-column">
+                            <RadzenCheckBox id="MaximumTicketsThresholdSwitch"
+                                            @bind-Value="@InvoiceConfiguration.IsMaximumTicketsThresholdEnabled"
+                                            Name="MaximumTicketsThresholdSwitch" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    @if (InvoiceConfiguration.IsMaximumDollarValueThresholdEnabled)
+                    {
+                            <RadzenNumeric TValue="double?"
+                                       Format="c"
+                                       @bind-Value="@InvoiceConfiguration.ThresholdDollarValue"
+                                       Placeholder="Enter maximum invoice value"/>
+                    }
+                </div>
+                <div class="col d-flex flex-column">
+                    @if (InvoiceConfiguration.IsMaximumTicketsThresholdEnabled)
+                    {
+                            <RadzenNumeric TValue="int?"
+                                           @bind-Value="@InvoiceConfiguration.ThresholdTicketCount"
+                                           Placeholder="Enter maximum ticket count"/>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>

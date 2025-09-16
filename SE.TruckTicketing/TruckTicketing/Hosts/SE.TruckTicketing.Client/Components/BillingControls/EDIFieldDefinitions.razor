@@ -1,0 +1,96 @@
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+@namespace SE.TruckTicketing.Client.Components.BillingControls
+
+<div class="">
+    <div class="bg-white p-4">
+        <div class="breadcrumb-container">
+            EDI FIELDS
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+            <h3>Manage EDI Field Definitions</h3>
+            <div>
+                <RadzenButton ButtonStyle="ButtonStyle.Primary" Text="Add EDI Field Definition" Click="() => AddEdiFieldsButton_Click()" Icon="add_outline"></RadzenButton>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12">
+
+    
+        <PagableGridView @ref="grid"
+                         TModel="EDIFieldDefinition"
+                         Results="@_EDIFieldDefinitionsList"
+                         EnablePaging="true"
+                         EnableSorting="true"
+                         OnDataLoad="@LoadEDIFieldDefinitionsData"
+                         EnableFilters="false"
+                         EnableSearch="false"
+                         IsLoading="@IsGridLoading">
+            <Columns>
+                <ColumnDefinition TItem="EDIFieldDefinition"
+                                  Property="@nameof(EDIFieldDefinition.EDIFieldName)"
+                                  Title="Field"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="EDIFieldDefinition"
+                                  Property="@nameof(EDIFieldDefinition.IsRequired)"
+                              Title="EDI Required"
+                                  PropertyType="typeof(bool)">
+                    <Template Context="context">
+                        <RadzenCheckBox @bind-Value="@context.IsRequired"
+                                        TValue="bool"
+                                        Disabled="true">
+                        </RadzenCheckBox>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="EDIFieldDefinition"
+                                  Property="@nameof(EDIFieldDefinition.IsPrinted)"
+                                  Title="Print on Invoice"
+                                  PropertyType="typeof(string)">
+                    <Template Context="context">
+                        <RadzenCheckBox @bind-Value="@context.IsPrinted"
+                                        TValue="bool"
+                                        Disabled="true">
+                        </RadzenCheckBox>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="EDIFieldDefinition"
+                                  Property="@nameof(EDIFieldDefinition.ValidationRequired)"
+                                  Title="Validation"
+                                  PropertyType="typeof(bool)">
+                    <Template Context="context">
+                        <RadzenCheckBox @bind-Value="@context.ValidationRequired"
+                                        TValue="bool"
+                                        Disabled="true">
+                        </RadzenCheckBox>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="EDIFieldDefinition"
+                                  Property="@nameof(EDIFieldDefinition.ValidationPattern)"
+                                  Title="Pattern"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="EDIFieldDefinition"
+                                  Property="@nameof(EDIFieldDefinition.DefaultValue)"
+                                  Title="Hint"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="EDIFieldDefinition"
+                                  Property="@nameof(EDIFieldDefinition.Id)"
+                                  Title="Actions"
+                                  Width="245px">
+                    <Template Context="data">
+                        <RadzenButton Click="() => EditButton_Click(data)"
+                                      ButtonType="ButtonType.Button"
+                                      Text="Edit">
+                        </RadzenButton>
+                        <RadzenButton Click="() => DeleteButton_Click(data)"
+                                      ButtonType="ButtonType.Button"
+                                      Text="Delete">
+                        </RadzenButton>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+
+
+</div>

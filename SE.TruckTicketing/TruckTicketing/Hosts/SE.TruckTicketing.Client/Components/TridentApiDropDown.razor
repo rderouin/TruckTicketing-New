@@ -1,0 +1,50 @@
+﻿@typeparam TModel
+@typeparam TValue    
+
+@inherits BaseTruckTicketingComponent
+@if (Template is null)
+{
+    <RadzenDropDown @ref="DropDown"
+                    id="@Id"
+                    Name="@Name"
+                    TValue="TValue"
+                    AllowClear="@AllowClear"
+                    Disabled="@(Disabled || IsLoading)"
+                    AllowVirtualization="true"
+                    LoadData="@OnLoadData"
+                    Placeholder="@Placeholder"
+                    AllowFiltering="true"
+                    Count="@(Results?.Info?.TotalRecords ?? 0)"
+                    Data="@Results?.Results"
+                    TextProperty="@TextProperty"
+                    ValueProperty="@ValueProperty"
+                    Change="@Change"
+                    PageSize="@PageSize"
+                    @bind-Value="@Value"
+                    class="@Class"/>
+}
+else
+{
+    <RadzenDropDown @ref="DropDown"
+                    id="@Id"
+                    Name="@Name"
+                    TValue="TValue"
+                    AllowClear="@AllowClear"
+                    Disabled="@(Disabled || IsLoading)"
+                    AllowVirtualization="true"
+                    LoadData="@OnLoadData"
+                    Placeholder="@Placeholder"
+                    AllowFiltering="true"
+                    Count="@(Results?.Info?.TotalRecords ?? 0)"
+                    Data="@Results?.Results"
+                    TextProperty="@TextProperty"
+                    ValueProperty="@ValueProperty"
+                    Change="@Change"
+                    PageSize="@PageSize"
+                    @bind-Value="@Value"
+                    class="@Class">
+        <Template Context="context">
+            @Template((TModel)context)
+        </Template>
+    </RadzenDropDown>
+}

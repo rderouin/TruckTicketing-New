@@ -1,0 +1,120 @@
+﻿@using SE.TruckTicketing.Contracts.Lookups
+@using SE.Shared.Common.Utilities
+@inherits BaseTruckTicketingComponent
+
+<RadzenTemplateForm TItem="WeightConversionCalculatorViewModel"
+                    Data="@ViewModel"
+                    Submit="@HandleSubmit"
+                    id="@FormId">
+    <div class="row mb-3">
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Gross Weight (T)"
+                         Component="GrossWeightNumeric"
+                         class="required"/>
+            <TridentNumeric id="GrossWeightNumeric"
+                            Name="GrossWeightNumeric"
+                            TValue="double?"
+                            MaxDecimalPlaces="2"
+                            Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                            @bind-Value="@ViewModel.GrossWeight"/>
+            <RadzenRequiredValidator Component="GrossWeightNumeric"
+                                     Text="Gross Weight is required"
+                                     class="mt-1 text-danger validation-message"/>
+            <RadzenNumericRangeValidator Component="GrossWeightNumeric"
+                                         Min="0"
+                                         Text="Gross Weight should be positive"
+                                         class="mt-1 text-danger validation-message"/>
+        </div>
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Tare Weight (T)"
+                         Component="TareWeightNumeric"
+                         class="required"/>
+            <TridentNumeric id="TareWeightNumeric"
+                            Name="TareWeightNumeric"
+                            ShowUpDown="false"
+                            TValue="double?"
+                            MaxDecimalPlaces="2"
+                            Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                            @bind-Value="@ViewModel.TareWeight"/>
+            <RadzenRequiredValidator Component="TareWeightNumeric"
+                                     Text="Tare Weight is required"
+                                     class="mt-1 text-danger validation-message"/>
+            <RadzenNumericRangeValidator Component="TareWeightNumeric"
+                                         Min="0"
+                                         Text="Tare Weight should be positive"
+                                         class="mt-1 text-danger validation-message"/>
+            <RadzenNumericRangeValidator Component="TareWeightNumeric"
+                                         Max="@(ViewModel.GrossWeight ?? double.MaxValue)"
+                                         Text="Tare Weight must be less than Gross Weight"
+                                         class="mt-1 text-danger validation-message"/>
+        </div>
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Net Weight (T)"
+                         Component="NetWeight"/>
+            <RadzenNumeric id="NetWeight"
+                           Name="NetWeight"
+                           Format="N2"
+                           Value="@ViewModel.NetWeight"
+                           TValue="double?"
+                           ShowUpDown="false"
+                           Disabled="true"/>
+        </div>
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="Load Entry Method"
+                         Component="EntryMethodDropdown"
+                         class="m-0"/>
+            <RadzenRadioButtonList TValue="CutEntryMethod"
+                                   Class="w-100"
+                                   Id="EntryMethodDropdown"
+                                   @bind-Value="@ViewModel.CutEntryMethod"
+                                   TextProperty="Value"
+                                   ValueProperty="Key"
+                                   Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                                   Data="@(DataDictionary.For<CutEntryMethod>(false))"/>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col d-flex flex-column">
+            <CutPercentages ViewModel="@ViewModel"
+                            TCutParameters="WeightConversionCalculatorViewModel.Parameters"
+                            OnParameterChange="@HandleCutParameterChange"/>
+        </div>
+
+        <div class="col d-flex flex-column">
+            <Weights ViewModel="@ViewModel"
+                     Title="Weights (Tonnes)"
+                     TCutParameters="WeightConversionCalculatorViewModel.Parameters"
+                     OnParameterChange="@HandleCutParameterChange"/>
+        </div>
+
+        <div class="col d-flex flex-column">
+            <ConversionFactors ViewModel="@ViewModel"
+                               TCutParameters="WeightConversionCalculatorViewModel.Parameters"
+                               OnParameterChange="@HandleCutParameterChange"/>
+        </div>
+
+        <div class="col d-flex flex-column">
+            <AdjustedVolumes ViewModel="@ViewModel"
+                             TCutParameters="WeightConversionCalculatorViewModel.Parameters"/>
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="row mt-4">
+        <div class="col d-flex justify-content-end gap-2">
+            <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                          Text="Reset to Default"
+                          Disabled="@(!ViewModel.IsDensityFactorsOverridden || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                          Click="ResetDensityFactorToDefault"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"
+                          Click="@(() => HandleSubmit(ViewModel))"
+                          Text="Update Cuts"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          Click="OnCancel"/>
+        </div>
+    </div>
+</RadzenTemplateForm>

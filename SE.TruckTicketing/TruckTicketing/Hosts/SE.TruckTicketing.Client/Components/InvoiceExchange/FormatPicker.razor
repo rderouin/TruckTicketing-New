@@ -1,0 +1,24 @@
+﻿@inherits BaseTruckTicketingComponent
+
+<RadzenLabel Text="Format"></RadzenLabel><br/>
+<RadzenDropDown TValue="Guid?"
+                Data="FormatsSource"
+                ValueProperty="Id"
+                TextProperty="Name"
+                @bind-Value="Model.DestinationFormatId"
+                AllowClear="@true"
+                AllowFiltering="@true"
+                Placeholder="(none)"
+                class="w-100">
+</RadzenDropDown>
+
+@if (ShowConstantField)
+{
+    <div class="pt-1">
+        <RadzenLabel Text="Constant"></RadzenLabel>
+        <br/>
+        <RadzenTextBox @bind-Value="Model.DestinationConstantValue"
+                       class="w-100">
+        </RadzenTextBox>
+    </div>
+}

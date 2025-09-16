@@ -1,0 +1,80 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+
+<EditForm Model="@signatoryModel"
+          OnValidSubmit="@HandleSubmit">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Signatory Contact"
+                                 Component="SignatoryContactDropdown"/>
+                    <RadzenDropDown Class="w-100"
+                                    id="SignatoryContactDropdown"
+                                    @bind-Value="signatoryModel.AccountContactId"
+                                    TextProperty="@nameof(AccountContact.Name)"
+                                    ValueProperty="@nameof(AccountContact.Id)"
+                                    Data="@AccountContacts"
+                                    Change="@(args => OnChange(args))">
+                        <Template Context="data">
+                            @GetAccount(data)
+                        </Template>
+                    </RadzenDropDown>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Contact Name"
+                                 Component="FirstNameTextBox"/>
+                    <RadzenTextBox id="FirstNameTextBox"
+                                   @bind-Value="@signatoryModel.ContactName"
+                                   class="w-100"
+                                   Disabled="true"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Phone Number"
+                                 Component="PhoneNumberTextBox"/>
+                    <RadzenTextBox id="PhoneNumberTextBox"
+                                   @bind-Value="@signatoryModel.ContactPhoneNumber"
+                                   class="w-100"
+                                   Disabled="true"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Address"
+                                 Component="AddressTextBox"/>
+                    <RadzenTextBox id="AddressTextBox"
+                                   @bind-Value="@signatoryModel.ContactAddress"
+                                   class="w-100"
+                                   Disabled="true"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Email"
+                                 Component="EmailTextBox"/>
+                    <RadzenTextBox id="EmailTextBox"
+                                   @bind-Value="@signatoryModel.ContactEmail"
+                                   class="w-100"
+                                   Disabled="true"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end">
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          Click="HandleCancel"/>
+
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Save"
+                          Disabled="_isSaveDisabled"
+                          class="ml-2"/>
+        </div>
+    </div>
+</EditForm>

@@ -1,0 +1,32 @@
+﻿@typeparam TValue
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits TridentApiDropDownDataGrid<SE.TruckTicketing.Contracts.Models.Operations.Facility, TValue>
+
+<RadzenDropDownDataGrid id="@Id"
+                        class="@Class"
+                        @ref="DropDownDataGrid"
+                        TValue="TValue"
+                        LoadData="@OnLoadData"
+                        AllowFiltering="@AllowFiltering"
+                        AllowClear="@AllowClear"
+                        AllowSorting="true"
+                        Placeholder="@Placeholder"
+                        PageSize="@PageSize"
+                        ShowPagingSummary="@true"
+                        Change="@Change"
+                        @bind-Value="@Value"
+                        Data="@Data"
+                        Count="@Count"
+                        Responsive="@true"
+                        Disabled="@Disabled"
+                        TextProperty="@TextProperty"
+                        ValueProperty="@ValueProperty">
+    <Columns>
+        <RadzenDropDownDataGridColumn Property="@nameof(Facility.SiteId)"
+                                      Title="Site Id"
+                                      Width="50px"/>
+        <RadzenDropDownDataGridColumn Property="@nameof(Facility.Name)"
+                                      Title="Name"
+                                      Width="100px"/>
+    </Columns>
+</RadzenDropDownDataGrid>

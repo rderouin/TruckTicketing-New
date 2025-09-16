@@ -1,0 +1,16 @@
+[
+  {
+    "Id": "4553863c-9b4f-4b52-bb64-2f126ae597d2",
+    "DocumentType": "Substances",
+    "EntityType": "Substance",
+    "SubstanceName": "Contaminated Debris and Soil (chem/solvent)",
+    "WasteCode": "SOILCH"
+  },
+  {
+    "Id": "c076be84-c3e1-4545-999c-2897fe9f51ea",
+    "DocumentType": "Substances",
+    "EntityType": "Substance",
+    "SubstanceName": "Sludge - Emulsion",
+    "WasteCode": "SLGEML"
+  }
+]

@@ -1,0 +1,69 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex gap-2 align-items-start">
+            <h3 class="fw-bold">Additional Services</h3>
+            <RadzenSwitch id="AdditionalServicesEnabled"
+                          @bind-Value="@model.AdditionalServicesEnabled"/>
+        </div>
+        <div class="d-flex gap-2 align-items-end">
+            <RadzenButton Click="@(args => AddAdditionalService())"
+                          Text="Add Additional Service"
+                          ButtonStyle="ButtonStyle.Primary"
+                          Size="ButtonSize.Medium"/>
+        </div>
+    </div>
+    <div class="card-body grid-switch-container">
+        <PagableGridView TModel="TruckTicketAdditionalService"
+                         Results="@_additionalServices"
+                         class="bs-class"
+                         EnableSearch="false"
+                         EnablePaging="false"
+                         EnableSorting="true"
+                         OnDataLoad="LoadAdditionalServices"
+                         EnableRowExpansion="false"
+                         EnableFilters="false">
+            <Columns>
+                <ColumnDefinition TItem="TruckTicketAdditionalService"
+                                  Property="@nameof(TruckTicketAdditionalService.IsPrimarySalesLine)"
+                                  Title="$0 Primary Sales Line"
+                                  PropertyType="typeof(string)"
+                                  Width="4rem"
+                                  EnableSorting="false">
+                    <Template Context="context">
+                        <RadzenSwitch @bind-Value="@context.IsPrimarySalesLine"
+                                      class="grid-switch"/>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="TruckTicketAdditionalService"
+                                  Property="@nameof(TruckTicketAdditionalService.AdditionalServiceName)"
+                                  Title="Service Name"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="TruckTicketAdditionalService"
+                                  Property="@nameof(TruckTicketAdditionalService.AdditionalServiceNumber)"
+                                  Title="Service Number"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="TruckTicketAdditionalService"
+                                  Property="@nameof(TruckTicketAdditionalService.AdditionalServiceQuantity)"
+                                  Title="Quantity"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="TruckTicketAdditionalService"
+                                  Property="@nameof(TruckTicketAdditionalService)"
+                                  Title="Actions"
+                                  Width="4rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="() => OpenEditDialog(data, false)"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Small"
+                                      Text="Edit"/>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

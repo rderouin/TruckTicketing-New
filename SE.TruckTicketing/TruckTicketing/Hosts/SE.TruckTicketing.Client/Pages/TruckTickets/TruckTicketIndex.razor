@@ -1,0 +1,211 @@
+@using SE.Shared.Common.Extensions
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Client.Components.TruckTicketComponents
+@using Humanizer
+@inherits BaseTruckTicketingComponent
+
+<GridFiltersContainer Expandable="@true"
+                      @ref="_gridFilterContainer"
+                      OnFilterChange="@(async criteria => await Grid.SetExternalSearchCriteriaModel(criteria))">
+    <div class="d-flex flex-grow-1 gap-3">
+        <KeywordFilter Label="Search"
+                       Placeholder="Search by ticket number, source location, trucking company, customer, etc..."/>
+        <DropDownDataGridFilter Label="Facility"
+                                FilterPath="@nameof(TruckTicket.FacilityId)"
+                                Placeholder="All facilities"
+                                TItem="Facility"
+                                DefaultSortProperty="@nameof(Facility.Name)"
+                                TextProperty="@nameof(Facility.SiteId)"
+                                BeforeDataLoad="@(criteria => criteria.Filters[nameof(Facility.IsActive)] = true)">
+            <Columns>
+                <RadzenDropDownDataGridColumn Property="@nameof(Facility.SiteId)"
+                                              Title="Site Id"
+                                              Width="50px"/>
+                <RadzenDropDownDataGridColumn Property="@nameof(Facility.Name)"
+                                              Title="Name"
+                                              Width="100px"/>
+            </Columns>
+        </DropDownDataGridFilter>
+        <DateRangeFilter Label="Load Date"
+                         FilterPath="@nameof(TruckTicket.EffectiveDate)"/>
+    </div>
+    <GridFiltersExpandedContainer>
+        <div class="d-flex flex-grow-1 gap-3">
+            <SelectFilter Label="Ticket Status"
+                          Placeholder="All statuses"
+                          FilterPath="@nameof(TruckTicket.Status)"
+                          Data="@(DataDictionary.For<TruckTicketStatus>(false).SelectOptions())"/>
+
+            <SelectFilter Label="Ticket Validation Status"
+                          Placeholder="All validation statuses"
+                          FilterPath="@nameof(TruckTicket.ValidationStatus)"
+                          Data="@(DataDictionary.For<TruckTicketValidationStatus>(false).SelectOptions())"/>
+            <AgedTicketFilter/>
+            <SalesLineIdsFilter/>
+        </div>
+    </GridFiltersExpandedContainer>
+</GridFiltersContainer>
+
+<div class="grid-switch-container px-4">
+    <PagableGridView @ref="Grid"
+                     TModel="TruckTicket"
+                     Results="@_results"
+                     EnableSearch="false"
+                     EnablePaging="true"
+                     EnableSorting="true"
+                     OnDataLoad="LoadTruckTickets"
+                     EnableFilters="false"
+                     GridPageSize="10"
+                     IsLoading="_isLoading"
+                     ColumnWidth="140px"
+                     SelectionMode="DataGridSelectionMode.Multiple"
+                     ChildStateChange="@ChildStateChange"
+                     EnableMultiLineSelect="true">
+        <Columns>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.LoadDate)"
+                              Title="Load Date"
+                              SortOrder="@SortOrder.Descending"
+                              Frozen="true"
+                              PropertyType="typeof(DateTimeOffset)">
+                <Template Context="data">
+                    <span class="@(ViewModel.ActiveTicketNumbers?.Contains(data.TicketNumber) ?? false ? "fw-bold" : "")">
+                        @(data.LoadDate?.ToString("d"))
+                    </span>
+                </Template>
+            </ColumnDefinition>
+
+
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.TicketNumber)"
+                              Title="Ticket Number"
+                              Frozen="true"
+                              PropertyType="typeof(string)">
+                <Template Context="data">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <a href="#"
+                           onclick="@(() => HandleTruckTicketRowSelect(data))"
+                           @onclick:stopPropagation="true"
+                           @onclick:preventDefault="true"
+                           class="@(ViewModel.ActiveTicketNumbers?.Contains(data.TicketNumber) ?? false ? "fw-bold" : "")"
+                           data-ticket-number="@data.TicketNumber">
+                            @data.TicketNumber
+                        </a>
+                        
+                        <RadzenIcon Icon="settings_overscan" IconStyle="IconStyle.Light" Style="font-size: 0.75rem"></RadzenIcon>
+                    </div>
+
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.TrackingNumber)"
+                              Title="Tracking Number"
+                              PropertyType="typeof(string)" 
+                              Frozen="true"/>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.Status)"
+                              Title="Ticket Status"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.ServiceTypeClass)"
+                              Title="Load Type"
+                              PropertyType="typeof(string)">
+                <Template Context="data">
+                    <RadzenBadge Text="@data.ServiceTypeClass.Humanize()"
+                                 Visible="@(data.ServiceTypeClass == Class.Class1 && data.TruckTicketType == TruckTicketType.LF)" Shade="Shade.Light"
+                                 BadgeStyle="BadgeStyle.Danger"/>
+                    <RadzenBadge Text="@data.ServiceTypeClass.Humanize()"
+                                 Visible="@(data.ServiceTypeClass == Class.Class2 && data.TruckTicketType == TruckTicketType.LF)" Shade="Shade.Lighter"
+                                 BadgeStyle="BadgeStyle.Info"/>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.FacilityName)"
+                              Title="Facility"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.SourceLocationFormatted)"
+                              Title="Source Location"
+                              PropertyType="typeof(string)">
+                <Template Context="context">
+                    @(context.SourceLocationFormatted.HasText() ? context.SourceLocationFormatted : context.SourceLocationName)
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.BillOfLading)"
+                              Title="Bill of Lading"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.BillingCustomerName)"
+                              Title="Customer Name"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.SubstanceName)"
+                              Title="Substance"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.WellClassification)"
+                              Title="Well Class"
+                              PropertyType="typeof(string)"
+                              Width="4.3rem"/>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.TruckingCompanyName)"
+                              Title="Trucking Company Name"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.ManifestNumber)"
+                              Title="Manifest #"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.AdditionalServicesEnabled)"
+                              Title="Additional Services"
+                              PropertyType="typeof(string)">
+                <Template Context="context">
+                    @(context.AdditionalServicesEnabled ? "Yes" : "No")
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.TotalVolume)"
+                              Title="Total Volume"
+                              PropertyType="typeof(double)">
+                <Template Context="context">
+                    @context.TotalVolume.ToString("0.00")
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.DowNonDow)"
+                              Title="Dow/Non-Dow"
+                              PropertyType="typeof(DowNonDow)"/>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.MaterialApprovalNumber)"
+                              Title="Material Approval #"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.LandfillSampled)"
+                              Title="Load Sampled"
+                              PropertyType="typeof(bool)"/>
+            <ColumnDefinition TItem="TruckTicket"
+                              Property="@nameof(TruckTicket.IsEdiValid)"
+                              Title="Valid EDI"
+                              Width="4.2rem">
+                <Template Context="data">
+                    <div class="d-flex justify-content-center">
+                        @if (data.IsEdiValid)
+                        {
+                            <RadzenIcon Icon="check_circle"
+                                        class="text-success"/>
+                        }
+                        else
+                        {
+                            <RadzenIcon Icon="cancel"
+                                        class="text-danger"/>
+                        }
+                    </div>
+                </Template>
+            </ColumnDefinition>
+        </Columns>
+    </PagableGridView>
+</div>

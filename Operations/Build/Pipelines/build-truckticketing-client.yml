@@ -1,0 +1,39 @@
+# Truck Ticketing System - Truck Ticketing Client
+
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - Trident/*
+    - SE.TruckTicketing/*
+    exclude:
+    - SE.TruckTicketing/TruckTicketing/Hosts/SE.TruckTicketing.Api/*
+    - SE.TruckTicketing/BillingService/*
+    - SE.TruckTicketing/IntegrationService/*
+    - SE.TruckTicketing/TokenService/*
+    - SE.TruckTicketing/Tools/*
+
+variables:
+  projects: '**/SE.TruckTicketing.Client.csproj'
+  artifactName: 'SE.TruckTicketing.Client'
+
+pool:
+  vmImage: 'windows-latest'
+
+stages:
+  - stage: 'Build'
+    jobs:
+    - job: 'Build'
+      steps:
+      - template: './templates/build.yml'
+        parameters:
+          projects: $(projects)
+      - template: './templates/publish.yml'
+        parameters:
+          projects: $(projects)
+          artifactName: $(artifactName)

@@ -1,0 +1,49 @@
+{
+  "databaseName": "TruckTicketing",
+  "Data": [
+    {
+      "container": "Billing",
+      "label": "Billing TT",
+      "path": "\\Billing\\*.json",
+      "storedProcedurePath": "\\Billing\\StoredProcedures\\*.js"
+    },
+    {
+      "container": "Accounts",
+      "label": "Accounts TT",
+      "path": "\\Accounts\\*.json",
+      "storedProcedurePath": "\\Accounts\\StoredProcedures\\*.js"
+    },
+    {
+      "container": "Pricing",
+      "label": "Pricing TT",
+      "path": "\\Pricing\\*.json",
+      "storedProcedurePath": "\\Pricing\\StoredProcedures\\*.js"
+    },
+    {
+      "container": "Products",
+      "label": "Products TT",
+      "path": "\\Products\\*.json",
+      "storedProcedurePath": "\\Products\\StoredProcedures\\*.js"
+    },
+    {
+      "container": "Operations",
+      "label": "Operations TT",
+      "path": "\\Operations\\*.json",
+      "storedProcedurePath": "\\Operations\\StoredProcedures\\*.js"
+    }
+  ],
+  "LocalAuthIds": {
+    "INT": {
+      
+    },
+    "TEST": {
+      
+    },
+    "UAT": {
+      
+    },
+    "PROD": {
+      
+    }
+  }
+}

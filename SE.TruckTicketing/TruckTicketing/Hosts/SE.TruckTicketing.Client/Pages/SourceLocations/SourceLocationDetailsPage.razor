@@ -1,0 +1,577 @@
+﻿@page "/truck-ticketing/source-locations/new"
+@page "/truck-ticketing/source-locations/edit/{id:guid}"
+@using AccountTypes = SE.TruckTicketing.Contracts.Lookups.AccountTypes
+@using SE.Shared.Common.Extensions
+@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Client.Components.SourceLocations
+@using SE.TruckTicketing.Contracts.Constants.SourceLocations
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<PageLoadingContainer IsLoading="IsLoading">
+<LoadedView>
+<EditForm EditContext="@_editContext"
+          OnValidSubmit="@OnHandleSubmit"
+          class="h-100">
+
+<div class="d-flex flex-column h-100">
+<div class="flex-grow-0 p-4">
+    <div class="d-flex align-items-end justify-content-between">
+        <h3 class="title flex-grow-1 m-0">@_viewModel.Title</h3>
+
+        <div class="d-flex align-items-start gap-4 flex-grow-0 align-self-end">
+            <div class="d-flex flex-column flex-grow-0 mr-3">
+                <RadzenLabel Text="Verified"
+                             Component="VerifiedSwitch"/>
+                <RadzenSwitch id="VerifiedSwitch"
+                              @bind-Value="@_viewModel.SourceLocation.SourceLocationVerified"/>
+            </div>
+
+            <div class="flex-grow-0">
+                <RadzenLabel Text="PETROLEUM REGISTRIES - SESU"
+                             Component="SESUGroup"/>
+                <div class="d-flex gap-2">
+                    <RadzenLink Path="@GetRegistryUrls("MBOGC")"
+                                Text="MBOGC"
+                                Target="_blank"
+                                class="rz-button rz-button-md btn-secondary text-decoration-none"/>
+                    <RadzenLink Path="@GetRegistryUrls("NDIC")"
+                                Text="NDIC"
+                                Target="_blank"
+                                class="rz-button rz-button-md btn-secondary text-decoration-none"/>
+                </div>
+            </div>
+            <div class="flex-grow-0">
+                <RadzenLabel Text="PETROLEUM REGISTRIES - SESC"
+                             Component="SESCGroup"/>
+
+                <div class="d-flex gap-2">
+                    <RadzenLink Path="@GetRegistryUrls("IRIS")"
+                                Text="IRIS"
+                                Target="_blank"
+                                class="rz-button rz-button-md btn-secondary text-decoration-none"/>
+                    <RadzenLink Path="@GetRegistryUrls("BCOGC")"
+                                Text="BCOGC"
+                                Target="_blank"
+                                class="rz-button rz-button-md btn-secondary text-decoration-none"/>
+                    <RadzenLink Path="@GetRegistryUrls("PETRINEX")"
+                                Text="PETRINEX"
+                                Target="_blank"
+                                class="rz-button rz-button-md btn-secondary text-decoration-none"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br/>
+
+    <TridentValidationSummary Response="Response"
+                              TModel="SourceLocation"/>
+</div>
+<div class="flex-grow-1 p-4"
+     style="overflow-y: auto">
+<RadzenTabs>
+<Tabs>
+<RadzenTabsItem Text="Source Location Info">
+
+<section class="mb-5">
+<h4 class="fw-bold mb-3">General Info</h4>
+<div class="row mb-3">
+    <div class="col d-flex flex-column">
+        <RadzenLabel Text="Source Location Type"
+                     Component="SourceLocationTypeDropDown"
+                     class="required"/>
+        <TridentApiDropDownDataGrid id="SourceLocationTypeDropDown"
+                                    TModel="SourceLocationType"
+                                    TValue="Guid"
+                                    Placeholder="Select source location type..."
+                                    @bind-Value="@_viewModel.SourceLocation.SourceLocationTypeId"
+                                    TextProperty="@nameof(SourceLocationType.Display)"
+                                    PageSize="10"
+                                    OnDataLoading="@HandleSourceLocationTypeLoading"
+                                    OnItemLoad="@OnSourceLocationTypeLoad"
+                                    OnItemSelect="@_viewModel.SetSourceLocationType">
+            <Columns>
+                <RadzenDropDownDataGridColumn Property="@nameof(SourceLocationType.Name)"
+                                              Title="Type"/>
+
+                <RadzenDropDownDataGridColumn Property="@nameof(SourceLocationType.ShortFormCode)"
+                                              Title="Short Form Code"/>
+
+                <RadzenDropDownDataGridColumn Property="@nameof(SourceLocationType.CountryCode)"
+                                              Title="Country"/>
+
+                <RadzenDropDownDataGridColumn Property="@nameof(SourceLocationType.Category)"
+                                              Title="Category"/>
+            </Columns>
+        </TridentApiDropDownDataGrid>
+    </div>
+
+    <div class="col d-flex flex-column">
+
+        @if (_viewModel.SourceLocationType?.CountryCode == CountryCode.US)
+        {
+            <RadzenLabel Text="Source Location Name"
+                         Component="IdentifierTextBox"
+                         class="required"/>
+
+            <RadzenTextBox id="IdentifierTextBox"
+                           Value="@_viewModel.SourceLocation.SourceLocationName"
+                           Change="@(args => _viewModel.SourceLocation.SourceLocationName = args?.ToUpper())"
+                           Disabled="@(!HasSourceLocationNameIdWriteAccess)"
+                           class="w-100"/>
+        }
+        else
+        {
+            <div class="d-flex align-content-center">
+                <RadzenLabel Text="Identifier"
+                             Component="IdentifierTextBox"
+                             class="required"/>
+                <small class="px-2 text-muted small-grey-label">@_viewModel.IdentifierMask</small>
+            </div>
+
+            @if (string.IsNullOrWhiteSpace(_viewModel.SourceLocationType?.FormatMask))
+            {
+                <RadzenTextBox id="IdentifierTextBox"
+                               Value="@_viewModel.SourceLocation.FormattedIdentifier"
+                               Disabled="@(!HasSourceLocationNameIdWriteAccess)"
+                               class="w-100"
+                               Change="@HandleMaskedIdentifierChange"/>
+            }
+            else
+            {
+                <TridentMaskedTextBox id="IdentifierTextBox"
+                                      @bind-Value="@_viewModel.SourceLocation.FormattedIdentifier"
+                                      Disabled="@(!HasSourceLocationNameIdWriteAccess)"
+                                      class="w-100"
+                                      Mask="@_viewModel.IdentifierRadzenMask"
+                                      Change="@HandleMaskedIdentifierChange"/>
+            }
+        }
+    </div>
+
+    @if (_viewModel.SourceLocationType?.CountryCode == CountryCode.US)
+    {
+        <div class="col d-flex justify-content-around">
+            <div class="d-flex flex-column gap-2">
+                <RadzenLabel Text="Well / Pit"
+                             Component="DownHoleTypeRadioButtonList"
+                             class="required"/>
+                <RadzenRadioButtonList TValue="DownHoleType?"
+                                       id="DownHoleTypeRadioButtonList"
+                                       TextProperty="Value"
+                                       ValueProperty="Key"
+                                       Data="@(DataDictionary.For<DownHoleType>())"
+                                       @bind-Value="@_viewModel.SourceLocation.DownHoleType"/>
+            </div>
+            <div class="d-flex flex-column gap-2">
+                <RadzenLabel Text="Trucked / Pipeline"
+                             Component="DeliveryMethodRadioButtonList"
+                             class="required"/>
+
+                <RadzenRadioButtonList TValue="DeliveryMethod?"
+                                       id="DeliveryMethodRadioButtonList"
+                                       TextProperty="Value"
+                                       ValueProperty="Key"
+                                       Data="@(DataDictionary.For<DeliveryMethod>())"
+                                       @bind-Value="@_viewModel.SourceLocation.DeliveryMethod"/>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row mb-3">
+    <div class="col d-flex flex-column">
+        <RadzenLabel Text="Field Name / Address"
+                     Component="FieldNameTextBox"/>
+        <RadzenTextBox id="FieldNameTextBox"
+                       Value="@_viewModel.SourceLocation.FieldName"
+                       Change="@(args => _viewModel.SourceLocation.FieldName = args?.ToUpper())"
+                       class="w-100"/>
+    </div>
+
+    <div class="col d-flex flex-column">
+        <RadzenLabel Text="Province / State"
+                     class="required"
+                     Component="ProvinceOrStateTextBox"/>
+
+        <RadzenDropDown TValue="StateProvince"
+                        AllowClear="true"
+                        AllowFiltering="true"
+                        id="ProvinceOrStateTextBox"
+                        Name="ProvinceOrStateTextBox"
+                        @bind-Value="@_viewModel.Province"
+                        TextProperty="Value"
+                        ValueProperty="Key"
+                        Placeholder="Select province / state"
+                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                        Multiple="false"
+                        Data="@(DataDictionary.ForSelectedValues<StateProvince>(_viewModel.SourceLocationType?.CountryCode == CountryCode.US ? _viewModel.Settings.AllowedStates : _viewModel.Settings.AllowedProvinces))"
+                        class="w-100"/>
+    </div>
+
+    @if (!(_viewModel.SourceLocationType?.CountryCode == CountryCode.US &&
+           string.IsNullOrEmpty(_viewModel.SourceLocationType?.ShortFormCode)))
+    {
+        <div class="col d-flex flex-column">
+            <div class="d-flex align-content-center">
+                <RadzenLabel Text="@(_viewModel.SourceLocation.AssociatedSourceLocationCode.HasText() ? "Source Location Code (Linked)" : "Source Location Code")"
+                             Component="SourceLocationCodeTextBox"
+                             class="@((_viewModel.SourceLocationType?.CountryCode is CountryCode.US && _viewModel.SourceLocationType?.ShortFormCode.HasText() is true) || _viewModel.SourceLocationType?.EnforceSourceLocationCodeMask is true ? "required" : "")"/>
+                <small class="px-2 text-muted small-grey-label">@_viewModel.SourceLocationCodeMask</small>
+            </div>
+
+            @if (_viewModel.SourceLocation.AssociatedSourceLocationCode.HasText())
+            {
+                <RadzenTextBox id="SourceLocationCodeTextBox"
+                               @bind-Value="@_viewModel.SourceLocation.AssociatedSourceLocationCode"
+                               Change="@(value => _viewModel.SourceLocation.AssociatedSourceLocationCode = value?.ToUpper())"
+                               class="w-100"
+                               ReadOnly="true"/>
+            }
+            else
+            {
+                <RadzenTextBox id="SourceLocationCodeTextBox"
+                               @bind-Value="@_viewModel.SourceLocation.SourceLocationCode"
+                               Change="@(value => _viewModel.SourceLocation.SourceLocationCode = value?.ToUpper())"
+                               class="w-100"/>
+            }
+        </div>
+    }
+
+</div>
+
+@if (_viewModel.SourceLocationType?.CountryCode == CountryCode.US)
+{
+    <div class="row mb-3">
+        <div class="col d-flex flex-column">
+            <div class="d-flex align-content-center">
+                <RadzenLabel Text="PLS Number"
+                             Component="PlsTextBox"
+                             class="@(_viewModel.SourceLocationType.IsPlsNumberVisible ? "required" : "")"/>
+            </div>
+
+            <RadzenTextBox id="PlsTextBox"
+                           Disabled="@(!_viewModel.SourceLocationType.RequiresPlsNumber)"
+                           @bind-Value="@_viewModel.SourceLocation.PlsNumber"
+                           Change="@(args => _viewModel.SourceLocation.PlsNumber = args?.ToUpper())"
+                           class="w-100"/>
+        </div>
+
+        @if (_viewModel.SourceLocationType?.RequiresApiNumber ?? false)
+        {
+            <div class="col d-flex flex-column">
+                <div class="d-flex align-content-center">
+                    <RadzenLabel Text="API Number"
+                                 Component="ApiNumberTextBox"
+                                 class="@(_viewModel.SourceLocationType.IsApiNumberVisible ? "required" : "")"/>
+                </div>
+
+                <RadzenTextBox id="ApiNumberTextBox"
+                               Disabled="@(!_viewModel.SourceLocationType.RequiresApiNumber)"
+                               @bind-Value="@_viewModel.SourceLocation.ApiNumber"
+                               Change="@(_viewModel.SetApiNumber)"
+                               class="w-100"/>
+            </div>
+        }
+
+        @if (_viewModel.SourceLocationType?.RequiresWellFileNumber ?? false)
+        {
+            <div class="col d-flex flex-column">
+                <div class="d-flex align-content-center">
+                    <RadzenLabel Text="Well File Number"
+                                 Component="WellFileNumberTextBox"
+                                 class="@(_viewModel.SourceLocationType.IsWellFileNumberVisible ? "required" : "")"/>
+                </div>
+
+                <RadzenTextBox id="WellFileNumberTextBox"
+                               Disabled="@(!_viewModel.SourceLocationType.RequiresWellFileNumber)"
+                               @bind-Value="@_viewModel.SourceLocation.WellFileNumber"
+                               Change="@(args => _viewModel.SourceLocation.WellFileNumber = args)"
+                               class="w-100"/>
+            </div>
+        }
+
+        @if (_viewModel.SourceLocationType?.RequiresCtbNumber ?? false)
+        {
+            <div class="col d-flex flex-column">
+                <div class="d-flex align-content-center">
+                    <RadzenLabel Text="CTB Number"
+                                 Component="CtbNumberTextBox"
+                                 class="@(_viewModel.SourceLocationType.IsCtbNumberVisible ? "required" : "")"/>
+                </div>
+
+                <RadzenTextBox id="CtbNumberTextBox"
+                               Disabled="@(!_viewModel.SourceLocationType.RequiresCtbNumber)"
+                               @bind-Value="@_viewModel.SourceLocation.CtbNumber"
+                               Change="@(args => _viewModel.SourceLocation.CtbNumber = args)"
+                               class="w-100"/>
+            </div>
+        }
+    </div>
+}
+
+@if (_viewModel.SourceLocationType?.CountryCode == CountryCode.CA)
+{
+    <div class="row mb-3">
+        <div class="col d-flex flex-column">
+            <RadzenLabel Text="License Number"
+                         Component="LicenseNumberTextBox"/>
+
+            <RadzenTextBox id="LicenseNumberTextBox"
+                           Value="@_viewModel.SourceLocation.LicenseNumber"
+                           Change="@(args => _viewModel.SourceLocation.LicenseNumber = args?.ToUpper())"
+                           class="w-100"/>
+        </div>
+    </div>
+}
+</section>
+
+<section class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold">Ownership Info</h4>
+        <div>
+            <RadzenButton Text="Create Account"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Size="ButtonSize.Small"
+                          Icon="domain_add"
+                          Click="@OnCreateNewAccount"/>
+        </div>
+    </div>
+    @if (_viewModel.HasStartDateChanged)
+    {
+        <div class="alert alert-warning"
+             role="alert">
+            <h5 class="alert-heading">Ownership Start Date Change Detected!</h5>
+            <p>Please be aware that once you set an ownership start date, it cannot be changed to a date in the past. This means that you need to ensure that the date you have selected is correct before submitting it.</p>
+        </div>
+    }
+    <div class="row">
+        <div class="col">
+            <div class="align-content-center">
+                <RadzenLabel Text="Generator"
+                             Component="GeneratorDropDown"
+                             class="required"/>
+            </div>
+        </div>
+
+        @if (_viewModel.SourceLocationType?.CountryCode != CountryCode.US)
+        {
+            <div class="col d-flex flex-column">
+                <div class="d-flex align-items-center justify-content-between">
+                    <RadzenLabel Text="Production Accountant"
+                                 Component="GeneratorProductionAccountantDropDown"/>
+                    <RadzenButton Click="@(args => OpenAddContactDialog(_viewModel.SourceLocation.GeneratorId, AccountContactFunctions.ProductionAccountant.ToString(), "Generator"))"
+                                  Text="Add Generator Contact"
+                                  Class="me-1 mb-1 ml-auto"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Icon="contact_mail"
+                                  Disabled="DisableAddGeneratorContact"/>
+                </div>
+            </div>
+        }
+
+        <div class="col">
+            <div class="align-content-center">
+                <RadzenLabel Text="Start Date"
+                             Component="StartDateTimePicker"
+                             class="required"/>
+                <small class="px-2 text-muted small-grey-label">MM/DD/YYYY</small>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col d-flex flex-column">
+            <AccountsDropDown id="GeneratorDropDown"
+                              @ref="GeneratorDropDown"
+                              AccountType="@AccountTypes.Generator"
+                              TValue="Guid"
+                              Placeholder="Select Generator..."
+                              @bind-Value="@_viewModel.SourceLocation.GeneratorId"
+                              TextProperty="@nameof(Account.Name)"
+                              ValueProperty="@nameof(Account.Id)"
+                              Disabled="@(!HasGeneratorAccess)"
+                              PageSize="10"
+                              OnItemSelect="@HandleGeneratorChange"/>
+        </div>
+        @if (_viewModel.SourceLocationType?.CountryCode != CountryCode.US)
+        {
+            <div class="col d-flex flex-column">
+                <AccountContactDropDown TValue="Guid?"
+                                        @ref="@GeneratorPaContactDropDown"
+                                        Placeholder="Select contact..."
+                                        AccountId="@_viewModel.SourceLocation.GeneratorId"
+                                        ContactFunction="@AccountContactFunctions.ProductionAccountant"
+                                        AllowClear="true"
+                                        AllowFiltering="true"
+                                        Class="w-100"
+                                        id="GeneratorProductionAccountantDropDown"
+                                        @bind-Value="@_viewModel.SourceLocation.GeneratorProductionAccountContactId"
+                                        OnItemSelect="@HandleGeneratorProductionAccountantChange"
+                                        TextProperty="@nameof(AccountContactIndex.Display)"
+                                        ValueProperty="@nameof(AccountContactIndex.Id)"/>
+            </div>
+        }
+        <div class="col d-flex flex-column">
+            <div class="d-flex align-items-center gap-2">
+                <RadzenDatePicker TValue="DateTimeOffset?"
+                                  Name="StartDateTimePicker"
+                                  DateFormat="MM/dd/yyyy"
+                                  Class="w-100 flex-grow-1"
+                                  Disabled="@(!IsAuthorizedFor(Permissions.Resources.SourceLocationOwnershipInfo, Permissions.Operations.Write))"
+                                  DateRender="@DateRenderRestrictFutureDate"
+                                  Change="@(args => HandleOwnershipDateChange(args))"
+                                  Value="@_viewModel.SourceLocation.GeneratorStartDate"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="align-content-center">
+                <RadzenLabel Text="Contract Operator"
+                             Component="ContractOperatorDropdown"
+                             class="required"/>
+            </div>
+        </div>
+
+        @if (_viewModel.SourceLocationType?.CountryCode != CountryCode.US)
+        {
+            <div class="col d-flex flex-column">
+                <div class="d-flex align-items-center justify-content-between">
+                    <RadzenLabel Text="Production Accountant"
+                                 Component="ContractOperatorProductionAccountDropdown"/>
+                    <RadzenButton Click="@(args => OpenAddContactDialog(_viewModel.SourceLocation.ContractOperatorId, AccountContactFunctions.ProductionAccountant.ToString(), "Contract Operator"))"
+                                  Text="Add Contract Operator Contact"
+                                  Class="me-1 mb-1 ml-auto"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Icon="contact_mail"
+                                  Disabled="DisableAddContractOperatorContact"/>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="row mb-3">
+        <div class="col d-flex flex-column">
+            <AccountsDropDown id="ContractOperatorDropdown"
+                              TValue="Guid"
+                              @ref="@ContractOperatorDropDown"
+                              AccountType="@AccountTypes.Generator"
+                              Placeholder="Select Contract Operator..."
+                              @bind-Value="@_viewModel.SourceLocation.ContractOperatorId"
+                              Disabled="@(!IsAuthorizedFor(Permissions.Resources.SourceLocationOwnershipInfo, Permissions.Operations.Write))"
+                              TextProperty="@nameof(Account.Name)"
+                              ValueProperty="@nameof(Account.Id)"
+                              PageSize="10"
+                              OnItemSelect="@HandleContractOperatorChange"/>
+        </div>
+
+        @if (_viewModel.SourceLocationType?.CountryCode != CountryCode.US)
+        {
+            <div class="col d-flex flex-column">
+                <AccountContactDropDown TValue="Guid?"
+                                        @ref="@OperatorPaContactDropDown"
+                                        Placeholder="Select contact..."
+                                        AccountId="@_viewModel.SourceLocation.ContractOperatorId"
+                                        ContactFunction="@AccountContactFunctions.ProductionAccountant"
+                                        AllowClear="true"
+                                        AllowFiltering="true"
+                                        Class="w-100"
+                                        id="ContractOperatorProductionAccountDropdown"
+                                        @bind-Value="@_viewModel.SourceLocation.ContractOperatorProductionAccountContactId"
+                                        TextProperty="@nameof(AccountContactIndex.Display)"
+                                        ValueProperty="@nameof(AccountContactIndex.Id)"/>
+            </div>
+        }
+    </div>
+</section>
+
+<section class="mb-5">
+    <h4 class="fw-bold mb-2">@_viewModel.AssociatedSourceLocationsCardTitle</h4>
+    <AssociatedSourceLocationsIndex @ref="@associatedSourceLocationIndex"
+                                    SourceLocation="@_viewModel.SourceLocation"
+                                    OnSourceLocationAssociate="@AssociateSourceLocation"
+                                    OnSourceLocationDissociate="@OnSourceLocationDissociate"
+                                    Disabled="@_viewModel.IsAssociatedSourceLocationDisabled"/>
+</section>
+
+</RadzenTabsItem>
+<RadzenTabsItem Text="Source Location History">
+    <section class="mb-5">
+        <div class="grid-switch-container">
+            <TridentChangeDataGridWrapper Id="_viewModel.SourceLocation.Id"
+                                          EntityType="SourceLocation"
+                                          EntityName="Source Location"/>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h4 class="fw-bold mb-2">Ownership History</h4>
+        <OwnershipHistoryIndex SourceLocation="@_viewModel.SourceLocation"/>
+    </section>
+
+    <section class="mb-5">
+        <h4 class="fw-bold mb-2">Well Classification Usage</h4>
+        <SourceLocationWellClassificationUsageIndex SourceLocationId="@_viewModel.SourceLocation?.Id"/>
+    </section>
+</RadzenTabsItem>
+<RadzenTabsItem Text="Notes"
+                Visible="@(_viewModel.SourceLocation.Id != Guid.Empty)">
+    <Notes ThreadId="@ThreadId"
+           ShowNew="@true"
+           OnNoteUpdate="@HandleNoteUpdate"
+           OnDataLoad="@LoadNotes"/>
+</RadzenTabsItem>
+</Tabs>
+</RadzenTabs>
+</div>
+<div class="flex-grow-0 d-flex align-items-center justify-content-between p-4 footer-panel">
+    <div class="d-flex gap-4 flex-grow-0 align-items-end">
+        <div class="d-flex flex-column">
+            <RadzenLabel Text="Active"
+                         Component="IsActiveSwitch"/>
+            <RadzenSwitch id="IsActiveSwitch"
+                          @bind-Value="_viewModel.SourceLocation.IsActive"/>
+        </div>
+
+        <RadzenButton ButtonStyle="ButtonStyle.Danger"
+                      Text="Delete Source Location"
+                      IsBusy="@IsDeleting"
+                      BusyText="Deleting Source Location"
+                      Click="@DeleteSourceLocation"
+                      Disabled="@DisableDeleteSourceLocation"
+                      Visible="@(!_viewModel.IsNew)"/>
+
+        <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                      Text="Clone Source Location"
+                      IsBusy="@IsCloning"
+                      BusyText="Cloning Source Location"
+                      Click="@CloneSourceLocation"
+                      Disabled="@DisableCloneSourceLocation"
+                      Visible="@(!_viewModel.IsNew)"/>
+    </div>
+    <div class="d-flex gap-2">
+
+        <RadzenButton Text="Close"
+                      Icon="close"
+                      class="rz-button rz-button-md btn-secondary text-decoration-none"
+                      Click="CloseButton_Click"/>
+        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                      ButtonType="ButtonType.Button"
+                      Text="@_viewModel.SubmitButtonText"
+                      IsBusy="IsSaving"
+                      BusyText="@_viewModel.SubmitButtonBusyText"
+                      Icon="@_viewModel.SubmitButtonIcon"
+                      Disabled="@(!HasWritePermission(Permissions.Resources.SourceLocation))"
+                      Click="@OnHandleSubmit"/>
+    </div>
+</div>
+</div>
+</EditForm>
+</LoadedView>
+</PageLoadingContainer>

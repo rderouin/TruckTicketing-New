@@ -1,0 +1,82 @@
+﻿@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.Shared.Common.Utilities
+@inherits BaseRazorComponent
+@if (ViewModel.TruckTicket is not null)
+{
+    <div>
+        <RadzenLabel Text="Ticket Status"
+                     Component="TicketStatusDropdown"
+                     class="required"/>
+        <RadzenDropDown TValue="TruckTicketStatus"
+                        Class="w-100"
+                        Id="TicketStatusDropDown"
+                        @bind-Value="@ViewModel.TruckTicketStatus"
+                        TextProperty="Value"
+                        ValueProperty="Key"
+                        Disabled="false"
+                        Data="@(DataDictionary.For<TruckTicketStatus>(false))"/>
+    </div>
+    <div>
+        <RadzenLabel Text="Validation Status"
+                     Component="ValidationStatusDropdown"/>
+        <RadzenTextBox Id="ValidationStatusTextBox"
+                       Value="@ViewModel.TruckTicket?.ValidationStatus.ToString()"
+                       Class="w-100"
+                       Placeholder="Validation Status..."
+                       Disabled="true"/>
+    </div>
+
+    @if (ViewModel.TruckTicket?.Status == TruckTicketStatus.Void)
+    {
+        <div>
+            <RadzenLabel Text="Void Reason"
+                         Component="TicketVoidStatusDropDown"
+                         class="required"/>
+            <TridentApiDropDown Name="TicketVoidStatusDropDown"
+                                TModel="TruckTicketVoidReason"
+                                TValue="string"
+                                Placeholder="Void reason..."
+                                @bind-Value="@ViewModel.VoidReason"
+                                TextProperty="@nameof(TruckTicketVoidReason.VoidReason)"
+                                ValueProperty="@nameof(TruckTicketVoidReason.VoidReason)"
+                                PageSize="10"
+                                Class="w-auto"/>
+            <RadzenRequiredValidator Component="TicketVoidStatusDropDown"
+                                     Text="Required"/>
+        </div>
+    }
+    @if (ViewModel.TruckTicket?.Status == TruckTicketStatus.Hold)
+    {
+        <div>
+            <RadzenLabel Text="Hold Reason"
+                         Component="TicketHoldStatusDropdown"
+                         class="required"/>
+
+            @* OnItemSelect="StateHasChanged" *@
+            <TridentApiDropDown Name="TicketHoldStatusDropDown"
+                                TModel="TruckTicketHoldReason"
+                                TValue="string"
+                                Placeholder="Hold reason..."
+                                @bind-Value="@ViewModel.HoldReason"
+                                TextProperty="@nameof(TruckTicketHoldReason.HoldReason)"
+                                ValueProperty="@nameof(TruckTicketHoldReason.HoldReason)"
+                                PageSize="10"
+                                Class="w-auto"/>
+            <RadzenRequiredValidator Component="TicketHoldStatusDropDown"
+                                     Text="Required"/>
+        </div>
+    }
+    @if (ViewModel.HoldReason?.ToLower() == "other" || ViewModel.VoidReason?.ToLower() == "other")
+    {
+        <div>
+            <RadzenLabel Text="Other Reason"
+                         Component="OtherReasonStatusTextBox"
+                         class="required"/>
+            <RadzenTextBox Name="OtherReasonStatusTextBox"
+                           @bind-Value="@ViewModel.OtherReason"
+                           Class="w-100"
+                           Placeholder="other reason.."/>
+        </div>
+    }
+}

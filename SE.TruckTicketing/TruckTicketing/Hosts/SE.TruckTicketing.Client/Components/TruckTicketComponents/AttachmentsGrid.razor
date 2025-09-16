@@ -1,0 +1,52 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex gap-2 align-items-start">
+            <h3 class="fw-bold">Attachments</h3>
+        </div>
+        <div class="d-flex gap-2 align-items-end">
+            <RadzenButton Click="@(args => AddAttachment())"
+                          Text="Add Attachment"
+                          ButtonStyle="ButtonStyle.Primary"
+                          Size="ButtonSize.Medium"/>
+        </div>
+    </div>
+    <div class="card-body grid-switch-container">
+        <PagableGridView TModel="TruckTicketAttachment"
+                         Results="@_attachments"
+                         EnableSearch="false"
+                         EnablePaging="false"
+                         EnableSorting="true"
+                         OnDataLoad="LoadAttachments"
+                         EnableRowExpansion="false"
+                         EnableFilters="false"
+                         GridPageSize="10">
+            <Columns>
+                <ColumnDefinition TItem="TruckTicketAttachment"
+                                  Property="@nameof(TruckTicketAttachment.File)"
+                                  Title="Attachment Name"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="TruckTicketAttachment"
+                                  Property="@nameof(TruckTicketAttachment)"
+                                  Title="Actions"
+                                  Width="9rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="() => OpenViewDialog(data)"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Small"
+                                      Text="View"/>
+
+                        <RadzenButton Click="() => DeleteAttachment(data)"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small"
+                                      Text="Remove"/>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

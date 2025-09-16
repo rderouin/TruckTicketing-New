@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\..\Solution Items\GlobalAssembly.cs" Link="Properties\GlobalAssembly.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Trident.EFCore\Trident.EFCore.csproj" />
+    <ProjectReference Include="..\..\..\Core\Trident.Testing\Trident.Testing.csproj" />
+    <ProjectReference Include="..\..\..\Core\Trident\Trident.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,205 @@
+﻿@page "/invoice-configurations/new/{customerId:guid?}"
+@page "/invoice-configurations/{Operation}/{id:guid}/{customerId:guid?}"
+@using SE.TruckTicketing.Client.Components.InvoiceConfigurationComponents
+@using SE.TruckTicketing.Contracts.Models.InvoiceConfigurations
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseTruckTicketingComponent
+
+<PageLoadingContainer IsLoading="_isLoading">
+    <LoadedView>
+        <EditForm EditContext="@_editContext"
+                  OnValidSubmit="OnHandleSubmit"
+                  class="h-100">
+            <div class="d-flex flex-column h-100">
+
+                <div class="flex-grow-0 p-4">
+                    <div class="d-flex align-items-end justify-content-between">
+                        <h3 class="title flex-grow-1 m-0">@_viewModel.Title</h3>
+                    </div>
+                    <br/>
+                    <TridentValidationSummary Response="_response"
+                                              TModel="InvoiceConfiguration"/>
+                    <TridentValidationSummary Response="_cloneInvoiceConfigResponse"
+                                              TModel="CloneInvoiceConfigurationModel"/>
+                </div>
+                <div class="flex-grow-1 p-4"
+                     style="overflow-y: auto">
+                    <RadzenTabs>
+                        <Tabs>
+                            <RadzenTabsItem Text="Invoice Configuration Info">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="fw-bold">General Info</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col d-flex flex-column">
+                                                <RadzenLabel Text="Config Name"
+                                                             Component="ConfigNameTextBox"
+                                                             class="required"/>
+                                                <RadzenTextBox id="ConfigNameTextBox"
+                                                               @bind-Value="@_viewModel.InvoiceConfiguration.Name"
+                                                               class="w-100"/>
+                                            </div>
+                                            <div class="col d-flex flex-column">
+                                                <RadzenLabel Text="Description"
+                                                             Component="ConfigDescriptionTextBox"/>
+                                                <RadzenTextBox id="ConfigDescriptionTextBox"
+                                                               @bind-Value="@_viewModel.InvoiceConfiguration.Description"
+                                                               class="w-100"/>
+                                            </div>
+                                            <div class="col d-flex flex-column">
+                                                <RadzenLabel Text="Invoice Exchange"
+                                                             Component="InvoiceExchangeDropDown"/>
+                                                <RadzenDropDown TValue="string"
+                                                                id="InvoiceExchangeDropDown"
+                                                                Data="@_invoiceExchanges"
+                                                                @bind-Value="@_viewModel.InvoiceConfiguration.InvoiceExchange"
+                                                                TextProperty="PlatformCode"
+                                                                ValueProperty="PlatformCode"
+                                                                Placeholder="Select Invoice Exchange..."
+                                                                Multiple="false"
+                                                                class="w-100"/>
+                                            </div>
+                                            <div class="col d-flex flex-column">
+                                                <RadzenLabel Text="Allow Internal Documents"
+                                                             Component="AllowInternalDocsSwitch"/>
+                                                <RadzenSwitch id="AllowInternalDocsSwitch"
+                                                              @bind-Value="@_viewModel.InvoiceConfiguration.IncludeInternalDocumentAttachment"/>
+                                            </div>
+                                            <div class="col d-flex flex-column">
+                                                <RadzenLabel Text="Allow External Documents"
+                                                             Component="AllowExternalDocsSwitch"/>
+                                                <RadzenSwitch id="AllowExternalDocsSwitch"
+                                                              @bind-Value="@_viewModel.InvoiceConfiguration.IncludeExternalDocumentAttachment"/>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-6 d-flex flex-column">
+                                                <RadzenLabel Text="Invoice Contact"
+                                                             Component="InvoiceContactDropDown"/>
+                                                <RadzenDropDownDataGrid TValue="Guid?"
+                                                                        id="InvoiceContactDropDown"
+                                                                        @ref="@_invoiceContactDropdown"
+                                                                        Data="@_viewModel.BillingContacts"
+                                                                        @bind-Value="@_viewModel.InvoiceConfiguration.BillingContactId"
+                                                                        TextProperty="DisplayName"
+                                                                        ValueProperty="Id"
+                                                                        Placeholder="Select the Invoice Contact..."
+                                                                        Multiple="false"
+                                                                        AllowClear="true"
+                                                                        AllowFiltering="true"
+                                                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                                        FilterOperator="StringFilterOperator.Contains"
+                                                                        Change="@BillingContactChange"
+                                                                        class="w-100">
+                                                    <Columns>
+                                                        <RadzenDropDownDataGridColumn Property="@nameof(AccountContact.Name)"
+                                                                                      Title="Name"
+                                                                                      Width="30px"/>
+
+                                                        <RadzenDropDownDataGridColumn Property="@nameof(AccountContact.Email)"
+                                                                                      Title="Email"
+                                                                                      Width="30px"/>
+
+                                                        <RadzenDropDownDataGridColumn Property="@nameof(AccountContact.Address)"
+                                                                                      Title="Address"
+                                                                                      Width="60px"/>
+                                                    </Columns>
+                                                </RadzenDropDownDataGrid>
+                                            </div>
+                                            <div class="col d-flex flex-column">
+                                                <RadzenLabel Text="Contact Address"/>
+                                                <RadzenTextBox Value="@(InvoiceContactAddress)"
+                                                               ReadOnly="@true"/>
+                                            </div>
+                                            <div class="col d-flex flex-column">
+                                                <RadzenLabel Text="Contact Email"/>
+                                                <RadzenTextBox Value="@(InvoiceContactEmail)"
+                                                               ReadOnly="@true"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <InvoiceConfigurationInvoiceInfo @ref="InvoiceInfo"
+                                                                 InvoiceConfiguration="@_viewModel.InvoiceConfiguration"
+                                                                 OnInvoiceInfoChanged="OnInvoiceInfoSelectionChanged"
+                                                                 OnFacilitySelectionChanged="OnFacilityChanged"
+                                                                 OnSourceLocationAdded="AddSourceLocation"
+                                                                 OnSourceLocationDeleted="DeleteSourceLocation"
+                                                                 SourceLocationAdded="@SelectedSourceLocations"/>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <InvoiceConfigurationSplitting @ref="InvoiceConfigSplit"
+                                                                       InvoiceConfiguration="@_viewModel.InvoiceConfiguration"
+                                                                       OnInvoiceConfigSplittingChanged="OnInvoiceConfigSplittingChange"/>
+                                    </div>
+                                    <div class="col-7">
+                                        <InvoiceConfigurationPermutationGrid @ref="invoiceConfigPermutationsGrid"
+                                                                             InvoiceConfig="@_viewModel.InvoiceConfiguration"
+                                                                             IsInvoiceInfoSelectionChanged="isInvoiceInfoSelectionChanged"
+                                                                             IsInvoiceSplittingChanged="isInvoiceConfigSplittingSelectionChanged"
+                                                                             InvalidBillingConfiguration="LoadInvalidBillingConfigurations"
+                                                                             Operation="@Operation"/>
+                                    </div>
+                                </div>
+                                @if (!_viewModel.IsNew || IsCloneInvoiceConfiguration)
+                                {
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <h4 class="fw-bold">Billing Configuration</h4>
+                                            </div>
+                                            <div>
+                                                <RadzenButton Click="@(_ => AddBillingConfiguration())"
+                                                              Text="Add Billing Configuration"
+                                                              ButtonStyle="ButtonStyle.Secondary"
+                                                              Size="ButtonSize.Small"
+                                                              Icon="domain_add"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <BillingConfigurationGrid @ref="billingConfigurationGrid"
+                                                                      DisplayAddButton="false"
+                                                                      BillingCustomerId="@_viewModel.InvoiceConfiguration.CustomerId"
+                                                                      InvoiceConfigurationId="@_viewModel.InvoiceConfiguration.Id"
+                                                                      InvalidBillingConfigurations="@_invalidBillingConfigurations"
+                                                                      IsInvoiceConfigurationCloned="@IsCloneInvoiceConfiguration"
+                                                                      ClonedBillingConfigurations="@_clonedBillingConfigurations"
+                                                                      ClonedInvoiceConfiguration="@_viewModel.InvoiceConfiguration"/>
+
+                                        </div>
+                                    </div>
+                                }
+                            </RadzenTabsItem>
+                            @if (!_viewModel.IsNew)
+                            {
+                                <RadzenTabsItem Text="Invoice Configuration History">
+                                    <TridentChangeDataGridWrapper Id="_viewModel.InvoiceConfiguration.Id"
+                                                                  EntityType="InvoiceConfiguration"
+                                                                  EntityName="Invoice Configuration"/>
+                                </RadzenTabsItem>
+                            }
+                        </Tabs>
+                    </RadzenTabs>
+                </div>
+                <div class="flex-grow-0 d-flex align-items-end justify-content-end p-4 footer-panel">
+                    <div class="d-flex gap-2">
+                        <RadzenLink Icon="close"
+                                    Path="@ReturnUrl"
+                                    Text="Close"
+                                    class="rz-button rz-button-md btn-secondary text-decoration-none active"/>
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                      ButtonType="ButtonType.Submit"
+                                      Text="@_viewModel.SubmitButtonText"
+                                      IsBusy="_isSaving"
+                                      BusyText="@_viewModel.SubmitButtonBusyText"
+                                      Disabled="@(SubmitButtonDisabled)"
+                                      Icon="@_viewModel.SubmitButtonIcon"/>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+    </LoadedView>
+</PageLoadingContainer>

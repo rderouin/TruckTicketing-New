@@ -1,0 +1,132 @@
+﻿@using Humanizer
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseTruckTicketingComponent
+@namespace SE.TruckTicketing.Client.Components.Accounts.Edit
+
+<section class="mb-5">
+    <header class="d-flex mb-3">
+        <h4 class="fw-bold flex-grow-1">Contact Info</h4>
+        <RadzenButton Click="@(args => OpenEditDialog())"
+                      Text="Add Contact"
+                      Class="flex-grow-0"
+                      Disabled="@(!HasAccountWritePermission)"
+                      ButtonStyle="ButtonStyle.Secondary"
+                      Size="ButtonSize.Small"
+                      Icon="contact_mail"/>
+    </header>
+
+    <GridFiltersContainer Expandable="@false"
+                          @ref="_gridFilterContainer"
+                          OnFilterChange="@(async criteria => await LoadAccountContacts(criteria))">
+        <div class="d-flex flex-grow-1 gap-3">
+            <KeywordFilter Label="Search"/>
+        </div>
+    </GridFiltersContainer>
+
+    <div class="grid-switch-container">
+        <PagableGridView @ref="grid"
+                         TModel="AccountContact"
+                         Results="@_accountContacts"
+                         EnablePaging="true"
+                         EnableSorting="true"
+                         EnableFilters="false"
+                         EnableSearch="false"
+                         OnDataLoad="LoadAccountContacts"
+                         GridPageSize="10"
+                         IsLoading="@_isLoading">
+            <Columns>
+                @if (IsEdit)
+                {
+                    <ColumnDefinition TItem="AccountContact"
+                                      Property="@nameof(AccountContact.IsActive)"
+                                      Width="4rem"
+                                      Title="Active"
+                                      PropertyType="typeof(bool)"
+                                      EnableSorting="false">
+                        <Template Context="context">
+                            <RadzenSwitch @bind-Value="context.IsActive"
+                                          class="grid-switch"
+                                          Disabled="true">
+                            </RadzenSwitch>
+                        </Template>
+                    </ColumnDefinition>
+                }
+                <ColumnDefinition TItem="AccountContact"
+                                  Property="@nameof(AccountContact.IsPrimaryAccountContact)"
+                                  Width="4rem"
+                                  Title="Primary"
+                                  PropertyType="typeof(bool)"
+                                  EnableSorting="false">
+                    <Template Context="context">
+                        @if (context.IsPrimaryAccountContact)
+                        {
+                            <RadzenIcon Icon="check"
+                                        class="align-content-center"/>
+                        }
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountContact"
+                                  Property="@nameof(AccountContact.Name)"
+                                  Title="First Name"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountContact"
+                                  Property="@nameof(AccountContact.LastName)"
+                                  Title="Last Name"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountContact"
+                                  FilterType="@nameof(SingleSelectDropDownFilter)"
+                                  FilterOptions="GetFilterOption(nameof(AccountContact.ContactFunctions))"
+                                  FilterEnabled="true"
+                                  Property="@nameof(AccountContact.ContactFunctions)"
+                                  Title="Function Type"
+                                  PropertyType="typeof(string)">
+                    <Template Context="data">
+                        @foreach (var functionType in data.ContactFunctions.OrderBy(x => x))
+                        {
+                            <RadzenBadge BadgeStyle="BadgeStyle.Primary"
+                                         IsPill="true"
+                                         Text="@functionType.Humanize()"/>
+                        }
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition 
+                    TItem="AccountContact"
+                    Title="Address"
+                    Property="@nameof(AccountContact.Address)"
+                    PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountContact"
+                                  Property="@nameof(AccountContact.PhoneNumber)"
+                                  Title="Phone Number"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountContact"
+                                  Property="@nameof(AccountContact.Email)"
+                                  Title="Email"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountContact"
+                                  Property="@nameof(AccountContact.ReferenceId)"
+                                  Title="Reference ID"
+                                  Width="6rem"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountContact"
+                                  Property="@nameof(AccountAddress)"
+                                  Title="Actions"
+                                  Width="5rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="() => OpenEditDialog(data)"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Small"
+                                      Text="Edit"/>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+
+</section>

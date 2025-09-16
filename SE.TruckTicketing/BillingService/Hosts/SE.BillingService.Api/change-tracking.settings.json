@@ -1,0 +1,23 @@
+﻿{
+  "ChangeTracking": {
+    "InvoiceConfigurationEntity": {
+      "MembersToInclude": [
+        "Name",
+        "IncludeExternalDocumentAttachment",
+        "IncludeInternalDocumentAttachment",
+        "CatchAll",
+        "SourceLocations",
+        "SourceLocationIdentifier",
+        "ServiceTypes",
+        "ServiceTypesName",
+        "Substances",
+        "SubstancesName",
+        "Facilities",
+        "FacilityCode",
+        "WellClassifications",
+        "SplittingCategories"
+      ],
+      "TrackAllFields": false
+    }
+  }
+}

@@ -1,0 +1,66 @@
+﻿@typeparam TCutParameters
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Client.Components.Validators
+@inherits BaseTruckTicketingComponent
+
+<div class="card-header px-0">
+    @(Title ?? "Weight (Tonnes)")
+</div>
+<br/>
+<TridentNumeric id="OilWeightNumeric"
+                Name="OilWeightNumeric"
+                TValue="double?"
+                MaxDecimalPlaces="2"
+                @bind-Value="@ViewModel.Oil.Weight"
+                Change="OnParameterChange"
+                Disabled="@(ViewModel.CutEntryMethod != CutEntryMethod.FixedValue || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"/>
+
+<TridentNullableNumericRangeValidator Component="OilWeightNumeric"
+                                      Min="0"
+                                      Text="Weight cannot be negative"
+                                      class="mt-1 text-danger validation-message"/>
+<br/>
+<TridentNumeric id="WaterWeightNumeric"
+                Name="WaterWeightNumeric"
+                TValue="double?"
+                MaxDecimalPlaces="2"
+                @bind-Value="@ViewModel.Water.Weight"
+                Change="OnParameterChange"
+                Disabled="@(ViewModel.CutEntryMethod != CutEntryMethod.FixedValue || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"/>
+
+<TridentNullableNumericRangeValidator Component="WaterWeightNumeric"
+                                      Min="0"
+                                      Text="Weight cannot be negative"
+                                      class="mt-1 text-danger validation-message"/>
+<br/>
+<TridentNumeric id="SolidsWeightNumeric"
+                Name="SolidsWeightNumeric"
+                TValue="double?"
+                MaxDecimalPlaces="2"
+                @bind-Value="@ViewModel.Solids.Weight"
+                Change="OnParameterChange"
+                Disabled="@(ViewModel.CutEntryMethod != CutEntryMethod.FixedValue || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"/>
+
+<TridentNullableNumericRangeValidator Component="SolidsWeightNumeric"
+                                      Min="0"
+                                      Text="Weight cannot be negative"
+                                      class="mt-1 text-danger validation-message"/>
+<hr class="text-muted"/>
+<div>
+    <RadzenNumeric id="TotalWeightNumeric"
+                   Name="TotalWeightNumeric"
+                   class="w-100"
+                   TValue="double?"
+                   Format="N2"
+                   ShowUpDown="false"
+                   Value="@ViewModel.Total.ComputedWeight"
+                   Disabled="true"/>
+
+    @if (ViewModel.IsTotalWeightInvalid)
+    {
+        <div class="mt-1 text-danger validation-message">
+            @ViewModel.InvalidTotalWeightMessage
+        </div>
+    }
+</div>
+<br/>

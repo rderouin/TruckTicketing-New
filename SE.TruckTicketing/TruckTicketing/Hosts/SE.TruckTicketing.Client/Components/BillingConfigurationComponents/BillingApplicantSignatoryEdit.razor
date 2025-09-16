@@ -1,0 +1,103 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+@namespace SE.TruckTicketing.Client.Components.BillingConfigurationComponents
+
+<EditForm Model="@signatoryContactModel"
+          OnValidSubmit="@HandleSubmit">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Signatory Contact"
+                                 Component="SignatoryContactDropdown"/>
+
+                    <RadzenDropDown TValue="Guid" 
+                                    Class="w-100"
+                                    id="SignatoryContactDropdown"
+                                    @bind-Value="signatoryContactModel.AccountContactId"
+                                    AllowClear = "true"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" 
+                                    AllowFiltering="true"
+                                    Placeholder="Select signatory..."
+                                    PageSize="10"
+                                    Count="@AccountContacts.Count"
+                                    TextProperty="@nameof(AccountContact.DisplayName)"
+                                    ValueProperty="@nameof(AccountContact.Id)"
+                                    Data="@AccountContacts?.OrderBy(x => x.Name)"
+                                    Change="@(args => OnChange(args))">
+                    </RadzenDropDown>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="First Name"
+                                 Component="FirstNameTextBox"/>
+                    <RadzenTextBox id="FirstNameTextBox"
+                                   @bind-Value="@signatoryContactModel.FirstName"
+                                   class="w-100"
+                                   Disabled="true"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Last Name"
+                                 Component="LastNameTextBox"/>
+                    <RadzenTextBox id="LastNameTextBox"
+                                   @bind-Value="@signatoryContactModel.LastName"
+                                   class="w-100"
+                                   Disabled="true"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Phone Number"
+                                 Component="PhoneNumberTextBox"/>
+                    <RadzenTextBox id="PhoneNumberTextBox"
+                                   @bind-Value="@signatoryContactModel.PhoneNumber"
+                                   class="w-100"
+                                   Disabled="true"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Address"
+                                 Component="AddressTextBox"/>
+                    <RadzenTextBox id="AddressTextBox"
+                                   @bind-Value="@signatoryContactModel.Address"
+                                   class="w-100"
+                                   Disabled="true"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Email"
+                                 Component="EmailTextBox"/>
+                    <RadzenTextBox id="EmailTextBox"
+                                   @bind-Value="@signatoryContactModel.Email"
+                                   class="w-100"
+                                   Disabled="true"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex">
+            <RadzenButton Click="@(args => CreateNewSignatory())"
+                          Text="Create New Signatory"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Size="ButtonSize.Small"
+                          Icon="contact_mail"/>
+        </div>
+        <div class="col d-flex justify-content-end">
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          Click="HandleCancel"/>
+
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Save"
+                          class="ml-2"
+                          Disabled="_isSaveDisabled"/>
+        </div>
+    </div>
+</EditForm>

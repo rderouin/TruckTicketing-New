@@ -1,0 +1,30 @@
+﻿.dual-list-box-container {
+    display: flex;
+}
+
+section {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+section:first-child {
+    margin-right: 8rem;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-50);
+}
+
+h3 {
+    flex-grow: 1;
+    font-size: 1rem;
+    font-weight: var(--typography-weight-bold);
+}
+
+::deep .dual-list-box {
+    flex-grow: 1;
+    overflow: auto;
+}

@@ -1,0 +1,30 @@
+@inherits GridFilterPanel
+@typeparam TItem
+
+<div class="position-absolute">
+    <form autocomplete="off" class="grid-filter-panel row @(Visible ? "" : "d-none")">
+        @foreach (var fragmentGroup in _filterRenderFragments)
+        {
+            @foreach (var fragment in fragmentGroup)
+            {
+                @fragment
+            }
+            <hr class="col-11" />
+        }
+
+        <br class="col-12" />
+
+        <div class="filter-btn-group">
+            <RadzenButton Id="main_Grid_Search" Click="@OnApplyFilters" ButtonType="ButtonType.Button">
+                    Apply
+            </RadzenButton> 
+            <RadzenButton Id="main_Grid_Search" Click="@OnCloseRequested" ButtonType="ButtonType.Button">
+                Close
+            </RadzenButton> 
+            <RadzenButton Id="main_Grid_Search" Click="@ClearAllFilters" ButtonType="ButtonType.Button">
+                Clear All Filters
+            </RadzenButton>
+        </div>
+    </form>
+</div>
+

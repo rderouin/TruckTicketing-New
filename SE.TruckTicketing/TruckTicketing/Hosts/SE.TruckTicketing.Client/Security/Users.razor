@@ -1,0 +1,56 @@
+@page "/access-management/user-profiles"
+@using SE.TruckTicketing.Contracts.Models.Accounts
+@inherits BaseRazorComponent
+
+
+<div class="pt-4 px-4">
+    <div class="bg-white pb-4">
+        <div class="d-flex align-items-center justify-content-between">
+            <h3 class="flex-grow-1">Manage User Profiles</h3>
+        </div>
+    </div>
+
+    <br/>
+</div>
+
+    <GridFiltersContainer Expandable="@false"
+                          @ref="_gridFiltersContainer"
+                          OnFilterChange="@(async criteria => await LoadData(criteria))">
+        <div class="d-flex flex-grow-1 gap-3">
+            <KeywordFilter Label="Search"
+                           Placeholder="Search by First Name, Last Name..."/>
+        </div>
+    </GridFiltersContainer>
+
+<div class="grid-switch-container px-4">
+    <PagableGridView TModel="UserProfile"
+                     Results="@_results"
+                     EnablePaging="true"
+                     EnableSorting="true"
+                     OnDataLoad="LoadData"
+                     EnableFilters="false"
+                     EnableSearch="false"
+                     IsLoading="_isLoading">
+        <Columns>
+            <ColumnDefinition TItem="UserProfile"
+                              Property="@nameof(UserProfile.DisplayName)"
+                              Title="Display Name"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="UserProfile"
+                              Property="@nameof(UserProfile.Email)"
+                              Title="Email Address"
+                              PropertyType="typeof(string)"/>
+            <ColumnDefinition TItem="UserProfile"
+                              Property="@nameof(UserProfile.Id)"
+                              Title="Actions"
+                              Width="245px">
+                <Template>
+                    <a href="/access-management/user-profiles/@context.Id"
+                       class="rz-button rz-button-sm btn-primary text-decoration-none">
+                        View
+                    </a>
+                </Template>
+            </ColumnDefinition>
+        </Columns>
+    </PagableGridView>
+</div>

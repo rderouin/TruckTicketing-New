@@ -1,0 +1,20 @@
+[
+  {
+    "Id": "3fe2abb0-aba6-4065-a8a6-b0c3690d580e",
+    "DocumentType": "EDIValidationPatternLookupEntity",
+    "EntityType": "EDIValidationPatternLookup",
+    "ErrorMessage": "only alphabets allowed",
+    "Name": "String Pattern",
+    "Pattern": "[a-zA-Z]",
+	"id": "EdiValidationPatternLookup|3fe2abb0-aba6-4065-a8a6-b0c3690d580e"
+  },
+  {
+    "Id": "970c2f87-1390-4e35-83ec-b9ba93255c74",
+    "DocumentType": "EDIValidationPatternLookupEntity",
+    "EntityType": "EDIValidationPatternLookup",
+    "ErrorMessage": "only numbers allowed",
+    "Name": "Numeric Pattern",
+    "Pattern": "[0-9]",
+	"id": "EdiValidationPatternLookup|970c2f87-1390-4e35-83ec-b9ba93255c74"
+  }
+]

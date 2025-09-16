@@ -1,0 +1,752 @@
+﻿@using SE.TruckTicketing.Contracts.Models
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.FacilityServices
+@using AccountTypes = SE.TruckTicketing.Contracts.Lookups.AccountTypes
+@inherits BaseRazorComponent
+
+<EditForm EditContext="@_editContext">
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="fw-bold">General Info</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Legal Entity"
+                             Component="LegalEntityDropDown"
+                             class="required"/>
+                <TridentApiDropDownDataGrid id="legalEntityDropDown"
+                                            TModel="LegalEntity"
+                                            TValue="Guid"
+                                            Placeholder="Select Legal Entity..."
+                                            @bind-Value="@Model.LegalEntityId"
+                                            TextProperty="@nameof(LegalEntity.Name)"
+                                            PageSize="10"
+                                            Disabled="@IsEditable"
+                                            OnItemSelect="OnLegalEntityChange"
+                                            OnDataLoading="HandleLegalEntityLoading">
+                    <Columns>
+                        <RadzenDropDownDataGridColumn Property="@nameof(LegalEntity.Code)"
+                                                      Title="Code"
+                                                      Width="100px"/>
+                        <RadzenDropDownDataGridColumn Property="@nameof(LegalEntity.Name)"
+                                                      Title="Name"/>
+                    </Columns>
+                </TridentApiDropDownDataGrid>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Facility"
+                             Component="FacilityDropDown"
+                             class="required"/>
+                <FacilityDropDown id="FacilityDropDown"
+                                  @ref="_facilityDropDown"
+                                  TValue="Guid"
+                                  Placeholder="Select facility..."
+                                  @bind-Value="@Model.FacilityId"
+                                  TextProperty="@nameof(Facility.Name)"
+                                  ValueProperty="@nameof(Facility.Id)"
+                                  PageSize="10"
+                                  Disabled="@IsEditable"
+                                  OnDataLoading="OnFacilityLoading"
+                                  OnItemSelect="OnFacilityChange"
+                                  OnItemLoad="OnFacilityLoad"
+                                  Class="w-100"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Well Classification"
+                             Component="WellClassificationDropdown"/>
+                <RadzenDropDown TValue="WellClassifications?"
+                                Class="w-100"
+                                id="WellClassificationDropdown"
+                                @bind-Value="@Model.WellClassification"
+                                Placeholder="Select well classification..."
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Data="@(DataDictionary.For<WellClassifications>())"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Description"
+                             Component="DescriptionTextBox"/>
+                <RadzenTextBox Name="DescriptionTextBox"
+                               @bind-Value="@Model.Description"
+                               Class="w-100"
+                               Placeholder="Enter description"/>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Secure Representative"
+                             Component="SecureRepresentativeTextBox"/>
+                <RadzenTextBox Name="DescriptionTextBox"
+                               @bind-Value="@Model.SecureRepresentative"
+                               Class="w-100"
+                               Disabled="true"
+                               Placeholder="Secure Representative"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Accumulated Tonnage (T)"
+                             Component="AccumulatedTonnageTextBox"/>
+                <RadzenNumeric ShowUpDown="false"
+                               TValue="double"
+                               Format="N2"
+                               @bind-Value="@(Model.AccumulatedTonnage)"
+                               Name="AccumulatedTonnageTextBox"
+                               Disabled="true"
+                               Class="w-100"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="WLAF (WiQ Landfill Application) Number"
+                             Component="WLAFNumberTextBox"/>
+                <RadzenTextBox Name="WLAFNumberTextBox"
+                               @bind-Value="@Model.WLAFNumber"
+                               Class="w-100"
+                               Disabled="false"
+                               Placeholder="WLAF-#####"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="fw-bold">Source Info</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <div class="d-flex align-items-center justify-content-between">
+                    <RadzenLabel Text="Source Location"
+                                 Component="SourceLocationDropDown"
+                                 class="required"/>
+
+                        @if (!IsEditable)
+                        {
+                            <a href="#"
+                               @onclick="@OnCreateSourceLocation"
+                               @onclick:preventDefault="true"
+                               @onclick:stopPropagation="true"
+                               class="text-decoration-none float-end rz-label">
+                                NEW
+                            </a>
+                        }
+                </div>
+                <SourceLocationDropDown id="SourceLocationDropDown"
+                                        @ref="_sourceLocationDropDown"
+                                        TValue="Guid"
+                                        Placeholder="Select source location"
+                                        @bind-Value="@Model.SourceLocationId"
+                                        ValueProperty="@nameof(SourceLocation.Id)"
+                                        PageSize="10"
+                                        Disabled="@IsEditable"
+                                        OnItemSelect="OnSourceLocationChange"
+                                        OnDataLoading="@HandleSourceLocationLoading"
+                                        OnItemLoad="OnSourceLocationLoad"/>
+            </div>
+
+            @if (_facility?.ShowSourceRegion ?? false)
+            {
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Source Region"
+                                 Component="SourceRegionDropDown"/>
+                    <RadzenDropDown TValue="SourceRegionEnum"
+                                    Class="w-100"
+                                    id="SourceRegionDropDown"
+                                    @bind-Value="@Model.SourceRegion"
+                                    Placeholder="Select Source Region"
+                                    TextProperty="Value"
+                                    ValueProperty="Key"
+                                    Data="@(DataDictionary.For<SourceRegionEnum>())"/>
+                </div>
+            }
+
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Generator"
+                             Component="GeneratorDropDown"/>
+                <RadzenTextBox Name="GeneratorTextBox"
+                               @bind-Value="@Model.GeneratorName"
+                               Class="w-100"
+                               Disabled="true"
+                               Placeholder="Generator"/>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <div class="d-flex align-items-center justify-content-between">
+                    <RadzenLabel Text="Generator Representative"
+                                 Component="GeneratorRepDropDown"/>
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Icon="domain_add"
+                                  Disabled="@(Model.GeneratorId == default)"
+                                      Click="@(args => OpenContactEditDialog(Model.GeneratorId, AccountContactFunctions.GeneratorRepresentative.ToString(),AccountTypes.Generator))"
+                                  Text="Add Generator Representative"
+                                  Class="mb-1"/>
+                </div>
+                <RadzenDropDown Name="GeneratorRepDropDown"
+                                @bind-Value="@Model.GeneratorRepresenativeId"
+                                Placeholder="Select generator representative"
+                                TextProperty="@nameof(AccountContact.Name)"
+                                ValueProperty="@nameof(AccountContact.Id)"
+                                Class="w-100"
+                                Change="OnGeneratorRepDropdownChange"
+                                Data="_generatorRepDropDownData">
+                    <Template Context="data">
+                        @($"{(data as AccountContact)?.Name} {(data as AccountContact)?.LastName}")
+                    </Template>
+                </RadzenDropDown>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h4 class="fw-bold">3rd Party Company</h4>
+        <div class="d-flex gap-2 align-items-center">
+            <div class="d-flex gap-2 align-items-center">
+                <RadzenLabel Text="Receive Load Summary"
+                             Component="ThirdPartyCompanyReceiveLoadSummary"
+                             class="m-0"/>
+                <RadzenSwitch id="ThirdPartyCompanyReceiveLoadSummary"
+                              @bind-Value="@Model.ThirdPartyAnalyticalContactReceiveLoadSummary"/>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column justify-content-between">
+                <div class="d-flex align-items-center justify-content-between">
+                    <RadzenLabel Text="3rd Party Company"
+                                 Component="ThirdPartyCompanyDropDown"/>
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Icon="domain_add"
+                                  Text="Add 3rd Party Account"
+                                  Click="@(args => OnCreateNewAccount(AccountTypes.ThirdPartyAnalytical))"
+                                  Class="mb-1"/>
+                </div>
+                <AccountsDropDown id="ThirdPartyCompanyDropDown"
+                                  @ref="ThirdPartyCompanyDropDown"
+                                  TValue="Guid"
+                                  AccountType="@AccountTypes.ThirdPartyAnalytical"
+                                  Placeholder="Select 3rd party company..."
+                                  @bind-Value="@Model.ThirdPartyAnalyticalCompanyId"
+                                  TextProperty="@nameof(Account.Name)"
+                                  ValueProperty="@nameof(Account.Id)"
+                                  PageSize="10"
+                                  OnItemSelect="OnThirdPartyDropdownChange"
+                                  OnItemLoad="OnThirdPartyDropdownLoad"
+                                  OnDataLoading="@HandleThirdPartyCompanyLoading"/>
+            </div>
+            <div class="col d-flex flex-column justify-content-between">
+                <div class="d-flex align-items-center justify-content-between">
+                    <RadzenLabel Text="3rd Party Company Contact"
+                                 Component="ThirdPartyCompanyContactDropDown"/>
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Icon="domain_add"
+                                  Disabled="@(Model.ThirdPartyAnalyticalCompanyId == default)"
+                                      Click="@(args => OpenContactEditDialog(Model.ThirdPartyAnalyticalCompanyId, AccountContactFunctions.ThirdPartyContact.ToString(),AccountTypes.ThirdPartyAnalytical))"
+                                  Text="Add 3rd Party Contact"
+                                  Class="mb-1"/>
+                </div>
+
+                <RadzenDropDown TValue="Guid?"
+                                Placeholder="Select 3rd party company contact..."
+                                AllowClear="true"
+                                AllowFiltering="true"
+                                Class="w-100"
+                                id="ThirdPartyCompanyContactDropDown"
+                                @ref="ThirdPartyCompanyContactDropDown"
+                                @bind-Value="@Model.ThirdPartyAnalyticalCompanyContactId"
+                                Data="@_thirdPartyCompanyContacts?.OrderBy(x => x.Name)"
+                                TextProperty="@nameof(AccountContact.Name)"
+                                ValueProperty="@nameof(AccountContact.Id)"
+                                Change="@(args => OnThirdPartyContactChange(args))">
+                    <Template Context="data">
+                        @($"{(data as AccountContact)?.Name} {(data as AccountContact)?.LastName}")
+                    </Template>
+                </RadzenDropDown>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h4 class="fw-bold required">Billing Customer Info</h4>
+        <div class="d-flex gap-2 align-items-center">
+
+            <div class="d-flex gap-2 align-items-center">
+                <RadzenLabel Text="Receive Load Summary"
+                             Component="BillingCustomerReceiveLoadSummary"
+                             class="m-0"/>
+                <RadzenSwitch id="BillingCustomerReceiveLoadSummary"
+                              @bind-Value="@Model.BillingCustomerContactReceiveLoadSummary"/>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column justify-content-between">
+                <div class="d-flex align-items-center justify-content-between">
+                    <RadzenLabel Text="Billing Customer"
+                                 Component="BillingCustomerDropDown"
+                                 class="required"/>
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Icon="domain_add"
+                                  Text="Add Billing Account"
+                                  Class="mb-1"
+                                  Click="@(args => OnCreateNewAccount(AccountTypes.Customer))"/>
+                </div>
+
+                <AccountsDropDown id="BillingCustomerDropDown"
+                                  @ref="BillingCustomerDropDown"
+                                  TValue="Guid"
+                                  AccountType="@AccountTypes.Customer"
+                                  Placeholder="Select billing customer..."
+                                  @bind-Value="@Model.BillingCustomerId"
+                                  TextProperty="@nameof(Account.Name)"
+                                  ValueProperty="@nameof(Account.Id)"
+                                  PageSize="10"
+                                  OnItemSelect="OnBillingCustomerDropdownChange"
+                                  OnItemLoad="OnBillingCustomerDropdownLoad"
+                                  OnDataLoading="@HandleCustomerLoading"/>
+            </div>
+            <div class="col d-flex flex-column justify-content-between">
+                <div class="d-flex align-items-center justify-content-between">
+                    <RadzenLabel Text="Billing Customer Contact"
+                                 Component="BillingCustomerContactDropDown"
+                                 class="required"/>
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Text="Add Billing Contact"
+                                  Icon="domain_add"
+                                  Click="@(args => OpenContactEditDialog(Model.BillingCustomerId, AccountContactFunctions.BillingContact.ToString(),AccountTypes.Customer))"
+                                  Class="mb-1"
+                                  Disabled="@(Model.BillingCustomerId == default)"/>
+                </div>
+                <RadzenDropDown TValue="Guid?"
+                                @ref="BillingCustomerContactDropDown"
+                                Placeholder="Select billing customer contact..."
+                                AllowClear="true"
+                                AllowFiltering="true"
+                                Class="w-100"
+                                id="BillingCustomerContactDropDown"
+                                @bind-Value="@Model.BillingCustomerContactId"
+                                Data="@_billingCustomerContacts"
+                                TextProperty="@nameof(AccountContact.Name)"
+                                ValueProperty="@nameof(AccountContact.Id)"
+                                Change="@(args => OnBillingCustomerContactChange(args))">
+                    <Template Context="data">
+                        @($"{(data as AccountContact)?.Name} {(data as AccountContact)?.LastName}")
+                    </Template>
+                </RadzenDropDown>
+            </div>
+            <div class="col d-flex flex-column justify-content-between">
+                <div class="d-flex align-items-center flex-grow-1">
+                    <RadzenLabel Text="Billing Customer Contact Address"
+                                 Component="BillingCustomerContactAddressTextBox"/>
+                </div>
+                <RadzenTextBox id="BillingContactTextBox"
+                               @bind-Value="@Model.BillingCustomerContactAddress"
+                               class="w-100"
+                               Disabled="true"/>
+            </div>
+        </div>
+    </div>
+</div>
+    <ApplicantSignatoryGrid ApplicantSignatories="@Model.ApplicantSignatories"
+                            AccountContactList="@_signatoryContacts"
+                        ReceiveLoadSummaryChange="UpdateApplicantSignatoryReceiveLoadSummary"
+                        ApplicantSignatoryDeleted="ApplicantSignatoryDeleted"
+                        NewApplicantSignatoryAdded="AddNewApplicantSignatory"/>
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h4 class="fw-bold">Trucking Company</h4>
+        <div class="d-flex gap-2 align-items-center">
+
+            <div class="d-flex gap-2 align-items-center">
+                <RadzenLabel Text="Receive Load Summary"
+                             Component="TruckingCompanyReceiveLoadSummary"
+                             class="m-0"/>
+                <RadzenSwitch id="TruckingCompanyReceiveLoadSummary"
+                              @bind-Value="@Model.TruckingCompanyContactReceiveLoadSummary"/>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column justify-content-between">
+                <div class="d-flex align-items-center justify-content-between">
+                    <RadzenLabel Text="Trucking Company"
+                                 Component="TruckingCompanyDropDown"/>
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Icon="domain_add"
+                                  Text="Add Trucking Account"
+                                  Class="mb-1"
+                                  Click="@(args => OnCreateNewAccount(AccountTypes.TruckingCompany))"/>
+                </div>
+                <AccountsDropDown id="TruckingCompanyDropDown"
+                                  @ref="TruckingCompanyDropDown"
+                                  TValue="Guid"
+                                  AccountType="@AccountTypes.TruckingCompany"
+                                  Placeholder="Select trucking company..."
+                                  @bind-Value="@Model.TruckingCompanyId"
+                                  TextProperty="@nameof(Account.Name)"
+                                  ValueProperty="@nameof(Account.Id)"
+                                  PageSize="10"
+                                  OnItemSelect="OnTruckingCompanyDropdownChange"
+                                  OnDataLoading="@HandleTruckingCompanyLoading"
+                                  OnItemLoad="OnTruckingCompanyDropdownLoad"/>
+            </div>
+            <div class="col d-flex flex-column justify-content-between">
+                <div class="d-flex align-items-center justify-content-between">
+                    <RadzenLabel Text="Trucking Company Contact"
+                                 Component="TruckingCompanyContactDropDown"/>
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                                  Size="ButtonSize.Small"
+                                  Icon="domain_add"
+                                  Disabled="@(Model.TruckingCompanyId == default)"
+                                      Click="@(args => OpenContactEditDialog(Model.TruckingCompanyId, null,AccountTypes.TruckingCompany))"
+                                  Text="Add Trucking Company Contact"
+                                  Class="mb-1"/>
+                </div>
+
+                <RadzenDropDown TValue="Guid?"
+                                Placeholder="Select trucking company contact..."
+                                AllowClear="true"
+                                AllowFiltering="true"
+                                Class="w-100"
+                                id="TruckingCompanyContactDropDown"
+                                @ref="TruckingCompanyContactDropDown"
+                                Value="@Model.TruckingCompanyContactId"
+                                Data="@_truckingCompanyContacts?.OrderBy(x => x.Name)"
+                                TextProperty="@nameof(AccountContact.Name)"
+                                ValueProperty="@nameof(AccountContact.Id)"
+                                Change="@(args => OnTruckingCompanyContactChange(args))">
+                    <Template Context="data">
+                        @($"{(data as AccountContact)?.Name} {(data as AccountContact)?.LastName}")
+                    </Template>
+                </RadzenDropDown>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="fw-bold">Product Info</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Facility Service"
+                             Component="FacilityServiceDropDown"
+                             class="required"/>
+                <TridentApiDropDownDataGrid @ref="_facilityServiceDropDown"
+                                            TValue="Guid?"
+                                            Name="FacilityServiceDropDown"
+                                            TModel="FacilityServiceSubstanceIndex"
+                                            ValueProperty="@nameof(FacilityServiceSubstanceIndex.Id)"
+                                            TextProperty="@nameof(FacilityServiceSubstanceIndex.FacilityServiceNumber)"
+                                            @bind-Value="@Model.FacilityServiceSubstanceIndexId"
+                                            OnDataLoading="@OnFacilityServiceLoading"
+                                            class="w-100"
+                                            PageSize="10"
+                                            OnItemSelect="@HandleFacilityServiceChange"
+                                            Placeholder="Select a facility service / substance...">
+                    <Columns>
+                        <RadzenDropDownDataGridColumn Property="@nameof(FacilityServiceSubstanceIndex.FacilityServiceNumber)"
+                                                      Title="Facility Service Number"
+                                                      Width="100px"/>
+                        <RadzenDropDownDataGridColumn Property="@nameof(FacilityServiceSubstanceIndex.ServiceTypeName)"
+                                                      Title="Service Type"
+                                                      Width="100px"/>
+                        <RadzenDropDownDataGridColumn Property="@nameof(FacilityServiceSubstanceIndex.Substance)"
+                                                      Title="Substance"
+                                                      Width="100px"/>
+                        <RadzenDropDownDataGridColumn Property="@nameof(FacilityServiceSubstanceIndex.WasteCode)"
+                                                      Title="Waste Code"
+                                                      Width="100px"/>
+                    </Columns>
+                </TridentApiDropDownDataGrid>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Service Name"
+                             Component="ServiceNameTextBox"
+                             class="required"/>
+                <RadzenTextBox Name="ServiceNameTextBox"
+                               @bind-Value="@Model.FacilityServiceName"
+                               Class="w-100"
+                               Disabled="true"/>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Substance"
+                             Component="SubstanceTextBox"/>
+
+                <RadzenTextBox Name="SubstanceTextBox"
+                               @bind-Value="@Model.SubstanceName"
+                               Disabled="@true"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Waste Code"
+                             Component="WasteCodeTextBox"/>
+
+                <RadzenTextBox Name="SubstanceTextBox"
+                               @bind-Value="@Model.WasteCodeName"
+                               Disabled="@true"/>
+            </div>
+            @if (_facility?.ShowHazNonHaz ?? false)
+            {
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Hazard State"
+                                 Component="HazardStateDropDown"/>
+                    <RadzenDropDown TValue="HazardousClassification"
+                                    Class="w-100"
+                                    id="HazardStateDropDown"
+                                    @bind-Value="@Model.HazardousNonhazardous"
+                                    Placeholder="Select hazardous state..."
+                                    TextProperty="Value"
+                                    ValueProperty="Key"
+                                    Data="@(DataDictionary.For<HazardousClassification>())"/>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h4 class="fw-bold">Additional Service</h4>
+        <div class="d-flex gap-2 align-items-center">
+            <div class="d-flex gap-2 align-items-center">
+                <RadzenLabel Text="Additional Service"
+                             Component="AdditionalServiceAddedSwitch"
+                             class="m-0"/>
+                <RadzenSwitch id="AdditionalServiceAddedSwitch"
+                              @bind-Value="@Model.AdditionalServiceAdded"/>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Additional Service"
+                             Component="AdditionalServiceDropDown"/>
+
+                <ProductDropDown id="AdditionalServiceDropDown"
+                                 @ref="_additionalServiceDropDown"
+                                 TValue="Guid"
+                                 Placeholder="Select Additional Service..."
+                                 @bind-Value="@Model.AdditionalService"
+                                 TextProperty="@nameof(Product.Name)"
+                                 ValueProperty="@nameof(Product.Id)"
+                                 PageSize="10"
+                                 OnItemSelect="OnAdditionalServiceChange"
+                                 OnDataLoading="LoadAdditionalServices"
+                                 class="w-100"
+                                 Disabled="!Model.AdditionalServiceAdded"/>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-bold">Analytical Info</h4>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6 d-flex flex-column">
+                <div class="d-flex align-content-center">
+                    <RadzenLabel Text="Analytical Expiry Date"
+                                 Component="AnalyticalExpiryDatePicker"
+                                 class="required"/>
+                    <small class="px-2 text-muted small-grey-label">MM/dd/yyyy</small>
+                </div>
+                <RadzenDatePicker TValue="DateTimeOffset?"
+                                  id="AnalyticalExpiryDatePicker"
+                                  DateFormat="MM/dd/yyyy"
+                                  Class="w-100"
+                                  @bind-Value="@Model.AnalyticalExpiryDate"/>
+            </div>
+            <div class="col-6 d-flex flex-column">
+                <div class="d-flex align-content-center">
+                    <RadzenLabel Text="Analytical Expiry Date(Previous)"
+                                 Component="AnalyticalExpiryPreviousDatePicker"/>
+                </div>
+                <RadzenDatePicker TValue="DateTimeOffset?"
+                                  id="AnalyticalExpiryPreviousDatePicker"
+                                  DateFormat="MM/dd/yyyy"
+                                  Class="w-100"
+                                  @bind-Value="@Model.AnalyticalExpiryDatePrevious"
+                                  Disabled="true"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Analytical Failed"
+                             Component="AnalyticalFailedSwitch"
+                             class="m-0"/>
+                <RadzenSwitch Name="AnalyticalFailedSwitch"
+                              @bind-Value="@Model.AnalyticalFailed"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Analytical Expiry Email Alerts"
+                             Component="AnalyticalExpiryEmailSwitch"
+                             class="m-0"/>
+                <RadzenSwitch Name="AnalyticalExpiryEmailSwitch"
+                              @bind-Value="@Model.AnalyticalExpiryEmailActive"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Analytical Expiry Alert"
+                             Component="AnalyticalExpiryAlertSwitch"
+                             class="m-0"/>
+                <RadzenSwitch Name="AnalyticalExpiryAlertSwitch"
+                              @bind-Value="@Model.AnalyticalExpiryAlertActive"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h4 class="fw-bold">Other Info</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="LAB ID NUMBER"
+                             Component="LabIdNumberLabel"/>
+                <RadzenTextBox Name="LabIdNumberTextBox"
+                               @bind-Value="@Model.LabIdNumber"
+                               Class="w-100"
+                               Placeholder="Lab ID Number..."
+                               MaxLength="50"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="RIG NUMBER"
+                             Component="RigNumberLabel"/>
+                <RadzenTextBox Name="RigNumberTextBox"
+                               @bind-Value="@Model.RigNumber"
+                               Class="w-100"
+                               Placeholder="Rig Number..."
+                               MaxLength="50"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="TENORM WASTE HAULER PERMIT #"
+                             Component="TenormWasteHaulerPermitNumberLabel"/>
+                <RadzenTextBox Name="TenormWasteHaulerPermitNumberTextBox"
+                               @bind-Value="@Model.TenormWasteHaulerPermitNumber"
+                               Class="w-100"
+                               Disabled="@_enableOnLegalEntityCA"
+                               Placeholder="Tenorm Waste Hauler Permit #..."
+                               MaxLength="50"/>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <div class="d-flex align-content-center">
+                    <RadzenLabel Text="SIGNATURE DATE"
+                                 Component="SignatureDateLabel"/>
+                    <small class="px-2 text-muted small-grey-label">MM/dd/yyyy</small>
+                </div>
+                <RadzenDatePicker TValue="DateTimeOffset?"
+                                  id="SignatureDatePicker"
+                                  DateFormat="MM/dd/yyyy"
+                                  Class="w-100"
+                                  @bind-Value="@Model.SignatureDate"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="DISPOSAL UNITS"
+                             Component="DisposalUnitsLabel"/>
+                <RadzenTextBox Name="DisposalUnitsTextBox"
+                               @bind-Value="@Model.DisposalUnits"
+                               Class="w-100"
+                               Placeholder="Disposal Units..."
+                               Disabled="true"/>
+            </div>
+            <div class="col d-flex gap-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="ACTIVATE AUTOFILL TARE WEIGHT"
+                                 Component="ActivateAutoFillTareWeightLabel"
+                                 class="m-1"/>
+                    <RadzenSwitch id="ActivateAutoFillTareWeightSwitch"
+                                  @bind-Value="@Model.ActivateAutofillTareWeight"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Enable End of Job Invoicing"
+                                 Component="EndOfJobInvoicingSwitch"
+                                 class="m-1"/>
+                    <RadzenSwitch id="EndOfJobInvoicingSwitch"
+                                  @bind-Value="@Model.EnableEndOfJobInvoicing"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center grid-switch-container">
+        <h4 class="fw-bold">Scale Operator Notes </h4>
+        <div class="d-flex gap-2 align-items-center">
+            <div class="d-flex gap-2 align-items-center">
+                <RadzenLabel Text="Include Supporting Document Link"
+                             Component="IncludeSupportingDocLinkSwitch"
+                             class="m-0"/>
+                <RadzenSwitch Name="IncludeSupportingDocLinkSwitch"
+                              @bind-Value="@Model.IncludeSupportingDocLink"
+                              class="form-switch small">
+                </RadzenSwitch>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Notes"
+                             Component="NotesTextBox"/>
+                <RadzenTextArea Name="NotesTextBox"
+                                @bind-Value="@Model.ScaleOperatorNotes"
+                                Class="w-100"
+                                Placeholder="Enter notes"/>
+            </div>
+        </div>
+        @if (Model.IncludeSupportingDocLink)
+        {
+            <div class="row mb-3">
+                <div class="col d-flex flex-row">
+                    <RadzenLabel Text="Supporting Document Link"
+                                 Component="SupportingDocLinkTextBox"/>
+                    <RadzenTextArea Name="SupportingDocLinkTextBox"
+                                    @bind-Value="@Model.SupportingDocLink"
+                                    Class="w-100"
+                                    Placeholder="Enter supporting doc link"
+                                    Rows="1"/>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+</EditForm>

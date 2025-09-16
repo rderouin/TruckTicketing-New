@@ -1,0 +1,110 @@
+@using SE.TruckTicketing.Client.Components.SalesManagement
+@inherits BaseTruckTicketingComponent
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        @if (ShowDetailInTitle)
+        {
+            <RadzenLink Path="@string.Concat("/load-confirmations/load-confirmation/", Model.Number)"
+                    Text="@Model.Number"
+                    Target="_blank"
+                    class="sales-link" />
+            <div class="d-flex gap-2 rz-label m-0">@Model.Status</div>
+        }
+        else
+        {
+            <h4 class="fw-bold">General Info</h4>
+        }
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Invoice Number"
+                             Component="InvoiceNumberTextBox"/>
+                <RadzenTextBox Id="InvoiceNumberTextBox"
+                               @bind-Value="@Model.InvoiceNumber"
+                               Class="w-100"
+                               Disabled="true"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Customer"
+                             Component="CustomerTextBox"/>
+                <RadzenTextBox Id="CustomerTextBox"
+                               @bind-Value="@Model.BillingCustomerName"
+                               Class="w-100"
+                               Disabled="true"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Billing Configuration Name"
+                             Component="BillingConfigurationNameTextBox" />
+                <RadzenTextBox Id="BillingConfigurationNameTextBox"
+                               @bind-Value="@Model.BillingConfigurationName"
+                               Class="w-100"
+                               Disabled="true" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Facility"
+                             Component="FacilityTextBox"/>
+                <RadzenTextBox Id="FacilityTextBox"
+                               @bind-Value="@Model.FacilityName"
+                               Class="w-100"
+                               Disabled="true"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Total Sales Lines"
+                             Component="SalesLinesCountNumeric"/>
+                <RadzenNumeric Id="SalesLinesCountNumeric"
+                               Value="@Model.SalesLineCount"
+                               Class="w-100"
+                               ShowUpDown="false"
+                               Disabled="true"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Total Cost ($)"
+                             Component="STotalCostNumeric"/>
+                <RadzenNumeric Id="TotalCostNumeric"
+                               Value="@Model.TotalCost"
+                               Format="C2"
+                               Class="w-100"
+                               ShowUpDown="false"
+                               Disabled="true"/>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Start Date"
+                             Component="StartDatePicker" />
+                <RadzenDatePicker TValue="DateTimeOffset"
+                                  id="StartDatePicker"
+                                  DateFormat="MM/dd/yyyy"
+                                  Class="w-100"
+                                  @bind-Value="@Model.StartDate"
+                                  Disabled="true" />
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="End Date"
+                             Component="EndDateTextBox" />
+                 <RadzenDatePicker TValue="DateTimeOffset?"
+                                  id="EndDatePicker"
+                                  DateFormat="MM/dd/yyyy"
+                                  Class="w-100"
+                                  @bind-Value="@Model.EndDate"
+                                  Disabled="true" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (!HideSalesLines)
+{
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h4 class="fw-bold">Sales Lines</h4>
+        </div>
+        <div class="card-body">
+            <SalesManagementGrid BeforeDataLoad="@BeforeLoadingSalesLines"/>
+        </div>
+    </div>
+}

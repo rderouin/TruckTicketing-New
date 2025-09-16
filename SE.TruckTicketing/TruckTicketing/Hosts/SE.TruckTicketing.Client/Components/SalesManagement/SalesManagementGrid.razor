@@ -1,0 +1,277 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Lookups
+@inherits BaseTruckTicketingComponent
+
+<style>
+    .lc-scroll {
+        overflow: auto;
+        position: absolute;
+        max-width: 97vw;
+        top: 50px;
+        bottom: 50px;
+</style>
+
+<div class="grid-switch-container">
+<PagableGridView TModel="SalesLine"
+                 Results="@_results"
+                 OnDataLoad="@LoadSalesLines"
+                 GridPageSize="10"
+                 EnableSorting="true"
+                 EnableFilters="false"
+                 EnableSearch="false"
+                 EnablePaging="true"
+                 IsLoading="_isLoading"
+                 @ref="_grid"
+                 ColumnWidth="150px"
+                 SelectionMode="DataGridSelectionMode.Multiple"
+                 EnableMultiLineSelect="true"
+                 ChildStateChange="@ChildStateChange"
+                 RowClick="@ChildStateChange"
+                 class="mb-2 lc-scroll">
+<Columns>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.SalesLineNumber)"
+                  Title="ID"
+                  SortOrder="@SortOrder.Ascending"
+                  Frozen="true"
+                  PropertyType="typeof(string)">
+    <Template Context="data">
+        <span>
+            <a href="#"
+               @onclick="@(() => OpenSalesLineDialog(data.Id))"
+               @onclick:preventDefault="true"
+               @onclick:stopPropagation="true"
+               class="text-decoration-none rz-link">
+                @data.SalesLineNumber
+            </a>
+        </span>
+    </Template>
+</ColumnDefinition>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.TruckTicketNumber)"
+                  Frozen="true"
+                  Title="Ticket Number">
+    <Template Context="data">
+        <span>
+            <a href="#"
+               @onclick="@(() => OpenTruckTicketDialog(data.TruckTicketId))"
+               @onclick:preventDefault="true"
+               @onclick:stopPropagation="true"
+               class="text-decoration-none rz-link">
+                @data.TruckTicketNumber
+            </a>
+        </span>
+    </Template>
+</ColumnDefinition>
+
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.TruckTicketDate)"
+                  Title="Date"
+                  PropertyType="typeof(DateTimeOffset)">
+    <Template Context="context">
+        @context.TruckTicketDate.Date.ToString("MM/dd/yyyy")
+    </Template>
+</ColumnDefinition>
+
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.Status)"
+                  Title="Status">
+    <Template Context="data">
+        <div class="d-flex align-items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="currentColor"
+                 width="10"
+                 height="10"
+                 viewBox="0 0 16 16"
+                 class="@GetStatusLineStyle(data.Status)">
+                <circle cx="8"
+                        cy="8"
+                        r="4"/>
+            </svg>
+            <span>@data.Status</span>
+        </div>
+    </Template>
+</ColumnDefinition>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.AttachmentIndicatorType)"
+                  Title="Attachments">
+    <Template Context="data">
+        <div class="d-flex align-items-center gap-1">
+            <RadzenIcon Icon="@(data.AttachmentIndicatorType == AttachmentIndicatorType.InternalExternal ? "check_circle" : "cancel")"
+                        class="@(GetAttachmentStyle(data.AttachmentIndicatorType))"/>
+            <span>
+                <a href="#"
+                   @onclick="@(() => OpenAttachmentsModal(data))"
+                   @onclick:preventDefault="true"
+                   @onclick:stopPropagation="true"
+                   class="text-decoration-none rz-link">
+                    View
+                </a>
+            </span>
+        </div>
+    </Template>
+</ColumnDefinition>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.ProformaInvoiceNumber)"
+                  Title="Invoice">
+    <Template Context="data">
+        <span>
+            <a href="#"
+               @onclick="@(() => OpenInvoiceDialog(data.InvoiceId ?? default))"
+               @onclick:preventDefault="true"
+               @onclick:stopPropagation="true"
+               class="text-decoration-none rz-link">
+                @data.ProformaInvoiceNumber
+            </a>
+        </span>
+    </Template>
+</ColumnDefinition>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.LoadConfirmationNumber)"
+                  Title="Load Confirmation">
+    <Template Context="data">
+        <span>
+            <a href="#"
+               @onclick="@(() => OpenLoadConfirmationDialog(data.LoadConfirmationId ?? default))"
+               @onclick:preventDefault="true"
+               @onclick:stopPropagation="true"
+               class="text-decoration-none rz-link">
+                @data.LoadConfirmationNumber
+            </a>
+        </span>
+    </Template>
+</ColumnDefinition>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.SourceLocationFormattedIdentifier)"
+                  Title="Source Location">
+    <Template Context="data">
+        <span>
+            <a href="#"
+               @onclick="@(() => OpenSourceLocationDialog(data.SourceLocationId))"
+               @onclick:preventDefault="true"
+               @onclick:stopPropagation="true"
+               class="text-decoration-none rz-link">
+                @data.SourceLocationFormattedIdentifier
+            </a>
+        </span>
+    </Template>
+</ColumnDefinition>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.CustomerName)"
+                  Title="Customer">
+    <Template Context="data">
+        <span>
+            <a href="#"
+               @onclick="@(() => OpenCustomerDialog(data.CustomerId))"
+               @onclick:preventDefault="true"
+               @onclick:stopPropagation="true"
+               class="text-decoration-none rz-link">
+                @data.CustomerName
+            </a>
+        </span>
+    </Template>
+</ColumnDefinition>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.GeneratorName)"
+                  Title="Generator">
+    <Template Context="data">
+        <span>
+            <a href="#"
+               @onclick="@(() => OpenGeneratorDialog(data.GeneratorId))"
+               @onclick:preventDefault="true"
+               @onclick:stopPropagation="true"
+               class="text-decoration-none rz-link">
+                @data.GeneratorName
+            </a>
+        </span>
+    </Template>
+</ColumnDefinition>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.BillingConfigurationName)"
+                  Title="Billing Configuration">
+    <Template Context="data">
+        @if (data.BillingConfigurationId != null && data.BillingConfigurationId != Guid.Empty)
+        {
+            <span>
+                <a href="#"
+                   @onclick="@(() => OpenBillingConfigurationDialog(data.BillingConfigurationId, data.CustomerId))"
+                   @onclick:preventDefault="true"
+                   @onclick:stopPropagation="true"
+                   class="text-decoration-none rz-link">
+                    @data.BillingConfigurationName
+                </a>
+            </span>
+        }
+        else
+        {
+            @data.BillingConfigurationName
+        }
+    </Template>
+</ColumnDefinition>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.EDIFieldsValueString)"
+                  Title="EDI Coding"
+                  PropertyType="typeof(string)"/>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.IsEdiValid)"
+                  Title="Valid EDI">
+    <Template Context="data">
+        <div class="d-flex justify-content-center">
+            @if (data.IsEdiValid)
+            {
+                <RadzenIcon Icon="check_circle"
+                            class="text-success"/>
+            }
+            else
+            {
+                <RadzenIcon Icon="cancel"
+                            class="text-danger"/>
+            }
+        </div>
+    </Template>
+</ColumnDefinition>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.FacilitySiteId)"
+                  Title="Facility"
+                  PropertyType="typeof(string)"/>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.WellClassification)"
+                  Title="Well Classification"
+                  PropertyType="typeof(string)"/>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.ProductName)"
+                  Title="Product"
+                  PropertyType="typeof(string)"/>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.Rate)"
+                  Title="Rate ($)"
+                  PropertyType="typeof(double)"/>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.Quantity)"
+                  Title="Quantity"
+                  PropertyType="typeof(double)">
+    <Template Context="context">
+        @context.Quantity.ToString("0.00") 
+    </Template>
+</ColumnDefinition>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.UnitOfMeasure)"
+                  Title="UoM"
+                  PropertyType="typeof(string)"/>
+<ColumnDefinition TItem="SalesLine"
+                  Property="@nameof(SalesLine.TotalValue)"
+                  Title="Total ($)"
+                  PropertyType="typeof(double)">
+    <Template Context="context">
+        @context.TotalValue.ToString("0.00") 
+    </Template>
+</ColumnDefinition>
+@if (AdditionalColumns != null)
+{
+    @AdditionalColumns
+}
+</Columns>
+</PagableGridView>
+
+
+</div>

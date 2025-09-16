@@ -1,0 +1,15 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Invoices
+<TridentApiDataList TModel="InvoiceBillingConfiguration"
+                    TValue="Guid"
+                    Data="@ListData"
+                    Id="@Id">
+    <Template Context="data">
+        <a href="#"
+           @onclick="@(() => InvokeOpenBillingConfiguration(data.BillingConfigurationId))"
+           @onclick:preventDefault="true"
+           @onclick:stopPropagation="true"
+           class="text-decoration-none rz-link">
+            @data.BillingConfigurationName
+        </a>
+    </Template>
+</TridentApiDataList>

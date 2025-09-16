@@ -1,0 +1,28 @@
+﻿@inherits BaseTruckTicketingComponent
+
+<div class="p-1">
+    <strong>Provider Data</strong>
+</div>
+
+<div class="p-1">
+    <RadzenLabel Text="Entity"></RadzenLabel><br/>
+    <RadzenTextBox @bind-Value="Model.DestinationClassName"
+                   class="w-100">
+    </RadzenTextBox>
+</div>
+
+<div class="p-1">
+    <RadzenLabel Text="Property"></RadzenLabel><br/>
+    <RadzenTextBox @bind-Value="Model.DestinationPropertyName"
+                   class="w-100">
+    </RadzenTextBox>
+</div>
+
+@if (ShowFormatSelection)
+{
+    <div class="p-1">
+        <FormatPicker FormatsSource="@FormatsSource"
+                      Model="@Model">
+        </FormatPicker>
+    </div>
+}

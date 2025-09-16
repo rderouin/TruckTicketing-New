@@ -1,0 +1,12 @@
+﻿@inherits BaseRazorComponent
+@typeparam TModel
+
+@foreach (var column in Columns)
+{
+    <div class="d-flex align-items-center justify-content-between">                        
+        <span>@column.Title</span>
+        <div>
+            <RadzenSwitch Value="@(!column.HideColumn)" Change="@(() => ToggleVisibility(column))" Disabled="@(!column.CanToggleVisibility)" />
+        </div>
+    </div>
+}

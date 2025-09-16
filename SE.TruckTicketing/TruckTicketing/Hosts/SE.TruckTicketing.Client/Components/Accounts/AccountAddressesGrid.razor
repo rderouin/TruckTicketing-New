@@ -1,0 +1,91 @@
+﻿@using SE.TruckTicketing.Contracts.Security
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseTruckTicketingComponent
+<section class="mb-5">
+    <header class="d-flex align-items-center">
+        <h4 class="fw-bold flex-grow-1">Account Addresses</h4>
+        <RadzenButton Click="@(args => AddNewAddress())"
+                      Class="flex-grow-0"
+                      Text="Add New Address"
+                      Disabled="@(!HasWritePermission(Permissions.Resources.Account))"
+                      ButtonStyle="ButtonStyle.Secondary"
+                      Size="ButtonSize.Small"
+                      Icon="contact_mail"/>
+    </header>
+    <div class="grid-switch-container">
+        <PagableGridView TModel="AccountAddress"
+                         Results="@_accountAddresses"
+                         class="bs-class"
+                         EnableSearch="false"
+                         EnablePaging="false"
+                         EnableSorting="true"
+                         EnableRowExpansion="false"
+                         EnableFilters="false"
+                         OnDataLoad="LoadAccountAddresses">
+            <Columns>
+                <ColumnDefinition TItem="AccountAddress"
+                                  Property="@nameof(AccountAddress.IsPrimaryAddress)"
+                                  Width="4rem"
+                                  Title="Default"
+                                  PropertyType="typeof(bool)"
+                                  EnableSorting="false">
+                    <Template Context="context">
+                        <div class="w-100 d-flex justify-content-center">
+                            <RadzenCheckBox @bind-Value="@context.IsPrimaryAddress"
+                                            TValue="bool"
+                                            Change="@(args => DefaultAccountAddressUpdate(args, context))"/>
+                        </div>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountAddress"
+                                  Property="@nameof(AccountAddress.Street)"
+                                  Title="Street"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountAddress"
+                                  Property="@nameof(AccountAddress.City)"
+                                  Title="City"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountAddress"
+                                  Property="@nameof(AccountAddress.ZipCode)"
+                                  Title="Zip/Postal Code"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountAddress"
+                                  Property="@nameof(AccountAddress.Country)"
+                                  Title="Country"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountAddress"
+                                  Property="@nameof(AccountAddress.Province)"
+                                  Title="State/Province"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountAddress"
+                                  Property="@nameof(AccountAddress.ReferenceId)"
+                                  Width="8rem"
+                                  Title="Reference ID"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="AccountAddress"
+                                  Property="@nameof(AccountAddress)"
+                                  Title="Actions"
+                                  Width="8rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="() => OpenEditDialog(data)"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Small"
+                                      Text="Edit"
+                                      Disabled="data.Id == default"/>
+                        <RadzenButton Click="() => DeleteButton_Click(data)"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small"
+                                      Text="Delete"/>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</section>

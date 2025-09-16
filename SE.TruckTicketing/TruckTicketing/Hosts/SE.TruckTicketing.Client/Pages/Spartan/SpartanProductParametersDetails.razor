@@ -1,0 +1,195 @@
+﻿@page "/spartan-params/new"
+@page "/spartan-params/edit/{id:guid}"
+@using SE.TruckTicketing.Contracts.Api.Models.SpartanProductParameters
+@using SE.TruckTicketing.Contracts.Constants.SpartanProductParameters
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Models
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<RadzenTemplateForm TItem="SpartanProductParameter"
+                    Submit="@HandleSubmit"
+                    Data="@ViewModel.SpartanProductParameter"
+                    @ref="ReferenceToForm">
+
+    <DataAnnotationsValidator/>
+    <TridentValidationSummary Response="@ViewModel.Response"
+                              TModel="SpartanProductParameter"/>
+
+    <span class="pb-3 text-danger">@ViewModel.ValidationSummary</span>
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="fw-bold">General Info</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Product Name"
+                                 Component="ProductNameTextBox"
+                                 class="required"/>
+
+                    <RadzenTextBox id="ProductNameTextBox"
+                                   Name="ProductNameTextBox"
+                                   @bind-Value="@ViewModel.SpartanProductParameter.ProductName"
+                                   Change="@OnChange"
+                                   class="w-100"/>
+                    <RadzenRequiredValidator Component="ProductNameTextBox"
+                                             Text="Product Name is required"/>
+                    <RadzenRegexValidator Component="ProductNameTextBox"
+                                          Text="Special Characters are not allowed"
+                                          Pattern="[a-zA-Z0-9_\s]+"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Legal Entity"
+                                 Component="legalEntityDropDown"
+                                 class="required" />
+                    <TridentApiDropDownDataGrid id="legalEntityDropDown"
+                                                Name="legalEntityDropDown"
+                                                TModel="LegalEntity"
+                                                TValue="Guid"
+                                                Placeholder="Select Legal Entity..."
+                                                @bind-Value="@ViewModel.SpartanProductParameter.LegalEntityId"
+                                                TextProperty="@nameof(LegalEntity.Name)"
+                                                PageSize="10"
+                                                Disabled="false"
+                                                OnItemSelect="OnLegalEntityChange"
+                                                OnDataLoading="HandleLegalEntityLoading">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn Property="@nameof(LegalEntity.Code)" Title="Code" Width="100px"/>
+                            <RadzenDropDownDataGridColumn Property="@nameof(LegalEntity.Name)" Title="Name"/>
+                        </Columns>
+                    </TridentApiDropDownDataGrid>               
+                    <RadzenRequiredValidator Component="legalEntityDropDown" DefaultValue="default"
+                                             Text="Legal Entity is required" />
+                    
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Fluid Identity"
+                                 Component="FluidIdentityDropDown"/>
+                    <RadzenDropDown id="FluidIdentityDropDown"
+                                    TValue="FluidIdentity"
+                                    AllowClear="true"
+                                    AllowFiltering="false"
+                                    Placeholder="Select Fluid Identity..."
+                                    @bind-Value="@ViewModel.SpartanProductParameter.FluidIdentity"
+                                    Data="@(DataDictionary.For<FluidIdentity>())"
+                                    TextProperty="Value"
+                                    ValueProperty="Key"
+                                    Class="w-100"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Min Fluid Density"
+                                 Component="MinFluidDensityNumeric"/>
+                    <RadzenNumeric TValue="double"
+                                   Name="MinFluidDensityNumeric"
+                                   Format="N1"
+                                   Change="@onMinFluidChange"
+                                   @bind-Value="@ViewModel.SpartanProductParameter.MinFluidDensity"
+                                   ShowUpDown="false"
+                                   Class="w-100"/>
+                    <RadzenNumericRangeValidator Component="MinFluidDensityNumeric"
+                                                 Min="0.0"
+                                                 Text="Value should not be negative"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Max Fluid Density"
+                                 Component="MaxFluidDensityNumeric"/>
+                    <RadzenNumeric TValue="double"
+                                   id="MaxFluidDensityNumeric"
+                                   Name="MaxFluidDensityNumeric"
+                                   Change="@onMaxFluidChange"
+                                   Format="N1"
+                                   ShowUpDown="false"
+                                   @bind-Value="@ViewModel.SpartanProductParameter.MaxFluidDensity"
+                                   Class="w-100"/>
+                    <RadzenNumericRangeValidator Component="MaxFluidDensityNumeric"
+                                                 Min="0.0"
+                                                 Text="Value should not be negative"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Min Water %"
+                                 Component="MinWaterPercentageNumeric"/>
+                    <RadzenNumeric TValue="double"
+                                   id="MinWaterPercentageNumeric"
+                                   Name="MinWaterPercentageNumeric"
+                                   Format="N6"
+                                   Change="@onMinPercentageChange"
+                                   ShowUpDown="false"
+                                   @bind-Value="@ViewModel.SpartanProductParameter.MinWaterPercentage"
+                                   Class="w-100"/>
+                    <RadzenNumericRangeValidator Component="MinWaterPercentageNumeric"
+                                                 Min="0.0"
+                                                 Max="100"
+                                                 Text="Value should be between 0 and 100"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Max Water %"
+                                 Component="MaxWaterPercentageNumeric"
+                                 class="required"/>
+                    <RadzenNumeric TValue="double"
+                                   id="MaxWaterPercentageNumeric"
+                                   Name="MaxWaterPercentageNumeric"
+                                   Format="N6"
+                                   Change="@onMaxPercentageChange"
+                                   ShowUpDown="false"
+                                   @bind-Value="@ViewModel.SpartanProductParameter.MaxWaterPercentage"
+                                   Class="w-100"/>
+                    <RadzenNumericRangeValidator Component="MaxWaterPercentageNumeric"
+                                                 Min="0"
+                                                 Max="100"
+                                                 Text="Value should be between 0 and 100"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="d-flex flex-wrap mb-3">
+                    <div class="d-flex flex-column flex-grow-1">
+                        <RadzenLabel Text="Show Density"
+                                     Component="ShowDensitySwitch"/>
+
+                        <RadzenSwitch id="ShowDensitySwitch"
+                                      @bind-Value="@ViewModel.SpartanProductParameter.ShowDensity">
+                        </RadzenSwitch>
+                    </div>
+                    <div class="d-flex flex-column flex-grow-1">
+                        <RadzenLabel Text="Active"
+                                     Component="IsActiveSwitch"/>
+                        <RadzenSwitch id="IsActiveSwitch"
+                                      @bind-Value="@ViewModel.SpartanProductParameter.IsActive"/>
+                    </div>
+                    <div class="d-flex flex-column flex-grow-1">
+                        <RadzenLabel Text="Location Operating Status"
+                                     Component="LocOperStatusDropDown"/>
+                        <RadzenDropDown id="LocOperStatusDropDown"
+                                        TValue="LocationOperatingStatus"
+                                        AllowClear="true"
+                                        AllowFiltering="false"
+                                        Placeholder="Select Status..."
+                                        @bind-Value="@ViewModel.SpartanProductParameter.LocationOperatingStatus"
+                                        Data="@(DataDictionary.For<LocationOperatingStatus>())"
+                                        TextProperty="Value"
+                                        ValueProperty="Key"
+                                        Class="w-100"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="@ViewModel.SubmitButtonText"
+                          IsBusy="@IsBusy"
+                          Disabled="@(IsSaveEnabled || !HasWritePermission(Permissions.Resources.SpartanProductParameter))"
+                          BusyText="@ViewModel.SubmitButtonBusyText"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          class="ml-2"
+                          Click="HandleCancel"/>
+        </div>
+    </div>
+</RadzenTemplateForm>

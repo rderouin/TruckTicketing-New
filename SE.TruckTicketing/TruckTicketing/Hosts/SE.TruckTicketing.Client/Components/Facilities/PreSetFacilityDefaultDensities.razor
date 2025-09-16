@@ -1,0 +1,203 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using System.Linq
+@using AutoMapper
+@using SE.TruckTicketing.Contracts.Models.FacilityServices
+@inherits BaseTruckTicketingComponent
+
+<section>
+    <h4 class="fw-bold d-flex mb-3">
+        <span class="flex-grow-1">@Title</span>
+        <RadzenButton Text="Add Default Density"
+                      Class="flex-grow-0"
+                      ButtonStyle="ButtonStyle.Secondary"
+                      Size="ButtonSize.Small"
+                      Click="@AddDefaultDensity" />
+    </h4>
+    <PagableGridView @ref="_grid"
+                     TModel="PreSetDensityConversionParams"
+                     Results="@_results"
+                     EnablePaging="true"
+                     EnableSorting="false"
+                     OnDataLoad="@LoadPreSetFacilityDefaultDensities"
+                     EnableFilters="false"
+                     EnableSearch="true"
+                     GridPageSize="10">
+        <Columns>
+            <ColumnDefinition TItem="PreSetDensityConversionParams"
+                              Property="@nameof(PreSetDensityConversionParams.IsEnabled)"
+                              Title="Enabled"
+                              Width="4rem"
+                              EnableSorting="false">
+                <Template Context="context">
+                    <RadzenSwitch @bind-Value="@context.IsEnabled"
+                                  class="grid-switch"/>
+                    </Template>
+                <EditTemplate Context="context">
+                    <RadzenSwitch @bind-Value="@context.IsEnabled"
+                                  class="grid-switch"
+                                  Disabled="@context.IsDefaultFacilityDefaultDensity"/>
+                </EditTemplate>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="PreSetDensityConversionParams"
+                              Property="@nameof(PreSetDensityConversionParams.SourceLocationId)"
+                              Title="Source Location">
+                <Template Context="context">
+                    @(string.IsNullOrEmpty(context.SourceLocationIdentifier) ? context.SourceLocationGeneratorName : context.SourceLocationIdentifier)
+                </Template>
+                <EditTemplate Context="context">
+                    <div class="w-100 d-flex justify-content-center">
+                        <SourceLocationDropDown Name="SourceLocationDropDown"
+                                                TValue="Guid?"
+                                                Placeholder="Select Source Location..."
+                                                @bind-Value="@context.SourceLocationId"
+                                                ValueProperty="@nameof(SourceLocation.Id)"
+                                                PageSize="10"
+                                                AllowClear="true"
+                                                OnItemSelect="@(args => HandleSourceLocationSelection(args, context))"
+                                                class="w-100" />
+                    </div>
+                </EditTemplate>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="PreSetDensityConversionParams"
+                              Property="@nameof(PreSetDensityConversionParams.FacilityServiceId)"
+                              Title="Facility Service">
+                <Template Context="context">
+                    @(context.FacilityServiceName == null ? string.Empty : string.Join(", ", context.FacilityServiceName))
+                </Template>
+                <EditTemplate Context="context">
+                    <div class="w-100 d-flex justify-content-center" style="min-width: 400px">
+                        <MultiSelectDropDownDataGrid TValue="Guid"
+                                                     TModel="FacilityService"
+                                                     ValueProperty="@nameof(FacilityService.Id)"
+                                                     TextProperty="@nameof(FacilityService.DisplayFacilityServiceNumberName)"
+                                                     @bind-Value="@_facilityServiceMapping[context.Id]"
+                                                     FetchModelOnItemSelect="@(args => FetchSelectedFacilityServicesItemModel(args, context))"
+                                                     class="w-100"
+                                                     OnDataLoading="BeforeFacilityServiceLoad"
+                                                     Placeholder="Select facility services...">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="@nameof(FacilityService.FacilityServiceNumber)"
+                                                              Title="Facility Service Name"/>
+                                <RadzenDropDownDataGridColumn Property="@nameof(FacilityService.ServiceTypeName)"
+                                                              Title="Facility Service Name" />
+                            </Columns>
+                        </MultiSelectDropDownDataGrid>
+                    </div>
+                </EditTemplate>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="PreSetDensityConversionParams"
+                              Property="@nameof(PreSetDensityConversionParams.StartDate)"
+                              Title="Start Date">
+                <Template Context="context">
+                    @(context.StartDate.ToString("MM/dd/yyyy | hh:mm tt"))
+                </Template>
+                <EditTemplate Context="context">
+                    <RadzenDatePicker TValue="DateTimeOffset"
+                                      Name="LoadDatePicker"
+                                      DateFormat="MM/dd/yyyy"
+                                      Class="w-100 flex-grow-1"
+                                      Change="@(args => OnDateStartChange(ref context, args))"
+                                      Value="@context.StartDate"/>
+                </EditTemplate>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="PreSetDensityConversionParams"
+                              Property="@nameof(PreSetDensityConversionParams.EndDate)"
+                              Title="End Date">
+                <Template Context="context">
+                    @(context.EndDate == null ? string.Empty : context.EndDate.Value.ToString("MM/dd/yyyy | hh:mm tt"))
+                </Template>
+                <EditTemplate Context="context">
+                    <RadzenDatePicker TValue="DateTimeOffset?"
+                                      Name="LoadDatePicker"
+                                      DateFormat="MM/dd/yyyy"
+                                      Class="w-100 flex-grow-1"
+                                      Change="@(args => OnDateEndChange(ref context, args))"
+                                      Value="@context.EndDate"/>
+                </EditTemplate>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="PreSetDensityConversionParams"
+                              Property="@nameof(PreSetDensityConversionParams.OilConversionFactor)"
+                              Title="Oil Density (Conversion Factor)">
+                <EditTemplate Context="context">
+                    <TridentNumeric id="OilDefaultDensityNumeric"
+                                    Name="OilDefaultDensityNumeric"
+                                    MaxDecimalPlaces="2"
+                                    @bind-Value="@context.OilConversionFactor" />
+                </EditTemplate>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="PreSetDensityConversionParams"
+                              Property="@nameof(PreSetDensityConversionParams.SolidsConversionFactor)"
+                              Title="Solid Density (Conversion Factor)">
+                <EditTemplate Context="context">
+                    <TridentNumeric id="SolidDefaultDensityNumeric"
+                                    Name="SolidDefaultDensityNumeric"
+                                    MaxDecimalPlaces="2"
+                                    @bind-Value="@context.SolidsConversionFactor" />
+                </EditTemplate>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="PreSetDensityConversionParams"
+                              Property="@nameof(PreSetDensityConversionParams.WaterConversionFactor)"
+                              Title="Water Density (Conversion Factor)">
+                <EditTemplate Context="context">
+                    <TridentNumeric id="WaterDefaultDensityNumeric"
+                                    Name="WaterDefaultDensityNumeric"
+                                    MaxDecimalPlaces="2"
+                                    @bind-Value="@context.WaterConversionFactor" />
+                </EditTemplate>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="PreSetDensityConversionParams"
+                              Property="@nameof(PreSetDensityConversionParams)"
+                              Title="Actions"
+                              Width="156px"
+                              EnableSorting="false">
+                <Template Context="context">
+                    <RadzenButton Icon="edit"
+                                  ButtonStyle="ButtonStyle.Light"
+                                  Variant="Variant.Flat"
+                                  Size="ButtonSize.Medium"
+                                  Click="@(args => EditRow(context))"
+                                  @onclick:stopPropagation="true"
+                                  Disabled="!context.IsEnabled" />
+                    @if (context.IsDeleteEnabled)
+                    {
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger"
+                                      Icon="delete"
+                                      Variant="Variant.Flat"
+                                      Shade="Shade.Lighter"
+                                      Size="ButtonSize.Medium"
+                                      Class="my-1 ms-1"
+                                      Click="@(args => DeleteRow(context))"
+                                      @onclick:stopPropagation="true"/>
+                    }
+
+                </Template>
+                <EditTemplate Context="context">
+                    <RadzenButton Icon="check"
+                                  ButtonStyle="ButtonStyle.Success"
+                                  Variant="Variant.Flat"
+                                  Size="ButtonSize.Medium"
+                                  Click="@(args => SaveRow(context))" />
+
+                    <RadzenButton Icon="close"
+                                  ButtonStyle="ButtonStyle.Light"
+                                  Variant="Variant.Flat"
+                                  Size="ButtonSize.Medium"
+                                  Class="my-1 ms-1"
+                                  Click="@(args => CancelEdit(context))" />
+                    @if (context.IsDeleteEnabled)
+                    {
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger"
+                                      Icon="delete"
+                                      Variant="Variant.Flat"
+                                      Shade="Shade.Lighter"
+                                      Size="ButtonSize.Medium"
+                                      Class="my-1 ms-1"
+                                      Click="@(args => DeleteRow(context))"/>
+                    }
+
+                </EditTemplate>
+            </ColumnDefinition>
+        </Columns>
+    </PagableGridView>
+</section>

@@ -1,0 +1,5705 @@
+[
+  {
+    "Id": "166e9722-8557-4a7c-ac2a-3b2f8c60ac26",
+    "Deleted": false,
+    "DocumentType": "Accounts",
+    "EntityType": "Role",
+    "Name": "Admin Process Advisor",
+    "PermissionDisplay": "Execute Invoice.PaidUnstelledTransition, Execute Invoice.Reversal, Execute SalesLine.PriceRefresh, Execute SalesLine.Pricing.Bulk, Read  SourceLocation, View SourceLocation, Write SourceLocation, Read Account, View Account, Write Account, Read AdditionalServicesConfiguration, View AdditionalServicesConfiguration, Write AdditionalServicesConfiguration, Read EmailTemplate, View EmailTemplate, Write EmailTemplate, Read Facility, View Facility, Write Facility, Read Invoice, View Invoice, Write Invoice, Read InvoiceExchangeConfiguration, View InvoiceExchangeConfiguration, Write InvoiceExchangeConfiguration, Read LoadConfirmation, View LoadConfirmation, Write LoadConfirmation, Read MaterialApproval, View MaterialApproval, Write MaterialApproval, Read Roles, View Roles, Read SalesLine, View SalesLine, Write SalesLine, Read ServiceType, View ServiceType, Write ServiceType, Read SourceLocationType, View SourceLocationType, Write SourceLocationType, Read SpartanProductParameter, View SpartanProductParameter, Write SpartanProductParameter, Read TradeAgreement, Upload TradeAgreement, View TradeAgreement, Read TruckTicket, View TruckTicket, Write TruckTicket, Read TruckTicketTareWeight, Upload TruckTicketTareWeight, View TruckTicketTareWeight, Read UserProfile, View UserProfile, Read VolumeChange, View VolumeChange, View FstDailyWorkReport, View LandfillDailyWorkReport, View LoadConfirmation.SalesLineRemoval, View LoadSummaryReport, View ProducerReport, Write Account.EdiFieldDefinition, Write Account.InvoiceConfig.Default, Write Account.OtherInfo, Write Invoice.CollectionNotes, Write SourceLocation.OwnershipInfo, Write SourceLocation.OwnershipInfo.Bulk, Write TruckTicket.Attachment, Write TruckTicket.Billing, Write TruckTicket.Sales.Pricing",
+    "id": "Role|166e9722-8557-4a7c-ac2a-3b2f8c60ac26",
+    "Permissions": [
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000014",
+        "Code": "Invoice.PaidUnstelledTransition",
+        "Display": "Invoice.PaidUnstelledTransition",
+        "Name": "Invoice.PaidUnstelledTransition",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000021",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000013",
+        "Code": "Invoice.Reversal",
+        "Display": "Invoice.Reversal",
+        "Name": "Invoice.Reversal",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000020",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000f",
+        "Code": "SalesLine.PriceRefresh",
+        "Display": "SalesLine.PriceRefresh",
+        "Name": "SalesLine.PriceRefresh",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000018",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000e",
+        "Code": "SalesLine.Pricing.Bulk",
+        "Display": "SalesLine.Pricing.Bulk",
+        "Name": "SalesLine.Pricing.Bulk",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000017",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000005",
+        "Code": "SourceLocation",
+        "Display": "SourceLocation",
+        "Name": "SourceLocation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000008",
+            "Display": "Read ",
+            "Name": "Read ",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000007",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000009",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "bb5b6079-9fc8-4c79-91fa-cb489672eb7a",
+        "Code": "SourceLocation.NameId",
+        "Display": "SourceLocation.NameId",
+        "Name": "SourceLocation.NameId",
+        "AssignedOperations": [
+          {
+            "Id": "b1f37f99-a382-4eeb-a01c-7b2206de33ca",
+            "Description": "update ownership info for source locations.",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000000",
+        "Code": "Account",
+        "Display": "Account",
+        "Name": "Account",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000001",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000000",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000002",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001c",
+        "Code": "AdditionalServicesConfiguration",
+        "Display": "AdditionalServicesConfiguration",
+        "Name": "AdditionalServicesConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000036",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000035",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000037",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001f",
+        "Code": "EmailTemplate",
+        "Display": "EmailTemplate",
+        "Name": "EmailTemplate",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003f",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003e",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000040",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000016",
+        "Code": "Facility",
+        "Display": "Facility",
+        "Name": "Facility",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000024",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000023",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000025",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000012",
+        "Code": "Invoice",
+        "Display": "Invoice",
+        "Name": "Invoice",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001e",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001d",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001f",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001d",
+        "Code": "InvoiceExchangeConfiguration",
+        "Display": "InvoiceExchangeConfiguration",
+        "Name": "InvoiceExchangeConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000039",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000038",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003a",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000010",
+        "Code": "LoadConfirmation",
+        "Display": "LoadConfirmation",
+        "Name": "LoadConfirmation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000019",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001b",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000008",
+        "Code": "MaterialApproval",
+        "Display": "MaterialApproval",
+        "Name": "MaterialApproval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000e",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001b",
+        "Code": "Roles",
+        "Display": "Roles",
+        "Name": "Roles",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000033",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000032",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000d",
+        "Code": "SalesLine",
+        "Display": "SalesLine",
+        "Name": "SalesLine",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000016",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000015",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000017",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000017",
+        "Code": "ServiceType",
+        "Display": "ServiceType",
+        "Name": "ServiceType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000027",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000026",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000028",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000019",
+        "Code": "SourceLocationType",
+        "Display": "SourceLocationType",
+        "Name": "SourceLocationType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002e",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000018",
+        "Code": "SpartanProductParameter",
+        "Display": "SpartanProductParameter",
+        "Name": "SpartanProductParameter",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000029",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002b",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001e",
+        "Code": "TradeAgreement",
+        "Display": "TradeAgreement",
+        "Name": "TradeAgreement",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003c",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003d",
+            "Display": "Upload",
+            "Name": "Upload",
+            "Value": "u"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003b",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000009",
+        "Code": "TruckTicket",
+        "Display": "TruckTicket",
+        "Name": "TruckTicket",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000010",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000011",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000025",
+        "Code": "TruckTicketTareWeight",
+        "Display": "TruckTicketTareWeight",
+        "Name": "TruckTicketTareWeight",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000048",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000049",
+            "Display": "Upload",
+            "Name": "Upload",
+            "Value": "u"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000047",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001a",
+        "Code": "UserProfile",
+        "Display": "UserProfile",
+        "Name": "UserProfile",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000030",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000020",
+        "Code": "VolumeChange",
+        "Display": "VolumeChange",
+        "Name": "VolumeChange",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000042",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000041",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000022",
+        "Code": "FstDailyWorkReport",
+        "Display": "FstDailyWorkReport",
+        "Name": "FstDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000044",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000023",
+        "Code": "LandfillDailyWorkReport",
+        "Display": "LandfillDailyWorkReport",
+        "Name": "LandfillDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000045",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000011",
+        "Code": "LoadConfirmation.SalesLineRemoval",
+        "Display": "LoadConfirmation.SalesLineRemoval",
+        "Name": "LoadConfirmation.SalesLineRemoval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000021",
+        "Code": "LoadSummaryReport",
+        "Display": "LoadSummaryReport",
+        "Name": "LoadSummaryReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000043",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000024",
+        "Code": "ProducerReport",
+        "Display": "ProducerReport",
+        "Name": "ProducerReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000046",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000003",
+        "Code": "Account.EdiFieldDefinition",
+        "Display": "Account.EdiFieldDefinition",
+        "Name": "Account.EdiFieldDefinition",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000005",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000001",
+        "Code": "Account.InvoiceConfig.Default",
+        "Display": "Account.InvoiceConfig.Default",
+        "Name": "Account.InvoiceConfig.Default",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000003",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000004",
+        "Code": "Account.OtherInfo",
+        "Display": "Account.OtherInfo",
+        "Name": "Account.OtherInfo",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000006",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000015",
+        "Code": "Invoice.CollectionNotes",
+        "Display": "Invoice.CollectionNotes",
+        "Name": "Invoice.CollectionNotes",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000022",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000006",
+        "Code": "SourceLocation.OwnershipInfo",
+        "Display": "SourceLocation.OwnershipInfo",
+        "Name": "SourceLocation.OwnershipInfo",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000a",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000007",
+        "Code": "SourceLocation.OwnershipInfo.Bulk",
+        "Display": "SourceLocation.OwnershipInfo.Bulk",
+        "Name": "SourceLocation.OwnershipInfo.Bulk",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000b",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000c",
+        "Code": "TruckTicket.Attachment",
+        "Display": "TruckTicket.Attachment",
+        "Name": "TruckTicket.Attachment",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000014",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000a",
+        "Code": "TruckTicket.Billing",
+        "Display": "TruckTicket.Billing",
+        "Name": "TruckTicket.Billing",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000012",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000b",
+        "Code": "TruckTicket.Sales.Pricing",
+        "Display": "TruckTicket.Sales.Pricing",
+        "Name": "TruckTicket.Sales.Pricing",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000013",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "3fd1fd22-e869-43aa-bab1-34d4d8160545",
+    "Deleted": false,
+    "DocumentType": "Accounts",
+    "EntityType": "Role",
+    "Name": "Facility Admin - FST",
+    "PermissionDisplay": "Execute Invoice.PaidUnstelledTransition, Execute Invoice.Reversal, Execute SalesLine.PriceRefresh, Execute SalesLine.Pricing.Bulk, Read  SourceLocation, View SourceLocation, Write SourceLocation, Read Account, View Account, Write Account, Read AdditionalServicesConfiguration, View AdditionalServicesConfiguration, Read EmailTemplate, View EmailTemplate, Read Facility, View Facility, Read Invoice, View Invoice, Write Invoice, Read InvoiceExchangeConfiguration, View InvoiceExchangeConfiguration, Read LoadConfirmation, View LoadConfirmation, Write LoadConfirmation, Read MaterialApproval, View MaterialApproval, Write MaterialApproval, Read SalesLine, View SalesLine, Write SalesLine, Read ServiceType, View ServiceType, Read SourceLocationType, View SourceLocationType, Read SpartanProductParameter, View SpartanProductParameter, Read TradeAgreement, View TradeAgreement, Read TruckTicket, View TruckTicket, Write TruckTicket, Read VolumeChange, View VolumeChange, View FstDailyWorkReport, View LoadConfirmation.SalesLineRemoval, View LoadSummaryReport, View ProducerReport, Write Invoice.CollectionNotes, Write SourceLocation.OwnershipInfo, Write TruckTicket.Attachment, Write TruckTicket.Billing, Write TruckTicket.Sales.Pricing",
+    "id": "Role|3fd1fd22-e869-43aa-bab1-34d4d8160545",
+    "Permissions": [
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000014",
+        "Code": "Invoice.PaidUnstelledTransition",
+        "Display": "Invoice.PaidUnstelledTransition",
+        "Name": "Invoice.PaidUnstelledTransition",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000021",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000013",
+        "Code": "Invoice.Reversal",
+        "Display": "Invoice.Reversal",
+        "Name": "Invoice.Reversal",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000020",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000f",
+        "Code": "SalesLine.PriceRefresh",
+        "Display": "SalesLine.PriceRefresh",
+        "Name": "SalesLine.PriceRefresh",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000018",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000e",
+        "Code": "SalesLine.Pricing.Bulk",
+        "Display": "SalesLine.Pricing.Bulk",
+        "Name": "SalesLine.Pricing.Bulk",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000017",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000005",
+        "Code": "SourceLocation",
+        "Display": "SourceLocation",
+        "Name": "SourceLocation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000008",
+            "Display": "Read ",
+            "Name": "Read ",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000007",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000009",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000000",
+        "Code": "Account",
+        "Display": "Account",
+        "Name": "Account",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000001",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000000",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000002",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001c",
+        "Code": "AdditionalServicesConfiguration",
+        "Display": "AdditionalServicesConfiguration",
+        "Name": "AdditionalServicesConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000036",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000035",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001f",
+        "Code": "EmailTemplate",
+        "Display": "EmailTemplate",
+        "Name": "EmailTemplate",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003f",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003e",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000016",
+        "Code": "Facility",
+        "Display": "Facility",
+        "Name": "Facility",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000024",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000023",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000012",
+        "Code": "Invoice",
+        "Display": "Invoice",
+        "Name": "Invoice",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001e",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001d",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001f",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001d",
+        "Code": "InvoiceExchangeConfiguration",
+        "Display": "InvoiceExchangeConfiguration",
+        "Name": "InvoiceExchangeConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000039",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000038",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000010",
+        "Code": "LoadConfirmation",
+        "Display": "LoadConfirmation",
+        "Name": "LoadConfirmation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000019",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001b",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000008",
+        "Code": "MaterialApproval",
+        "Display": "MaterialApproval",
+        "Name": "MaterialApproval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000e",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000d",
+        "Code": "SalesLine",
+        "Display": "SalesLine",
+        "Name": "SalesLine",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000016",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000015",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000017",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000017",
+        "Code": "ServiceType",
+        "Display": "ServiceType",
+        "Name": "ServiceType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000027",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000026",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000019",
+        "Code": "SourceLocationType",
+        "Display": "SourceLocationType",
+        "Name": "SourceLocationType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000018",
+        "Code": "SpartanProductParameter",
+        "Display": "SpartanProductParameter",
+        "Name": "SpartanProductParameter",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000029",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001e",
+        "Code": "TradeAgreement",
+        "Display": "TradeAgreement",
+        "Name": "TradeAgreement",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003c",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003b",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000009",
+        "Code": "TruckTicket",
+        "Display": "TruckTicket",
+        "Name": "TruckTicket",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000010",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000011",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000020",
+        "Code": "VolumeChange",
+        "Display": "VolumeChange",
+        "Name": "VolumeChange",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000042",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000041",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000022",
+        "Code": "FstDailyWorkReport",
+        "Display": "FstDailyWorkReport",
+        "Name": "FstDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000044",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000011",
+        "Code": "LoadConfirmation.SalesLineRemoval",
+        "Display": "LoadConfirmation.SalesLineRemoval",
+        "Name": "LoadConfirmation.SalesLineRemoval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000021",
+        "Code": "LoadSummaryReport",
+        "Display": "LoadSummaryReport",
+        "Name": "LoadSummaryReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000043",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000024",
+        "Code": "ProducerReport",
+        "Display": "ProducerReport",
+        "Name": "ProducerReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000046",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000015",
+        "Code": "Invoice.CollectionNotes",
+        "Display": "Invoice.CollectionNotes",
+        "Name": "Invoice.CollectionNotes",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000022",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000006",
+        "Code": "SourceLocation.OwnershipInfo",
+        "Display": "SourceLocation.OwnershipInfo",
+        "Name": "SourceLocation.OwnershipInfo",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000a",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000c",
+        "Code": "TruckTicket.Attachment",
+        "Display": "TruckTicket.Attachment",
+        "Name": "TruckTicket.Attachment",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000014",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000a",
+        "Code": "TruckTicket.Billing",
+        "Display": "TruckTicket.Billing",
+        "Name": "TruckTicket.Billing",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000012",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000b",
+        "Code": "TruckTicket.Sales.Pricing",
+        "Display": "TruckTicket.Sales.Pricing",
+        "Name": "TruckTicket.Sales.Pricing",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000013",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "c7045a3e-298e-4e34-9e05-4c46e1a3355f",
+    "Deleted": false,
+    "DocumentType": "Accounts",
+    "EntityType": "Role",
+    "Name": "Facility Admin - LF",
+    "PermissionDisplay": "Execute Invoice.PaidUnstelledTransition, Execute Invoice.Reversal, Execute SalesLine.PriceRefresh, Execute SalesLine.Pricing.Bulk, Read  SourceLocation, View SourceLocation, Write SourceLocation, Read Account, View Account, Write Account, Read AdditionalServicesConfiguration, View AdditionalServicesConfiguration, Read EmailTemplate, View EmailTemplate, Read Facility, View Facility, Read Invoice, View Invoice, Write Invoice, Read InvoiceExchangeConfiguration, View InvoiceExchangeConfiguration, Read LoadConfirmation, View LoadConfirmation, Write LoadConfirmation, Read MaterialApproval, View MaterialApproval, Write MaterialApproval, Read SalesLine, View SalesLine, Write SalesLine, Read ServiceType, View ServiceType, Read SourceLocationType, View SourceLocationType, Read SpartanProductParameter, View SpartanProductParameter, Read TradeAgreement, View TradeAgreement, Read TruckTicket, View TruckTicket, Write TruckTicket, Read TruckTicketTareWeight, Upload TruckTicketTareWeight, View TruckTicketTareWeight, Read VolumeChange, View VolumeChange, View LandfillDailyWorkReport, View LoadConfirmation.SalesLineRemoval, View LoadSummaryReport, View ProducerReport, Write Invoice.CollectionNotes, Write SourceLocation.OwnershipInfo, Write TruckTicket.Attachment, Write TruckTicket.Billing, Write TruckTicket.Sales.Pricing",
+    "id": "Role|c7045a3e-298e-4e34-9e05-4c46e1a3355f",
+    "Permissions": [
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000014",
+        "Code": "Invoice.PaidUnstelledTransition",
+        "Display": "Invoice.PaidUnstelledTransition",
+        "Name": "Invoice.PaidUnstelledTransition",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000021",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000013",
+        "Code": "Invoice.Reversal",
+        "Display": "Invoice.Reversal",
+        "Name": "Invoice.Reversal",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000020",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000f",
+        "Code": "SalesLine.PriceRefresh",
+        "Display": "SalesLine.PriceRefresh",
+        "Name": "SalesLine.PriceRefresh",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000018",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000e",
+        "Code": "SalesLine.Pricing.Bulk",
+        "Display": "SalesLine.Pricing.Bulk",
+        "Name": "SalesLine.Pricing.Bulk",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000017",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000005",
+        "Code": "SourceLocation",
+        "Display": "SourceLocation",
+        "Name": "SourceLocation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000008",
+            "Display": "Read ",
+            "Name": "Read ",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000007",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000009",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000000",
+        "Code": "Account",
+        "Display": "Account",
+        "Name": "Account",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000001",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000000",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000002",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001c",
+        "Code": "AdditionalServicesConfiguration",
+        "Display": "AdditionalServicesConfiguration",
+        "Name": "AdditionalServicesConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000036",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000035",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001f",
+        "Code": "EmailTemplate",
+        "Display": "EmailTemplate",
+        "Name": "EmailTemplate",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003f",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003e",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000016",
+        "Code": "Facility",
+        "Display": "Facility",
+        "Name": "Facility",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000024",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000023",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000012",
+        "Code": "Invoice",
+        "Display": "Invoice",
+        "Name": "Invoice",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001e",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001d",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001f",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001d",
+        "Code": "InvoiceExchangeConfiguration",
+        "Display": "InvoiceExchangeConfiguration",
+        "Name": "InvoiceExchangeConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000039",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000038",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000010",
+        "Code": "LoadConfirmation",
+        "Display": "LoadConfirmation",
+        "Name": "LoadConfirmation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000019",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001b",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000008",
+        "Code": "MaterialApproval",
+        "Display": "MaterialApproval",
+        "Name": "MaterialApproval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000e",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000d",
+        "Code": "SalesLine",
+        "Display": "SalesLine",
+        "Name": "SalesLine",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000016",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000015",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000017",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000017",
+        "Code": "ServiceType",
+        "Display": "ServiceType",
+        "Name": "ServiceType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000027",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000026",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000019",
+        "Code": "SourceLocationType",
+        "Display": "SourceLocationType",
+        "Name": "SourceLocationType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000018",
+        "Code": "SpartanProductParameter",
+        "Display": "SpartanProductParameter",
+        "Name": "SpartanProductParameter",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000029",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001e",
+        "Code": "TradeAgreement",
+        "Display": "TradeAgreement",
+        "Name": "TradeAgreement",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003c",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003b",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000009",
+        "Code": "TruckTicket",
+        "Display": "TruckTicket",
+        "Name": "TruckTicket",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000010",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000011",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000025",
+        "Code": "TruckTicketTareWeight",
+        "Display": "TruckTicketTareWeight",
+        "Name": "TruckTicketTareWeight",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000048",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000049",
+            "Display": "Upload",
+            "Name": "Upload",
+            "Value": "u"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000047",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000020",
+        "Code": "VolumeChange",
+        "Display": "VolumeChange",
+        "Name": "VolumeChange",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000042",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000041",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000023",
+        "Code": "LandfillDailyWorkReport",
+        "Display": "LandfillDailyWorkReport",
+        "Name": "LandfillDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000045",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000011",
+        "Code": "LoadConfirmation.SalesLineRemoval",
+        "Display": "LoadConfirmation.SalesLineRemoval",
+        "Name": "LoadConfirmation.SalesLineRemoval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000021",
+        "Code": "LoadSummaryReport",
+        "Display": "LoadSummaryReport",
+        "Name": "LoadSummaryReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000043",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000024",
+        "Code": "ProducerReport",
+        "Display": "ProducerReport",
+        "Name": "ProducerReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000046",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000015",
+        "Code": "Invoice.CollectionNotes",
+        "Display": "Invoice.CollectionNotes",
+        "Name": "Invoice.CollectionNotes",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000022",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000006",
+        "Code": "SourceLocation.OwnershipInfo",
+        "Display": "SourceLocation.OwnershipInfo",
+        "Name": "SourceLocation.OwnershipInfo",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000a",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000c",
+        "Code": "TruckTicket.Attachment",
+        "Display": "TruckTicket.Attachment",
+        "Name": "TruckTicket.Attachment",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000014",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000a",
+        "Code": "TruckTicket.Billing",
+        "Display": "TruckTicket.Billing",
+        "Name": "TruckTicket.Billing",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000012",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000b",
+        "Code": "TruckTicket.Sales.Pricing",
+        "Display": "TruckTicket.Sales.Pricing",
+        "Name": "TruckTicket.Sales.Pricing",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000013",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "5442b38f-d89e-4050-bd2c-72d40c996b9a",
+    "Deleted": false,
+    "DocumentType": "Accounts",
+    "EntityType": "Role",
+    "Name": "Functional Analyst",
+    "PermissionDisplay": "Execute Invoice.PaidUnstelledTransition, Execute Invoice.Reversal, Execute SalesLine.PriceRefresh, Execute SalesLine.Pricing.Bulk, Read  SourceLocation, View SourceLocation, Write SourceLocation, Read Account, View Account, Write Account, Read AdditionalServicesConfiguration, View AdditionalServicesConfiguration, Write AdditionalServicesConfiguration, Read EmailTemplate, View EmailTemplate, Write EmailTemplate, Read Facility, View Facility, Write Facility, Read Invoice, View Invoice, Write Invoice, Read InvoiceExchangeConfiguration, View InvoiceExchangeConfiguration, Write InvoiceExchangeConfiguration, Read LoadConfirmation, View LoadConfirmation, Write LoadConfirmation, Read MaterialApproval, View MaterialApproval, Write MaterialApproval, Read Roles, View Roles, Read SalesLine, View SalesLine, Write SalesLine, Read ServiceType, View ServiceType, Write ServiceType, Read SourceLocationType, View SourceLocationType, Write SourceLocationType, Read SpartanProductParameter, View SpartanProductParameter, Write SpartanProductParameter, Read TradeAgreement, Upload TradeAgreement, View TradeAgreement, Read TruckTicket, View TruckTicket, Write TruckTicket, Read TruckTicketTareWeight, Upload TruckTicketTareWeight, View TruckTicketTareWeight, Read UserProfile, View UserProfile, Read VolumeChange, View VolumeChange, View FstDailyWorkReport, View LandfillDailyWorkReport, View LoadConfirmation.SalesLineRemoval, View LoadSummaryReport, View ProducerReport, Write Account.BillingConfig.Default, Write Account.EdiFieldDefinition, Write Account.InvoiceConfig.Default, Write Account.OtherInfo, Write Invoice.CollectionNotes, Write SourceLocation.OwnershipInfo, Write SourceLocation.OwnershipInfo.Bulk, Write TruckTicket.Attachment, Write TruckTicket.Billing, Write TruckTicket.Sales.Pricing",
+    "id": "Role|5442b38f-d89e-4050-bd2c-72d40c996b9a",
+    "Permissions": [
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000014",
+        "Code": "Invoice.PaidUnstelledTransition",
+        "Display": "Invoice.PaidUnstelledTransition",
+        "Name": "Invoice.PaidUnstelledTransition",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000021",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000013",
+        "Code": "Invoice.Reversal",
+        "Display": "Invoice.Reversal",
+        "Name": "Invoice.Reversal",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000020",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000f",
+        "Code": "SalesLine.PriceRefresh",
+        "Display": "SalesLine.PriceRefresh",
+        "Name": "SalesLine.PriceRefresh",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000018",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000e",
+        "Code": "SalesLine.Pricing.Bulk",
+        "Display": "SalesLine.Pricing.Bulk",
+        "Name": "SalesLine.Pricing.Bulk",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000017",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000005",
+        "Code": "SourceLocation",
+        "Display": "SourceLocation",
+        "Name": "SourceLocation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000008",
+            "Display": "Read ",
+            "Name": "Read ",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000007",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000009",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "e9acab13-8f00-4993-bcbd-5e7ed4f99e07",
+        "Code": "SourceLocation.NameId",
+        "Display": "SourceLocation.NameId",
+        "Name": "SourceLocation.NameId",
+        "AssignedOperations": [
+          {
+            "Id": "b1f37f99-a382-4eeb-a01c-7b2206de33ca",
+            "Description": "update ownership info for source locations.",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000000",
+        "Code": "Account",
+        "Display": "Account",
+        "Name": "Account",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000001",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000000",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000002",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001c",
+        "Code": "AdditionalServicesConfiguration",
+        "Display": "AdditionalServicesConfiguration",
+        "Name": "AdditionalServicesConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000036",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000035",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000037",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001f",
+        "Code": "EmailTemplate",
+        "Display": "EmailTemplate",
+        "Name": "EmailTemplate",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003f",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003e",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000040",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000016",
+        "Code": "Facility",
+        "Display": "Facility",
+        "Name": "Facility",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000024",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000023",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000025",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000012",
+        "Code": "Invoice",
+        "Display": "Invoice",
+        "Name": "Invoice",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001e",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001d",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001f",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001d",
+        "Code": "InvoiceExchangeConfiguration",
+        "Display": "InvoiceExchangeConfiguration",
+        "Name": "InvoiceExchangeConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000039",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000038",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003a",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000010",
+        "Code": "LoadConfirmation",
+        "Display": "LoadConfirmation",
+        "Name": "LoadConfirmation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000019",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001b",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000008",
+        "Code": "MaterialApproval",
+        "Display": "MaterialApproval",
+        "Name": "MaterialApproval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000e",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001b",
+        "Code": "Roles",
+        "Display": "Roles",
+        "Name": "Roles",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000033",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000032",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000d",
+        "Code": "SalesLine",
+        "Display": "SalesLine",
+        "Name": "SalesLine",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000016",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000015",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000017",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000017",
+        "Code": "ServiceType",
+        "Display": "ServiceType",
+        "Name": "ServiceType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000027",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000026",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000028",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000019",
+        "Code": "SourceLocationType",
+        "Display": "SourceLocationType",
+        "Name": "SourceLocationType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002e",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000018",
+        "Code": "SpartanProductParameter",
+        "Display": "SpartanProductParameter",
+        "Name": "SpartanProductParameter",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000029",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002b",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001e",
+        "Code": "TradeAgreement",
+        "Display": "TradeAgreement",
+        "Name": "TradeAgreement",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003c",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003d",
+            "Display": "Upload",
+            "Name": "Upload",
+            "Value": "u"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003b",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000009",
+        "Code": "TruckTicket",
+        "Display": "TruckTicket",
+        "Name": "TruckTicket",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000010",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000011",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000025",
+        "Code": "TruckTicketTareWeight",
+        "Display": "TruckTicketTareWeight",
+        "Name": "TruckTicketTareWeight",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000048",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000049",
+            "Display": "Upload",
+            "Name": "Upload",
+            "Value": "u"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000047",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001a",
+        "Code": "UserProfile",
+        "Display": "UserProfile",
+        "Name": "UserProfile",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000030",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000020",
+        "Code": "VolumeChange",
+        "Display": "VolumeChange",
+        "Name": "VolumeChange",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000042",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000041",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000022",
+        "Code": "FstDailyWorkReport",
+        "Display": "FstDailyWorkReport",
+        "Name": "FstDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000044",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000023",
+        "Code": "LandfillDailyWorkReport",
+        "Display": "LandfillDailyWorkReport",
+        "Name": "LandfillDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000045",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000011",
+        "Code": "LoadConfirmation.SalesLineRemoval",
+        "Display": "LoadConfirmation.SalesLineRemoval",
+        "Name": "LoadConfirmation.SalesLineRemoval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000021",
+        "Code": "LoadSummaryReport",
+        "Display": "LoadSummaryReport",
+        "Name": "LoadSummaryReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000043",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000024",
+        "Code": "ProducerReport",
+        "Display": "ProducerReport",
+        "Name": "ProducerReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000046",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000002",
+        "Code": "Account.BillingConfig.Default",
+        "Display": "Account.BillingConfig.Default",
+        "Name": "Account.BillingConfig.Default",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000004",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000003",
+        "Code": "Account.EdiFieldDefinition",
+        "Display": "Account.EdiFieldDefinition",
+        "Name": "Account.EdiFieldDefinition",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000005",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000001",
+        "Code": "Account.InvoiceConfig.Default",
+        "Display": "Account.InvoiceConfig.Default",
+        "Name": "Account.InvoiceConfig.Default",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000003",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000004",
+        "Code": "Account.OtherInfo",
+        "Display": "Account.OtherInfo",
+        "Name": "Account.OtherInfo",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000006",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000015",
+        "Code": "Invoice.CollectionNotes",
+        "Display": "Invoice.CollectionNotes",
+        "Name": "Invoice.CollectionNotes",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000022",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000006",
+        "Code": "SourceLocation.OwnershipInfo",
+        "Display": "SourceLocation.OwnershipInfo",
+        "Name": "SourceLocation.OwnershipInfo",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000a",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000007",
+        "Code": "SourceLocation.OwnershipInfo.Bulk",
+        "Display": "SourceLocation.OwnershipInfo.Bulk",
+        "Name": "SourceLocation.OwnershipInfo.Bulk",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000b",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000c",
+        "Code": "TruckTicket.Attachment",
+        "Display": "TruckTicket.Attachment",
+        "Name": "TruckTicket.Attachment",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000014",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000a",
+        "Code": "TruckTicket.Billing",
+        "Display": "TruckTicket.Billing",
+        "Name": "TruckTicket.Billing",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000012",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000b",
+        "Code": "TruckTicket.Sales.Pricing",
+        "Display": "TruckTicket.Sales.Pricing",
+        "Name": "TruckTicket.Sales.Pricing",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000013",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "2ca57482-4b27-40f4-a8da-239227478681",
+    "Deleted": false,
+    "DocumentType": "Accounts",
+    "EntityType": "Role",
+    "Name": "Lead Operator - LF",
+    "PermissionDisplay": "Read  SourceLocation, View SourceLocation, Write SourceLocation, Read Account, View Account, Write Account, Read AdditionalServicesConfiguration, View AdditionalServicesConfiguration, Read EmailTemplate, View EmailTemplate, Read Facility, View Facility, Read Invoice, View Invoice, Read InvoiceExchangeConfiguration, View InvoiceExchangeConfiguration, Read LoadConfirmation, View LoadConfirmation, Read MaterialApproval, View MaterialApproval, Write MaterialApproval, Read SalesLine, View SalesLine, Read ServiceType, View ServiceType, Read SourceLocationType, View SourceLocationType, Write SourceLocationType, Read SpartanProductParameter, View SpartanProductParameter, Read TradeAgreement, View TradeAgreement, Read TruckTicket, View TruckTicket, Write TruckTicket, Read TruckTicketTareWeight, Upload TruckTicketTareWeight, View TruckTicketTareWeight, Read VolumeChange, View VolumeChange, View LandfillDailyWorkReport, View LoadConfirmation.SalesLineRemoval, View LoadSummaryReport, View ProducerReport, Write SourceLocation.OwnershipInfo",
+    "id": "Role|2ca57482-4b27-40f4-a8da-239227478681",
+    "Permissions": [
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000005",
+        "Code": "SourceLocation",
+        "Display": "SourceLocation",
+        "Name": "SourceLocation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000008",
+            "Display": "Read ",
+            "Name": "Read ",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000007",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000009",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000000",
+        "Code": "Account",
+        "Display": "Account",
+        "Name": "Account",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000001",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000000",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000002",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001c",
+        "Code": "AdditionalServicesConfiguration",
+        "Display": "AdditionalServicesConfiguration",
+        "Name": "AdditionalServicesConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000036",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000035",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001f",
+        "Code": "EmailTemplate",
+        "Display": "EmailTemplate",
+        "Name": "EmailTemplate",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003f",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003e",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000016",
+        "Code": "Facility",
+        "Display": "Facility",
+        "Name": "Facility",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000024",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000023",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000012",
+        "Code": "Invoice",
+        "Display": "Invoice",
+        "Name": "Invoice",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001e",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001d",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001d",
+        "Code": "InvoiceExchangeConfiguration",
+        "Display": "InvoiceExchangeConfiguration",
+        "Name": "InvoiceExchangeConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000039",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000038",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000010",
+        "Code": "LoadConfirmation",
+        "Display": "LoadConfirmation",
+        "Name": "LoadConfirmation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000019",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000008",
+        "Code": "MaterialApproval",
+        "Display": "MaterialApproval",
+        "Name": "MaterialApproval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000e",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000d",
+        "Code": "SalesLine",
+        "Display": "SalesLine",
+        "Name": "SalesLine",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000016",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000015",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000017",
+        "Code": "ServiceType",
+        "Display": "ServiceType",
+        "Name": "ServiceType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000027",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000026",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000019",
+        "Code": "SourceLocationType",
+        "Display": "SourceLocationType",
+        "Name": "SourceLocationType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002e",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000018",
+        "Code": "SpartanProductParameter",
+        "Display": "SpartanProductParameter",
+        "Name": "SpartanProductParameter",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000029",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001e",
+        "Code": "TradeAgreement",
+        "Display": "TradeAgreement",
+        "Name": "TradeAgreement",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003c",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003b",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000009",
+        "Code": "TruckTicket",
+        "Display": "TruckTicket",
+        "Name": "TruckTicket",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000010",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000011",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000025",
+        "Code": "TruckTicketTareWeight",
+        "Display": "TruckTicketTareWeight",
+        "Name": "TruckTicketTareWeight",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000048",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000049",
+            "Display": "Upload",
+            "Name": "Upload",
+            "Value": "u"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000047",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000020",
+        "Code": "VolumeChange",
+        "Display": "VolumeChange",
+        "Name": "VolumeChange",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000042",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000041",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000023",
+        "Code": "LandfillDailyWorkReport",
+        "Display": "LandfillDailyWorkReport",
+        "Name": "LandfillDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000045",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000011",
+        "Code": "LoadConfirmation.SalesLineRemoval",
+        "Display": "LoadConfirmation.SalesLineRemoval",
+        "Name": "LoadConfirmation.SalesLineRemoval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000021",
+        "Code": "LoadSummaryReport",
+        "Display": "LoadSummaryReport",
+        "Name": "LoadSummaryReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000043",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000024",
+        "Code": "ProducerReport",
+        "Display": "ProducerReport",
+        "Name": "ProducerReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000046",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000006",
+        "Code": "SourceLocation.OwnershipInfo",
+        "Display": "SourceLocation.OwnershipInfo",
+        "Name": "SourceLocation.OwnershipInfo",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000a",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "f976dab0-918f-4e8e-b533-f5e8dfb0ff64",
+    "Deleted": false,
+    "DocumentType": "Accounts",
+    "EntityType": "Role",
+    "Name": "Observer",
+    "PermissionDisplay": "Read  SourceLocation, View SourceLocation, Read Account, View Account, Read AdditionalServicesConfiguration, View AdditionalServicesConfiguration, Read EmailTemplate, View EmailTemplate, Read Facility, View Facility, Read Invoice, View Invoice, Read InvoiceExchangeConfiguration, View InvoiceExchangeConfiguration, Read LoadConfirmation, View LoadConfirmation, Read MaterialApproval, View MaterialApproval, Read SalesLine, View SalesLine, Read ServiceType, View ServiceType, Read SourceLocationType, View SourceLocationType, Read SpartanProductParameter, View SpartanProductParameter, Read TradeAgreement, View TradeAgreement, Read TruckTicket, View TruckTicket, Read TruckTicketTareWeight, View TruckTicketTareWeight, Read VolumeChange, View VolumeChange, View FstDailyWorkReport, View LandfillDailyWorkReport, View LoadConfirmation.SalesLineRemoval, View LoadSummaryReport, View ProducerReport",
+    "id": "Role|f976dab0-918f-4e8e-b533-f5e8dfb0ff64",
+    "Permissions": [
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000005",
+        "Code": "SourceLocation",
+        "Display": "SourceLocation",
+        "Name": "SourceLocation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000008",
+            "Display": "Read ",
+            "Name": "Read ",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000007",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000000",
+        "Code": "Account",
+        "Display": "Account",
+        "Name": "Account",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000001",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000000",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001c",
+        "Code": "AdditionalServicesConfiguration",
+        "Display": "AdditionalServicesConfiguration",
+        "Name": "AdditionalServicesConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000036",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000035",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001f",
+        "Code": "EmailTemplate",
+        "Display": "EmailTemplate",
+        "Name": "EmailTemplate",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003f",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003e",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000016",
+        "Code": "Facility",
+        "Display": "Facility",
+        "Name": "Facility",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000024",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000023",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000012",
+        "Code": "Invoice",
+        "Display": "Invoice",
+        "Name": "Invoice",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001e",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001d",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001d",
+        "Code": "InvoiceExchangeConfiguration",
+        "Display": "InvoiceExchangeConfiguration",
+        "Name": "InvoiceExchangeConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000039",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000038",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000010",
+        "Code": "LoadConfirmation",
+        "Display": "LoadConfirmation",
+        "Name": "LoadConfirmation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000019",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000008",
+        "Code": "MaterialApproval",
+        "Display": "MaterialApproval",
+        "Name": "MaterialApproval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000d",
+        "Code": "SalesLine",
+        "Display": "SalesLine",
+        "Name": "SalesLine",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000016",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000015",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000017",
+        "Code": "ServiceType",
+        "Display": "ServiceType",
+        "Name": "ServiceType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000027",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000026",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000019",
+        "Code": "SourceLocationType",
+        "Display": "SourceLocationType",
+        "Name": "SourceLocationType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000018",
+        "Code": "SpartanProductParameter",
+        "Display": "SpartanProductParameter",
+        "Name": "SpartanProductParameter",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000029",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001e",
+        "Code": "TradeAgreement",
+        "Display": "TradeAgreement",
+        "Name": "TradeAgreement",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003c",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003b",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000009",
+        "Code": "TruckTicket",
+        "Display": "TruckTicket",
+        "Name": "TruckTicket",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000010",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000025",
+        "Code": "TruckTicketTareWeight",
+        "Display": "TruckTicketTareWeight",
+        "Name": "TruckTicketTareWeight",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000048",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000047",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000020",
+        "Code": "VolumeChange",
+        "Display": "VolumeChange",
+        "Name": "VolumeChange",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000042",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000041",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000022",
+        "Code": "FstDailyWorkReport",
+        "Display": "FstDailyWorkReport",
+        "Name": "FstDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000044",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000023",
+        "Code": "LandfillDailyWorkReport",
+        "Display": "LandfillDailyWorkReport",
+        "Name": "LandfillDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000045",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000011",
+        "Code": "LoadConfirmation.SalesLineRemoval",
+        "Display": "LoadConfirmation.SalesLineRemoval",
+        "Name": "LoadConfirmation.SalesLineRemoval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000021",
+        "Code": "LoadSummaryReport",
+        "Display": "LoadSummaryReport",
+        "Name": "LoadSummaryReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000043",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000024",
+        "Code": "ProducerReport",
+        "Display": "ProducerReport",
+        "Name": "ProducerReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000046",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "6a9a5fa5-2112-4647-b9fd-a9cc1972063d",
+    "Deleted": false,
+    "DocumentType": "Accounts",
+    "EntityType": "Role",
+    "Name": "Observer - View All",
+    "PermissionDisplay": "Read  SourceLocation, View SourceLocation, Read Account, View Account, Read AdditionalServicesConfiguration, View AdditionalServicesConfiguration, Read EmailTemplate, View EmailTemplate, Read Facility, View Facility, Read Invoice, View Invoice, Read InvoiceExchangeConfiguration, View InvoiceExchangeConfiguration, Read LoadConfirmation, View LoadConfirmation, Read MaterialApproval, View MaterialApproval, Read Roles, View Roles, Read SalesLine, View SalesLine, Read ServiceType, View ServiceType, Read SourceLocationType, View SourceLocationType, Read SpartanProductParameter, View SpartanProductParameter, Read TradeAgreement, View TradeAgreement, Read TruckTicket, View TruckTicket, Read TruckTicketTareWeight, View TruckTicketTareWeight, Read UserProfile, View UserProfile, Read VolumeChange, View VolumeChange, View FstDailyWorkReport, View LandfillDailyWorkReport, View LoadConfirmation.SalesLineRemoval, View LoadSummaryReport, View ProducerReport",
+    "id": "Role|6a9a5fa5-2112-4647-b9fd-a9cc1972063d",
+    "Permissions": [
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000005",
+        "Code": "SourceLocation",
+        "Display": "SourceLocation",
+        "Name": "SourceLocation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000008",
+            "Display": "Read ",
+            "Name": "Read ",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000007",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000000",
+        "Code": "Account",
+        "Display": "Account",
+        "Name": "Account",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000001",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000000",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001c",
+        "Code": "AdditionalServicesConfiguration",
+        "Display": "AdditionalServicesConfiguration",
+        "Name": "AdditionalServicesConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000036",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000035",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001f",
+        "Code": "EmailTemplate",
+        "Display": "EmailTemplate",
+        "Name": "EmailTemplate",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003f",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003e",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000016",
+        "Code": "Facility",
+        "Display": "Facility",
+        "Name": "Facility",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000024",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000023",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000012",
+        "Code": "Invoice",
+        "Display": "Invoice",
+        "Name": "Invoice",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001e",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001d",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001d",
+        "Code": "InvoiceExchangeConfiguration",
+        "Display": "InvoiceExchangeConfiguration",
+        "Name": "InvoiceExchangeConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000039",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000038",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000010",
+        "Code": "LoadConfirmation",
+        "Display": "LoadConfirmation",
+        "Name": "LoadConfirmation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000019",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000008",
+        "Code": "MaterialApproval",
+        "Display": "MaterialApproval",
+        "Name": "MaterialApproval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001b",
+        "Code": "Roles",
+        "Display": "Roles",
+        "Name": "Roles",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000033",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000032",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000d",
+        "Code": "SalesLine",
+        "Display": "SalesLine",
+        "Name": "SalesLine",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000016",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000015",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000017",
+        "Code": "ServiceType",
+        "Display": "ServiceType",
+        "Name": "ServiceType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000027",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000026",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000019",
+        "Code": "SourceLocationType",
+        "Display": "SourceLocationType",
+        "Name": "SourceLocationType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000018",
+        "Code": "SpartanProductParameter",
+        "Display": "SpartanProductParameter",
+        "Name": "SpartanProductParameter",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000029",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001e",
+        "Code": "TradeAgreement",
+        "Display": "TradeAgreement",
+        "Name": "TradeAgreement",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003c",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003b",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000009",
+        "Code": "TruckTicket",
+        "Display": "TruckTicket",
+        "Name": "TruckTicket",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000010",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000025",
+        "Code": "TruckTicketTareWeight",
+        "Display": "TruckTicketTareWeight",
+        "Name": "TruckTicketTareWeight",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000048",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000047",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001a",
+        "Code": "UserProfile",
+        "Display": "UserProfile",
+        "Name": "UserProfile",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000030",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000020",
+        "Code": "VolumeChange",
+        "Display": "VolumeChange",
+        "Name": "VolumeChange",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000042",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000041",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000022",
+        "Code": "FstDailyWorkReport",
+        "Display": "FstDailyWorkReport",
+        "Name": "FstDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000044",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000023",
+        "Code": "LandfillDailyWorkReport",
+        "Display": "LandfillDailyWorkReport",
+        "Name": "LandfillDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000045",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000011",
+        "Code": "LoadConfirmation.SalesLineRemoval",
+        "Display": "LoadConfirmation.SalesLineRemoval",
+        "Name": "LoadConfirmation.SalesLineRemoval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000021",
+        "Code": "LoadSummaryReport",
+        "Display": "LoadSummaryReport",
+        "Name": "LoadSummaryReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000043",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000024",
+        "Code": "ProducerReport",
+        "Display": "ProducerReport",
+        "Name": "ProducerReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000046",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "730378a2-4c44-4b73-8a31-75f59380b6dc",
+    "Deleted": false,
+    "DocumentType": "Accounts",
+    "EntityType": "Role",
+    "Name": "Operator",
+    "PermissionDisplay": "Read  SourceLocation, View SourceLocation, Read Account, View Account, Read AdditionalServicesConfiguration, Read EmailTemplate, Read Facility, Read MaterialApproval, View MaterialApproval, Read SalesLine, View SalesLine, Read ServiceType, Read SourceLocationType, Read SpartanProductParameter, Read TruckTicket, View TruckTicket, View FstDailyWorkReport, View LandfillDailyWorkReport, View LoadSummaryReport, View ProducerReport",
+    "id": "Role|730378a2-4c44-4b73-8a31-75f59380b6dc",
+    "Permissions": [
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000005",
+        "Code": "SourceLocation",
+        "Display": "SourceLocation",
+        "Name": "SourceLocation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000008",
+            "Display": "Read ",
+            "Name": "Read ",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000007",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000000",
+        "Code": "Account",
+        "Display": "Account",
+        "Name": "Account",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000001",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000000",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001c",
+        "Code": "AdditionalServicesConfiguration",
+        "Display": "AdditionalServicesConfiguration",
+        "Name": "AdditionalServicesConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000036",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001f",
+        "Code": "EmailTemplate",
+        "Display": "EmailTemplate",
+        "Name": "EmailTemplate",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003f",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000016",
+        "Code": "Facility",
+        "Display": "Facility",
+        "Name": "Facility",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000024",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000008",
+        "Code": "MaterialApproval",
+        "Display": "MaterialApproval",
+        "Name": "MaterialApproval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000d",
+        "Code": "SalesLine",
+        "Display": "SalesLine",
+        "Name": "SalesLine",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000016",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000015",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000017",
+        "Code": "ServiceType",
+        "Display": "ServiceType",
+        "Name": "ServiceType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000027",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000019",
+        "Code": "SourceLocationType",
+        "Display": "SourceLocationType",
+        "Name": "SourceLocationType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000018",
+        "Code": "SpartanProductParameter",
+        "Display": "SpartanProductParameter",
+        "Name": "SpartanProductParameter",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000009",
+        "Code": "TruckTicket",
+        "Display": "TruckTicket",
+        "Name": "TruckTicket",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000010",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000022",
+        "Code": "FstDailyWorkReport",
+        "Display": "FstDailyWorkReport",
+        "Name": "FstDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000044",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000023",
+        "Code": "LandfillDailyWorkReport",
+        "Display": "LandfillDailyWorkReport",
+        "Name": "LandfillDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000045",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000021",
+        "Code": "LoadSummaryReport",
+        "Display": "LoadSummaryReport",
+        "Name": "LoadSummaryReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000043",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000024",
+        "Code": "ProducerReport",
+        "Display": "ProducerReport",
+        "Name": "ProducerReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000046",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "826e0365-fd3f-4b5c-a63a-afb303727041",
+    "Deleted": false,
+    "DocumentType": "Accounts",
+    "EntityType": "Role",
+    "Name": "Production Accountant",
+    "PermissionDisplay": "Read  SourceLocation, View SourceLocation, Write SourceLocation, Read Invoice, View Invoice, Read SalesLine, View SalesLine, Read SourceLocationType, View SourceLocationType, Write SourceLocationType, Read TruckTicket, View TruckTicket, Read TruckTicketTareWeight, View TruckTicketTareWeight",
+    "id": "Role|826e0365-fd3f-4b5c-a63a-afb303727041",
+    "Permissions": [
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000005",
+        "Code": "SourceLocation",
+        "Display": "SourceLocation",
+        "Name": "SourceLocation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000008",
+            "Display": "Read ",
+            "Name": "Read ",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000007",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000009",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "813e1a99-4564-4b31-9ce8-87c6ee704f80",
+        "Code": "SourceLocation.NameId",
+        "Display": "SourceLocation.NameId",
+        "Name": "SourceLocation.NameId",
+        "AssignedOperations": [
+          {
+            "Id": "b1f37f99-a382-4eeb-a01c-7b2206de33ca",
+            "Description": "update ownership info for source locations.",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000012",
+        "Code": "Invoice",
+        "Display": "Invoice",
+        "Name": "Invoice",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001e",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001d",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000d",
+        "Code": "SalesLine",
+        "Display": "SalesLine",
+        "Name": "SalesLine",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000016",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000015",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000019",
+        "Code": "SourceLocationType",
+        "Display": "SourceLocationType",
+        "Name": "SourceLocationType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002e",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000009",
+        "Code": "TruckTicket",
+        "Display": "TruckTicket",
+        "Name": "TruckTicket",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000010",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000025",
+        "Code": "TruckTicketTareWeight",
+        "Display": "TruckTicketTareWeight",
+        "Name": "TruckTicketTareWeight",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000048",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000047",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "4076fb98-5c1a-47f2-b198-041131f4f606",
+    "Deleted": false,
+    "DocumentType": "Accounts",
+    "EntityType": "Role",
+    "Name": "Scale Operator",
+    "PermissionDisplay": "Read  SourceLocation, View SourceLocation, Read Account, View Account, Read AdditionalServicesConfiguration, View AdditionalServicesConfiguration, Read EmailTemplate, View EmailTemplate, Read Facility, View Facility, Read Invoice, View Invoice, Read InvoiceExchangeConfiguration, View InvoiceExchangeConfiguration, Read LoadConfirmation, View LoadConfirmation, Read MaterialApproval, View MaterialApproval, Read SalesLine, View SalesLine, Read ServiceType, View ServiceType, Read SourceLocationType, View SourceLocationType, Read SpartanProductParameter, View SpartanProductParameter, Read TradeAgreement, View TradeAgreement, Read TruckTicket, View TruckTicket, Write TruckTicket, Read TruckTicketTareWeight, Upload TruckTicketTareWeight, View TruckTicketTareWeight, Read VolumeChange, View VolumeChange, View FstDailyWorkReport, View LandfillDailyWorkReport, View LoadConfirmation.SalesLineRemoval, View LoadSummaryReport, View ProducerReport, Write SourceLocation.OwnershipInfo, Write TruckTicket.Billing",
+    "id": "Role|4076fb98-5c1a-47f2-b198-041131f4f606",
+    "Permissions": [
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000005",
+        "Code": "SourceLocation",
+        "Display": "SourceLocation",
+        "Name": "SourceLocation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000008",
+            "Display": "Read ",
+            "Name": "Read ",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000007",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000000",
+        "Code": "Account",
+        "Display": "Account",
+        "Name": "Account",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000001",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000000",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001c",
+        "Code": "AdditionalServicesConfiguration",
+        "Display": "AdditionalServicesConfiguration",
+        "Name": "AdditionalServicesConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000036",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000035",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001f",
+        "Code": "EmailTemplate",
+        "Display": "EmailTemplate",
+        "Name": "EmailTemplate",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003f",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003e",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000016",
+        "Code": "Facility",
+        "Display": "Facility",
+        "Name": "Facility",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000024",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000023",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000012",
+        "Code": "Invoice",
+        "Display": "Invoice",
+        "Name": "Invoice",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001e",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001d",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001d",
+        "Code": "InvoiceExchangeConfiguration",
+        "Display": "InvoiceExchangeConfiguration",
+        "Name": "InvoiceExchangeConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000039",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000038",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000010",
+        "Code": "LoadConfirmation",
+        "Display": "LoadConfirmation",
+        "Name": "LoadConfirmation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000019",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000008",
+        "Code": "MaterialApproval",
+        "Display": "MaterialApproval",
+        "Name": "MaterialApproval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000d",
+        "Code": "SalesLine",
+        "Display": "SalesLine",
+        "Name": "SalesLine",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000016",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000015",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000017",
+        "Code": "ServiceType",
+        "Display": "ServiceType",
+        "Name": "ServiceType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000027",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000026",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000019",
+        "Code": "SourceLocationType",
+        "Display": "SourceLocationType",
+        "Name": "SourceLocationType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000018",
+        "Code": "SpartanProductParameter",
+        "Display": "SpartanProductParameter",
+        "Name": "SpartanProductParameter",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000029",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001e",
+        "Code": "TradeAgreement",
+        "Display": "TradeAgreement",
+        "Name": "TradeAgreement",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003c",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003b",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000009",
+        "Code": "TruckTicket",
+        "Display": "TruckTicket",
+        "Name": "TruckTicket",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000010",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000011",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000025",
+        "Code": "TruckTicketTareWeight",
+        "Display": "TruckTicketTareWeight",
+        "Name": "TruckTicketTareWeight",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000048",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000049",
+            "Display": "Upload",
+            "Name": "Upload",
+            "Value": "u"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000047",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000020",
+        "Code": "VolumeChange",
+        "Display": "VolumeChange",
+        "Name": "VolumeChange",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000042",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000041",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000022",
+        "Code": "FstDailyWorkReport",
+        "Display": "FstDailyWorkReport",
+        "Name": "FstDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000044",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000023",
+        "Code": "LandfillDailyWorkReport",
+        "Display": "LandfillDailyWorkReport",
+        "Name": "LandfillDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000045",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000011",
+        "Code": "LoadConfirmation.SalesLineRemoval",
+        "Display": "LoadConfirmation.SalesLineRemoval",
+        "Name": "LoadConfirmation.SalesLineRemoval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000021",
+        "Code": "LoadSummaryReport",
+        "Display": "LoadSummaryReport",
+        "Name": "LoadSummaryReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000043",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000024",
+        "Code": "ProducerReport",
+        "Display": "ProducerReport",
+        "Name": "ProducerReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000046",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000006",
+        "Code": "SourceLocation.OwnershipInfo",
+        "Display": "SourceLocation.OwnershipInfo",
+        "Name": "SourceLocation.OwnershipInfo",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000a",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000a",
+        "Code": "TruckTicket.Billing",
+        "Display": "TruckTicket.Billing",
+        "Name": "TruckTicket.Billing",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000012",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "aa281cf2-a629-4a43-a5a3-106185a4cbb8",
+    "Deleted": false,
+    "DocumentType": "Accounts",
+    "EntityType": "Role",
+    "Name": "System Administrator",
+    "PermissionDisplay": "Execute Invoice.PaidUnstelledTransition, Execute Invoice.Reversal, Execute SalesLine.PriceRefresh, Execute SalesLine.Pricing.Bulk, Read  SourceLocation, View SourceLocation, Write SourceLocation, Read Account, View Account, Write Account, Read AdditionalServicesConfiguration, View AdditionalServicesConfiguration, Write AdditionalServicesConfiguration, Read EmailTemplate, View EmailTemplate, Write EmailTemplate, Read Facility, View Facility, Write Facility, Read Invoice, View Invoice, Write Invoice, Read InvoiceExchangeConfiguration, View InvoiceExchangeConfiguration, Write InvoiceExchangeConfiguration, Read LoadConfirmation, View LoadConfirmation, Write LoadConfirmation, Read MaterialApproval, View MaterialApproval, Write MaterialApproval, Read Roles, View Roles, Write Roles, Read SalesLine, View SalesLine, Write SalesLine, Read ServiceType, View ServiceType, Write ServiceType, Read SourceLocationType, View SourceLocationType, Write SourceLocationType, Read SpartanProductParameter, View SpartanProductParameter, Write SpartanProductParameter, Read TradeAgreement, Upload TradeAgreement, View TradeAgreement, Read TruckTicket, View TruckTicket, Write TruckTicket, Read TruckTicketTareWeight, Upload TruckTicketTareWeight, View TruckTicketTareWeight, Read UserProfile, View UserProfile, Write UserProfile, Read VolumeChange, View VolumeChange, View FstDailyWorkReport, View LandfillDailyWorkReport, View LoadConfirmation.SalesLineRemoval, View LoadSummaryReport, View ProducerReport, Write Account.BillingConfig.Default, Write Account.EdiFieldDefinition, Write Account.InvoiceConfig.Default, Write Account.OtherInfo, Write Invoice.CollectionNotes, Write SourceLocation.OwnershipInfo, Write SourceLocation.OwnershipInfo.Bulk, Write TruckTicket.Attachment, Write TruckTicket.Billing, Write TruckTicket.Sales.Pricing",
+    "id": "Role|aa281cf2-a629-4a43-a5a3-106185a4cbb8",
+    "Permissions": [
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000014",
+        "Code": "Invoice.PaidUnstelledTransition",
+        "Display": "Invoice.PaidUnstelledTransition",
+        "Name": "Invoice.PaidUnstelledTransition",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000021",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000013",
+        "Code": "Invoice.Reversal",
+        "Display": "Invoice.Reversal",
+        "Name": "Invoice.Reversal",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000020",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000f",
+        "Code": "SalesLine.PriceRefresh",
+        "Display": "SalesLine.PriceRefresh",
+        "Name": "SalesLine.PriceRefresh",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000018",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000e",
+        "Code": "SalesLine.Pricing.Bulk",
+        "Display": "SalesLine.Pricing.Bulk",
+        "Name": "SalesLine.Pricing.Bulk",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000017",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000005",
+        "Code": "SourceLocation",
+        "Display": "SourceLocation",
+        "Name": "SourceLocation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000008",
+            "Display": "Read ",
+            "Name": "Read ",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000007",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000009",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "88538bda-5ae6-43f3-ac52-783fa220b59d",
+        "Code": "SourceLocation.NameId",
+        "Display": "SourceLocation.NameId",
+        "Name": "SourceLocation.NameId",
+        "AssignedOperations": [
+          {
+            "Id": "b1f37f99-a382-4eeb-a01c-7b2206de33ca",
+            "Description": "update ownership info for source locations.",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000000",
+        "Code": "Account",
+        "Display": "Account",
+        "Name": "Account",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000001",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000000",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000002",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001c",
+        "Code": "AdditionalServicesConfiguration",
+        "Display": "AdditionalServicesConfiguration",
+        "Name": "AdditionalServicesConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000036",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000035",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000037",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001f",
+        "Code": "EmailTemplate",
+        "Display": "EmailTemplate",
+        "Name": "EmailTemplate",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003f",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003e",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000040",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000016",
+        "Code": "Facility",
+        "Display": "Facility",
+        "Name": "Facility",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000024",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000023",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000025",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000012",
+        "Code": "Invoice",
+        "Display": "Invoice",
+        "Name": "Invoice",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001e",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001d",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001f",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001d",
+        "Code": "InvoiceExchangeConfiguration",
+        "Display": "InvoiceExchangeConfiguration",
+        "Name": "InvoiceExchangeConfiguration",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000039",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000038",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003a",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000010",
+        "Code": "LoadConfirmation",
+        "Display": "LoadConfirmation",
+        "Name": "LoadConfirmation",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000019",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001b",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000008",
+        "Code": "MaterialApproval",
+        "Display": "MaterialApproval",
+        "Name": "MaterialApproval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000e",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001b",
+        "Code": "Roles",
+        "Display": "Roles",
+        "Name": "Roles",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000033",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000032",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000034",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000d",
+        "Code": "SalesLine",
+        "Display": "SalesLine",
+        "Name": "SalesLine",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000016",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000015",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000017",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000017",
+        "Code": "ServiceType",
+        "Display": "ServiceType",
+        "Name": "ServiceType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000027",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000026",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000028",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000019",
+        "Code": "SourceLocationType",
+        "Display": "SourceLocationType",
+        "Name": "SourceLocationType",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002d",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002e",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000018",
+        "Code": "SpartanProductParameter",
+        "Display": "SpartanProductParameter",
+        "Name": "SpartanProductParameter",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002a",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000029",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002b",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001e",
+        "Code": "TradeAgreement",
+        "Display": "TradeAgreement",
+        "Name": "TradeAgreement",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003c",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003d",
+            "Display": "Upload",
+            "Name": "Upload",
+            "Value": "u"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000003b",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000009",
+        "Code": "TruckTicket",
+        "Display": "TruckTicket",
+        "Name": "TruckTicket",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000010",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000011",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000025",
+        "Code": "TruckTicketTareWeight",
+        "Display": "TruckTicketTareWeight",
+        "Name": "TruckTicketTareWeight",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000048",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000049",
+            "Display": "Upload",
+            "Name": "Upload",
+            "Value": "u"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000047",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000001a",
+        "Code": "UserProfile",
+        "Display": "UserProfile",
+        "Name": "UserProfile",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000030",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000002f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000031",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000020",
+        "Code": "VolumeChange",
+        "Display": "VolumeChange",
+        "Name": "VolumeChange",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000042",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000041",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000022",
+        "Code": "FstDailyWorkReport",
+        "Display": "FstDailyWorkReport",
+        "Name": "FstDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000044",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000023",
+        "Code": "LandfillDailyWorkReport",
+        "Display": "LandfillDailyWorkReport",
+        "Name": "LandfillDailyWorkReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000045",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000011",
+        "Code": "LoadConfirmation.SalesLineRemoval",
+        "Display": "LoadConfirmation.SalesLineRemoval",
+        "Name": "LoadConfirmation.SalesLineRemoval",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000001c",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000021",
+        "Code": "LoadSummaryReport",
+        "Display": "LoadSummaryReport",
+        "Name": "LoadSummaryReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000043",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000024",
+        "Code": "ProducerReport",
+        "Display": "ProducerReport",
+        "Name": "ProducerReport",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000046",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000002",
+        "Code": "Account.BillingConfig.Default",
+        "Display": "Account.BillingConfig.Default",
+        "Name": "Account.BillingConfig.Default",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000004",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000003",
+        "Code": "Account.EdiFieldDefinition",
+        "Display": "Account.EdiFieldDefinition",
+        "Name": "Account.EdiFieldDefinition",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000005",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000001",
+        "Code": "Account.InvoiceConfig.Default",
+        "Display": "Account.InvoiceConfig.Default",
+        "Name": "Account.InvoiceConfig.Default",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000003",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000004",
+        "Code": "Account.OtherInfo",
+        "Display": "Account.OtherInfo",
+        "Name": "Account.OtherInfo",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000006",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000015",
+        "Code": "Invoice.CollectionNotes",
+        "Display": "Invoice.CollectionNotes",
+        "Name": "Invoice.CollectionNotes",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000022",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000006",
+        "Code": "SourceLocation.OwnershipInfo",
+        "Display": "SourceLocation.OwnershipInfo",
+        "Name": "SourceLocation.OwnershipInfo",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000a",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000007",
+        "Code": "SourceLocation.OwnershipInfo.Bulk",
+        "Display": "SourceLocation.OwnershipInfo.Bulk",
+        "Name": "SourceLocation.OwnershipInfo.Bulk",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000b",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000c",
+        "Code": "TruckTicket.Attachment",
+        "Display": "TruckTicket.Attachment",
+        "Name": "TruckTicket.Attachment",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000014",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000a",
+        "Code": "TruckTicket.Billing",
+        "Display": "TruckTicket.Billing",
+        "Name": "TruckTicket.Billing",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000012",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      },
+      {
+        "Id": "eee92727-3326-46cb-a403-00000000000b",
+        "Code": "TruckTicket.Sales.Pricing",
+        "Display": "TruckTicket.Sales.Pricing",
+        "Name": "TruckTicket.Sales.Pricing",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000013",
+            "Display": "Write",
+            "Name": "Write",
+            "Value": "w"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "ae6c65e7-938a-4af3-bd1d-e0145de50c54",
+    "Deleted": false,
+    "DocumentType": "Accounts",
+    "EntityType": "Role",
+    "Name": "test",
+    "PermissionDisplay": "Execute Invoice.Reversal",
+    "id": "Role|ae6c65e7-938a-4af3-bd1d-e0145de50c54",
+    "Permissions": [
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000013",
+        "Code": "Invoice.Reversal",
+        "Display": "Invoice.Reversal",
+        "Name": "Invoice.Reversal",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000020",
+            "Display": "Execute",
+            "Name": "Execute",
+            "Value": "x"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Id": "e188269e-c375-41c5-a565-29fe3405eed7",
+    "Deleted": false,
+    "DocumentType": "Accounts",
+    "EntityType": "Role",
+    "Name": "Waste Tracking",
+    "PermissionDisplay": "Read TruckTicket, View TruckTicket",
+    "id": "Role|e188269e-c375-41c5-a565-29fe3405eed7",
+    "Permissions": [
+      {
+        "Id": "eee92727-3326-46cb-a403-000000000009",
+        "Code": "TruckTicket",
+        "Display": "TruckTicket",
+        "Name": "TruckTicket",
+        "AssignedOperations": [
+          {
+            "Id": "eee92727-3326-46cb-a402-000000000010",
+            "Display": "Read",
+            "Name": "Read",
+            "Value": "r"
+          },
+          {
+            "Id": "eee92727-3326-46cb-a402-00000000000f",
+            "Display": "View",
+            "Name": "View",
+            "Value": "v"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,60 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+
+@inherits BaseRazorComponent
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex gap-2 align-items-start">
+            <h3 class="fw-bold">Void Status Reasons</h3>
+        </div>
+        <div class="d-flex gap-2 align-items-end">
+            <RadzenButton Click=@(args => OpenVoidReasonEditDialog())
+                          Text="Add Void Reason"
+                          ButtonStyle="ButtonStyle.Primary"
+                          Size="ButtonSize.Medium"
+            />
+        </div>
+    </div>
+    <div class="card-body grid-switch-container">
+        <PagableGridView TModel="TruckTicketVoidReason" 
+                         @ref="_grid"
+                         Results="@_results"
+                         class="bs-class"
+                         EnableSearch="false"
+                         EnablePaging="false"
+                         EnableSorting="true"
+                         OnDataLoad="LoadData"
+                         EnableRowExpansion="false"
+                         EnableFilters="false">
+            <Columns>
+                <ColumnDefinition TItem="TruckTicketVoidReason"
+                                  Property="@nameof(TruckTicketVoidReason.VoidReason)"
+                                  Title="Void Reason"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="TruckTicketVoidReason"
+                                  Property="@nameof(TruckTicketVoidReason.IsDeleted)"
+                                  Title="Deleted"
+                                  PropertyType="typeof(bool)">
+                    <Template Context="context">
+                        <RadzenSwitch @bind-Value="context.IsDeleted" class="grid-switch"
+                                      Disabled="true">
+                        </RadzenSwitch>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="TruckTicketVoidReason"
+                                  Property="@nameof(TruckTicketVoidReason)"
+                                  Title="Actions"
+                                  Width="4rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="() => OpenVoidReasonEditDialog(data)"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Small"
+                                      Text="Edit"
+                                      />
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

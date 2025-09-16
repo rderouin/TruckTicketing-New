@@ -1,0 +1,37 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseTruckTicketingComponent
+
+<PagableGridView @ref="_grid"
+                 TModel="TruckTicketWellClassification"
+                 Results="@_results"
+                 EnablePaging="true"
+                 EnableSorting="true"
+                 EnableFilters="false"
+                 OnDataLoad="LoadData"
+                 IsLoading="@_isLoading">
+    <Columns>
+        <ColumnDefinition TItem="TruckTicketWellClassification"
+                          Property="@nameof(TruckTicketWellClassification.Date)"
+                          Title="Date"
+                          PropertyType="typeof(string)"/>
+        <ColumnDefinition TItem="TruckTicketWellClassification"
+                          Property="@nameof(TruckTicketWellClassification.FacilityName)"
+                          Title="Facility"
+                          PropertyType="typeof(string)"/>
+        <ColumnDefinition TItem="TruckTicketWellClassification"
+                          Property="@nameof(TruckTicketWellClassification.WellClassification)"
+                          Title="Well Classification"/>
+        <ColumnDefinition TItem="TruckTicketWellClassification"
+                          Property="@nameof(TruckTicketWellClassification.Id)"
+                          Title="Actions"
+                          Width="5rem"
+                          EnableSorting="false">
+            <Template Context="data">
+                <RadzenButton Click="() => HandleDelete(data)"
+                              ButtonStyle="ButtonStyle.Danger"
+                              Size="ButtonSize.Small"
+                              Text="Remove"/>
+            </Template>
+        </ColumnDefinition>
+    </Columns>
+</PagableGridView>

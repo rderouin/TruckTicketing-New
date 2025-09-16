@@ -1,0 +1,26 @@
+﻿{
+  "SourceLocationSettings": {
+    "MeridianProvinceMap": {
+      "w1": "MB",
+      "w2": "SK",
+      "w3": "SK",
+      "w4": "AB",
+      "w5": "AB",
+      "w6": "BC"
+    },
+    "ApiNumberPrefixStateMap": {
+      "25": "MT",
+      "33": "ND"
+    },
+    "AllowedProvinces": [
+      "AB",
+      "BC",
+      "MB",
+      "SK"
+    ],
+    "AllowedStates": [
+      "MT",
+      "ND"
+    ]
+  }
+}

@@ -1,0 +1,79 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.Shared.Common.Lookups
+@using SE.TruckTicketing.Client.Pages.SourceLocations
+@using SE.Shared.Common.Extensions
+@inherits BaseRazorComponent
+
+
+<RadzenTemplateForm TItem="SourceLocationReassignment"
+                    Submit="@HandleSubmit"
+                    Data="@SourceLocationOwnerModel"
+                    @ref="ReferenceToForm">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Generator"
+                                 Component="GeneratorDropDown"
+                                 class="required" />
+                    <AccountsDropDown id="GeneratorDropDown"
+                                      Name="GeneratorDropDown"
+                                      TValue="Guid"
+                                      AccountType="@AccountTypes.Generator.ToString()"
+                                      Placeholder="Select customer..."
+                                      @bind-Value="@SourceLocationOwnerModel.SelectedGenerator.Id"
+                                      TextProperty="@nameof(Account.Name)"
+                                      ValueProperty="@nameof(Account.Id)"
+                                      PageSize="10"
+                                      OnItemSelect="GeneratorSelection" />
+                    <RadzenRequiredValidator Component="GeneratorDropDown"
+                                             DefaultValue="Guid.Empty"
+                                             Text="Required" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Start Date"
+                                 Component="OwnershipStartDatePicker"
+                                 class="required" />
+                    <div class="d-flex align-items-center gap-2">
+
+                        <RadzenDatePicker TValue="DateTimeOffset?"
+                                          id="OwnershipStartDatePicker"
+                                          Name="OwnershipStartDatePicker"
+                                          DateFormat="MM/dd/yyyy"
+                                          DateRender="@DateRenderRestrictFutureDate"
+                                          Class="w-100 flex-grow-1"
+                                          Value="@SourceLocationOwnerModel.OwnershipStartDate"
+                                          Change="@((args) => HandleOwnershipDateChange(args))" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Info"
+                                      Class="flex-grow-0"
+                                      Click="@(() => HandleOwnershipDateChange(DateTimeOffset.UtcNow.ToAlbertaOffset()))"
+                                      Text="TODAY"/>
+                        <RadzenRequiredValidator Component="OwnershipStartDatePicker"
+                                                 DefaultValue="@null"
+                                                 Text="Required" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex">
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Click="CreateNewGenerator"
+                          Text="Create New Generator" />
+        </div>
+        <div class="col d-flex justify-content-end">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Save" 
+                          Disabled="_isSaveDisabled"/>
+
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          class="ml-2"
+                          Click="HandleCancel" />
+        </div>
+    </div>
+</RadzenTemplateForm>

@@ -1,0 +1,30 @@
+[
+  {
+    "Id": "58d35572-33f2-4348-afdc-b900c4f184d8",
+    "DocumentType": "BusinessStreamEntity",
+    "EntityType": "BusinessStream",
+    "Name": "ES",
+    "id": "BusinessStream|58d35572-33f2-4348-afdc-b900c4f184d8"
+  },
+  {
+    "Id": "8459fb2c-93b7-4ceb-9a81-bc705507571b",
+    "DocumentType": "BusinessStreamEntity",
+    "EntityType": "BusinessStream",
+    "Name": "FS",
+    "id": "BusinessStream|8459fb2c-93b7-4ceb-9a81-bc705507571b"
+  },
+  {
+    "Id": "f87f4dd6-6669-4126-a5ec-4aec0f8b4326",
+    "DocumentType": "BusinessStreamEntity",
+    "EntityType": "BusinessStream",
+    "Name": "MI",
+    "id": "BusinessStream|f87f4dd6-6669-4126-a5ec-4aec0f8b4326"
+  },
+  {
+    "Id": "977865ab-245f-4fc0-ad70-f925c4c5f3b8",
+    "DocumentType": "BusinessStreamEntity",
+    "EntityType": "BusinessStream",
+    "Name": "FM",
+    "id": "BusinessStream|977865ab-245f-4fc0-ad70-f925c4c5f3b8"
+  }
+]

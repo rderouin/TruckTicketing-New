@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "6ed5bd2a-02c6-4485-a906-8694cd462fc8",
+	"DataType": "Integer",
+	"DocumentType": "EDIFieldLookupEntity",
+	"EntityType": "EDIFieldLookup",
+    "Name": "Invoice Number",        
+    "id": "EDIFieldLookup|6ed5bd2a-02c6-4485-a906-8694cd462fc8"
+  },
+  {
+    "Id": "e8a6de2f-f63a-41b7-83e9-831c9cc4b4f5",
+	"DataType": "String",
+	"DocumentType": "EDIFieldLookupEntity",
+	"EntityType": "EDIFieldLookup",
+    "Name": "Invoice Name",        
+    "id": "EDIFieldLookup|e8a6de2f-f63a-41b7-83e9-831c9cc4b4f5"
+  }
+]

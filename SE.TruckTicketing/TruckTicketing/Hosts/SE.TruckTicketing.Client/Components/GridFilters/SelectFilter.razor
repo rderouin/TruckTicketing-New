@@ -1,0 +1,20 @@
+@inherits FilterComponent<string[]>
+<div class="flex-grow-1">
+    <RadzenLabel Text="@Label"
+                 For="@Id"
+                 Class="filter-label"/>
+    <div class="filter-input-container flex gap-2 align-items-center">
+        <RadzenDropDown AllowClear="true"
+                        TValue="IEnumerable<string>"
+                        Id="@Id"
+                        Name="@Id"
+                        Data="@(Data)"
+                        TextProperty="@(nameof(SelectOption.Text))"
+                        ValueProperty="@(nameof(SelectOption.Id))"
+                        Placeholder="@Placeholder"
+                        Class="flex-grow-1"
+                        Value="@_value"
+                        Change="@HandleChange"
+                        Multiple="true"/>
+    </div>
+</div>

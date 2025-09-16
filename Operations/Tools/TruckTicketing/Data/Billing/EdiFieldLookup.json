@@ -1,0 +1,422 @@
+[
+  {
+    "Id": "3fc5e919-f688-4369-9e40-c70070b2ea59",
+    "DataType": "Integer",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "Product Number"
+  },
+  {
+    "Id": "fe509b6e-432a-43d5-81e7-bfea9e071183",
+    "DataType": "String",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "Product Name"
+  },
+  {
+    "Id": "b3b14df2-d415-40ae-a8d6-0dcfe23d0d41",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "AccountQty"
+  },
+  {
+    "Id": "968b07b4-3cdd-4d91-891c-c7112ce90dfc",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "AFE"
+  },
+  {
+    "Id": "fcbfc899-b2e9-45f5-b648-62072bd0a0be",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "AFEOwner"
+  },
+  {
+    "Id": "cc76eba5-60a3-44d9-91cf-cdac230e6d7b",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "Alpha"
+  },
+  {
+    "Id": "3fc04ffe-1512-44bc-abac-e1a65111e151",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "ApproverCoding"
+  },
+  {
+    "Id": "25e3c093-286d-4f4e-90f3-369ee6fd7fbd",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "AssetNumber"
+  },
+  {
+    "Id": "0b43a12a-a84e-4cde-b105-0c21b1a88e95",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "AttnTo"
+  },
+  {
+    "Id": "a426f156-d5a5-4571-83b5-a7eb2b70a176",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "AttnToName"
+  },
+  {
+    "Id": "1a1bae70-c465-427d-beaa-8fcf765fde2a",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "BuyerCode"
+  },
+  {
+    "Id": "8301f6b8-eacc-4b6e-9d00-012f1b714dd5",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "BuyerDepartmentDefault"
+  },
+  {
+    "Id": "f9e40e2d-1c6b-4338-8e74-968748912060",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "CatalogSerialNo"
+  },
+  {
+    "Id": "de56ef74-8ed3-42f9-b656-c76e35fe6021",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "CCType"
+  },
+  {
+    "Id": "8aa37e7a-71a4-4cb5-9735-6e14cd9f855a",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "ChargeTo"
+  },
+  {
+    "Id": "9e089905-0cf0-4850-b830-22ac212e2fca",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "ChargeToName"
+  },
+  {
+    "Id": "a464f3de-3858-4873-b589-ba5c81b94805",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "Company"
+  },
+  {
+    "Id": "fc0a9d2d-aad1-42f8-8681-5f7b4ca0ba17",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "CompanyRep"
+  },
+  {
+    "Id": "719bd4b0-ba48-4073-ba8f-364906b765a7",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "Contract"
+  },
+  {
+    "Id": "9b566674-f02d-4abc-923d-8f3654797218",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "ContractLineNumber"
+  },
+  {
+    "Id": "ef8d2fdc-12c8-432b-a152-dc7a27ccf0d8",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "CostCenter"
+  },
+  {
+    "Id": "535ab2f6-6873-40b7-ab3b-6fcb2d2ec8c9",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "CostCenterName"
+  },
+  {
+    "Id": "86da08f1-6d14-40da-a909-9b93ee76dd19",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "Zip4"
+  },
+  {
+    "Id": "bb431a7d-0945-412b-ad26-746d85ab0a25",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "FieldLocation"
+  },
+  {
+    "Id": "afb5cf9b-d841-477d-a460-0a50ec20a937",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "GLAccount"
+  },
+  {
+    "Id": "0879eb6b-2192-438a-9e03-7a8fa3a3b4f0",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "Joints"
+  },
+  {
+    "Id": "51518489-4dc7-49d7-90d7-516f26c69337",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "Location"
+  },
+  {
+    "Id": "2c73da14-cb1a-4757-98ff-b4475d40d18d",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "LocationComments"
+  },
+  {
+    "Id": "4a160984-d8bb-4769-85ac-6d7de79ac0a9",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "MajorCode"
+  },
+  {
+    "Id": "c820a7b5-a248-4cf0-bb11-beb5d57a18fd",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "MaterialCode"
+  },
+  {
+    "Id": "4020aa19-26f8-460d-8cac-aedc6c70f637",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "MatGrp"
+  },
+  {
+    "Id": "116abc6a-12e2-4a1b-8153-9a6fc6ad0688",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "MGDesc"
+  },
+  {
+    "Id": "5c45dc1f-430d-4b20-80b9-b62a1398b7dd",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "MinorCode"
+  },
+  {
+    "Id": "ba0963ec-b25f-487d-800f-830f42356f79",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "NetworkActivity"
+  },
+  {
+    "Id": "f3957ded-169f-4b4a-9b5e-da63253d862f",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "OBJSubna"
+  },
+  {
+    "Id": "e4f6a92f-41cc-49e0-88c9-2b21beddd591",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "OperationCat"
+  },
+  {
+    "Id": "5fed3bd3-b662-493d-9378-6fc8e25a3247",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "OperatorCoding"
+  },
+  {
+    "Id": "908a99c0-90b6-4a56-8da9-5948f34e5490",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "OPNumber"
+  },
+  {
+    "Id": "cca80f34-197c-4be3-86d8-119132392833",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "OrderNumber"
+  },
+  {
+    "Id": "3cb3b51d-5774-4c00-95bf-ad49ac307d54",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "POApprover"
+  },
+  {
+    "Id": "9ee4c60b-1677-4a90-8738-8e66bd90bdd3",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "POLine"
+  },
+  {
+    "Id": "1df9a6ce-02bc-42fb-a93d-2ab2cdbfb8ea",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "PONumber"
+  },
+  {
+    "Id": "41d286cb-a795-4e36-83ba-c95fc6bb118c",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "ProfitCentre"
+  },
+  {
+    "Id": "a1226336-7fde-4e97-bf9b-b067639d7668",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "Project"
+  },
+  {
+    "Id": "00f803f4-dd07-423c-b5b2-cd6281b2d605",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "ProjectPONo"
+  },
+  {
+    "Id": "fa78ecc2-c2dc-41ea-86ba-74557329fc8a",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "ProjId"
+  },
+  {
+    "Id": "f812b23e-85ef-4f01-ad71-2e7b77ad8cb3",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "ReportCentre"
+  },
+  {
+    "Id": "082d53d8-ce62-434d-9a96-28f51ab7ff75",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "Requisitioner"
+  },
+  {
+    "Id": "5a87a25f-9927-4d27-9670-800350b3bd1b",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "SerialNumber"
+  },
+  {
+    "Id": "72863c47-d62c-4b26-93d6-75e400553c54",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "Signatory"
+  },
+  {
+    "Id": "058813c4-6d19-4262-bf39-74ee6f3227d8",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "SOLine"
+  },
+  {
+    "Id": "b8fcf7d2-6738-4fae-9c10-fcbdbba027f1",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "SONumber"
+  },
+  {
+    "Id": "d34771b9-7680-4320-b5ca-a0e0d3b7f8ce",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "StkCond"
+  },
+  {
+    "Id": "d6fdd1b3-1510-4656-a03d-d05616f619d2",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "Sub"
+  },
+  {
+    "Id": "f232bbba-474d-4ff5-926f-be8b45d6b1b1",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "SubCode"
+  },
+  {
+    "Id": "b376a7a7-e35b-4772-977d-6f9ecad5497e",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "SubFeature"
+  },
+  {
+    "Id": "5ed91ed7-222a-4400-96ac-84f932f6e161",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "WBS"
+  },
+  {
+    "Id": "b913bfae-bd48-4c9f-ba7b-0ac43894567b",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "WellFacility"
+  },
+  {
+    "Id": "a93106fa-b20d-4fbc-ad59-81ec7a6033e5",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "WONumber"
+  },
+  {
+    "Id": "75473423-a88d-4f6d-a84e-2ede027fe9e5",
+    "DataType": "Boolean",
+    "DocumentType": "EDIFieldLookupEntity",
+    "EntityType": "EDIFieldLookup",
+    "Name": "WorkOrderBy"
+  }
+]

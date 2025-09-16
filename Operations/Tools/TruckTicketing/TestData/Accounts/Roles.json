@@ -1,0 +1,51 @@
+{
+  "Id": "50ea5441-b277-4a09-a48f-af81b34fa93c",
+  "Deleted": false,
+  "DocumentType": "Accounts",
+  "EntityType": "Role",
+  "Name": "Sample Role 1",
+  "PermissionDisplay": "Edit User Profiles, Edit User Profiles, View Roles, Edit Roles",
+  "id": "50ea5441-b277-4a09-a48f-af81b34fa93c",
+  "Permissions": [
+    {
+      "Id": "afb097a0-36ba-4fa3-b900-58f630dc423b",
+      "Code": "UserProfiles",
+      "Display": "User Profiles",
+      "Name": "UserProfiles",
+      "AssignedOperations": [
+        {
+          "Id": "52676a86-4e8e-4a19-aff4-0bc61aa2ced3",
+          "Display": "View",
+          "Name": "View",
+          "Value": "r"
+        },
+        {
+          "Id": "f7f18dce-f101-4564-a115-c472fd610903",
+          "Display": "Edit",
+          "Name": "Edit",
+          "Value": "w"
+        }
+      ]
+    },
+    {
+      "Id": "3ab68ff9-7f23-4358-a07e-692f7f75cc3d",
+      "Code": "Roles",
+      "Display": "Roles",
+      "Name": "Roles",
+      "AssignedOperations": [
+        {
+          "Id": "44331e7d-5c73-4ac8-8f42-1d709d41b4ff",
+          "Display": "View",
+          "Name": "View",
+          "Value": "r"
+        },
+        {
+          "Id": "0d74eaf0-2ee6-474c-b30b-7256fa5387d9",
+          "Display": "Edit",
+          "Name": "Edit",
+          "Value": "w"
+        }
+      ]
+    }
+  ]
+}

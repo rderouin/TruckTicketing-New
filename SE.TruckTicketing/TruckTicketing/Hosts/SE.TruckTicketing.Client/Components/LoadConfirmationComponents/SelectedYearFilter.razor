@@ -1,0 +1,15 @@
+﻿@using Trident.Api.Search
+@inherits FilterComponent<int>
+
+<div>
+    <RadzenLabel Text="@Label" For="YearSelector" Class="filter-label"/>
+    <div class="d-flex position-relative">
+        <RadzenDropDown
+            AllowClear="true"
+            Id="YearSelector" 
+            Name="YearSelector" 
+            @bind-Value="@SelectedYear" 
+            Data="@Data" 
+            Change="@HandleChange" />
+    </div>
+</div>

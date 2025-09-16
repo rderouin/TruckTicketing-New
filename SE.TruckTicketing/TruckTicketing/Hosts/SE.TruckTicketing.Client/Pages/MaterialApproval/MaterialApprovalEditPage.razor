@@ -1,0 +1,96 @@
+﻿@page "/material-approval/{Operation}"
+@page "/material-approval/{Operation}/{MaterialApprovalId:guid}"
+@using SE.Shared.Common.Extensions
+@using SE.TruckTicketing.Client.Components.MaterialApprovalComponents
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<PageLoadingContainer IsLoading="_isLoading">
+    <LoadedView>
+        <EditForm EditContext="@_editContext"
+                  OnValidSubmit="OnHandleSubmit"
+                  class="h-100">
+            <div class="d-flex flex-column h-100">
+                <div class="flex-grow-0 p-4">
+
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h3 class="title m-0">@_viewModel.Title</h3>
+
+                        <div class="d-flex gap-4 align-items-center">
+                            <RadzenLink Icon="close"
+                                        Path="/material-approvals"
+                                        Text=""
+                                        class="rz-button rz-button-md btn-light text-decoration-none icon-only"/>
+                        </div>
+                    </div>
+                    <TridentValidationSummary Response="_response"
+                                              TModel="MaterialApproval"/>
+                </div>
+
+                <div class="flex-grow-1 p-4"
+                     style="overflow-y: auto">
+                    <RadzenTabs @bind-SelectedIndex="SelectedTabIndex">
+                        <Tabs>
+                            <RadzenTabsItem Text="General">
+                                <GeneralTabComponent Model="@_viewModel.MaterialApproval"
+                                                     AccountContacts="HandleAccountContacts"
+                                                     ResetAccountContacts="RefreshAccountContacts"
+                                                     OnContextChange="HandleTabChange"
+                                                     IsEditable="@IsEditable"/>
+
+                            </RadzenTabsItem>
+                            <RadzenTabsItem Text="Reporting Info">
+                                <ReportingInfo model="@_viewModel.MaterialApproval"
+                                               AccountContacts="_viewModel.AccountContacts"
+                                               OnContextChange="HandleTabChange"/>
+
+                            </RadzenTabsItem>
+                            @if (_viewModel.MaterialApproval.Id != Guid.Empty)
+                            {
+                                <RadzenTabsItem Text="History">
+                                    <TridentChangeDataGridWrapper Id="_viewModel.MaterialApproval.Id"
+                                                                  EntityType="MaterialApproval"
+                                                                  EntityName="Material Approval"/>
+                                </RadzenTabsItem>
+                            }
+                        </Tabs>
+                    </RadzenTabs>
+                </div>
+
+                <div class="flex-grow-0 d-flex align-items-center justify-content-between p-4 footer-panel">
+                    <div>
+                        <div class="d-flex gap-2 align-items-center">
+                            <RadzenLabel Text="Active"
+                                         Component="MaterialApprovalIsActiveSwitch"
+                                         class="m-0"/>
+                            <RadzenSwitch id="MaterialApprovalIsActiveSwitch"
+                                          Change="OnStatusChange"
+                                          @bind-Value="@IsActive"/>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <RadzenButton Text="Close"
+                                      Icon="close"
+                                      class="rz-button rz-button-md btn-secondary text-decoration-none"
+                                      Click="CloseButton_Click"/>
+                        <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                                      Text="Download Blank Scale Receipt"
+                                      IsBusy="_isDownloadingScaleTicket"
+                                      BusyText="Downloading Blank Scale Receipt"
+                                      Click="HandleDownloadMaterialApprovalScaleTicket"
+                                      Visible="@_viewModel.MaterialApproval.MaterialApprovalNumber.HasText()"/>
+
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                      ButtonType="ButtonType.Submit"
+                                      Text="@_viewModel.SubmitButtonText"
+                                      Disabled="@(_viewModel.SubmitButtonDisabled || !HasWritePermission(Permissions.Resources.MaterialApproval))"
+                                      IsBusy="_isSaving"
+                                      BusyText="@_viewModel.SubmitButtonBusyText"
+                                      Icon="@_viewModel.SubmitButtonIcon"/>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+    </LoadedView>
+</PageLoadingContainer>

@@ -1,0 +1,16 @@
+trigger: none
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: PowerShell@2
+  displayName: 'CosmosDB CLI Tool'
+  inputs:
+    failOnStderr: false
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    errorActionPreference: 'stop' # Optional. Options: stop, continue, silentlyContinue
+    targetType: 'inline'
+    script: |
+        $cosmosDbCliToolFilePath = Resolve-Path("d:\a\**\**\Operations\Tools\CosmosDBCLI\TruckTicketingCLI.exe")
+        & $cosmosDbCliToolFilePath create_db --name TruckTicketing -t TT

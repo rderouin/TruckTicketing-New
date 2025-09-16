@@ -1,0 +1,38 @@
+@page "/authentication/{action}"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+<div class="w-100 h-100 d-flex flex-column justify-content-center align-items-center">
+
+    <RemoteAuthenticatorView Action="@Action">
+        <LoggingIn>
+            <LoginLoadingDisplay>
+                Logging in
+            </LoginLoadingDisplay>
+        </LoggingIn>
+
+        <CompletingLoggingIn>
+            <LoginLoadingDisplay>
+                Completing log in
+            </LoginLoadingDisplay>
+        </CompletingLoggingIn>
+
+        <LogOut>
+            <LoginLoadingDisplay>
+                Logging out
+            </LoginLoadingDisplay>
+        </LogOut>
+
+        <CompletingLogOut>
+            <LoginLoadingDisplay>
+                Completing log out
+            </LoginLoadingDisplay>
+        </CompletingLogOut>
+    </RemoteAuthenticatorView>
+
+</div>
+
+@code {
+
+    public bool ShowLoginButton => Action.Equals("logged-out");
+
+}

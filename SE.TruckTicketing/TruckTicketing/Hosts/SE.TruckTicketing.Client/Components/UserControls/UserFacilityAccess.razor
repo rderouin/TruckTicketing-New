@@ -1,0 +1,113 @@
+@using SE.TruckTicketing.Contracts.Models.Accounts
+@inherits BaseRazorComponent
+
+<div class="card">
+    <div class="card-body">
+        <div class="col-sm-6 col-md-3">
+            <RadzenCard>
+                <RadzenLabel Text="Name:"></RadzenLabel>
+                <RadzenLabel class="fw-bold"
+                             Text="@PersonName">
+                </RadzenLabel>
+                <RadzenLabel Text="User Name:"></RadzenLabel>
+                <RadzenLabel class="fw-bold"
+                             Text="@Person.Email">
+                </RadzenLabel>
+            </RadzenCard>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-6 d-flex gap-2">
+                <div class="mt-2">
+                    <RadzenLabel Text="All Facilities Access Enabled"
+                                 class="fw-bold mb-2"></RadzenLabel>
+                </div>
+                <RadzenSwitch @bind-Value="@Person.EnforceSpecificFacilityAccessLevels"></RadzenSwitch>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="fw-bold">All Facilities Access:</h4>
+                <div class="row mb-3">
+                    <div class="col d-flex flex-column">
+                        <RadzenRadioButtonList @bind-Value="@Person.AllFacilitiesAccessLevel"
+                                               Data="@_facilityAccessLevelsOptions"
+                                               TValue="string"
+                                               TextProperty="TextToDisplay"
+                                               ValueProperty="DataValue"
+                                               Orientation="Orientation.Horizontal"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h4>Selected Facilities:</h4>
+            </div>
+            <div class="card-body">
+                <div class="row d-flex">
+                    <div class="d-flex justify-content-end">
+                        <RadzenButton Click="@AddFacilityButton_Click"
+                                      class="m-2"
+                                      Text="Add Facilities"/>
+                    </div>
+                    <div class="col-lg-12">
+                        <RadzenCard>
+                            <PagableGridView TModel="UserProfileFacilityAccess"
+                                             Results="@_userProfileFacilityAccessList"
+                                             EnablePaging="true"
+                                             EnableSorting="true"
+                                             OnDataLoad="LoadUserProfileFacilityAccessData"
+                                             EnableFilters="false"
+                                             EnableSearch="false">
+                                <Columns>
+                                    <ColumnDefinition TItem="UserProfileFacilityAccess"
+                                                      Property="@nameof(UserProfileFacilityAccess.IsAuthorized)"
+                                                      Title="Authorized"
+                                                      PropertyType="typeof(bool)">
+                                        <Template Context="context">
+                                            <RadzenSwitch @bind-Value="@context.IsAuthorized" class="grid-switch">
+                                            </RadzenSwitch>
+                                        </Template>
+                                    </ColumnDefinition>
+                                    <ColumnDefinition TItem="UserProfileFacilityAccess"
+                                                      Property="@nameof(UserProfileFacilityAccess.FacilityId)"
+                                                      Title="Facility"
+                                                      PropertyType="typeof(string)"
+                                                      HideColumn="true"/>
+                                    <ColumnDefinition TItem="UserProfileFacilityAccess"
+                                                      Property="@nameof(UserProfileFacilityAccess.FacilityDisplayName)"
+                                                      Title="Facility"
+                                                      PropertyType="typeof(string)"/>
+                                    <ColumnDefinition TItem="UserProfileFacilityAccess"
+                                                      Property="@nameof(UserProfileFacilityAccess.Level)"
+                                                      Title="Level"
+                                                      PropertyType="typeof(string)"/>
+                                    <ColumnDefinition TItem="UserProfileFacilityAccess"
+                                                      Property="@nameof(UserProfileFacilityAccess.FacilityId)"
+                                                      Title="Actions"
+                                                      Width="245px">
+                                        <Template Context="data">
+                                            <RadzenButton Click="() => DeleteButton_Click(data)"
+                                                          ButtonType="ButtonType.Button"
+                                                          Text="Delete">
+
+                                            </RadzenButton>
+                                        </Template>
+                                    </ColumnDefinition>
+                                </Columns>
+                            </PagableGridView>
+                        </RadzenCard>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

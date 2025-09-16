@@ -1,0 +1,37 @@
+﻿@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@inherits BaseRazorComponent
+
+
+<PagableGridView TModel="SourceLocationOwnerHistory"
+                 Results="@Owners"
+                 EnablePaging="true"
+                 EnableSorting="true"
+                 EnableFilters="false"
+                 EnableSearch="false">
+    <Columns>
+        <ColumnDefinition TItem="SourceLocationOwnerHistory"
+                          Property="@nameof(SourceLocationOwnerHistory.GeneratorName)"
+                          Title="Generator Name"
+                          PropertyType="@typeof(string)"/>
+        <ColumnDefinition TItem="SourceLocationOwnerHistory"
+                          Property="@nameof(SourceLocationOwnerHistory.GeneratorAccountNumber)"
+                          Title="Account Number"
+                          PropertyType="@typeof(string)"/>
+        <ColumnDefinition TItem="SourceLocationOwnerHistory"
+                          Property="@nameof(SourceLocationOwnerHistory.StartDate)"
+                          Title="Start Date"
+                          PropertyType="@typeof(DateTimeOffset)">
+            <Template Context="data">
+                @data.StartDate.ToString("dd MMMM, yyyy")
+            </Template>
+        </ColumnDefinition>
+        <ColumnDefinition TItem="SourceLocationOwnerHistory"
+                          Property="@nameof(SourceLocationOwnerHistory.EndDate)"
+                          Title="End Date"
+                          PropertyType="@typeof(DateTimeOffset?)">
+            <Template Context="data">
+                @data.EndDate?.ToString("dd MMMM, yyyy")
+            </Template>
+        </ColumnDefinition>
+    </Columns>
+</PagableGridView>

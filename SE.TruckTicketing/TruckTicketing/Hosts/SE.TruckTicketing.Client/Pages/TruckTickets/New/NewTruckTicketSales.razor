@@ -1,0 +1,255 @@
+﻿@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<style>
+   .card-body.grid-switch-container tr > td:first-child .rz-cell-data {
+       display: inline;
+   }
+   
+   .rz-dropdown {
+        vertical-align: middle;
+   }
+</style>
+
+<div class="card">
+<div class="card-header d-flex align-items-center justify-content-between">
+    <div>
+        <h4 class="fw-bold">
+            @(ShowAdditionalServicesOnly ? "Additional Services" : "Sales Lines")
+        </h4>
+    </div>
+    <div class="d-flex gap-3 align-items-center">
+        @if (!ShowAdditionalServicesOnly)
+        {
+            <div class="d-flex align-items-center gap-2">
+                <RadzenLabel Text="Show Reversed Sales Lines"
+                             Component="ShowReversedSalesLinesToggle"
+                             class="m-0"/>
+
+                <RadzenSwitch Name="ShowReversedSalesLinesToggle"
+                              id="ShowReversedSalesLinesToggle"
+                              Value="@_showReversedSalesLines"
+                              Change="HandleShowReversedSalesLinesChange"/>
+            </div>
+        }
+
+        <RadzenButton Text="Remove Sales Lines from Load Confirmation"
+                      Click="@(_ => RemoveSalesLinesFromLoadConfirmation())"
+                      Visible="@(ViewModel.TruckTicketStatus is TruckTicketStatus.Approved && !ShowAdditionalServicesOnly)"
+                      IsBusy="@(ViewModel.IsRemovingSalesLines)"
+                      Disabled="@(ViewModel.IsRemovingSalesLines)"
+                      BusyText="Removing Sales Line from Load Confirmation"
+                      ButtonStyle="ButtonStyle.Secondary"
+                      Size="ButtonSize.Medium"/>
+        <RadzenButton Text="Add Additional Service"
+                      ButtonStyle="ButtonStyle.Primary"
+                      Size="ButtonSize.Medium"
+                      Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced || ViewModel.TruckTicket.BillingCustomerId == Guid.Empty || ViewModel.IsRemovingSalesLines)"
+                      Click="AddAdditionalService"/>
+    </div>
+</div>
+
+@* Grid *@
+<div class="card-body grid-switch-container">
+    <PagableGridView TModel="SalesLine"
+                     @ref="_grid"
+                     Results="@SalesLineResults"
+                     EnableSearch="false"
+                     EnablePaging="false"
+                     EnableSorting="true"
+                     EnableFilters="false">
+        <Columns>
+            <ColumnDefinition TItem="SalesLine"
+                              Property="@nameof(SalesLine.ProformaInvoiceNumber)"
+                              Title="Invoice"
+                              HideColumn="@(!_showReversedSalesLines)">
+                <Template Context="data">
+                    <span>
+                        <a href="#"
+                           @onclick="@(() => OpenInvoiceDialog(data.InvoiceId ?? default))"
+                           @onclick:preventDefault="true"
+                           @onclick:stopPropagation="true"
+                           class="text-decoration-none rz-link">
+                            @data.ProformaInvoiceNumber
+                        </a>
+                    </span>
+                </Template>
+            </ColumnDefinition>
+            @*OSCAR*@
+            <ColumnDefinition TItem="SalesLine"
+                              Property="@nameof(SalesLine.IsReversal)"
+                              Title="Reversal"
+                              HideColumn="@(!_showReversedSalesLines)">
+                <Template Context="data">
+                    <div class="d-flex justify-content-center">
+                        @if (data.IsReversed)
+                        {
+                            <RadzenBadge Text="R"
+                                         BadgeStyle="BadgeStyle.Danger"
+                                         IsPill="true"/>
+                        }
+                        else if (data.IsReversal)
+                        {
+                            <RadzenBadge Text="CN"
+                                         BadgeStyle="BadgeStyle.Info"
+                                         IsPill="true"/>
+                        }
+                    </div>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="SalesLine"
+                              Property="@nameof(SalesLine.Status)"
+                              Title="Status"
+                              HideColumn="@ShowAdditionalServicesOnly">
+                <Template Context="data">
+                    <div class="d-flex align-items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             fill="currentColor"
+                             width="10"
+                             height="10"
+                             viewBox="0 0 16 16"
+                             class="@GetStatusLineStyle(data.Status)">
+                            <circle cx="8"
+                                    cy="8"
+                                    r="4"/>
+                        </svg>
+                        <span>@data.Status</span>
+                    </div>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="SalesLine"
+                              Property="@nameof(SalesLine.ProductName)"
+                              Title="Service Name"
+                              PropertyType="typeof(string)">
+                <EditTemplate Context="salesLine">
+                    @if (salesLine.IsReadOnlyLine)
+                    {
+                        <div>@salesLine.ProductName</div>
+                    }
+                    else
+                    {
+                        <div>
+                            <ProductDropDown TValue="Guid"
+                                             Placeholder="Select Service"
+                                             @bind-Value="salesLine.ProductId"
+                                             TextProperty="@nameof(Product.Name)"
+                                             ValueProperty="@nameof(Product.Id)"
+                                             AllowClear="false"
+                                             OnDataLoading="@(BeforeLoadingProducts)"
+                                             OnItemSelect="@(product => HandleProductSelect(product, salesLine))"
+                                             class="w-100"
+                                             Style="vertical-align: middle"/>
+                        </div>
+                    }
+                </EditTemplate>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="SalesLine"
+                              Property="@nameof(SalesLine.ProductNumber)"
+                              Title="Service Number"
+                              PropertyType="typeof(string)"
+                              HideColumn="@ShowAdditionalServicesOnly">
+            </ColumnDefinition>
+            <ColumnDefinition TItem="SalesLine"
+                              Property="@nameof(SalesLine)"
+                              Title="Rate ($)"
+                              PropertyType="typeof(double)"
+                              HideColumn="@ShowAdditionalServicesOnly">
+                <Template Context="data">
+                    <RadzenNumeric Name="TruckTicketSalesLineRateTextBox"
+                                   id="TruckTicketSalesLineRateTextBox"
+                                   Value="@data.Rate"
+                                   class="w-100"
+                                   Disabled="@(data.Status == SalesLineStatus.Posted || ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced || !IsAuthorizedFor(Permissions.Resources.TruckTicketSalesPricing, Permissions.Operations.Write))"
+                                   Change="@(rate => OnRateChange(rate, data))"
+                                   ShowUpDown="false"
+                                   TValue="double">
+                    </RadzenNumeric>
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="SalesLine"
+                              Property="@nameof(SalesLine.Quantity)"
+                              Title="Quantity"
+                              PropertyType="typeof(double)">
+                <Template Context="salesLine">
+                    @if (salesLine.IsAdditionalService)
+                    {
+                        <RadzenNumeric Name="EditSaleLineQuantityTextBox"
+                                       TValue="double"
+                                       ShowUpDown="false"
+                                       @bind-Value="salesLine.Quantity"
+                                       class="w-100"
+                                       Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced or TruckTicketStatus.Approved)"
+                                       Change="@(quantity => OnQuantityChange(quantity, salesLine))"/>
+                    }
+                    else
+                    {
+                        @salesLine.Quantity.ToString("0.00")
+                    }
+                </Template>
+                <EditTemplate Context="salesLine">
+                    <RadzenNumeric Name="EditSaleLineQuantityTextBox"
+                                   TValue="double"
+                                   ShowUpDown="false"
+                                   @bind-Value="salesLine.Quantity"
+                                   class="w-100"
+                                   Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Invoiced or TruckTicketStatus.Approved)"
+                                   Change="@(quantity => OnQuantityChange(quantity, salesLine))"/>
+                </EditTemplate>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="SalesLine"
+                              Property="@nameof(SalesLine.UnitOfMeasure)"
+                              Title="UoM"
+                              PropertyType="typeof(string)">
+            </ColumnDefinition>
+            <ColumnDefinition TItem="SalesLine"
+                              Property="@nameof(SalesLine.TotalValue)"
+                              Title="Total ($)"
+                              PropertyType="typeof(double)"
+                              HideColumn="@ShowAdditionalServicesOnly">
+                <Template Context="data">
+                    @data.TotalValue.ToString("0.00")
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="SalesLine"
+                              Title=""
+                              Width="5rem"
+                              EnableSorting="false">
+                <Template Context="data">
+                    <RadzenButton Click="@(_ => ViewModel.RemoveAdditionalServiceSalesLine(data))"
+                                  Visible="@(data.IsAdditionalService && !data.IsReadOnlyLine)"
+                                  ButtonStyle="ButtonStyle.Danger"
+                                  Size="ButtonSize.Small"
+                                  Disabled="@(ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced || ViewModel.TruckTicket.BillingCustomerId == Guid.Empty)"
+                                  Text="Remove"/>
+                </Template>
+            </ColumnDefinition>
+        </Columns>
+    </PagableGridView>
+</div>
+</div>
+
+
+@if (ViewModel.TruckTicketStatus is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced && !ShowAdditionalServicesOnly)
+{
+    @if (LoadConfirmationModel != null)
+    {
+        <br/>
+        <CascadingValue Value="@LoadConfirmationModel">
+            <SE.TruckTicketing.Client.Components.LoadConfirmationComponents.GeneralTab ShowDetailInTitle="true"
+                                                                                       HideSalesLines="true"/>
+        </CascadingValue>
+    }
+
+    @if (InvoiceModel != null)
+    {
+        <br/>
+        <CascadingValue Value="@InvoiceModel">
+            <SE.TruckTicketing.Client.Components.InvoiceComponents.GeneralTab ShowDetailInTitle="true"
+                                                                              HideSalesLines="true"/>
+        </CascadingValue>
+    }
+}

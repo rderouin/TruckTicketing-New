@@ -1,0 +1,112 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+
+<RadzenTemplateForm TItem="AccountContact"
+                    Submit="@HandleSubmit"
+                    Data="@AccountContact"
+                    @ref="ReferenceToForm">
+    <div class="card">
+        <div class="card-body">
+            <div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <RadzenLabel Text="Is Primary Contact"
+                                     Component="AccountPrimaryContactCheckBox"
+                                     class="required"/>
+                        <div class="d-flex flex-row align-items-center gap-2">
+
+                            <RadzenCheckBox id="AccountPrimaryContactCheckBox"
+                                            @bind-Value="@AccountContact.IsPrimaryAccountContact"
+                                            TValue="bool"
+                                            Change="@(args => PrimaryAccountCheck(args))"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="First Name"
+                                 Component="AccountContactFirstNameTextBox"
+                                 class="@ClassNames(("required", IsPrimaryAccount))"/>
+                    <RadzenTextBox id="AccountContactFirstNameTextBox"
+                                   Name="AccountContactFirstNameTextBox"
+                                   @bind-Value="@AccountContact.Name"
+                                   class="w-100"
+                                   Change="@OnChange"/>
+                    @if (IsPrimaryAccount)
+                    {
+                        <RadzenRequiredValidator Component="AccountContactFirstNameTextBox"
+                                                 Text="Required"/>
+                    }
+
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Last Name"
+                                 Component="AccountContactLastNameTextBox"
+                                 class="@ClassNames(("required", IsPrimaryAccount))"/>
+                    <RadzenTextBox id="AccountContactLastNameTextBox"
+                                   Name="AccountContactLastNameTextBox"
+                                   @bind-Value="@AccountContact.LastName"
+                                   class="w-100"
+                                   Change="@OnChange"/>
+                    @if (IsPrimaryAccount)
+                    {
+                        <RadzenRequiredValidator Component="AccountContactLastNameTextBox"
+                                                 Text="Required"/>
+                    }
+
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Phone Number"
+                                 Component="AccountContactPhoneNumberTextBox"
+                                 class="required"/>
+                    <RadzenTextBox id="AccountContactPhoneNumberTextBox"
+                                   Name="AccountContactPhoneNumberTextBox"
+                                   @bind-Value="@AccountContact.PhoneNumber"
+                                   class="w-100"
+                                   Change="@OnChange"/>
+                    <RadzenRequiredValidator Component="AccountContactPhoneNumberTextBox"
+                                             Text="Required"/>
+                    <RadzenRegexValidator Component="AccountContactPhoneNumberTextBox"
+                                          Text="Enter phone number in valid format : (xxx) xxx-xxxx"
+                                          Pattern="\(?\d{3}\)?-?\s*\d{3}-? *-?\d{4}"/>
+
+
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Email"
+                                 Component="AccountContactEmailTextBox"
+                                 class="required"/>
+                    <RadzenTextBox id="AccountContactEmailTextBox"
+                                   Name="AccountContactEmailTextBox"
+                                   @bind-Value="@AccountContact.Email"
+                                   class="w-100"
+                                   Change="@OnChange"/>
+                    <RadzenRequiredValidator Component="AccountContactEmailTextBox"
+                                             Text="Required"/>
+                    <RadzenEmailValidator Component="AccountContactEmailTextBox"
+                                          Text="Enter email in valid format"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Save"
+                          Disabled="IsSaveDisabled"/>
+
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          class="ml-2"
+                          Click="HandleCancel"/>
+        </div>
+    </div>
+</RadzenTemplateForm>

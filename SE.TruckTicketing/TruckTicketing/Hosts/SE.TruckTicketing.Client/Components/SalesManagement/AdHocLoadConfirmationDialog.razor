@@ -1,0 +1,87 @@
+﻿@using SE.Shared.Common.Utilities;
+@using SE.TruckTicketing.Contracts.Lookups;
+@using SE.TruckTicketing.UI.ViewModels;
+@inherits BaseRazorComponent
+
+<RadzenTemplateForm TItem="SalesLineEmailViewModel"
+                    Data="@_model"
+                    @ref="_form">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex flex-column mb-3">
+                <RadzenLabel Text="To"
+                             Component="ToTextBox"/>
+                <RadzenTextBox id="ToTextBox"
+                               Name="ToTextBox"
+                               @bind-Value="@_model.ToRecipients"
+                               class="w-100"/>
+                <TridentEmailListValidator Component="ToTextBox"
+                                           class="mt-1 validation-message"/>
+            </div>
+            <div class="d-flex flex-column mb-3">
+                <RadzenLabel Text="CC"
+                             Component="CcTextBox"/>
+                <RadzenTextBox id="CcTextBox"
+                               Name="CcTextBox"
+                               @bind-Value="@_model.CcRecipients"
+                               class="w-100"/>
+                <TridentEmailListValidator Component="CcTextBox"
+                                           class="mt-1 validation-message"/>
+            </div>
+            <div class="d-flex flex-column mb-3">
+                <RadzenLabel Text="BCC"
+                             Component="BccTextBox"/>
+                <RadzenTextBox id="BccTextBox"
+                               Name="BccTextBox"
+                               @bind-Value="@_model.BccRecipients"
+                               class="w-100"/>
+                <TridentEmailListValidator Component="BccTextBox"
+                                           class="mt-1 validation-message"/>
+            </div>
+            <div class="d-flex flex-column mb-3">
+                <RadzenLabel Text="Note"
+                             Component="NoteTextArea"/>
+                <RadzenTextArea id="NoteTextArea"
+                                Name="NoteTextArea"
+                                @bind-Value="@_model.Note"
+                                class="w-100"/>
+            </div>
+            <div class="row mb-3 mt-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Attachment Type"
+                                 Component="AttachmentTypeDropDown"/>
+                    <RadzenDropDown TValue="AttachmentIndicatorType"
+                                    @bind-Value=@_model.AttachmentIndicatorType
+                                    id="AttachmentTypeDropDown"
+                                    Name="AttachmentTypeDropDown"
+                                    TextProperty="Value"
+                                    ValueProperty="Key"
+                                    Placeholder="Select attachment type..."
+                                    Multiple="false"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    Data="@(DataDictionary.For<AttachmentIndicatorType>(false))"
+                                    class="w-100"
+                                    Change="@(OnChange)"/>
+                </div>
+            </div>
+            <div class="row mt-4 mb-3">
+                <div class="col d-flex justify-content-end">
+                    <RadzenButton ButtonStyle="ButtonStyle.Light"
+                                  Text="Cancel"
+                                  class="ml-2"
+                                  Click="HandleCancel"/>
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                  Text="Generate Ad Hoc LC"
+                                  class="ml-2"
+                                  Click="@(_ => HandleGenerateAdHocLoadConfirmation())"
+                                  IsBusy="@_generateAdHocLoadConfirmationBusy"/>
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                  Text="Email Ad Hoc LC"
+                                  class="ml-2"
+                                  Click="@(_ => HandleSendAdHocLoadConfirmation())"
+                                  IsBusy="@_sendAdHocLoadConfirmation"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</RadzenTemplateForm>

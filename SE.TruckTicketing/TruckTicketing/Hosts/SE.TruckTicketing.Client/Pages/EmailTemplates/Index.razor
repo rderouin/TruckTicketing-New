@@ -1,0 +1,119 @@
+﻿@page "/email-templates"
+@using SE.TruckTicketing.Client.Utilities
+@using SE.TruckTicketing.Contracts.Models.ContentGeneration
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using Trident.Search
+@inherits BaseTruckTicketingComponent
+
+<div class="bg-white p-4">
+    <div class="d-flex align-items-center justify-content-between">
+        <h3>Manage Email Templates</h3>
+
+        <RadzenLink Icon="add_outline"
+                    Path="/email-templates/new"
+                    Text="Add Email Template"
+                    class="@($"rz-button rz-button-md btn-primary text-decoration-none {AddEmailTemplateLink_Css}")" />
+    </div>
+    <div>View existing email template or add a new one.</div>
+</div>
+
+<GridFiltersContainer @ref="_gridFilterContainer"
+                      OnFilterChange="@(async criteria => await _grid.SetExternalSearchCriteriaModel(criteria))">
+    <div class="d-flex flex-grow-1 gap-3">
+        <KeywordFilter Label="Search"
+                       Placeholder="Search by template name"/>
+        <DropDownDataGridFilter TItem="EmailTemplateEvent"
+                                Label="Event"
+                                Placeholder="All events"
+                                FilterPath="@nameof(EmailTemplate.EventId)"
+                                TextProperty="@nameof(EmailTemplateEvent.Name)"
+                                DefaultSortProperty="@nameof(EmailTemplateEvent.Name)">
+            <Columns>
+                <RadzenDropDownDataGridColumn Property="@nameof(EmailTemplateEvent.Name)"
+                                              Title="Event"
+                                              Width="100px"/>
+            </Columns>
+        </DropDownDataGridFilter>
+        <DropDownDataGridFilter Label="Facility"
+                                FilterPath="@nameof(EmailTemplate.FacilitySiteIds).AsPrimitiveCollectionFilterKey()"
+                                CompareOperator="@CompareOperators.contains"
+                                Placeholder="All facilities"
+                                TItem="Facility"
+                                DefaultSortProperty="@nameof(Facility.Name)"
+                                TextProperty="@nameof(Facility.SiteId)"
+                                ValueProperty="@nameof(Facility.SiteId)"
+                                ValuePropertySelector="@(facility => facility.SiteId)">
+            <Columns>
+                <RadzenDropDownDataGridColumn Property="@nameof(Facility.SiteId)"
+                                              Title="Site Id"
+                                              Width="50px"/>
+                <RadzenDropDownDataGridColumn Property="@nameof(Facility.Name)"
+                                              Title="Name"
+                                              Width="100px"/>
+            </Columns>
+        </DropDownDataGridFilter>
+    </div>
+</GridFiltersContainer>
+
+<div class="p-4 grid-switch-container">
+    <PagableGridView TModel="EmailTemplate"
+                     @ref="@_grid"
+                     Results="@_emailTemplates"
+                     EnableSearch="false"
+                     EnablePaging="true"
+                     EnableSorting="true"
+                     EnableFilters="false"
+                     OnDataLoad="@LoadEmailTemplates"
+                     IsLoading="@_isLoading">
+        <Columns>
+            <ColumnDefinition TItem="EmailTemplate"
+                              Property="@nameof(EmailTemplate.IsActive)"
+                              Width="4rem"
+                              Title="Active"
+                              PropertyType="typeof(bool)"
+                              EnableSorting="false">
+                <Template Context="context">
+                    <RadzenSwitch @bind-Value="context.IsActive"
+                                  class="grid-switch"
+                                  Disabled="true">
+                    </RadzenSwitch>
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="EmailTemplate"
+                              Property="@nameof(EmailTemplate.Name)"
+                              Title="Template Name">
+                <Template Context="data">
+                    <span>
+                        <RadzenLink Path="@("/email-templates/" + data.Id)"
+                                    Text="@data.Name"
+                                    class="text-decoration-none"/>
+                    </span>
+                </Template>
+            </ColumnDefinition>
+
+            <ColumnDefinition TItem="EmailTemplate"
+                              Property="@nameof(EmailTemplate.EventName)"
+                              Title="Event"/>
+
+            <ColumnDefinition TItem="EmailTemplate"
+                              Property="@nameof(EmailTemplate.ReplyType)"
+                              Title="Reply Type"/>
+
+            <ColumnDefinition TItem="EmailTemplate"
+                              Property="@nameof(EmailTemplate.Subject)"
+                              Title="Subject"/>
+            <ColumnDefinition TItem="EmailTemplate"
+                              Property="@nameof(EmailTemplate)"
+                              Title="Actions"
+                              Width="8rem"
+                              EnableSorting="false">
+                <Template Context="data">
+                    <RadzenButton Click="() => DeleteButton_Click(data)"
+                                  ButtonStyle="ButtonStyle.Danger"
+                                  Size="ButtonSize.Small"
+                                  Text="Delete"/>
+                </Template>
+            </ColumnDefinition>
+        </Columns>
+    </PagableGridView>
+</div>

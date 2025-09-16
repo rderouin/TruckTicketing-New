@@ -1,0 +1,56 @@
+﻿@inherits BaseTruckTicketingComponent
+
+<div class="p-1">
+    <strong>Provider Data</strong>
+</div>
+
+<div class="p-1">
+    <RadzenLabel Text="Entity"></RadzenLabel><br/>
+    <RadzenDropDown TValue="string"
+                    Data="DistinctEntityNames"
+                    @bind-Value="SelectedEntity"
+                    AllowClear="@true"
+                    AllowFiltering="@true"
+                    Change="SelectedEntityChanged"
+                    Placeholder="Select an entity..."
+                    class="w-100">
+    </RadzenDropDown>
+</div>
+
+<div class="p-1">
+    <RadzenLabel Text="Property"></RadzenLabel><br/>
+    <RadzenDropDown TValue="Guid?"
+                    Data="FilteredByEntity"
+                    ValueProperty="Id"
+                    TextProperty="FieldName"
+                    @bind-Value="Model.DestinationModelFieldId"
+                    AllowClear="@true"
+                    AllowFiltering="@true"
+                    Placeholder="Select a property..."
+                    class="w-100">
+    </RadzenDropDown>
+</div>
+
+<div class="p-1">
+    <RadzenLabel Text="Path"></RadzenLabel><br/>
+    <RadzenTextBox Value="@CurrentPath"
+                   ReadOnly="@true"
+                   class="w-100">
+    </RadzenTextBox>
+</div>
+
+<div class="p-1">
+    <RadzenLabel Text="Placement Hint"></RadzenLabel><br/>
+    <RadzenTextBox @bind-Value="Model.DestinationPlacementHint"
+                   class="w-100">
+    </RadzenTextBox>
+</div>
+
+@if (ShowFormatSelection)
+{
+    <div class="p-1">
+        <FormatPicker FormatsSource="@FormatsSource"
+                      Model="@Model">
+        </FormatPicker>
+    </div>
+}

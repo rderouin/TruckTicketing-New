@@ -1,0 +1,102 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Models.FacilityServices
+@inherits BaseTruckTicketingComponent
+
+<EditForm Model="@ViewModel.FacilityService"
+          OnValidSubmit="HandleSubmit">
+    <TridentValidationSummary TModel="FacilityService"
+                              Response="@Model.Response"/>
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="fw-bold">General Info</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Service Type"
+                                 Component="ServiceTypeDropdown"
+                                 class="required"/>
+                    <TridentApiDropDown id="ServiceTypeDropdown"
+                                        TModel="ServiceType"
+                                        TValue="Guid"
+                                        @bind-Value="@ViewModel.FacilityService.ServiceTypeId"
+                                        TextProperty="@nameof(ServiceType.Name)"
+                                        OnDataLoading="@OnLoadingServiceTypes"
+                                        OnItemSelect="@HandleServiceTypeSelection"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Service Number"
+                                 Component="ServiceNumberNumeric"
+                                 class="required"/>
+                    <div class="d-flex align-items-center">
+                        <RadzenLabel Text="@($"{ViewModel.FacilityService.SiteId}-")"
+                                     class="m-0 display-6"/>
+                        <RadzenNumeric id="ServiceNumberNumeric"
+                                       TValue="int?"
+                                       @bind-Value="@ViewModel.FacilityService.ServiceNumber"
+                                       Min="1"/>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Description"
+                                 Component="DescriptionTextArea"/>
+                    <RadzenTextArea @bind-Value="@ViewModel.FacilityService.Description"
+                                    Disabled="true"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="fw-bold">Substances</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+
+                <DualListBox TItem="FacilitySubstanceViewModel"
+                             TValue="string"
+                             SourceData="Substances"
+                             SelectedValues="selectedValues"
+                             TextProperty="@nameof(FacilitySubstanceViewModel.SubstanceName)"
+                             ValueProperty="@nameof(FacilitySubstanceViewModel.Id)"
+                             SortExpression="x => x.SubstanceName"
+                             Multiple="true"
+                             Filterable="true"
+                             SelectHeading="Unassigned Substances"
+                             UnselectHeading="Assigned Substances"
+                             SelectItemText="Assign"
+                             UnselectItemText="Unassign"
+                             Height="12.5"
+                             OnSelectChange="SelectionChanged"/>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="fw-bold">Associate Spartan Product Parameters</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <AssociatedSpartanProductParametersGrid FacilityService="@ViewModel.FacilityService"
+                                                        LegalEntityId="@LegalEntityId"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end gap-2">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          BusyText="@(ViewModel.IsNew ? "Creating" : "Updating")"
+                          IsBusy="@_isBusy"
+                          Text="@(ViewModel.IsNew ? "Create" : "Update")"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          Click="HandleCancel"/>
+        </div>
+    </div>
+</EditForm>

@@ -1,0 +1,54 @@
+@using SE.TruckTicketing.UI.ViewModels
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.Shared.Common.Utilities
+<RadzenTemplateForm TItem="LoadConfirmationReasonViewModel"
+                    Data="@Model"
+                    Submit="@Submit">
+    <div class="card">
+        <div class="card-body m-3">
+            @if (Model.ShowReason)
+            {
+                <div class="row mb-3">
+                    <div class="col d-flex flex-column">
+                        <RadzenLabel Text="Reason"
+                                     class="required"
+                                     Component="ReasonTextBox"/>
+                        <RadzenDropDown TValue="LoadConfirmationReason"
+                                        Name="ReasonTextBox"
+                                        class="w-100"
+                                        @bind-Value="@Model.Reason"
+                                        Placeholder="Select reason..."
+                                        TextProperty="Value"
+                                        ValueProperty="Key"
+                                        Data="@(DataDictionary.For<LoadConfirmationReason>())"
+                                        Change="ReasonChanged"/>
+                    </div>
+                </div>
+            }
+
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Comments"
+                                 class="@(Model.ShowReason ? "" : "required")"
+                                 Component="ReasonCommentsTextBox"/>
+                    <RadzenTextBox Name="ReasonCommentsTextBox"
+                                   @bind-Value="@Model.Comment"
+                                   class="w-100"/>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="d-flex gap-2 justify-content-end">
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                  ButtonType="ButtonType.Submit"
+                                  Disabled="@(!Model.CanProceed)"
+                                  Text="Proceed"/>
+
+                    <RadzenButton ButtonStyle="ButtonStyle.Light"
+                                  Text="Cancel"
+                                  Click="@Cancel"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</RadzenTemplateForm>

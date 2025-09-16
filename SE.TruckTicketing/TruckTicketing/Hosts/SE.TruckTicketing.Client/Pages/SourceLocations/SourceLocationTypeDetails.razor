@@ -1,0 +1,224 @@
+﻿@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Constants.SourceLocations
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<EditForm Model="@ViewModel.SourceLocationType"
+          OnValidSubmit="@HandleSubmit">
+<DataAnnotationsValidator/>
+<TridentValidationSummary TModel="SourceLocationType"
+                          Response="ViewModel.Response"/>
+
+<span class="pb-3 text-danger">@ViewModel.ValidationSummary</span>
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="fw-bold">General Info</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Country"
+                             Component="CountryCodeDropdown"
+                             class="required"/>
+                <RadzenDropDown TValue="CountryCode"
+                                Class="w-100"
+                                id="CountryCodeDropdown"
+                                @bind-Value="@ViewModel.SourceLocationType.CountryCode"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Data="@(DataDictionary.For<CountryCode>())"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Category"
+                             Component="CategoryDropdown"
+                             class="required"/>
+                <RadzenDropDown TValue="SourceLocationTypeCategory"
+                                Class="w-100"
+                                id="CategoryDropdown"
+                                @bind-Value="@ViewModel.SourceLocationType.Category"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Data="@(DataDictionary.For<SourceLocationTypeCategory>())"/>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Name"
+                             Component="NameTextBox"
+                             class="required"/>
+                <RadzenTextBox id="NameTextBox"
+                               @bind-Value="@ViewModel.SourceLocationType.Name"
+                               class="w-100"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Short Form Code"
+                             Component="ShortFormCodeTextBox"
+                             class="@(ViewModel.SourceLocationType.CountryCode == CountryCode.CA ? "required" : "")"/>
+                <RadzenTextBox id="ShortFormCodeTextBox"
+                               @bind-Value="@ViewModel.SourceLocationType.ShortFormCode"
+                               class="w-100"/>
+            </div>
+        </div>
+
+
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Format Mask"
+                             Component="FormatMaskTextBox"/>
+                <RadzenTextBox id="FormatMaskTextBox"
+                               @bind-Value="@ViewModel.SourceLocationType.FormatMask"
+                               class="w-100"/>
+            </div>
+        </div>
+        @if (ViewModel.SourceLocationType.CountryCode == CountryCode.CA && ViewModel.SourceLocationType.Category == SourceLocationTypeCategory.Surface)
+        {
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <RadzenLabel Text="Source Location Code Mask"
+                                     Component="SourceLocationCodeMaskTextBox"/>
+                        <div class="d-flex gap-2 align-items-center">
+                            <RadzenLabel Text="Enforce Mask"
+                                         Component="EnforceSourceLocationCodeMaskSwitch"/>
+                            <RadzenSwitch id="EnforceSourceLocationCodeMaskSwitch"
+                                          @bind-Value="@ViewModel.SourceLocationType.EnforceSourceLocationCodeMask"
+                                          Class="mb-2"
+                                          Disabled="@DisableSourceLocationCodeMaskSwitch"/>
+                        </div>
+                    </div>
+
+                    <RadzenTextBox id="SourceLocationCodeMaskTextBox"
+                                   @bind-Value="@ViewModel.SourceLocationType.SourceLocationCodeMask"
+                                   class="w-100"/>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (ViewModel.SourceLocationType.CountryCode == CountryCode.US)
+{
+    <div class="card mt-2">
+        <div class="card-header">
+            <h4 class="fw-bold">Source Location Defaults</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Well/Pit"
+                                 Component="DefaultDownHoleTypeRadioButtonList"
+                                 class="required"/>
+                    <RadzenRadioButtonList TValue="DownHoleType"
+                                           id="DefaultDownHoleTypeRadioButtonList"
+                                           TextProperty="Value"
+                                           ValueProperty="Key"
+                                           Data="@(DataDictionary.For<DownHoleType>())"
+                                           @bind-Value="@ViewModel.SourceLocationType.DefaultDownHoleType"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Trucked/Pipeline"
+                                 Component="DefaultDeliveryMethodRadioButtonList"
+                                 class="required"/>
+
+                    <RadzenRadioButtonList TValue="DeliveryMethod"
+                                           id="DefaultDeliveryMethodRadioButtonList"
+                                           TextProperty="Value"
+                                           ValueProperty="Key"
+                                           Data="@(DataDictionary.For<DeliveryMethod>())"
+                                           @bind-Value="@ViewModel.SourceLocationType.DefaultDeliveryMethod"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-2">
+        <div class="card-header">
+            <h4 class="fw-bold">US Source Location Numbers</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="PLS Number"
+                                 Component="RequiresPlsNumberSwitch"/>
+                    <RadzenSwitch id="RequiresPlsNumberSwitch"
+                                  @bind-Value="@ViewModel.SourceLocationType.RequiresPlsNumber"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Well File Number"
+                                 Component="RequiresWellFileNumberSwitch"/>
+                    <RadzenSwitch id="RequiresWellFileNumberSwitch"
+                                  @bind-Value="@ViewModel.SourceLocationType.RequiresWellFileNumber"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="API Number"
+                                 Component="RequiresApiNumberSwitch"/>
+                    <RadzenSwitch id="RequiresApiNumberSwitch"
+                                  @bind-Value="@ViewModel.SourceLocationType.RequiresApiNumber"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="CTB Number"
+                                 Component="RequiresCtbNumberSwitch"/>
+                    <RadzenSwitch id="RequiresCtbNumberSwitch"
+                                  @bind-Value="@ViewModel.SourceLocationType.RequiresCtbNumber"/>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Required"
+                                 Component="RequiredPlsNumberSwitch"/>
+                    <RadzenSwitch id="RequiredPlsNumberSwitch"
+                                  @bind-Value="@ViewModel.SourceLocationType.IsPlsNumberVisible"
+                                  Disabled="!ViewModel.SourceLocationType.RequiresPlsNumber"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Required"
+                                 Component="RequiresWellFileNumberSwitch"/>
+                    <RadzenSwitch id="RequiresWellFileNumberSwitch"
+                                  @bind-Value="@ViewModel.SourceLocationType.IsWellFileNumberVisible"
+                                  Disabled="!ViewModel.SourceLocationType.RequiresWellFileNumber"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Required"
+                                 Component="RequiresApiNumberSwitch"/>
+                    <RadzenSwitch id="RequiresApiNumberSwitch"
+                                  @bind-Value="@ViewModel.SourceLocationType.IsApiNumberVisible"
+                                  Disabled="!ViewModel.SourceLocationType.RequiresApiNumber"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Required"
+                                 Component="RequiresCtbNumberSwitch"/>
+                    <RadzenSwitch id="RequiresCtbNumberSwitch"
+                                  @bind-Value="@ViewModel.SourceLocationType.IsCtbNumberVisible"
+                                  Disabled="!ViewModel.SourceLocationType.RequiresCtbNumber"/>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<div class="d-flex align-items-end justify-content-between">
+    <div class="d-flex flex-column">
+        <RadzenLabel Text="Active"
+                     Component="ActiveSwitch"/>
+        <RadzenSwitch id="ActiveSwitch"
+                      @bind-Value="@ViewModel.SourceLocationType.IsActive"/>
+    </div>
+    <div class="d-flex justify-content-end">
+        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                      ButtonType="ButtonType.Submit"
+                      Disabled="@(!HasWritePermission(Permissions.Resources.SourceLocationType))"
+                      Text="@ViewModel.SubmitButtonText"
+                      IsBusy="@IsBusy"
+                      BusyText="@ViewModel.SubmitButtonBusyText"/>
+        <RadzenButton ButtonStyle="ButtonStyle.Light"
+                      Text="Cancel"
+                      class="ml-2"
+                      Click="HandleCancel"/>
+    </div>
+</div>
+</EditForm>

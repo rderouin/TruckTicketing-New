@@ -1,0 +1,117 @@
+﻿@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using SE.TruckTicketing.Contracts.Lookups
+@inherits BaseRazorComponent
+
+@if (!Disabled)
+{
+    <div class="">
+        <TridentApiDropDownDataGrid TValue="Guid?"
+                                TModel="SourceLocation"
+                                Disabled="@Disabled"
+                                @bind-Value="_selectedAssociatedSourceLocationId"
+                                OnDataLoading="SetSurfaceSourceLocationFilter"
+                                OnItemSelect="OnAssociatedSourceLocationSelect"
+                                Placeholder="@DropdownPlaceHolder"
+                                    class="w-100">
+            <Columns>
+                <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.FormattedIdentifier)"
+                                          Title="Identifier"
+                                          Visible="@(SourceLocation.CountryCode == CountryCode.CA)" />
+
+                <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.SourceLocationName)"
+                                          Title="Source Location Name"
+                                          Visible="@(SourceLocation.CountryCode == CountryCode.US)" />
+
+                <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.SourceLocationTypeName)"
+                                          Title="Type"
+                                          Width="5rem" />
+
+                <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.ProvinceOrState)"
+                                          Title="Province / State"
+                                          Width="8rem" />
+
+                <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.SourceLocationCode)"
+                                          Title="Source Location Code" />
+
+                <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.GeneratorName)"
+                                          Title="Generator" />
+                <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.ContractOperatorName)"
+                                          Title="Contract Operator" />
+            </Columns>
+        </TridentApiDropDownDataGrid>
+    </div>
+
+}
+<div class="mt-3">
+    <PagableGridView TModel="SourceLocation"
+                     Results="@_associatedSourceLocations"
+                     EnablePaging="false"
+                     EnableSorting="true"
+                     EnableFilters="false"
+                     EnableSearch="true"
+                     OnDataLoad="LoadAssociatedSourceLocations"
+                     IsLoading="@_isLoading">
+        <Columns>
+            <ColumnDefinition TItem="SourceLocation"
+                              Property="@nameof(SourceLocation.FormattedIdentifier)"
+                              Title="Identifier"
+                              HideColumn="@(SourceLocation.CountryCode == CountryCode.US)">
+                <Template Context="data">
+                    <span>
+                        <RadzenLink Path="@("/truck-ticketing/source-locations/edit/" + data.Id)"
+                                    Text="@data.FormattedIdentifier"
+                                    class="text-decoration-none" />
+                    </span>
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="SourceLocation"
+                              Property="@nameof(SourceLocation.SourceLocationName)"
+                              Title="Identifier"
+                              HideColumn="@(SourceLocation.CountryCode == CountryCode.CA)">
+                <Template Context="data">
+                    <span>
+                        <RadzenLink Path="@("/truck-ticketing/source-locations/edit/" + data.Id)"
+                                    Text="@data.SourceLocationName"
+                                    class="text-decoration-none" />
+                    </span>
+                </Template>
+            </ColumnDefinition>
+            <ColumnDefinition TItem="SourceLocation"
+                              Property="@nameof(SourceLocation.SourceLocationTypeName)"
+                              Title="Type"
+                              PropertyType="typeof(string)" />
+            <ColumnDefinition TItem="SourceLocation"
+                              Property="@nameof(SourceLocation.ProvinceOrState)"
+                              Title="Province/State"
+                              PropertyType="typeof(string)"
+                              Width="4rem" />
+            <ColumnDefinition TItem="SourceLocation"
+                              Property="@nameof(SourceLocation.SourceLocationCode)"
+                              Title="Source Location Code"
+                              PropertyType="typeof(string)" />
+            <ColumnDefinition TItem="SourceLocation"
+                              Property="@nameof(SourceLocation.GeneratorName)"
+                              Title="Generator"
+                              PropertyType="typeof(string)" />
+            <ColumnDefinition TItem="SourceLocation"
+                              Property="@nameof(SourceLocation.ContractOperatorName)"
+                              Title="Contract Operator"
+                              PropertyType="typeof(string)" />
+            <ColumnDefinition TItem="SourceLocation"
+                              Property="@nameof(SourceLocation.Id)"
+                              Title="Actions"
+                              Width="12.2rem"
+                              EnableSorting="false">
+                <Template Context="data">
+                    <RadzenButton Click="() => DissociateSourceLocation(data.Id)"
+                                  ButtonStyle="ButtonStyle.Danger"
+                                  Size="ButtonSize.Small"
+                                  Text="Dissociate Source Location"
+                                  Icon="link_off"
+                                  Disabled="IsDissociationDisabled" />
+                </Template>
+            </ColumnDefinition>
+        </Columns>
+    </PagableGridView>
+
+</div>

@@ -1,0 +1,31 @@
+[
+  {
+    "Id": "5b326819-d9c0-4232-858c-f64611f44aa3",
+    "TicketDate": "2022-08-10T20:24:46.5642914Z",
+    "TicketNumber": "TAFAT10000001-LF",
+    "ProcessOriginal": "Landfill",
+    "OilVolumeOriginal": 2,
+    "WaterVolumeOriginal": 1,
+    "SolidVolumeOriginal": 1,
+    "TotalVolumeOriginal": 2,
+    "ProcessAdjusted": "Landfill",
+    "OilVolumeAdjusted": 0.39999999999999997,
+    "WaterVolumeAdjusted": 2.4,
+    "SolidVolumeAdjusted": 2,
+    "TotalVolumeAdjusted": 4.8,
+    "VolumeChangeReason": "Other",
+    "VolumeChangeReasonText": "user error.",
+	"FacilityId": "ae62f28e-fd0b-4594-b235-0e254bc4771a",
+    "FacilityName": "LF Facility",
+	"TruckTicketStatus": "Approved",
+    "CreatedAt": "0001-01-01T00:00:00+00:00",
+    "CreatedBy": null,
+    "CreatedById": null,
+    "UpdatedAt": "0001-01-01T00:00:00+00:00",
+    "UpdatedBy": null,
+    "UpdatedById": null,
+    "DocumentType": "VolumeChange",
+    "EntityType": "VolumeChange",
+    "id": "VolumeChange|5b326819-d9c0-4232-858c-f64611f44aa3"
+  }
+]

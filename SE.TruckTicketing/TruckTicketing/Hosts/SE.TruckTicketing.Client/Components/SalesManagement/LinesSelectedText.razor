@@ -1,0 +1,11 @@
+﻿ <div>
+     <b>
+        @(NumberOfLinesSelected == 0 ? "" : $"{NumberOfLinesSelected.ToString()}")
+    </b>
+    @(NumberOfLinesSelected == 0 ? "" : " Line(s) Selected")
+ </div>
+
+ @code {
+     [Parameter]
+     public int NumberOfLinesSelected { get; set; }
+ }

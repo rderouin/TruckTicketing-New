@@ -1,0 +1,358 @@
+@inherits BaseRazorComponent
+@using Trident.UI.Blazor.Components.Grid.ColumnOptions
+@typeparam TModel
+<style>
+    /** Color of text when hover **/
+    .rz-selectable .rz-datatable-even:hover:not(.rz-state-highlight) .rz-cell-data,
+    .rz-selectable .rz-datatable-odd:hover:not(.rz-state-highlight) .rz-cell-data {
+        color: black !important;
+    }
+</style>
+@if (Columns != null)
+{
+    <CascadingValue Value="this"
+                    Name="ParentGrid">
+        @Columns
+    </CascadingValue>
+}
+<ColumnOptionsDialog @ref="_columnOptionsDialog">
+    <ColumnOptions TModel="TModel"
+                   Columns="_columns"
+                   OnVisibilityToggle="@(col => col.ToggleVisibility())"/>
+</ColumnOptionsDialog>
+<div class="grid-view-header">
+    <div class="grid-view-header__left-side">
+        @if (CustomButton != null)
+        {
+            @CustomButton
+        }
+    </div>
+    <div class="grid-view-header__right-side position-relative">
+        @if (EnableSearch)
+        {
+            <div class="input-group">
+                <RadzenTextBox Name="Keywords"
+                               Value="@GetKeywords()"
+                               ValueChanged="@SetKeywords"
+                               @onkeyup="@OnSearchKeyUp"
+                               class="form-control"
+                               id="txt_Grid_Search"/>
+                <RadzenButton Id="main_Grid_Search"
+                              Click="@OnSearchButtonClick"
+                              Icon="search"
+                              Text="Search"/>
+            </div>
+        }
+        @if (EnableFilters)
+        {
+            <RadzenButton Id="main_Grid_Search"
+                          Click="@OnFilterButtonClick"
+                          Icon="filter_alt"
+                          ButtonStyle="ButtonStyle.Light"
+                          class="ml-1"/>
+        }
+        @if (ShowExport)
+        {
+        }
+    </div>
+</div>
+<br/>
+@if (FilterVisible)
+{
+    <GridFilterPanel TItem="TModel"
+                     @bind-Visible="ShowFilters"
+                     SearchCriteria="@Results?.Info"
+                     CriteriaChanged="OnFilterPanelCriteriaChanged"
+                     Columns="_columns"/>
+}
+<div class="pageable-grid-view-container">
+@if (EnableRowExpansion)
+{
+    <RadzenDataGrid @ref="Grid"
+                    IsLoading="@IsLoading"
+                    Data="@Results?.Results"
+                    TItem="TModel"
+                    AllowPaging="true"
+                    RowClick="OnRowClick"
+                    AllowSorting="@EnableSorting"
+                    Count="@(Results?.Info?.TotalRecords ?? 0)"
+                    LoadData="LoadData"
+                    class="@("rz-selectable " + CssClasses)"
+                    ExpandMode="DataGridExpandMode.Single"
+                    RowExpand="RowExpanding"
+                    RowRender="RowRender"
+                    PageSize="@GridPageSize"
+                    EditMode="@EditMode"
+                    ColumnWidth="@ColumnWidth"
+                    AllowColumnResize="true"
+                    PagerAlwaysVisible="true"
+                    PagerHorizontalAlign="HorizontalAlign.Left"
+                    ShowPagingSummary="true"
+                    PagingSummaryFormat="Displaying page {0} of {1} (total {2} records)"
+                    PageSizeOptions="@_pageSizes">
+        <Template Context="Item">
+            <CascadingValue Value="this"
+                            Name="ParentGrid">
+                @Template(Item)
+            </CascadingValue>
+        </Template>
+        <Columns>
+            @if (EnableMultiLineSelect)
+            {
+                <RadzenDataGridColumn TItem="TModel"
+                                      Filterable="false"
+                                      Sortable="false"
+                                      Frozen="true"
+                                      Width="40px">
+                    <HeaderTemplate>
+                        <RadzenCheckBox TValue="bool"
+                                        TriState="false"
+                                        Value="@MultiSelectHeaderCheckBoxValue"
+                                        Change="@(MultiSelectHeaderOnChange)"/>
+                    </HeaderTemplate>
+                    <Template Context="Item">
+                        <RadzenCheckBox TValue="bool"
+                                        TriState="false"
+                                        Value="@(SelectedResults != null && SelectedResults.Contains(Item))"
+                                        Change="@(args => AddOrRemoveToSelectedResults(Item, args))"/>
+                    </Template>
+                </RadzenDataGridColumn>
+            }
+            @foreach (var col in _columns)
+            {
+                @if (col.Template != null)
+                {
+                    <RadzenDataGridColumn TItem="TModel"
+                                          Property="@col.Property"
+                                          Title="@col.Title"
+                                          Type="@col.PropertyType"
+                                          Visible="@(!col.HideColumn)"
+                                          Width="@col.Width"
+                                          SortProperty="@col.PropertyMemberPath"
+                                          Sortable="@col.EnableSorting"
+                                          SortOrder="@col.SortOrder"
+                                          Frozen="@col.Frozen">
+                        <Template>
+                            @col.Template(context)
+                        </Template>
+                    </RadzenDataGridColumn>
+                }
+                else
+                {
+                    <RadzenDataGridColumn TItem="TModel"
+                                          Property="@col.Property"
+                                          Title="@col.Title"
+                                          Type="@col.PropertyType"
+                                          Visible="@(!col.HideColumn)"
+                                          SortProperty="@col.PropertyMemberPath"
+                                          Sortable="@col.EnableSorting"
+                                          Width="@col.Width"
+                                          SortOrder="@col.SortOrder"
+                                          Frozen="@col.Frozen"/>
+                }
+            }
+        </Columns>
+    </RadzenDataGrid>
+}
+else
+{
+    <RadzenDataGrid @ref="Grid"
+                    IsLoading="@IsLoading"
+                    Data="@Results?.Results"
+                    TItem="TModel"
+                    AllowPaging="@EnablePaging"
+                    RowClick="OnRowClick"
+                    Count="@(Results?.Info?.TotalRecords ?? 0)"
+                    AllowSorting="@EnableSorting"
+                    LoadData="LoadData"
+                    class="@("rz-selectable " + CssClasses)"
+                    RowExpand="RowExpanding"
+                    RowRender="RowRender"
+                    PageSize="@GridPageSize"
+                    ColumnWidth="@ColumnWidth"
+                    AllowColumnResize="true"
+                    EditMode="@EditMode"
+                    PagerAlwaysVisible="true"
+                    PagerHorizontalAlign="HorizontalAlign.Left"
+                    ShowPagingSummary="true"
+                    PagingSummaryFormat="Displaying page {0} of {1} (total {2} records)"
+                    PageSizeOptions="@_pageSizes"
+                    SelectionMode="@SelectionMode"
+                    @bind-Value="@SelectedResults">
+        <Columns>
+            @if (EnableMultiLineSelect)
+            {
+                <RadzenDataGridColumn TItem="TModel"
+                                      Filterable="false"
+                                      Sortable="false"
+                                      Frozen="true"
+                                      Width="40px">
+                    <HeaderTemplate>
+                        <RadzenCheckBox TValue="bool"
+                                        TriState="false"
+                                        Value="@MultiSelectHeaderCheckBoxValue"
+                                        Change="@(MultiSelectHeaderOnChange)"/>
+                    </HeaderTemplate>
+                    <Template Context="Item">
+                        <RadzenCheckBox TValue="bool"
+                                        TriState="false"
+                                        Value="@(SelectedResults != null && SelectedResults.Contains(Item))"
+                                        Change="@(args => AddOrRemoveToSelectedResults(Item, args))"/>
+                    </Template>
+                </RadzenDataGridColumn>
+            }
+            @foreach (var col in _columns)
+            {
+                @if (col.Template != null && col.FooterTemplate == null)
+                {
+                    @if (col.EditTemplate != null)
+                    {
+                        <RadzenDataGridColumn TItem="TModel"
+                                              Property="@col.Property"
+                                              Title="@col.Title"
+                                              Type="@col.PropertyType"
+                                              Visible="@(!col.HideColumn)"
+                                              Width="@col.Width"
+                                              SortProperty="@col.PropertyMemberPath"
+                                              Sortable="@col.EnableSorting"
+                                              SortOrder="@col.SortOrder"
+                                              Frozen="@col.Frozen">
+                            <Template>
+                                @col.Template(context)
+                            </Template>
+                            <EditTemplate>
+                                @col.EditTemplate(context)
+                            </EditTemplate>
+                        </RadzenDataGridColumn>
+                    }
+                    else
+                    {
+                        <RadzenDataGridColumn TItem="TModel"
+                                              Property="@col.Property"
+                                              Title="@col.Title"
+                                              Type="@col.PropertyType"
+                                              Visible="@(!col.HideColumn)"
+                                              Width="@col.Width"
+                                              SortProperty="@col.PropertyMemberPath"
+                                              Sortable="@col.EnableSorting"
+                                              SortOrder="@col.SortOrder"
+                                              Frozen="@col.Frozen">
+                            <Template>
+                                @col.Template(context)
+                            </Template>
+                        </RadzenDataGridColumn>
+                    }
+                }
+                else if (col.Template == null && col.FooterTemplate != null)
+                {
+                    @if (col.EditTemplate != null)
+                    {
+                        <RadzenDataGridColumn TItem="TModel"
+                                              Property="@col.Property"
+                                              Title="@col.Title"
+                                              Type="@col.PropertyType"
+                                              Visible="@(!col.HideColumn)"
+                                              Width="@col.Width"
+                                              SortProperty="@col.PropertyMemberPath"
+                                              Sortable="@col.EnableSorting"
+                                              SortOrder="@col.SortOrder"
+                                              Frozen="@col.Frozen">
+                            <EditTemplate>
+                                @col.EditTemplate(context)
+                            </EditTemplate>
+                            <FooterTemplate>@col.FooterTemplate</FooterTemplate>
+                        </RadzenDataGridColumn>
+                    }
+                    else
+                    {
+                        <RadzenDataGridColumn TItem="TModel"
+                                              Property="@col.Property"
+                                              Title="@col.Title"
+                                              Type="@col.PropertyType"
+                                              Visible="@(!col.HideColumn)"
+                                              Width="@col.Width"
+                                              SortProperty="@col.PropertyMemberPath"
+                                              Sortable="@col.EnableSorting"
+                                              SortOrder="@col.SortOrder"
+                                              Frozen="@col.Frozen">
+                            <FooterTemplate>@col.FooterTemplate</FooterTemplate>
+                        </RadzenDataGridColumn>
+                    }
+                }
+                else if (col.Template != null && col.FooterTemplate != null)
+                {
+                    @if (col.EditTemplate != null)
+                    {
+                        <RadzenDataGridColumn TItem="TModel"
+                                              Property="@col.Property"
+                                              Title="@col.Title"
+                                              Type="@col.PropertyType"
+                                              Visible="@(!col.HideColumn)"
+                                              Width="@col.Width"
+                                              SortProperty="@col.PropertyMemberPath"
+                                              Sortable="@col.EnableSorting"
+                                              SortOrder="@col.SortOrder"
+                                              Frozen="@col.Frozen">
+                            <Template>
+                                @col.Template(context)
+                            </Template>
+                            <EditTemplate>
+                                @col.EditTemplate(context)
+                            </EditTemplate>
+                            <FooterTemplate>@col.FooterTemplate</FooterTemplate>
+                        </RadzenDataGridColumn>
+                    }
+                    else
+                    {
+                        <RadzenDataGridColumn TItem="TModel"
+                                              Property="@col.Property"
+                                              Title="@col.Title"
+                                              Type="@col.PropertyType"
+                                              Visible="@(!col.HideColumn)"
+                                              Width="@col.Width"
+                                              SortProperty="@col.PropertyMemberPath"
+                                              Sortable="@col.EnableSorting"
+                                              SortOrder="@col.SortOrder"
+                                              Frozen="@col.Frozen">
+                            <Template>
+                                @col.Template(context)
+                            </Template>
+                            <FooterTemplate>@col.FooterTemplate</FooterTemplate>
+                        </RadzenDataGridColumn>
+                    }
+                }
+                else if (col.EditTemplate != null)
+                {
+                    <RadzenDataGridColumn TItem="TModel"
+                                          Property="@col.Property"
+                                          Title="@col.Title"
+                                          Type="@col.PropertyType"
+                                          Visible="@(!col.HideColumn)"
+                                          Width="@col.Width"
+                                          SortProperty="@col.PropertyMemberPath"
+                                          Sortable="@col.EnableSorting"
+                                          SortOrder="@col.SortOrder"
+                                          Frozen="@col.Frozen">
+                        <EditTemplate>
+                            @col.EditTemplate(context)
+                        </EditTemplate>
+                    </RadzenDataGridColumn>
+                }
+                else
+                {
+                    <RadzenDataGridColumn TItem="TModel"
+                                          Property="@col.Property"
+                                          Title="@col.Title"
+                                          Type="@col.PropertyType"
+                                          Visible="@(!col.HideColumn)"
+                                          SortProperty="@col.PropertyMemberPath"
+                                          Sortable="@col.EnableSorting"
+                                          Width="@col.Width"
+                                          SortOrder="@col.SortOrder"
+                                          Frozen="@col.Frozen"/>
+                }
+            }
+        </Columns>
+    </RadzenDataGrid>
+}
+</div>

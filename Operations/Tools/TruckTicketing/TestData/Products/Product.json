@@ -1,0 +1,99 @@
+[
+  {
+    "Id": "a71ce21f-3e55-4333-953b-9cc27d4ffc57",
+    "EntityType": "Product",
+    "DocumentType": "Products",
+    "Name": "Waste - Processing",
+    "Number": "706060",
+    "Substances": [
+      {
+        "Id": "ce4a4fd3-a11a-4f06-90eb-f3327f761234",
+        "SubstanceName": "Contaminated Debris and Soil (chem/solvent)",
+        "WasteCode": "SOILCH"
+      },
+      {
+        "Id": "ce4a4fd3-a11a-4f06-90eb-f3327f761235",
+        "SubstanceName": "Sludge - Emulsion",
+        "WasteCode": "SLGEML"
+      }
+    ],
+    "AllowedSites": {
+      "Key": "44666b79-c0b5-4c6b-a23e-1f86536b9c4a",
+      "ProductEntityId": "a71ce21f-3e55-4333-953b-9cc27d4ffc57",
+      "Raw": "TAFA"
+    },
+    "Categories": {
+      "Key": "25e7ff8b-62cd-4dbb-899e-59afaddbc801",
+      "ProductEntityId": "a71ce21f-3e55-4333-953b-9cc27d4ffc57",
+      "Raw": "AOSLF"
+    },
+    "LegalEntityId": "d01cda7c-fc5a-4906-9a13-98190d500a33",
+    "PullVolumeQty": false,
+    "UnitOfMeasure": "ml",
+    "DisposalUnit": "mm",
+    "id": "Products|a71ce21f-3e55-4333-953b-9cc27d4ffc57"
+  },
+  {
+    "Id": "ce4a4fd1-a11a-4f06-90eb-f3327f761228",
+    "EntityType": "Product",
+    "DocumentType": "Products",
+    "Name": "Emulsion Treating",
+    "Number": "705040",
+    "Substances": [
+      {
+        "Id": "ce4a4fd3-a11a-4f06-90eb-f3327f761237",
+        "SubstanceName": "Emulsion",
+        "WasteCode": "COEMUL"
+      }
+    ],
+    "AllowedSites": {
+      "Key": "4c128e8c-f403-4244-b87c-c74b588575b8",
+      "ProductEntityId": "ce4a4fd1-a11a-4f06-90eb-f3327f761228",
+      "Raw": "SUDO"
+    },
+    "Categories": {
+      "Key": "1c6a6f80-1b39-408e-ad42-1031b3bfaa32",
+      "ProductEntityId": "ce4a4fd1-a11a-4f06-90eb-f3327f761228",
+      "Raw": "AOSFST"
+    },
+    "LegalEntityId": "00000000-0000-0000-0000-000000000000",
+    "PullVolumeQty": false,
+    "UnitOfMeasure": "cm",
+    "DisposalUnit": "mm",
+    "id": "Products|ce4a4fd1-a11a-4f06-90eb-f3327f761228"
+  },
+  {
+    "Id": "ce4a4fd1-a11a-4f06-90eb-f3327f761238",
+    "EntityType": "Product",
+    "DocumentType": "Products",
+    "Name": "Produced Water Disposal",
+    "Number": "704031",
+    "Substances": [
+      {
+        "Id": "fee4f2fb-c04d-436e-999f-578b0c54cce0",
+        "SubstanceName": "NONOFD - Sour Produced Water",
+        "WasteCode": "NONOFD"
+      },
+      {
+        "Id": "878fa0b6-78da-41d9-a4de-733706da77f9",
+        "SubstanceName": "Sweet Produced Water",
+        "WasteCode": "WATER"
+      }
+    ],
+    "AllowedSites": {
+      "Key": "21864f59-9fc7-4c28-90f5-a8d221ff8fee",
+      "ProductEntityId": "ce4a4fd1-a11a-4f06-90eb-f3327f761238",
+      "Raw": "FOOB"
+    },
+    "Categories": {
+      "Key": "76d5f37e-fd47-465b-ba6d-b803431b50ef",
+      "ProductEntityId": "ce4a4fd1-a11a-4f06-90eb-f3327f761238",
+      "Raw": "AOSLF"
+    },
+    "LegalEntityId": "00000000-0000-0000-0000-000000000000",
+    "PullVolumeQty": true,
+    "UnitOfMeasure": "lbs",
+    "DisposalUnit": "mm",
+    "id": "Products|ce4a4fd1-a11a-4f06-90eb-f3327f761238"
+  }
+]

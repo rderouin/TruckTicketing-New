@@ -1,0 +1,42 @@
+﻿@using SE.TruckTicketing.Client.Shared
+@using SE.TruckTicketing.Client.Configuration
+<CascadingApplicationState>
+    <Router AppAssembly="@typeof(App).Assembly"
+            Context="routeData"
+            OnNavigateAsync="RouterNavigating"
+            PreferExactMatches="@true">
+        <Found>
+            <AuthorizeRouteView DefaultLayout="@typeof(Layout)"
+                                RouteData="@routeData"
+                                Resource="@(new ResourceContext(routeData.PageType, routeData.RouteValues.ToDictionary(x => x.Key, x => x.Value)))">
+                <NotAuthorized>
+                    @if (context.User.Identity?.IsAuthenticated != true)
+                    {
+                        <SE.TruckTicketing.Client.Security.RedirectToLogin/>
+                    }
+                    else
+                    {
+                        <p role="alert">You are not authorized to access this resource.</p>
+                    }
+                </NotAuthorized>
+                <Authorizing>
+                    <div class="d-flex align-items-center justify-content-center h-100 w-100">
+                        <LoginLoadingDisplay>
+                            Loading application data
+                        </LoginLoadingDisplay>
+                    </div>
+                </Authorizing>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="@routeData"
+                             Selector="h1"/>
+        </Found>
+        <NotFound>
+            <CascadingAuthenticationState>
+                <LayoutView Layout="@typeof(Layout)">
+                    <div class="m-3 p-3 text-center" role="alert">Sorry, there's nothing at this address.</div>
+                </LayoutView>
+            </CascadingAuthenticationState>
+        </NotFound>
+    </Router>
+</CascadingApplicationState>
+<ApplicationInsightsComponent/>

@@ -1,0 +1,120 @@
+@using SE.TruckTicketing.Client.Components.SalesManagement
+@inherits BaseTruckTicketingComponent
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        @if (ShowDetailInTitle)
+        {
+            <RadzenLink Path="@string.Concat("/invoices/invoice/", Model.ProformaInvoiceNumber)"
+                    Text="@Title"
+                    Target="_blank"
+                    class="sales-link" />
+            <div class="d-flex gap-2 rz-label m-0">@Model.Status</div>
+        }
+        else
+        {
+            <h4 class="fw-bold">General Info</h4>
+        }
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="GL Invoice Number"
+                             Component="InvoiceNumberTextBox"/>
+                <RadzenTextBox Id="InvoiceNumberTextBox"
+                               Value="@Model.GlInvoiceNumber"
+                               Class="w-100"
+                               Disabled="true"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Invoice Date"
+                             Component="InvoiceDateTextBox"/>
+                <RadzenTextBox Id="InvoiceDateTextBox"
+                               Value="@(Model.InvoiceEndDate?.ToString("MM/dd/yyyy hh:mm tt"))"
+                               Class="w-100"
+                               Disabled="true"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Customer"
+                             Component="CustomerTextBox"/>
+                <RadzenTextBox Id="CustomerTextBox"
+                               Value="@Model.CustomerName"
+                               Class="w-100"
+                               Disabled="true"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Facility"
+                             Component="FacilityTextBox"/>
+                <RadzenTextBox Id="FacilityTextBox"
+                               Value="@Model.FacilityName"
+                               Class="w-100"
+                               Disabled="true"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Total Sales Lines"
+                             Component="SalesLinesCountNumeric"/>
+                <RadzenNumeric Id="SalesLinesCountNumeric"
+                               Value="@Model.SalesLineCount"
+                               Class="w-100"
+                               ShowUpDown="false"
+                               Disabled="true"/>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Updated By"
+                             Component="UpdatedByTextBox"/>
+                <RadzenTextBox Id="UpdatedByTextBox"
+                               Value="@Model.UpdatedBy"
+                               Class="w-100"
+                               Disabled="true"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Updated At"
+                             Component="UpdatedAtTextBox"/>
+                <RadzenTextBox Id="UpdatedAtTextBox"
+                               Value="@(Model.UpdatedAt.ToString("MM/dd/yyyy hh:mm tt"))"
+                               Class="w-100"
+                               Disabled="true"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Invoice Amount"
+                             Component="InvoiceAmountNumeric"/>
+                <RadzenNumeric Id="InvoiceAmountNumeric"
+                               Value="@Model.InvoiceAmount"
+                               Format="C2"
+                               Class="w-100"
+                               ShowUpDown="false"
+                               Disabled="true"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Currency"
+                             Component="CurrencyTextBox"/>
+                <RadzenTextBox Id="CurrencyTextBox"
+                               Value="@Model.Currency"
+                               Class="w-100"
+                               Disabled="true"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Paid"
+                             Component="PaidTextBox"/>
+                <RadzenTextBox Id="PaidTextBox"
+                               Value="@(Model.Paid ? "Yes" : "No")"
+                               Class="w-100"
+                               Disabled="true"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (!HideSalesLines)
+{
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h4 class="fw-bold">Sales Lines</h4>
+        </div>
+        <div class="card-body">
+            <SalesManagementGrid BeforeDataLoad="@BeforeLoadingSalesLines"/>
+        </div>
+    </div>
+}

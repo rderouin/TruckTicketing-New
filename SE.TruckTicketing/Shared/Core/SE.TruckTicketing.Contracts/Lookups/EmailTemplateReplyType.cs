@@ -1,0 +1,18 @@
+﻿using System;
+using System.ComponentModel;
+
+namespace SE.TruckTicketing.Contracts.Lookups;
+
+public enum EmailTemplateReplyType
+{
+    None = default,
+
+    [Description("Facility Returned Signature")]
+    FacilityReturnedSignature = 1,
+
+    [Description("Facility Main Email")]
+    FacilityMainEmail = 2,
+
+    [Obsolete("Custom option is no longer needed, if the custom email is specified, it will be used.")]
+    Custom = 3,
+}

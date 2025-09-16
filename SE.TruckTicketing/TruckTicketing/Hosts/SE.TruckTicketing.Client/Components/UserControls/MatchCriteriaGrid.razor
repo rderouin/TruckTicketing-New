@@ -1,0 +1,133 @@
+﻿@using SE.BillingService.Contracts.Api.Models
+@using SE.Shared.Common.Lookups
+@using Humanizer
+@using SE.TruckTicketing.Contracts.Models.Operations
+
+@inherits BaseRazorComponent
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center grid-switch-container">
+        <h4 class="fw-bold">Match Criteria</h4>
+        <div class="d-flex gap-2 align-items-center">
+            <div class="d-flex gap-2 align-items-center">
+                <RadzenLabel Text="Show Dates"
+                             Component="IsShowDatesEnabled"
+                             class="m-0"/>
+                <RadzenSwitch id="IsShowDatesEnabled"
+                              @bind-Value="@isShowDatesEnabled"/>
+            </div>
+            <RadzenButton Click="@(args => OpenEditDialog())"
+                          Text="Add Criteria"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Size="ButtonSize.Small"
+                          Icon="rule"
+                          Disabled="@Disabled"/>
+        </div>
+    </div>
+    <div class="card-body grid-switch-container">
+        <PagableGridView @ref="grid"
+                         TModel="MatchPredicate"
+                         Results="@_matchCriterias"
+                         class="bs-class"
+                         EnableSearch="false"
+                         EnablePaging="false"
+                         EnableSorting="true"
+                         OnDataLoad="LoadMatchCriteria"
+                         EnableRowExpansion="false"
+                         EnableFilters="false">
+            <Columns>
+                <ColumnDefinition TItem="MatchPredicate"
+                                  Property="@nameof(MatchPredicate.IsEnabled)"
+                                  Title="Enabled"
+                                  PropertyType="typeof(string)"
+                                  Width="4rem"
+                                  EnableSorting="false">
+                    <Template Context="context">
+                        <RadzenSwitch @bind-Value="@context.IsEnabled"
+                                      Change="() => EnabledFlagChange(context)"
+                                      class="grid-switch"
+                                      Disabled="@Disabled"/>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="MatchPredicate"
+                                  Property="@nameof(MatchPredicate.SourceIdentifier)"
+                                  Title="Source Location"
+                                  PropertyType="typeof(string)">
+                    <Template Context="context">
+                        @(string.IsNullOrEmpty(context.SourceIdentifier) ? context.SourceLocationValueState.Humanize() : context.SourceIdentifier)
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="MatchPredicate"
+                                  Property="@nameof(MatchPredicate.WellClassification)"
+                                  Title="Well Classification"
+                                  PropertyType="typeof(string)">
+                    <Template Context="context">
+                        @((int)context.WellClassification == 0 ? context.WellClassificationState.Humanize() : context.WellClassification.Humanize())
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="MatchPredicate"
+                                  Property="@nameof(MatchPredicate.Stream)"
+                                  Title="Stream"
+                                  PropertyType="typeof(string)">
+                    <Template Context="context">
+                        @((int)context.Stream == 0 ? context.StreamValueState.Humanize() : context.Stream.Humanize())
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="MatchPredicate"
+                                  Property="@nameof(MatchPredicate.ServiceType)"
+                                  Title="Service Type"
+                                  PropertyType="typeof(string)">
+                    <Template Context="context">
+                        @(string.IsNullOrEmpty(context.ServiceType) ? context.ServiceTypeValueState.Humanize() : context.ServiceType)
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="MatchPredicate"
+                                  Property="@nameof(MatchPredicate.SubstanceName)"
+                                  Title="Substance"
+                                  PropertyType="typeof(string)">
+                    <Template Context="context">
+                        @(string.IsNullOrEmpty(context.SubstanceName) ? context.SubstanceValueState.Humanize() : context.SubstanceName)
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition HideColumn="@(!isShowDatesEnabled)"
+                                  TItem="MatchPredicate"
+                                  Property="@nameof(MatchPredicate.StartDate)"
+                                  FilterType="DateFilter"
+                                  FilterEnabled="true"
+                                  Title="Start Date"
+                                  PropertyType="typeof(DateTime)">
+                    <Template Context="context">
+                        @context.StartDate?.ToString("MM/dd/yyyy")
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition HideColumn="@(!isShowDatesEnabled)"
+                                  TItem="MatchPredicate"
+                                  Property="@nameof(MatchPredicate.EndDate)"
+                                  FilterType="DateFilter"
+                                  FilterEnabled="true"
+                                  Title="End Date"
+                                  PropertyType="typeof(DateTime)">
+                    <Template Context="context">
+                        @context.EndDate?.ToString("MM/dd/yyyy")
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="MatchPredicate"
+                                  Property="@nameof(MatchPredicate)"
+                                  Title="Actions"
+                                  Width="8rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="() => OpenEditDialog(data)"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Small"
+                                      Text="Edit"
+                                      Disabled="@Disabled"/>
+                        <RadzenButton Click="() => DeleteButton_Click(data)"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small"
+                                      Text="Delete"/>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

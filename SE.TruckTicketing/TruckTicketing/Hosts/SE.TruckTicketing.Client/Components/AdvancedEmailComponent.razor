@@ -1,0 +1,69 @@
+@using SE.TruckTicketing.UI.ViewModels
+<RadzenTemplateForm TItem="AdvancedEmailViewModel"
+                    Data="@Model"
+                    Submit="@Submit">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <EmailAddressComponent Name="TO"
+                                       Contacts="Model.Contacts"
+                                       IsRequired="true"
+                                       ContactDropdownLabel="@Model.ContactDropdownLabel"
+                                       Change="@OnParameterChange"
+                                       @bind-Value="@Model.To"
+                                       TextProperty="@nameof(DisplayEmailAddress.DisplayName)"
+                                       ValueProperty="@nameof(DisplayEmailAddress.Email)"/>
+            </div>
+            <div class="row">
+                <EmailAddressComponent Name="CC"
+                                       Contacts="Model.Contacts"
+                                       IsRequired="false"
+                                       ContactDropdownLabel="@Model.ContactDropdownLabel"
+                                       Change="@OnParameterChange"
+                                       @bind-Value="@Model.Cc"
+                                       TextProperty="@nameof(DisplayEmailAddress.DisplayName)"
+                                       ValueProperty="@nameof(DisplayEmailAddress.Email)"/>
+            </div>
+            <div class="row">
+                <EmailAddressComponent Name="BCC"
+                                       Contacts="Model.Contacts"
+                                       IsRequired="false"
+                                       ContactDropdownLabel="@Model.ContactDropdownLabel"
+                                       Change="@OnParameterChange"
+                                       @bind-Value="@Model.Bcc"
+                                       TextProperty="@nameof(DisplayEmailAddress.DisplayName)"
+                                       ValueProperty="@nameof(DisplayEmailAddress.Email)"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="fw-bold">Custom Note</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="d-flex flex-column">
+                    <RadzenTextArea id="NoteTextArea"
+                                    Name="NoteTextArea"
+                                    @bind-Value="@Model.AdHocNote"
+                                    class="w-100"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-grow-0 d-flex align-items-end justify-content-end">
+        <div class="d-flex gap-2 justify-content-end">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Send"/>
+
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          Click="@Cancel"/>
+        </div>
+    </div>
+
+</RadzenTemplateForm>

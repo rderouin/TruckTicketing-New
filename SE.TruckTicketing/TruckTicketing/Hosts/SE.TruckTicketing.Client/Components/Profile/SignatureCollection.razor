@@ -1,0 +1,43 @@
+﻿@using SE.Shared.Common.Extensions
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<div class="w-100">
+
+    <PageLoadingContainer IsLoading="IsLoading">
+        <LoadedView>
+
+            @if (_existingSignatureUri.HasText())
+            {
+                <img src="@_existingSignatureUri"
+                     class="img-fluid shadow-sm m-2 rounded"
+                     alt="signature"/>
+            }
+
+            <div class="d-flex justify-content-center">
+
+                <InputFile OnChange="InputFileChange"
+                           class="form-control w-auto"
+                           disabled="@(_isUploading || !HasWritePermission(Permissions.Resources.UserProfile))"/>
+
+                @if (_isUploading)
+                {
+                    <div class="spinner-border"
+                         role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                }
+
+            </div>
+
+            @if (_uploadErrorMessage.HasText())
+            {
+                <div class="d-flex justify-content-center text-danger m-2">
+                    @_uploadErrorMessage
+                </div>
+            }
+
+        </LoadedView>
+    </PageLoadingContainer>
+
+</div>

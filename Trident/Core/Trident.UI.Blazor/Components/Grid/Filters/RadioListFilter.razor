@@ -1,0 +1,23 @@
+@inherits RadioListFilter
+@typeparam TOutputValue
+
+<h6 id="@Name" class="small-grey-label col-sm-12 mb-2" style="font-weight:bold">
+    @FilterOptions.Label
+</h6>
+<div class="form-group col-sm-4">
+    <div class="filter-label">
+        @if (Value != null)
+        {
+            <RadzenButton Id="main_Grid_Search" Click="@ResetToDefault" ButtonType="ButtonType.Button">
+                 Clear
+            </RadzenButton> 
+        }
+    </div>
+    <RadzenRadioButtonList TValue="TOutputValue"
+                           Value="this.Value"
+                           Name="@Name"
+                           Data="@this.ListData"
+                           TextProperty="Display"
+                           ValueProperty="Value"
+                           Change="OnSelectionChanged" />
+</div>

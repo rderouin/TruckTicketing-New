@@ -1,0 +1,26 @@
+﻿@using SE.Shared.Common.Extensions
+@inherits BaseTruckTicketingComponent
+@if (Visible)
+{
+    @if (SecondaryTransitionableStatuses.Any())
+    {
+        <RadzenSplitButton Text="@(GetActionText(PrimaryTransitionableStatus))"
+                           Disabled="@Disabled"
+                           Visible="@(TruckTicket.TicketNumber.HasText() && PrimaryTransitionableStatus is not null)"
+                           class="rz-button-light"
+                           Click="HandleTransition">
+            @foreach (var status in SecondaryTransitionableStatuses)
+            {
+                <RadzenSplitButtonItem Text="@GetActionText(status)"
+                                       Value="@status.ToString()"/>
+            }
+        </RadzenSplitButton>
+    }
+    else if (PrimaryTransitionableStatus is not null)
+    {
+        <RadzenButton Text="@(GetActionText(PrimaryTransitionableStatus))"
+                      Visible="@(TruckTicket.TicketNumber.HasText() && PrimaryTransitionableStatus is not null)"
+                      ButtonStyle="ButtonStyle.Light"
+                      Click="@(_ => HandleTransition(PrimaryTransitionableStatus.ToString()))"/>
+    }
+}

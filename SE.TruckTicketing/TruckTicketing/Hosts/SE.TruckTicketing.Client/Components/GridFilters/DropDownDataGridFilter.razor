@@ -1,0 +1,43 @@
+@typeparam TItem
+@inherits FilterComponent<string[]>
+
+
+<div class="flex-grow-1">
+    <RadzenLabel Text="@Label"
+                 For="@Id"
+                 Class="filter-label"/>
+    <div class="filter-input-container flex gap-2 align-items-center">
+        <RadzenDropDownDataGrid id="@Id"
+                                @ref="@_dropDownDataGrid"
+                                Class="flex-grow-1"
+                                LoadData="@LoadData"
+                                AllowFiltering="@true"
+                                AllowClear="true"
+                                AllowSorting="true"
+                                Placeholder="@Placeholder"
+                                PageSize="10"
+                                PageNumbersCount="3"
+                                Change="@HandleChange"
+                                ShowPagingSummary="@true"
+                                @bind-Value="@_value"
+                                Data="@_results.Results"
+                                Count="@(_results.Info?.TotalRecords ?? 0)"
+                                Responsive="@true"
+                                Multiple="@true"
+                                TextProperty="@TextProperty"
+                                ValueProperty="@ValueProperty"
+                                AllowColumnResize=true>
+            <Columns>
+                <RadzenDropDownDataGridColumn Width="15px"
+                                              Sortable="false">
+                    <Template Context="data">
+                        <RadzenCheckBox TriState="false"
+                                        TValue="bool"
+                                        Value="@(Values != null && Values.Contains(ValuePropertySelector((TItem)data)))"/>
+                    </Template>
+                </RadzenDropDownDataGridColumn>
+                @Columns
+            </Columns>
+        </RadzenDropDownDataGrid>
+    </div>
+</div>

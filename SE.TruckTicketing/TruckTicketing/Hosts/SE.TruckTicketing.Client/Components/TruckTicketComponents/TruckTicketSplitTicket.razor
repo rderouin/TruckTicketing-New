@@ -1,0 +1,212 @@
+﻿@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@inherits BaseRazorComponent
+
+<style>
+   .grid td .rz-cell-data {
+       display: inline;
+   }
+   
+   .rz-dropdown {
+        vertical-align: middle;
+        translate: 0 -2px;
+   }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col">
+                <RadzenLabel Text="SPLIT BY"
+                             Component="TruckTicketCloneList"
+                             class="required"/>
+                <div class="flex-grow-1">
+                    <RadzenRadioButtonList TValue="@TruckTicketSplitOptionList"
+                                           id="TruckTicketCloneList"
+                                           TextProperty="Value"
+                                           ValueProperty="Key"
+                                           Data="@(DataDictionary.For<TruckTicketSplitOptionList>())"
+                                           Change="@(OnTruckTicketSplitListStateChange)"
+                                           @bind-Value="@SelectedSplitOption"/>
+                </div>
+            </div>
+            <div class="col">
+                <div class="d-flex justify-content-end">
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                                  Click="@AddSplit"
+                                  Text="Add Split"/>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3 grid">
+
+            <PagableGridView @ref="_splitGrid"
+                             TModel="SplitViewModel"
+                             Results="@_SplitTicketList"
+                             EnablePaging="false"
+                             EnableSorting="true"
+                             OnDataLoad="@LoadSplitTicketGridData"
+                             EnableFilters="false"
+                             EnableSearch="false">
+                <Columns>
+                    <ColumnDefinition TItem="SplitViewModel"
+                                      Property="@nameof(SplitViewModel.SourceLocationId)"
+                                      Title="Source Location"
+                                      PropertyType="typeof(Guid)"
+                                      Width="15rem">
+                        <Template Context="context">
+                            @if (context.Id != default)
+                            {
+                                <span style="translate: 0 7px">
+                                    <SourceLocationDropDown id="SourceLocationDropDown"
+                                                            TValue="Guid"
+                                                            Placeholder="Select source location"
+                                                            @bind-Value="@context.SourceLocationId"
+                                                            ValueProperty="@nameof(SourceLocation.Id)"
+                                                            PageSize="10"
+                                                            class="w-100"/>
+                                </span>
+                            }
+                            else
+                            {
+                                <strong>Unaccounted Volumes</strong>
+                            }
+                        </Template>
+                        <FooterTemplate>
+                            <strong>Totals</strong>
+                        </FooterTemplate>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="SplitViewModel"
+                                      Property="@nameof(SplitViewModel.TotalVolumePercent)"
+                                      Title="Total %"
+                                      PropertyType="typeof(double)">
+
+                        <Template Context="context">
+                            @if (SelectedSplitOption == TruckTicketSplitOptionList.Percent && context.Id != default)
+                            {
+                                <TridentNumeric id="OilVolumeNumeric"
+                                                Name="OilVolumeNumeric"
+                                                TValue="double"
+                                                @bind-Value="@context.TotalVolumePercent"
+                                                MaxDecimalPlaces="2"
+                                                Change="@(args => HandleVolumeChange(context))"/>
+                            }
+                            else if (context.TotalVolumePercent == 0.0)
+                            {
+                                <span class="text-success">@string.Concat(context.TotalVolumePercent.ToString("N1"), "%")</span>
+                            }
+                            else
+                            {
+                                <span class="text-danger">@string.Concat(context.TotalVolumePercent.ToString("N1"), "%")</span>
+                            }
+                        </Template>
+                        <FooterTemplate>
+                            @if (Math.Abs(TotalVolumePercentSum - 100.0) < 0.11)
+                            {
+                                <span class="text-success">@TotalVolumePercentSum.ToString("N1")%</span>
+                            }
+                            else
+                            {
+                                <span class="text-danger">@TotalVolumePercentSum.ToString("N1")%</span>
+                            }
+                        </FooterTemplate>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="SplitViewModel"
+                                      Property="@nameof(SplitViewModel.TotalVolume)"
+                                      Title="Total (m³)"
+                                      PropertyType="typeof(double)">
+                        <Template Context="context">
+                            @if (SelectedSplitOption == TruckTicketSplitOptionList.Quantity && context.Id != default)
+                            {
+                                <div class="w-100 d-flex justify-content-center">
+
+                                    <TridentNumeric id="OilVolumeNumeric"
+                                                    Name="OilVolumeNumeric"
+                                                    TValue="double"
+                                                    @bind-Value="@context.TotalVolume"
+                                                    MaxDecimalPlaces="2"
+                                                    Change="@(args => HandleVolumeChange(context))"/>
+                                </div>
+                            }
+                            else if (context.TotalVolume == 0.0)
+                            {
+                                <span class="text-success">@string.Concat(context.TotalVolume.ToString("N1"), context.Id == default ? " M³" : "")</span>
+                            }
+                            else
+                            {
+                                <span class="text-danger">@string.Concat(context.TotalVolume.ToString("N1"), context.Id == default ? " M³" : "")</span>
+                            }
+                        </Template>
+                        <FooterTemplate>
+                            @if (Math.Abs(TotalVolumeSum - TruckTicket.TotalVolume) > 0.011)
+                            {
+                                <span class="text-danger">@TotalVolumeSum.ToString("N1") M³</span>
+                            }
+                            else
+                            {
+                                <span class="text-success">@TotalVolumeSum.ToString("N1") M³</span>
+                            }
+                        </FooterTemplate>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="SplitViewModel"
+                                      Property="@nameof(SplitViewModel.WaterVolume)"
+                                      Title="Water (M³)"
+                                      PropertyType="typeof(double)">
+                        <Template Context="context">
+                            @context.WaterVolume.ToString("N1") @(context.Id == default ? "M³" : string.Empty)
+                        </Template>
+                        <FooterTemplate>@SplitTruckTickets.SkipLast(1).Sum(x => x.WaterVolume) M³</FooterTemplate>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="SplitViewModel"
+                                      Property="@nameof(SplitViewModel.OilVolume)"
+                                      Title="Oil (M³)"
+                                      PropertyType="typeof(double)">
+                        <Template Context="context">
+                            @context.OilVolume.ToString("N1") @(context.Id == default ? "M³" : string.Empty)
+                        </Template>
+                        <FooterTemplate>@SplitTruckTickets.SkipLast(1).Sum(x => x.OilVolume) M³</FooterTemplate>
+                    </ColumnDefinition>
+
+                    <ColumnDefinition TItem="SplitViewModel"
+                                      Property="@nameof(SplitViewModel.SolidVolume)"
+                                      Title="Solid (M³)"
+                                      PropertyType="typeof(double)">
+                        <Template Context="context">
+                            @context.SolidVolume.ToString("N1") @(context.Id == default ? "M³" : string.Empty)
+                        </Template>
+                        <FooterTemplate>@(SplitTruckTickets.SkipLast(1).Sum(x => x.SolidVolume)) M³</FooterTemplate>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="SplitViewModel"
+                                      Property="@nameof(SplitViewModel)">
+                        <Template Context="context">
+                            <RadzenButton Click="() => RemoveSplitItem(context)"
+                                          ButtonStyle="ButtonStyle.Secondary"
+                                          Size="ButtonSize.Small"
+                                          Text="Remove"
+                                          Visible="@(context.Id != default && context.Id != SplitTruckTickets?.FirstOrDefault()?.Id && SplitTruckTickets?.Count > 3)"/>
+                        </Template>
+                    </ColumnDefinition>
+                </Columns>
+            </PagableGridView>
+        </div>
+        <hr class="text-muted"/>
+        <div>
+
+        </div>
+    </div>
+</div>
+<div class="row mt-4 mb-3">
+    <div class="col d-flex justify-content-end">
+        <RadzenButton ButtonStyle="ButtonStyle.Light"
+                      Text="Cancel"
+                      Click="HandleCancel"/>
+        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                      ButtonType="ButtonType.Submit"
+                      Click="@HandleSubmit"
+                      class="ml-2"
+                      Text="Split Ticket"
+                      IsBusy="IsSplitting"
+                      BusyText="Splitting Ticket"
+                      Disabled="@DisableSplitButtonState"/>
+    </div>
+</div>

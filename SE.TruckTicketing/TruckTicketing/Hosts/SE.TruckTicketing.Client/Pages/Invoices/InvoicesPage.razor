@@ -1,0 +1,215 @@
+﻿@page "/invoices"
+@page "/invoices/{FacilityIdsUrl}"
+@page "/invoices/invoice/{invoiceNumber}"
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Models.Invoices
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using SE.TruckTicketing.Contracts.Security
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Client.Components.SalesManagement
+@using SE.TruckTicketing.Client.Components.InvoiceComponents
+@inherits BaseTruckTicketingComponent
+
+<style>
+    .vlimit {
+        max-height: 100%;
+        width: 100%;
+    }
+</style>
+
+<PageLoadingContainer IsLoading="@_isLoading">
+    <LoadedView>
+        <div class="d-flex flex-column h-100">
+            <div class="flex-grow-0" style="position:relative; top:0px; width:100%; z-index:1;">
+                <div class="bg-white p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h3>Manage Invoices</h3>
+                        <div class="d-flex align-items-center gap-5">
+                            <RadzenButton Text="Remove Invoice Filter"
+                                          Click="@(_ => RemoveInvoiceFilter())"
+                                          ButtonStyle="ButtonStyle.Secondary"
+                                          Size="ButtonSize.Medium"
+                                          Visible="@(!String.IsNullOrEmpty(InvoiceNumber))" />
+                            <div class="d-flex gap-2">
+                                <RadzenLabel Text="Facility"
+                                             Component="FacilityDropDown"
+                                             class="my-2" />
+                                <RadzenDropDownDataGrid @ref="_facilityDataGrid"
+                                                        AllowFiltering="true"
+                                                        AllowSorting="true"
+                                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                        FilterOperator="StringFilterOperator.Contains"
+                                                        AllowClear="true"
+                                                        @bind-Value=@FacilityIds
+                                                        Multiple="true"
+                                                        Placeholder="Select Facility..."
+                                                        Data="@_facilityRecords"
+                                                        Count="@(facilityResults?.Info?.TotalRecords ?? 0)"
+                                                        TextProperty="@nameof(Facility.Display)"
+                                                        ValueProperty="@nameof(Facility.Id)"
+                                                        PageSize="10"
+                                                        Change="@(args => HandleFacilityChange(args))">
+                                    <Columns>
+                                        <RadzenDropDownDataGridColumn Width="25px" Sortable="false">
+                                            <HeaderTemplate>
+                                                <RadzenCheckBox Disabled="true" TriState="false" TValue="bool" Value="@(FacilityIds != null ? FacilityIds.ToArray().Any() : false)" />
+                                            </HeaderTemplate>
+                                            <Template Context="data">
+                                                <RadzenCheckBox TriState="false" TValue="bool" Value="@(FacilityIds != null && FacilityIds.ToList().Contains(data.Id))" />
+                                            </Template>
+                                        </RadzenDropDownDataGridColumn>
+                                        <RadzenDropDownDataGridColumn Property="@nameof(Facility.SiteId)" Title="Site Id" Width="50px" />
+                                        <RadzenDropDownDataGridColumn Property="@nameof(Facility.Name)" Title="Name" Width="100px" />
+                                    </Columns>
+                                </RadzenDropDownDataGrid>
+                            </div>
+                            <SalesManagementButtons SalesManagementButtonFlag="@SalesManagementButtonFlag.Invoices"
+                                                    FacilityIds="@FacilityIds">
+                            </SalesManagementButtons>
+                        </div>
+                    </div>
+                    <div>View Invoices individually, or view their respective sales lines & Load confirmations.</div>
+                </div>
+
+                <GridFiltersContainer @ref="_gridFilterContainer"
+                                      Expandable="@true"
+                                      OnFilterChange="@(async criteria => await ApplyFilterOnTabChange(criteria))">
+                    <div class="d-flex flex-grow-1 gap-3">
+                        <KeywordFilter Label="Search"
+                                       Placeholder="Search by Customer, Generator, Invoice, Customer, Manifest, Bill of Lading Number..." />
+
+                        <DateRangeFilter Label="Ticket Date Range"
+                                         FilterPath="@nameof(Invoice.TicketDateRangeStart)" />
+
+                        <DateRangeFilter Label="Invoice Date Range"
+                                         FilterPath="@nameof(Invoice.InvoiceStartDate)" />
+
+                        <SelectFilter Label="Status"
+                                      Placeholder="All Statuses..."
+                                      FilterPath="@nameof(Invoice.Status)"
+                                      Data="@(DataDictionary.For<InvoiceStatus>(false).SelectOptions())" />
+                    </div>
+                    <GridFiltersExpandedContainer>
+                        <div class="d-flex flex-grow-1 gap-3 mb-3">
+                            <SelectFilter Label="Attachments"
+                                          Placeholder="Any"
+                                          FilterPath="@nameof(Invoice.HasAttachments)"
+                                          Data="@(DataDictionary.For<HasAttachments>(false).SelectOptions())" />
+
+                            <DropDownDataGridFilter Label="Source Location Type"
+                                                    FilterPath="@nameof(Invoice.SourceLocationTypeId)"
+                                                    Placeholder="All location types"
+                                                    TItem="SourceLocationType"
+                                                    DefaultSortProperty="@nameof(SourceLocationType.Name)"
+                                                    TextProperty="@nameof(SourceLocationType.Name)">
+                                <Columns>
+                                    <RadzenDropDownDataGridColumn Property="@nameof(SourceLocationType.Name)"
+                                                                  Title="Name"
+                                                                  Width="84px" />
+                                </Columns>
+                            </DropDownDataGridFilter>
+                        </div>
+                        <div class="d-flex flex-grow-1 gap-3 mb-3">
+                            <DropDownDataGridFilter Label="Source Location"
+                                                    FilterPath="@nameof(Invoice.SourceLocationId)"
+                                                    Placeholder="All locations"
+                                                    TItem="SourceLocation"
+                                                    TextProperty="@nameof(SourceLocation.Display)">
+                                <Columns>
+                                    <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.Display)"
+                                                                  Title="Source Location"
+                                                                  Width="60px" />
+
+                                    <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.SourceLocationTypeName)"
+                                                                  Title="Type"
+                                                                  Width="30px" />
+
+                                    <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.GeneratorName)"
+                                                                  Title="Generator Name"
+                                                                  Width="60px" />
+                                </Columns>
+                            </DropDownDataGridFilter>
+
+                            <ReversedInvoiceFilter />
+                            <ToggleFilter Label="No Sales Lines" FilterKey="NoSalesLines" ToolTipText="Only show records without Sales Lines" />
+                        </div>
+                    </GridFiltersExpandedContainer>
+
+                </GridFiltersContainer>
+            </div>
+
+            <div class="p-2 vlimit" 
+                 style="align-content: center; position: relative; top:0px; z-index:0; height:calc(100% - 200px);">
+                <RadzenTabs TabPosition="@TabPosition.Top"
+                            RenderMode="TabRenderMode.Client" @bind-SelectedIndex="@selectedTabIndex"
+                            Style="align-content:center; height:calc(100% - 45px);">
+                    <Tabs>
+                        <RadzenTabsItem Text="@AllCountText">
+                            <InvoicesGrid @ref="_invoiceGrid"
+                                          BeforeDataLoad="@LoadAllData"
+                                          InvoicesPage="this"
+                                          OnRecordCountChange="RecordCountHandler"
+                                          ChildStateChange="@StateHasChanged">
+                            </InvoicesGrid>
+                        </RadzenTabsItem>
+                        <RadzenTabsItem Text="@PostedCountText">
+                            <InvoicesGrid @ref="_postedInvoiceGrid"
+                                          OnPostedCountChange="PostedCountHandler"
+                                          InvoicesPage="this"
+                                          BeforeDataLoad="@LoadPostedData"
+                                          HideFilter="true"
+                                          ChildStateChange="@StateHasChanged">
+                            </InvoicesGrid>
+                        </RadzenTabsItem>
+                        <RadzenTabsItem Text="@NotPostedCountText">
+                            <InvoicesGrid @ref="_notPostedInvoiceGrid"
+                                          OnNotPostedCountChange="NotPostedCountHandler"
+                                          InvoicesPage="this"
+                                          ChildStateChange="@StateHasChanged"
+                                          BeforeDataLoad="@LoadNotPostedData"
+                                          HideFilter="true">
+                            </InvoicesGrid>
+                        </RadzenTabsItem>
+                    </Tabs>
+                </RadzenTabs>
+            </div>
+
+            <div class="flex-grow-0 d-flex align-items-center justify-content-between p-2 footer-panel" style="position:absolute; bottom:0px; width:100%;">
+                <div class="d-flex">
+                    <div class="d-flex gap-2">
+                        <LinesSelectedText NumberOfLinesSelected="@(_invoiceGrid?.NumberOfSelected() ?? 0)"></LinesSelectedText>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <div class="d-flex gap-2 align-items-start">
+                        @if (selectedTabIndex == 2)
+                        {
+                            <RadzenSplitButton class="primary"
+                                           Click="@(HandleUnPostedButtonClick)"
+                                           Disabled="@(!(_notPostedInvoiceGrid?.SelectedInvoices ?? Array.Empty<Invoice>()).Any())"
+                                           Text="Post & Send">
+                                <ChildContent>
+                                    <RadzenSplitButtonItem Text="Post Only"
+                                                       Value="PostOnly" />
+                                </ChildContent>
+                            </RadzenSplitButton>
+                        }
+
+
+                        <RadzenButton Text="Update Collection Notes"
+                                      Click="@(_ => HandleBulkNoteUpload())"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Disabled="@(!SelectedGridHasSelectedInvoices() || !IsAuthorizedFor(Permissions.Resources.InvoiceCollectionNotes, Permissions.Operations.Write))"
+                                      Size="ButtonSize.Medium"/>
+                        <RadzenButton Text="Download"
+                                      Click="@(_ => HandleBulkDownload())"
+                                      ButtonStyle="ButtonStyle.Primary"
+                                      Disabled="@NotDownloadable"
+                                      Size="ButtonSize.Medium" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </LoadedView>
+</PageLoadingContainer>

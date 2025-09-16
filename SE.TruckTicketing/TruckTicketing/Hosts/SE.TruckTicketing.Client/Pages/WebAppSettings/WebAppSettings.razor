@@ -1,0 +1,21 @@
+@page "/webapp-settings"
+@inherits BaseRazorComponent
+
+<h3 class="m-3">General Settings</h3>
+
+<div class="row m-3">
+    <div class="col col-2">
+        <div class="d-flex justify-content-between">
+            <div>
+                <RadzenLabel Text="Server Request Caching"
+                             Component="Caching"/>
+            </div>
+            <div>
+                <RadzenSwitch @bind-Value="@CacheEnabled"
+                              Name="Caching"
+                              class="align-middle"/>
+                <span class="p-1">@(CacheEnabled ? "(Enabled)" : "(Disabled)")</span>
+            </div>
+        </div>
+    </div>
+</div>

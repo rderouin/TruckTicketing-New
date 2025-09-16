@@ -1,0 +1,206 @@
+﻿@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using SE.TruckTicketing.Contracts.Models.Substances
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseTruckTicketingComponent
+
+
+        <EditForm EditContext="@_editContext">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row">
+                                <h4 class="fw-bold">Invoice Info</h4>
+                            </div>
+                            <div class="row">
+                                <p>Select the info you want included in the invoicing batch.</p>
+                            </div>
+                        </div>
+                        <div class="col-6 d-flex gap-2 align-items-center justify-content-end">
+                            <RadzenLabel Text="Catch All"
+                                         Component="CatchAllSwitch"
+                                         class="pt-lg-2" />
+                            <RadzenSwitch id="CatchAllSwitch"
+                                          @bind-Value="@InvoiceConfiguration.CatchAll" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body grid-switch-container">
+                    <div class="row mb-1">
+                        <div class="col d-flex flex-column">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <RadzenLabel Text="Source Location" 
+                                    Component="SourceLocationListBox" 
+                                    class="pt-lg-2" />
+                                <div class="d-flex gap-2 align-items-center">
+                                    <RadzenLabel Text="Select All" 
+                                        Component="AllSourceLocations" 
+                                        class="pt-lg-2" />
+                                    <RadzenSwitch id="AllSourceLocations" 
+                                        @bind-Value="@InvoiceConfiguration.AllSourceLocations" 
+                                        Disabled="true" />
+                                    <RadzenButton ButtonStyle="ButtonStyle.Secondary" 
+                                        Text="Select" 
+                                        Click="SelectSourceLocation" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col d-flex flex-column">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <RadzenLabel Text="Service Type" 
+                                        Component="ServiceTypeBoxList" 
+                                        class="pt-lg-2" />
+                                <div class="d-flex gap-2 align-items-center">
+                                    <RadzenLabel Text="Select All" 
+                                        Component="AllServiceType" 
+                                        class="pt-lg-2" />
+                                    <RadzenSwitch id="AllServiceType" 
+                                        @bind-Value="@InvoiceConfiguration.AllServiceTypes" 
+                                        Disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col d-flex flex-column">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <RadzenLabel Text="Well Classification"
+                                             Component="WellClassificationBoxList"
+                                             class="pt-lg-2" />
+                                <div class="d-flex gap-2 align-items-center">
+                                    <RadzenLabel Text="Select All"
+                                                 Component="AllWellClassification"
+                                                 class="pt-lg-2" />
+                                    <RadzenSwitch id="AllWellClassification"
+                                                  @bind-Value="@InvoiceConfiguration.AllWellClassifications"
+                                                  Disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col d-flex flex-column">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <RadzenLabel Text="Substance"
+                                             Component="SubstanceBoxList"
+                                             class="pt-lg-2" />
+                                <div class="d-flex gap-2 align-items-center">
+                                    <RadzenLabel Text="Select All"
+                                                 Component="AllSubstances"
+                                                 class="pt-lg-2" />
+                                    <RadzenSwitch id="AllSubstances"
+                                                  @bind-Value="@InvoiceConfiguration.AllSubstances"
+                                                  Disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col d-flex flex-column">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <RadzenLabel Text="Facility"
+                                             Component="FacilityBoxList"
+                                             class="pt-lg-2" />
+                                <div class="d-flex gap-2 align-items-center">
+                                    <RadzenLabel Text="Select All"
+                                                 Component="AllFacilities"
+                                                 class="pt-lg-2" />
+                                    <RadzenSwitch id="AllFacilities"
+                                                  @bind-Value="@InvoiceConfiguration.AllFacilities"
+                                                  Change="FacilitySelectAll"
+                                                  Disabled="!_enableFacilitySelectAll"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col d-flex flex-column">
+                            <RadzenListBox id="SourceLocationListBox"
+                                           Name="SourceLocationListBox"
+                                           AllowFiltering="true"
+                                           Placeholder="Select source locations..."
+                                           FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                           @bind-Value="@SourceLocations"
+                                           TextProperty="@nameof(SourceLocation.Display)"
+                                           ValueProperty="@nameof(SourceLocation.Id)"
+                                           Data="@SourceLocationAdded"
+                                           Style="height: 12.5rem"
+                                           Class="w-100">
+                                <Template Context="sourceLocationData">
+                                    <div class="d-flex align-items-end justify-content-between">
+                                        <div class="col d-flex flex-column">
+                                            <div class="row">@((sourceLocationData as SourceLocation)?.Display)</div>
+                                            <div class="row">@((sourceLocationData as SourceLocation)?.GeneratorName)</div>
+                                        </div>
+                                        <div class="d-flex align-items-start gap-4 flex-grow-0 align-self-end">
+                                            <RadzenButton Click="() => DeleteButton_Click(sourceLocationData as SourceLocation)"
+                                                          ButtonStyle="ButtonStyle.Danger"
+                                                          Size="ButtonSize.Small"
+                                                          Text="Delete"/>
+                                        </div>
+                                    </div>
+                                </Template>
+                            </RadzenListBox>
+                        </div>
+                        <div class="col d-flex flex-column">
+                            <TridentApiListBox id="ServiceTypeBoxList"
+                                               TModel="ServiceType"
+                                               TValue="Guid"
+                                               Placeholder="Select service types..."
+                                               TextProperty="@nameof(ServiceType.Name)"
+                                               ValueProperty="@nameof(ServiceType.Id)"
+                                               PageSize="10"
+                                               @bind-value="ServiceTypes"
+                                               Style="height: 12.5rem"
+                                               Class="w-100"
+                                               FetchModelOnItemSelect="FetchSelectedServiceTypeItemModel"
+                                               AllRecordsSelected="AllServiceTypesSet"
+                                               OnDataLoading="BeforeServiceTypeLoad" />
+                        </div>
+                        <div class="col d-flex flex-column">
+                            <RadzenListBox id="WellClassificationBoxList"
+                                           Name="WellClassificationBoxList"
+                                           Placeholder="Select well classifications..."
+                                           AllowFiltering="true"
+                                           FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                           @bind-Value="@WellClassification"
+                                           Multiple="true"
+                                           TextProperty="Display"
+                                           ValueProperty="Value"
+                                           Data="@WellClassificationData"
+                                           Style="height: 12.5rem"
+                                           Class="w-100" />
+                        </div>
+                        <div class="col d-flex flex-column">
+                            <TridentApiListBox id="SubstanceBoxList"
+                                               TModel="Substance"
+                                               TValue="Guid"
+                                               Placeholder="Select substances..."
+                                               TextProperty="@nameof(Substance.SubstanceName)"
+                                               ValueProperty="@nameof(Substance.Id)"
+                                               PageSize="10"
+                                               @bind-value="Substances"
+                                               Style="height: 12.5rem"
+                                               Class="w-100"
+                                               FetchModelOnItemSelect="FetchSelectedSubstancesItemModel"
+                                               AllRecordsSelected="AllSubstancesSet" 
+                                               OnDataLoading="BeforeSubstanceLoad"/>
+                        </div>
+                        <div class="col d-flex flex-column">
+                            <RadzenListBox @ref="FacilityListBox"
+                                           id="FacilityBoxList"
+                                           TValue="Guid"
+                                           Placeholder="Select facilities..."
+                                           TextProperty="@nameof(Facility.Display)"
+                                           ValueProperty="@nameof(Facility.Id)"
+                                           PageSize="10"
+                                           FilterCaseSensitivity="@FilterCaseSensitivity.CaseInsensitive"
+                                           AllowFiltering="true"
+                                           AllowClear="true"
+                                           Value="@_facilityId"
+                                           Count="@(FacilityResults?.Info?.TotalRecords ?? 0)"
+                                           Data="@_facilityRecords"
+                                           Style="height: 12.5rem"
+                                           Change="@OnFacilityChange"
+                                           Class="w-100"/>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </EditForm>
+

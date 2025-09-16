@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DateTimeExtensions" Version="5.5.7" />
+    <PackageReference Include="FluentValidation" Version="11.2.0" />
+    <PackageReference Include="NetBarcode" Version="1.7.0" />
+    <PackageReference Include="Stateless" Version="5.12.0" />
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident.Contracts\Trident.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident.EFCore\Trident.EFCore.csproj" />
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident.Extensions.OpenApi\Trident.Extensions.OpenApi.csproj" />
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident.IoC\Trident.IoC.csproj" />
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident\Trident.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Core\SE.Shared.Common\SE.Shared.Common.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Core\Trident.SourceGeneration.Attributes\Trident.SourceGeneration.Attributes.csproj" />
+    <ProjectReference Include="..\SE.TruckTicketing.Contracts.Api\SE.TruckTicketing.Contracts.Api.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Core\Trident.SourceGeneration\Trident.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\Shared\Core\SE.Shared.Domain\SE.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Core\SE.TruckTicketing.Contracts\SE.TruckTicketing.Contracts.csproj" />
+  </ItemGroup>
+  
+</Project>

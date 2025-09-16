@@ -1,0 +1,54 @@
+﻿@page "/"
+
+<div class="bg-white h-100">
+    <div>
+        <div class="container h-100 d-flex flex-column align-items-center justify-content-center gap-4">
+            <AuthorizeView>
+                <Authorized>
+                    <h1 class="mt-5">Welcome <span class="fw-bold">@context.User.Identity?.Name!</span></h1>
+                </Authorized>
+            </AuthorizeView>
+
+            <div class="mt-5 w-75">
+                <RadzenAutoComplete class="w-100"
+                                    Placeholder="Quick search..."
+                                    Disabled="true">
+                </RadzenAutoComplete>
+            </div>
+
+            <p class="w-25 text-center mb-5"
+               style="font-size: .75rem">
+                Welcome to the Secure Energy Services Truck Ticketing platform.
+            </p>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-9">
+                <div class="card-header">
+                    <h4 class="fw-bold">Recently Visited</h4>
+                </div>
+                <div class="text-center my-3">
+                    Coming soon.
+                </div>
+            </div>
+            <div class="col">
+                <div class="card-header">
+                    <h4 class="fw-bold">Notifications</h4>
+                </div>
+                <div class="text-center my-3">
+                    Coming soon.
+                </div>
+                <br/>
+
+                <div class="card-header">
+                    <h4 class="fw-bold">Links</h4>
+                </div>
+                <div class="text-center my-3">
+                    Coming soon.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

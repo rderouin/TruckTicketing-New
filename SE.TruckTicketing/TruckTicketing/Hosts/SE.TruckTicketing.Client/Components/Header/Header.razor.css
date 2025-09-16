@@ -1,0 +1,13 @@
+header {
+    align-items: center;
+    background-color: var(--color-base-0);
+    box-shadow: var(--shadow-3);
+    display: flex;
+    justify-content: space-between;
+    left: 0;
+    padding-left: var(--spacing-200);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: var(--zSticky2);
+}

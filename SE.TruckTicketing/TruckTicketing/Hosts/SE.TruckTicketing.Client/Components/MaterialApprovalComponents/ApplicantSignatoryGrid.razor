@@ -1,0 +1,74 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-bold">Signatories</h4>
+        </div>
+        <div>
+            <RadzenButton Click="@(args => AddApplicantSignatory())"
+                          Text="Add Signatory"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Size="ButtonSize.Small"
+                          Icon="contact_mail"/>
+        </div>
+    </div>
+    <div class="card-body grid-switch-container">
+        <PagableGridView TModel="ApplicantSignatory"
+                         Results="@_applicantSignatories"
+                         class="bs-class"
+                         EnableSearch="true"
+                         EnablePaging="true"
+                         EnableSorting="true"
+                         EnableRowExpansion="false"
+                         EnableFilters="false"
+                         GridPageSize="10"
+                         OnDataLoad="LoadApplicantSignatoryContacts">
+            <Columns>
+                <ColumnDefinition TItem="ApplicantSignatory"
+                                  Property="@nameof(ApplicantSignatory.ReceiveLoadSummary)"
+                                  Title="Enabled"
+                                  PropertyType="typeof(string)"
+                                  Width="4rem"
+                                  EnableSorting="false">
+                    <Template Context="context">
+                        <RadzenSwitch @bind-Value="@context.ReceiveLoadSummary"
+                                      class="grid-switch"
+                                      Change="() => ReceiveLoadSummaryUpdateForApplicantSignatory(context)"/>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="ApplicantSignatory"
+                                  Property="@nameof(ApplicantSignatory.SignatoryName)"
+                                  Title="Signatory Name"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="ApplicantSignatory"
+                                  Property="@nameof(ApplicantSignatory.AccountName)"
+                                  Title="Account Name"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="ApplicantSignatory"
+                                  Property="@nameof(ApplicantSignatory.Email)"
+                                  Title="Email Address"
+                                  PropertyType="typeof(string)"/>
+                <ColumnDefinition TItem="ApplicantSignatory"
+                                  Property="@nameof(ApplicantSignatory.ReferenceId)"
+                                  Title="Reference ID"
+                                  Width="6rem"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="ApplicantSignatory"
+                                  Property="@nameof(ApplicantSignatory)"
+                                  Title="Actions"
+                                  Width="4rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="() => DeleteButton_Click(data)"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small">
+                            Delete
+                        </RadzenButton>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>

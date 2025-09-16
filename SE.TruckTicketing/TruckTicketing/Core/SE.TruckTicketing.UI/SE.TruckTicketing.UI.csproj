@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.15.8" />
+    <PackageReference Include="Humanizer.Core" Version="2.14.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident.Contracts.Api\Trident.Contracts.Api.csproj" />
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident.IoC\Trident.IoC.csproj" />
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident.UI.Client\Trident.UI.Client.csproj" />
+    <ProjectReference Include="..\..\..\BillingService\Core\SE.BillingService.Contracts.Api\SE.BillingService.Contracts.Api.csproj" />
+    <ProjectReference Include="..\SE.TruckTicketing.Contracts.Api\SE.TruckTicketing.Contracts.Api.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Core\SE.TruckTicketing.Contracts\SE.TruckTicketing.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

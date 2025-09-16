@@ -1,0 +1,91 @@
+﻿@using SE.TruckTicketing.Contracts.Lookups
+@using SE.Shared.Common.Utilities
+@inherits BaseRazorComponent
+@namespace SE.TruckTicketing.Client.Components.InvoiceComponents
+
+<RadzenTemplateForm TItem="InvoiceNotesViewModel"
+                    Submit="@HandleSubmit"
+                    Data="@Model"
+                    @ref="_form">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3 mt-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Collection Owner"
+                                 Component="ChangeCollectionOwnerDropDown"
+                                 class="required"/>
+                    <RadzenDropDown TValue="InvoiceCollectionOwners"
+                                    id="ChangeCollectionOwnerDropDown"
+                                    Name="ChangeCollectionOwnerDropDown"
+                                    @bind-Value="@Model.CollectionOwner"
+                                    TextProperty="Value"
+                                    ValueProperty="Key"
+                                    Placeholder="Select owner..."
+                                    Multiple="false"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    Data="@(DataDictionary.For<InvoiceCollectionOwners>())"
+                                    Disabled="@IsReadOnly"
+                                    class="w-100"/>
+                    <RadzenRequiredValidator Component="ChangeCollectionOwnerDropDown"
+                                             Text="Required"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Collection Reason"
+                                 Component="ChangeCollectionReasonDropDown"
+                                 class="required"/>
+                    <RadzenDropDown TValue="InvoiceCollectionReason"
+                                    id="ChangeCollectionReasonDropDown"
+                                    Name="ChangeCollectionReasonDropDown"
+                                    @bind-Value="@Model.CollectionReason"
+                                    TextProperty="Value"
+                                    ValueProperty="Key"
+                                    Placeholder="Select reason..."
+                                    Multiple="false"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    Data="@(DataDictionary.For<InvoiceCollectionReason>())"
+                                    Disabled="@IsReadOnly"
+                                    class="w-100"/>
+                    <RadzenRequiredValidator Component="ChangeCollectionReasonDropDown"
+                                             Text="Required"/>
+                </div>
+            </div>
+            <div class="row mb-3 mt-3">
+                <div class="col d-flex flex-column">
+                    @if (Model.CollectionReason == InvoiceCollectionReason.Other)
+                    {
+                        <RadzenLabel Text="Comment"
+                                     Component="ReasonTextBox"
+                                     class="required"/>
+                    }
+                    else
+                    {
+                        <RadzenLabel Text="Comment"
+                                     Component="ReasonTextBox"/>
+                    }
+                    <RadzenTextBox id="ReasonTextBox"
+                                   Name="ReasonTextBox"
+                                   @bind-Value="@Model.CollectionReasonComment"
+                                   Disabled="@IsReadOnly"
+                                   class="w-100"/>
+                    <RadzenRequiredValidator Component="ReasonTextBox"
+                                             Text="Required"
+                                             Visible="@ReasonCommentValidatorIsEnabled"/>
+                </div>
+            </div>
+            <div class="row mt-4 mb-3">
+                <div class="col d-flex justify-content-end">
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                  Text="Change"
+                                  class="ml-2"
+                                  Disabled="@(Model.CollectionOwner == default || Model.CollectionReason == default)"
+                                  Visible="@IsSubmitVisible"
+                                  ButtonType="ButtonType.Submit"/>
+                    <RadzenButton ButtonStyle="ButtonStyle.Light"
+                                  Text="Cancel"
+                                  class="ml-2"
+                                  Click="HandleCancel"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</RadzenTemplateForm>

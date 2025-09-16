@@ -1,0 +1,179 @@
+﻿@page "/accounts"
+@using Humanizer
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Client.Components.Accounts
+@using SE.TruckTicketing.Client.Utilities
+@using WatchListStatus = SE.Shared.Common.Lookups.WatchListStatus
+@using CreditStatus = SE.Shared.Common.Lookups.CreditStatus
+@using SE.TruckTicketing.Contracts.Lookups
+@using Trident.Search
+@using AccountTypes = SE.Shared.Common.Lookups.AccountTypes
+@inherits BaseTruckTicketingComponent
+
+<div class="position-relative h-100"
+     style="overflow-y: auto">
+    <div class="pt-4 px-4">
+        <div class="bg-white pb-4">
+            <div class="d-flex align-items-center justify-content-between">
+                <h3>Manage Accounts</h3>
+                <RadzenLink Icon="add_outline"
+                            Path="/accounts/new"
+                            Text="Add Account"
+                            class="@($"rz-button rz-button-md btn-primary text-decoration-none {AddAccountLink_Css}")" />
+            </div>
+        </div>
+        <GridFiltersContainer Expandable="@true"
+                              @ref="_gridFilterContainer"
+                              OnFilterChange="@(async criteria => await _grid.SetExternalSearchCriteriaModel(criteria))">
+            <div class="d-flex flex-grow-1 gap-3">
+                <KeywordFilter Label="Search"
+                               Placeholder="Search by account name, account or customer number, legal entity, primary contact name, etc..."/>
+                <SelectFilter Label="Account Type"
+                              Placeholder="All Types"
+                              FilterPath="@nameof(Account.AccountTypes).AsPrimitiveCollectionFilterKey()"
+                              Data="@(DataDictionary.For<AccountTypes>().SelectOptions())"
+                              CompareOperator="CompareOperators.contains"/>
+
+                <SelectFilter Label="Account Status"
+                              Placeholder="All Statuses"
+                              FilterPath="@nameof(Account.AccountStatus)"
+                              Data="@(DataDictionary.For<AccountStatus>().SelectOptions())"/>
+            </div>
+            <GridFiltersExpandedContainer>
+                <div class="d-flex flex-grow-1 gap-3">
+                    <SelectFilter Label="Billing Type"
+                                  Placeholder="All Types"
+                                  FilterPath="@nameof(Account.BillingType)"
+                                  Data="@(DataDictionary.For<BillingType>().SelectOptions())"/>
+                    <CheckBoxListSelectFilter
+                        Label="Active/In-Active Accounts"
+                        FilterPath="@nameof(Account.IsAccountActive)"
+                        Data="@_activeAccountListBoxData"/>
+                </div>
+            </GridFiltersExpandedContainer>
+        </GridFiltersContainer>
+        <div class="grid-switch-container">
+            <PagableGridView TModel="Account"
+                             @ref="_grid"
+                     Results="@_accounts"
+                     EnablePaging="true"
+                     EnableSorting="true"
+                     EnableSearch="false"
+                     OnDataLoad="LoadData"
+                     IsLoading="@_isLoading"
+                     EnableFilters="false"
+                     GridPageSize="10">
+                <Columns>
+                    <ColumnDefinition TItem="Account"
+                                      Property="@nameof(Account.IsAccountActive)"
+                                      Title="Active"
+                                      PropertyType="typeof(string)"
+                                      Width="4rem">
+                        <Template Context="context">
+                            <RadzenSwitch @bind-Value="@context.IsAccountActive"
+                                          class="grid-switch"
+                                          Disabled="@true"/>
+                        </Template>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="Account"
+                                      Property="@nameof(Account.Name)"
+                                      Title="Account Name"
+                                      PropertyType="typeof(string)"/>
+                    <ColumnDefinition TItem="Account"
+                                      Property="@nameof(Account.AccountTypes)"
+                                      Title="Type"
+                                      PropertyType="typeof(string)">
+                        <Template Context="data">
+                            @foreach (var accountType in data.AccountTypes.OrderBy(x => x))
+                            {
+                                <RadzenBadge BadgeStyle="BadgeStyle.Primary"
+                                             IsPill="true"
+                                             Text="@accountType.Humanize()"/>
+                            }
+                        </Template>
+                    </ColumnDefinition>
+
+                    <ColumnDefinition TItem="Account"
+                                      Property="@nameof(Account.BillingType)"
+                                      Title="Billing Type"
+                                      PropertyType="typeof(string)"
+                                      Width="10rem">
+                        <Template Context="data">
+                            @if (data.BillingType != BillingType.Undefined)
+                            {
+                                @(data.BillingType.Humanize())
+                            }
+                        </Template>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="Account"
+                                      Property="@nameof(Account.CreditStatus)"
+                                      Title="Credit Status"
+                                      PropertyType="typeof(string)"
+                                      Width="11rem">
+                        <Template Context="data">
+                            @if (data.AccountTypes.Contains(AccountTypes.Customer.ToString()))
+                            {
+                                @if (data.CreditStatus != CreditStatus.Undefined)
+                                {
+                                    <CreditStatus Status="@data.CreditStatus">
+                                        <strong>@data.CreditStatus.Humanize()</strong>
+                                    </CreditStatus>
+                                }
+                                else
+                                {
+                                    <CreditStatus Status="@data.CreditStatus">
+                                        <strong>None</strong>
+                                    </CreditStatus>
+                                }
+                            }
+                        </Template>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="Account"
+                                      Property="@nameof(Account.WatchListStatus)"
+                                      Title="Watch List Status"
+                                      PropertyType="typeof(string)"
+                                      Width="11rem">
+                        <Template Context="data">
+                            @if (data.AccountTypes.Contains(AccountTypes.Customer.ToString()))
+                            {
+                                @if (data.WatchListStatus != WatchListStatus.Undefined)
+                                {
+                                    <WatchListStatus Status="@data.WatchListStatus">
+                                        <strong>@data.WatchListStatus.Humanize()</strong>
+                                    </WatchListStatus>
+                                }
+                                else
+                                {
+                                    <WatchListStatus Status="@data.WatchListStatus">
+                                        <strong>None</strong>
+                                    </WatchListStatus>
+                                }
+                            }
+                        </Template>
+                    </ColumnDefinition>
+                    <ColumnDefinition TItem="Account"
+                                      Property="@nameof(Account.LegalEntity)"
+                                      Title="Legal Entity"
+                                      PropertyType="typeof(string)"
+                                      Width="8rem"/>
+                    <ColumnDefinition TItem="Account"
+                                      Property="@nameof(Account.Id)"
+                                      Title="Actions"
+                                      Width="4rem"
+                                      EnableSorting="false">
+                        <Template Context="data">
+                            <RadzenButton Click="() => EditButton_Click(data)"
+                                          ButtonStyle="ButtonStyle.Secondary"
+                                          Size="ButtonSize.Small"
+                                          Text="Edit"/>
+                        </Template>
+                    </ColumnDefinition>
+                </Columns>
+    </PagableGridView>
+</div>
+
+    </div>
+</div>
+

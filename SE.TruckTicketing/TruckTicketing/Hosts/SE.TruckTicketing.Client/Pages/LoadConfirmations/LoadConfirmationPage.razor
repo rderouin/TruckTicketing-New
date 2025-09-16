@@ -1,0 +1,237 @@
+﻿@page "/load-confirmations"
+@page "/load-confirmations/{FacilityIdsUrl}"
+@page "/load-confirmations/load-confirmation/{loadConfirmationNumber}"
+@using SE.Shared.Common.Extensions
+@using SE.Shared.Common.Utilities
+@using Humanizer
+@using SE.TruckTicketing.Client.Utilities
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.LoadConfirmations
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Security
+@using SE.TruckTicketing.Client.Components.SalesManagement
+@using SE.TruckTicketing.Client.Components.LoadConfirmationComponents
+@using Trident.Search
+@inherits BaseTruckTicketingComponent
+
+<style>
+
+    .vlimit{
+        max-height:100%;
+        width: 100%;
+    }
+
+</style>
+
+<PageLoadingContainer IsLoading="@IsLoading">
+    <LoadedView>
+        <div class="d-flex flex-column h-100" style="position:relative">
+            <div class="flex-grow-0" style="position:relative; top:0px; width:100%; z-index:1;">
+                <div class="p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h3>Manage Load Confirmations</h3>
+                        <div class="d-flex align-items-center gap-5">
+                            <RadzenButton Text="Remove Load Confirmation Filter"
+                                          Click="@(_ => RemoveLoadConfirmationFilter())"
+                                          ButtonStyle="ButtonStyle.Secondary"
+                                          Size="ButtonSize.Medium"
+                                          Visible="@(!string.IsNullOrEmpty(LoadConfirmationNumber))"/>
+                            <div class="d-flex gap-2">
+                                <RadzenLabel Text="Facility"
+                                             Component="FacilityDropDown"
+                                             class="my-2"/>
+                                <RadzenDropDownDataGrid @ref="_facilityDataGrid"
+                                                        AllowFiltering="true"
+                                                        AllowSorting="true"
+                                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                        FilterOperator="StringFilterOperator.Contains"
+                                                        AllowClear="true"
+                                                        @bind-Value=@FacilityIds
+                                                        Multiple="true"
+                                                        Placeholder="Select Facility..."
+                                                        Data="@_facilityRecords"
+                                                        Count="@(facilityResults?.Info?.TotalRecords ?? 0)"
+                                                        TextProperty="@nameof(Facility.Display)"
+                                                        ValueProperty="@nameof(Facility.Id)"
+                                                        PageSize="10"
+                                                        Change="@(args => HandleFacilityChange(args))">
+                                    <Columns>
+                                        <RadzenDropDownDataGridColumn Width="25px" Sortable="false">
+                                            <HeaderTemplate>
+                                                <RadzenCheckBox Disabled="true" TriState="false" TValue="bool" Value="@(FacilityIds != null ? FacilityIds.ToArray().Any() : false)" />
+                                            </HeaderTemplate>
+                                            <Template Context="data">
+                                                <RadzenCheckBox TriState="false" TValue="bool" Value="@(FacilityIds != null && FacilityIds.ToList().Contains(data.Id))" />
+                                            </Template>
+                                        </RadzenDropDownDataGridColumn>
+                                        <RadzenDropDownDataGridColumn Property="@nameof(Facility.SiteId)" Title="Site Id" Width="50px" />
+                                        <RadzenDropDownDataGridColumn Property="@nameof(Facility.Name)" Title="Name" Width="100px" />
+                                    </Columns>
+                                </RadzenDropDownDataGrid>
+                            </div>
+                            <SalesManagementButtons SalesManagementButtonFlag="@SalesManagementButtonFlag.LoadConfirmations"
+                                                    FacilityIds="@FacilityIds">
+                            </SalesManagementButtons>
+                        </div>
+                    </div>
+                    <div>View Load Confirmations individually, or view their respective sales lines & invoices.</div>
+                </div>
+
+                <GridFiltersContainer Expandable="@true"
+                                      OnFilterChange="@(async criteria => await ApplyFilterOnTabChange(criteria))">
+                    <div class="d-flex flex-grow-1 gap-3">
+                        <IgnoreFiltersToggle/>
+                        <KeywordFilter Label="Search Inv# or LC# or Signatory or Billing Config"
+                                       Placeholder="Search by Invoice # or Load Conf #, Signatory, Billing Config"/>
+                          
+                        <DropDownDataGridFilter Label="Customer Name"
+                                                CompareOperator="CompareOperators.contains"
+                                                FilterPath="@nameof(LoadConfirmation.BillingCustomerName)"
+                                                Placeholder="All Customers"
+                                                TItem="Account"
+                                                DefaultSortProperty="@nameof(Account.Name)"
+                                                TextProperty="@nameof(Account.Name)"
+                                                ValueProperty="@nameof(Account.Name)"
+                                                ValuePropertySelector="@(account => account.Name)"
+                                                BeforeDataLoad="@BeforeCustomerFilterDataLoad">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="@nameof(Account.Name)"
+                                                              Title="Customer Name"
+                                                              Width="100px"/>
+                            </Columns>
+                        </DropDownDataGridFilter>
+                        
+                        <DropDownDataGridFilter Label="Generator Name"
+                                                CompareOperator="CompareOperators.contains"
+                                                FilterPath="@nameof(LoadConfirmation.GeneratorNames)"
+                                                Placeholder="All Generators"
+                                                TItem="Account"
+                                                DefaultSortProperty="@nameof(Account.Name)"
+                                                TextProperty="@nameof(Account.Name)"
+                                                ValueProperty="@nameof(Account.Name)"
+                                                ValuePropertySelector="@(account => account.Name)"
+                                                BeforeDataLoad="@BeforeGeneratorFilterDataLoad">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="@nameof(Account.Name)"
+                                                              Title="Generator Name"
+                                                              Width="100px"/>
+                            </Columns>
+                        </DropDownDataGridFilter>
+                        
+                        <SelectFilter Label="Load Confirmation Status"
+                                      Placeholder="All Statuses..."
+                                      FilterPath="@nameof(LoadConfirmation.Status)"
+                                      Data="@(DataDictionary.For<LoadConfirmationStatus>(false).SelectOptions())"/>
+
+                        <SelectFilter Label="Invoice Status"
+                                      Placeholder="All Statuses..."
+                                      FilterPath="@nameof(LoadConfirmation.InvoiceStatus)"
+                                      Data="@(DataDictionary.For<InvoiceStatus>(false).SelectOptions())"/>
+
+                        <SelectFilter Label="Frequency"
+                                      Placeholder="All Frequencies..."
+                                      FilterPath="@nameof(LoadConfirmation.Frequency)"
+                                      Data="@(DataDictionary.For<LoadConfirmationFrequency>(false).SelectOptions())"/>
+                        <ToggleFilter Label="Ready to Send" FilterKey="OnDemand" ToolTipText="Show On Demand load confirmations" />
+                    </div>
+                    <GridFiltersExpandedContainer>
+                        <div class="d-flex flex-grow-1 gap-3">
+                            <SingleDateFilter Label="Load Confirmation Start" Placeholder="LC Start" FilterPath="@nameof(LoadConfirmation.StartDate)" SelectedOperator="CompareOperators.gte" DateTimeKind="DateTimeKind.Utc" />
+                            <SingleDateFilter Label="Load Confirmation End" Placeholder="LC End" FilterPath="@nameof(LoadConfirmation.EndDate)" SelectedOperator="CompareOperators.lt" DateTimeKind="DateTimeKind.Utc" />
+                            <SelectedYearFilter Label="Ticket Year" Data="_selectableYears"></SelectedYearFilter>
+                            <SelectedMonthsFilter Label="Ticket Month(s)"></SelectedMonthsFilter>
+                            <ToggleFilter Label="No Sales Lines" FilterKey="NoSalesLines" ToolTipText="Only show records without Sales Lines" />
+                            <ToggleFilter Label="Field Tickets" FilterKey="FieldTickets" ToolTipText="Only show Field Ticket records"/>
+                        </div>
+                    </GridFiltersExpandedContainer>
+                    
+
+                </GridFiltersContainer>
+            </div>
+            <div class="p-2 vlimit" style="align-content: center; position: relative; top:0px; z-index:0; height:95%;">
+                            <LoadConfirmationsGrid @ref="_mainGrid"
+                                                   BeforeDataLoad="@LoadAllData"
+                                                   LoadConfirmationPage="this"
+                                                   MultiSelect="true"
+                                                   SelectionChanged="LoadConfirmationsGridSelectionChanged"
+                                                   OnRecordCountChange="RecordCountHandler"
+                                                   ChildStateChanged="StateHasChanged"/>
+            </div>
+
+            <div class="flex-grow-0 d-flex align-items-center justify-content-between p-2 footer-panel"
+                 style="position:absolute; bottom:0px; width:100%;">
+                <div class="d-flex">
+                    <div class="d-flex gap-2">
+                        <LinesSelectedText NumberOfLinesSelected="@(_mainGrid?.SelectedSalesManagementGrid?.NumberOfSelected() ?? 0)"></LinesSelectedText>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <div class="d-flex gap-2 align-items-start">
+                        <RadzenButton Text="@((BusyText.HasText() && IsResendLoadConfirmationSignatureEmailBusy )? BusyText : LoadConfirmationAction.ResendLoadConfirmationSignatureEmail.Humanize())"
+                                      Disabled="@(!CanExecuteAction(LoadConfirmationAction.ResendLoadConfirmationSignatureEmail) || IsBusy)"
+                                      IsBusy="@(IsResendLoadConfirmationSignatureEmailBusy)"
+                                      Click="@(_ => BulkActionClick(LoadConfirmationAction.ResendLoadConfirmationSignatureEmail))"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Medium" />
+                        <RadzenButton Text="@(BusyText.HasText() && IsResendLoadConfirmationSignatureEmailBusy ? BusyText : LoadConfirmationAction.ResendAdvancedLoadConfirmationSignatureEmail.Humanize())"
+                                      Disabled="@(!CanExecuteAction(LoadConfirmationAction.ResendAdvancedLoadConfirmationSignatureEmail) || IsBusy)"
+                                      IsBusy="@(IsResendLoadConfirmationSignatureEmailBusy)"
+                                      Click="@(_ => BulkActionClick(LoadConfirmationAction.ResendAdvancedLoadConfirmationSignatureEmail))"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Medium" />
+                        <RadzenButton Text="@(BusyText.HasText() && IsResendFieldTicketsBusy? BusyText : LoadConfirmationAction.ResendFieldTickets.Humanize())"
+                                      Disabled="@(!CanExecuteAction(LoadConfirmationAction.ResendFieldTickets) || IsBusy)"
+                                      IsBusy="@(IsResendFieldTicketsBusy && IsBusy)"
+                                      Click="@(_ => BulkActionClick(LoadConfirmationAction.ResendFieldTickets))"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Medium" />
+                        <RadzenButton Text="@(BusyText.HasText() && IsApproveSignatureBusy ? BusyText : LoadConfirmationAction.ApproveSignature.Humanize())"
+                                      Disabled="@(!CanExecuteAction(LoadConfirmationAction.ApproveSignature) || IsBusy)"
+                                      IsBusy="@(IsApproveSignatureBusy && IsBusy)"
+                                      Click="@(_ => BulkActionClick(LoadConfirmationAction.ApproveSignature))"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Medium" />
+                        <RadzenButton Text="@(BusyText.HasText() && IsRejectSignatureBusy ? BusyText : LoadConfirmationAction.RejectSignature.Humanize())"
+                                      Disabled="@(!CanExecuteAction(LoadConfirmationAction.RejectSignature) || IsBusy)"
+                                      IsBusy="@(IsRejectSignatureBusy && IsBusy)"
+                                      Click="@(_ => BulkActionClick(LoadConfirmationAction.RejectSignature))"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Medium" />
+                        <RadzenButton Text="@(BusyText.HasText() && IsMarkLoadConfirmationAsReadyBusy ? BusyText :LoadConfirmationAction.MarkLoadConfirmationAsReady.Humanize())"
+                                      Disabled="@(!CanExecuteAction(LoadConfirmationAction.MarkLoadConfirmationAsReady)|| IsBusy)"
+                                      IsBusy="@(IsBusy && IsMarkLoadConfirmationAsReadyBusy)"
+                                      Click="@(_ => BulkActionClick(LoadConfirmationAction.MarkLoadConfirmationAsReady))"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Medium" />
+                        <RadzenButton Text="@(BusyText.HasText() && IsVoidLoadConfirmationBusy ? BusyText : LoadConfirmationAction.VoidLoadConfirmation.Humanize())"
+                                      Disabled="@(!CanExecuteAction(LoadConfirmationAction.VoidLoadConfirmation) || IsBusy)"
+                                      IsBusy="@(IsBusy && IsVoidLoadConfirmationBusy)"
+                                      Click="@(_ => BulkActionClick(LoadConfirmationAction.VoidLoadConfirmation))"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Medium" />
+                        <RadzenButton Text="Download"
+                                      Disabled="@(IsBulkDownloadDisabled())"
+                                      Click="@(_ => BulkDownloadLoadConfirmations())"
+                                      IsBusy="@(DisableBulkDownloadButton)"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Medium"/>
+                        <RadzenButton Text="Remove from Load Confirmation"
+                                      Click="@(_ => RemoveSalesLinesFromLoadConfirmation())"
+                                      Visible="@((_mainGrid?.SelectedSalesManagementGrid?.SelectedSalesLines ?? Array.Empty<SalesLine>()).All(salesLine => salesLine.Status is not SalesLineStatus.Posted) && IsAuthorizedFor(Permissions.Resources.LoadConfirmationSalesLineRemoval, Permissions.Operations.View))"
+                                      Disabled="@(IsBusy)"
+                                      IsBusy="@(IsBusy)"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Medium"/>
+                        <RadzenButton Text="@(BusyText.HasText() && IsSendLoadConfirmationBusy ? BusyText : LoadConfirmationAction.SendLoadConfirmation.Humanize())"
+                                      Disabled="@(!CanExecuteAction(LoadConfirmationAction.SendLoadConfirmation) || IsBusy)"
+                                      IsBusy="@(IsSendLoadConfirmationBusy)"
+                                      Click="@(_ => BulkActionClick(LoadConfirmationAction.SendLoadConfirmation))"
+                                      ButtonStyle="ButtonStyle.Secondary"
+                                      Size="ButtonSize.Medium" />
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </LoadedView>
+</PageLoadingContainer>

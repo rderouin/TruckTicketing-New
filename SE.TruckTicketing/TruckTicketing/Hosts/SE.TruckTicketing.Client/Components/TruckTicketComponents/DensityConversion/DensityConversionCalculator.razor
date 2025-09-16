@@ -1,0 +1,24 @@
+﻿@inherits BaseTruckTicketingComponent
+
+<RadzenTabs TabPosition="@TabPosition.Top"
+            RenderMode="TabRenderMode.Client">
+    <Tabs>
+        <RadzenTabsItem Text="By Weight">
+            <WeightConversionForm ViewModel="@WeightConversionViewModel"
+                                  OnSubmit="@HandleWeightConversionSubmit"
+                                  OnCancel="OnCancel"/>
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="By Mid-Weight"
+                        Selected="@IsMidWeightCalculatorUsed">
+            <MidWeightConversionForm ViewModel="@MidWeightConversionViewModel"
+                                     OnSubmit="@HandleMidWeightConversionSubmit"
+                                     OnCancel="OnCancel"/>
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Conversion Calculator History">
+            <TridentChangeDataGridWrapper Id="TruckTicket.Id"
+                                          EntityType="TruckTicket"
+                                          EntityName="Density Conversion"
+                                          OnDataLoading="@OnConversionCalculatorHistoryLoad"/>
+        </RadzenTabsItem>
+    </Tabs>
+</RadzenTabs>

@@ -1,0 +1,391 @@
+[
+  {
+    "Id": "031ed740-bed6-4487-99d8-34539ee4458f",
+    "Name": "Material Approval - Confirm Approval",
+    "Attachments": [],
+    "Fields": [
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb260",
+        "UiToken": "[#Generator#]",
+        "RazorToken": "@(Model.MaterialApproval.GeneratorName)"
+      },
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb261",
+        "UiToken": "[#SourceLocation#]",
+        "RazorToken": "@(Model.MaterialApproval.SourceLocation)"
+      },
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb262",
+        "UiToken": "[#MaterialApprovalNumber#]",
+        "RazorToken": "@(Model.MaterialApproval.MaterialApprovalNumber)"
+      },
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb263",
+        "UiToken": "[#FacilityName#]",
+        "RazorToken": "@(Model.MaterialApproval.Facility)"
+      },
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb264",
+        "UiToken": "[#FacilityService#]",
+        "RazorToken": "@(Model.MaterialApproval.FacilityServiceName)"
+      },
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb265",
+        "UiToken": "[#Substance#]",
+        "RazorToken": "@(Model.MaterialApproval.SubstanceName)"
+      },
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb26e",
+        "UiToken": "[#AdHocNote#]",
+        "RazorToken": "@(Model.AdHocNote)"
+      },
+      {
+        "Id": "183e815a-a959-4566-8a00-7c1f5f083dcc",
+        "UiToken": "[#UserName#]",
+        "RazorToken": "@(Model.UserContext.DisplayName)"
+      },
+      {
+        "Id": "72807c41-82c7-416f-9e9c-cfa5832dfc5c",
+        "UiToken": "[#UserEmailAddress#]",
+        "RazorToken": "@(Model.UserContext.EmailAddress)"
+      },
+      {
+        "Id": "f655f0ee-39a8-4e2d-b649-38fe410a333b",
+        "UiToken": "[#FacilityAdminEmail#]",
+        "RazorToken": "@(Model.Facility.AdminEmail)"
+      }
+    ],
+    "id": "EmailTemplateEvent|031ed740-bed6-4487-99d8-34539ee4458f",
+    "DocumentType": "EmailTemplateEvent",
+    "EntityType": "EmailTemplateEvent"
+  },
+  {
+    "Id": "0d57713d-9ffb-4128-99a0-b58a4ee3706f",
+    "Name": "Load Confirmation - Request LC Approval",
+    "Attachments": [],
+    "Fields": [
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb26e",
+        "UiToken": "[#AdHocNote#]",
+        "RazorToken": "@(Model.AdHocNote)"
+      },
+      {
+        "Id": "5b45bdca-48ff-4157-aaed-eb7bc28f2d13",
+        "UiToken": "[#LoadConfirmationNumber#]",
+        "RazorToken": "@(Model.LoadConfirmationNumber)"
+      },
+      {
+        "Id": "1aa31c78-a235-43fe-b8ba-caaa7dfec3c4",
+        "UiToken": "[#LoadConfirmationHash#]",
+        "RazorToken": "@(Model.LoadConfirmationHash)"
+      },
+      {
+        "Id": "5d81c763-5cfb-4ad9-8dd3-b016dbe57c48",
+        "UiToken": "[#Filename#]",
+        "RazorToken": "@(Model.Filename)"
+      },
+      {
+        "Id": "7fc18a75-b6bb-468c-bb9d-d45bf1f7328d",
+        "UiToken": "[#UserName#]",
+        "RazorToken": "@(Model.UserContext.DisplayName)"
+      },
+      {
+        "Id": "1bff7156-8bd9-4054-8c61-7acdcccfa20b",
+        "UiToken": "[#UserEmailAddress#]",
+        "RazorToken": "@(Model.UserContext.EmailAddress)"
+      },
+      {
+        "Id": "8f9d0298-7a08-41a0-a4e2-21c4ea6ef3c5",
+        "UiToken": "[#FacilityAdminEmail#]",
+        "RazorToken": "@(Model.Facility.AdminEmail)"
+      },
+      {
+        "Id": "02d839af-a89b-48f0-8cad-17ca4fa99ab4",
+        "UiToken": "[#BillingCustomerName#]",
+        "RazorToken": "@(Model.LoadConfirmation.BillingCustomerName)"
+      },
+      {
+        "Id": "5a0ba938-1d50-4c47-9aec-7b47385d6499",
+        "UiToken": "[#TicketStartDate#]",
+        "RazorToken": "@(Model.LoadConfirmation.TicketStartDate.ToString(\"M/d/yyyy\"))"
+      },
+      {
+        "Id": "aa3e6b1e-c332-4a9d-8547-c9d98311830b",
+        "UiToken": "[#TicketEndDate#]",
+        "RazorToken": "@(Model.LoadConfirmation.TicketEndDate.ToString(\"M/d/yyyy\"))"
+      },
+      {
+        "Id": "c368e7bd-6da2-49ee-b356-0f38cafe7dd2",
+        "UiToken": "[#LoadConfirmationTrackingCode#]",
+        "RazorToken": "@(Model.LoadConfirmationTrackingCode)"
+      }
+    ],
+    "id": "EmailTemplateEvent|0d57713d-9ffb-4128-99a0-b58a4ee3706f",
+    "DocumentType": "EmailTemplateEvent",
+    "EntityType": "EmailTemplateEvent"
+  },
+  {
+    "Id": "29aa9c1f-50d9-4f56-9333-834cd9524678",
+    "Name": "Load Summary Report - Email Send",
+    "Attachments": [],
+    "Fields": [
+      {
+        "Id": "a919c755-1036-4bcf-b62b-0a872aff7353",
+        "UiToken": "[#MaterialApprovalNumber#]",
+        "RazorToken": "@(Model.MaterialApproval.MaterialApprovalNumber)",
+        "TooltipContent": "Tooltip content"
+      },
+      {
+        "Id": "fe8d1077-eeba-4db5-83f8-c84592498f63",
+        "UiToken": "[#TicketOffloadDate#]",
+        "RazorToken": "@(Model.MaterialApproval.ApproximateDeliveryDate)",
+        "TooltipContent": "Tooltip content"
+      },
+      {
+        "Id": "a4d27b9c-fc03-429f-acae-35bb5fcf8606",
+        "UiToken": "[#SourceLocation#]",
+        "RazorToken": "@(Model.MaterialApproval.SourceLocation)",
+        "TooltipContent": "Tooltip content"
+      },
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb26e",
+        "UiToken": "[#AdHocNote#]",
+        "RazorToken": "@(Model.AdHocNote)"
+      }
+    ],
+    "id": "EmailTemplateEvent|29aa9c1f-50d9-4f56-9333-834cd9524678",
+    "DocumentType": "EmailTemplateEvent",
+    "EntityType": "EmailTemplateEvent"
+  },
+  {
+    "Id": "4cbed0f8-bab2-4ce4-99e4-3473ee37cb0e",
+    "Name": "Load Confirmation - Invalidated",
+    "Attachments": [],
+    "Fields": [
+      {
+        "Id": "35a1d703-07df-40f5-b745-c416dfc08417",
+        "UiToken": "[#AdHocNote#]",
+        "RazorToken": "@(Model.AdHocNote)"
+      },
+      {
+        "Id": "30043d03-86f9-4fde-8405-0de734c2f3d3",
+        "UiToken": "[#LoadConfirmationNumber#]",
+        "RazorToken": "@(Model.LoadConfirmationNumber)"
+      },
+      {
+        "Id": "8e405b2c-6853-4ccc-9502-28e7187661e1",
+        "UiToken": "[#OriginalFrom#]",
+        "RazorToken": "@(Model.OriginalFrom)"
+      },
+      {
+        "Id": "ef7176b7-7adb-4c09-a2d2-c9578c5f65a6",
+        "UiToken": "[#OriginalSubject#]",
+        "RazorToken": "@(Model.OriginalSubject)"
+      },
+      {
+        "Id": "9100bdd5-55d1-413d-afc6-0ec7a1ffe745",
+        "UiToken": "[#UserName#]",
+        "RazorToken": "@(Model.UserContext.DisplayName)"
+      },
+      {
+        "Id": "10fd1900-4037-4de1-aa03-c890d8d4c90d",
+        "UiToken": "[#UserEmailAddress#]",
+        "RazorToken": "@(Model.UserContext.EmailAddress)"
+      },
+      {
+        "Id": "f17705f6-3561-4477-ac00-cb12b4120664",
+        "UiToken": "[#FacilityAdminEmail#]",
+        "RazorToken": "@(Model.Facility.AdminEmail)"
+      }
+    ],
+    "id": "EmailTemplateEvent|4cbed0f8-bab2-4ce4-99e4-3473ee37cb0e",
+    "DocumentType": "EmailTemplateEvent",
+    "EntityType": "EmailTemplateEvent"
+  },
+  {
+    "Id": "4dfded8a-ca6b-4000-be9e-c2c438b24457",
+    "Name": "Invoice Payment - Request",
+    "Attachments": [],
+    "Fields": [
+      {
+        "Id": "a919c755-1036-4bcf-b62b-0a872aff7353",
+        "UiToken": "[#CustomerName#]",
+        "RazorToken": "@(Model.CustomerName)",
+        "TooltipContent": "Tooltip content"
+      },
+	   {
+            "Id": "3ac0594a-8520-4a97-85d3-96e370edb26e",
+            "UiToken": "[#AdHocNote#]",
+            "RazorToken": "@(Model.AdHocNote)"
+      },
+      {
+        "Id": "fbe5fc3a-0bfc-49f2-9fa3-48d8f647f950",
+        "UiToken": "[#InvoiceNumber#]",
+        "RazorToken": "@(Model.InvoiceNumber)"
+      },
+      {
+        "Id": "9c1ebea8-060a-4008-ace1-a8d9644d627a",
+        "UiToken": "[#FacilityName#]",
+        "RazorToken": "@(Model.Facility.Name)"
+      },
+      {
+        "Id": "36786fba-cd42-48c8-b421-4625210841ef",
+        "UiToken": "[#FacilitySiteId#]",
+        "RazorToken": "@(Model.Facility.SiteId)"
+      },
+      {
+        "Id": "66d576d3-5514-48dd-ad18-fc2423b31f63",
+        "UiToken": "[#UserName#]",
+        "RazorToken": "@(Model.UserContext.DisplayName)"
+      },
+      {
+        "Id": "6b2aedf3-a0d9-40c0-b890-8a57eb60f7b4",
+        "UiToken": "[#UserEmailAddress#]",
+        "RazorToken": "@(Model.UserContext.EmailAddress)"
+      },
+      {
+        "Id": "e064b522-0c51-4f51-91f6-18e381ffabbc",
+        "UiToken": "[#FacilityAdminEmail#]",
+        "RazorToken": "@(Model.Facility.AdminEmail)"
+      }
+    ],
+    "id": "EmailTemplateEvent|4dfded8a-ca6b-4000-be9e-c2c438b24457",
+    "DocumentType": "EmailTemplateEvent",
+    "EntityType": "EmailTemplateEvent"
+  },
+  {
+    "Id": "5957298f-8420-49a2-89db-9f8853c7cb77",
+    "Name": "Load Confirmation - Untracked Send",
+    "Attachments": [],
+    "Fields": [
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb26e",
+        "UiToken": "[#AdHocNote#]",
+        "RazorToken": "@(Model.AdHocNote)"
+      },
+      {
+        "Id": "15c9e3cd-edf0-4825-98e3-22400156c891",
+        "UiToken": "[#UserName#]",
+        "RazorToken": "@(Model.UserContext.DisplayName)"
+      },
+      {
+        "Id": "bf11e365-67a4-4e88-9c78-383f2fa83c88",
+        "UiToken": "[#UserEmailAddress#]",
+        "RazorToken": "@(Model.UserContext.EmailAddress)"
+      },
+      {
+        "Id": "72128771-d4a6-4abf-88b6-31e78d79b277",
+        "UiToken": "[#FacilityAdminEmail#]",
+        "RazorToken": "@(Model.Facility.AdminEmail)"
+      }
+    ],
+    "id": "EmailTemplateEvent|5957298f-8420-49a2-89db-9f8853c7cb77",
+    "DocumentType": "EmailTemplateEvent",
+    "EntityType": "EmailTemplateEvent"
+  },
+  {
+    "Id": "60fb0470-82eb-478b-841b-448a1a5e1ea0",
+    "Name": "TA Upload - Error Log Email",
+    "Attachments": [],
+    "Fields": [
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb26e",
+        "UiToken": "[#AdHocNote#]",
+        "RazorToken": "@(Model.AdHocNote)"
+      }
+    ],
+    "id": "EmailTemplateEvent|60fb0470-82eb-478b-841b-448a1a5e1ea0",
+    "DocumentType": "EmailTemplateEvent",
+    "EntityType": "EmailTemplateEvent"
+  },
+  {
+    "Id": "86bdacfd-e43c-4e33-a38f-4b42167a6a55",
+    "Name": "Credit Application - Request Details",
+    "Attachments": [],
+    "Fields": [
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb26e",
+        "UiToken": "[#CustomerName#]",
+        "RazorToken": "@(Model.Account.Name)"
+      },
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb261",
+        "UiToken": "[#LegalEntity#]",
+        "RazorToken": "@(Model.Account.LegalEntity)"
+      },
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb262",
+        "UiToken": "[#UserName#]",
+        "RazorToken": "@(Model.UserContext.DisplayName)"
+      },
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb263",
+        "UiToken": "[#UserEmailAddress#]",
+        "RazorToken": "@(Model.UserContext.EmailAddress)"
+      },
+      {
+        "Id": "cf670c64-5d3f-4d01-be3e-99e5a6e22d70",
+        "UiToken": "[#FacilityAdminEmail#]",
+        "RazorToken": "@(Model.Facility.AdminEmail)"
+      }
+    ],
+    "id": "EmailTemplateEvent|86bdacfd-e43c-4e33-a38f-4b42167a6a55",
+    "DocumentType": "EmailTemplateEvent",
+    "EntityType": "EmailTemplateEvent"
+  },
+  {
+    "Id": "b6ecaf9c-552a-4d95-8a19-ed6aa248ebf9",
+    "Name": "Credit Card Payment - Request",
+    "Attachments": [],
+    "Fields": [],
+    "id": "EmailTemplateEvent|b6ecaf9c-552a-4d95-8a19-ed6aa248ebf9",
+    "DocumentType": "EmailTemplateEvent",
+    "EntityType": "EmailTemplateEvent"
+  },
+  {
+    "Id": "c375e0f2-156b-4c60-bebb-d6de0ae6bf27",
+    "Name": "Analytical - Renewal",
+    "Attachments": [],
+    "Fields": [
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb27e",
+        "UiToken": "[#MaterialApprovalNumber#]",
+        "RazorToken": "@(Model.MaterialApproval.MaterialApprovalNumber)",
+        "TooltipContent": "Tooltip content"
+      },
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb28e",
+        "UiToken": "[#SourceLocation#]",
+        "RazorToken": "@(!string.IsNullOrEmpty(Model.SourceLocation.FormattedIdentifier) ? Model.SourceLocation.FormattedIdentifier : Model.SourceLocation.SourceLocationName)",
+        "TooltipContent": "Tooltip content"
+      },
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb29e",
+        "UiToken": "[#AnalyticalExpiryData#]",
+        "RazorToken": "@($\"{Model.MaterialApproval.AnalyticalExpiryDate:dd MMMM, yyyy}\")",
+        "TooltipContent": "Tooltip content"
+      },
+      {
+        "Id": "3ac0594a-8520-4a97-85d3-96e370edb25e",
+        "UiToken": "[#FacilityName#]",
+        "RazorToken": "@(Model.Facility.Name)",
+        "TooltipContent": "Tooltip content"
+      },
+      {
+        "Id": "4ac0594a-8520-4a97-85d3-96e370edb25e",
+        "UiToken": "[#FacilitySiteId#]",
+        "RazorToken": "@(Model.Facility.SiteId)",
+        "TooltipContent": "Tooltip content"
+      },
+      {
+        "Id": "5ac0594a-8520-4a97-85d3-96e370edb25e",
+        "UiToken": "[#FacilityAdminEmail#]",
+        "RazorToken": "@(Model.Facility.AdminEmail)",
+        "TooltipContent": "Tooltip content"
+      }
+    ],
+    "id": "EmailTemplateEvent|c375e0f2-156b-4c60-bebb-d6de0ae6bf27",
+    "DocumentType": "EmailTemplateEvent",
+    "EntityType": "EmailTemplateEvent"
+  }
+]

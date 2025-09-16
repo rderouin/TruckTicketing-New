@@ -1,0 +1,40 @@
+@typeparam TItem
+@typeparam TValue
+
+<div class="dual-list-box-container"
+     style="height: @(Height)rem;">
+    <section>
+        <header>
+            <h3>@SelectHeading</h3>
+            <RadzenButton Click="@MoveRight"
+                          Text="@SelectItemText"/>
+        </header>
+        <RadzenListBox @ref="LeftControl"
+                       AllowFiltering="@Filterable"
+                       FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                       TValue="EnumerableQuery<TValue>"
+                       Data="RemainingData"
+                       TextProperty="@TextProperty"
+                       ValueProperty="@ValueProperty"
+                       Multiple="@Multiple"
+                       Class="dual-list-box">
+        </RadzenListBox>
+    </section>
+    <section>
+        <header>
+            <h3>@UnselectHeading</h3>
+            <RadzenButton Click="@MoveLeft"
+                          Text="@UnselectItemText"/>
+        </header>
+        <RadzenListBox @ref="RightControl"
+                       TValue="EnumerableQuery<TValue>"
+                       Data="SelectedData"
+                       TextProperty="@TextProperty"
+                       ValueProperty="@ValueProperty"
+                       AllowFiltering="@Filterable"
+                       FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                       Multiple="@Multiple"
+                       Class="dual-list-box">
+        </RadzenListBox>
+    </section>
+</div>

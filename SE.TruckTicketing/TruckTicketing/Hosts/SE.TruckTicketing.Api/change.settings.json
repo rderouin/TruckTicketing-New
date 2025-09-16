@@ -1,0 +1,1003 @@
+{
+  "Change": {
+    "Account": {
+      "MembersToInclude": [
+        "Name",
+        "AccountTypes",
+        "AccountAddresses.IsPrimaryAddress",
+        "AccountAddresses.Street",
+        "AccountAddresses.City",
+        "AccountAddresses.Country",
+        "AccountAddresses.Province",
+        "AccountAddresses.ZipCode",
+        "BillingType",
+        "CreditLimit",
+        "BillingTransferRecipientName",
+        "WatchListStatus",
+        "CreditStatus",
+        "Contacts.IsActive",
+        "Contacts.IsPrimaryAccountContact",
+        "Contacts.Name",
+        "Contacts.LastName",
+        "Contacts.PhoneNumber",
+        "Contacts.Email",
+        "Contacts.ContactFunctions",
+        "Contacts.AccountContactAddress.Street",
+        "Contacts.AccountContactAddress.City",
+        "Contacts.AccountContactAddress.Country",
+        "Contacts.AccountContactAddress.Province",
+        "Contacts.AccountContactAddress.ZipCode"
+      ],
+      "DisplayNames": {
+        "Name": "Account Name",
+        "AccountTypes": "Account Types",
+        "AccountAddresses.IsPrimaryAddress": "Account Default Address",
+        "AccountAddresses.Street": "Account Address Street",
+        "AccountAddresses.City": "Account Address City",
+        "AccountAddresses.Country": "Account Address Country",
+        "AccountAddresses.Province": "Account Address State / Province",
+        "AccountAddresses.ZipCode": "Account Address Zip / Postal Code",
+        "BillingType": "Billing Type",
+        "CreditLimit": "Credit Limit",
+        "BillingTransferRecipientName": "Billing Transfer Recipient",
+        "WatchListStatus": "Watch List Status",
+        "CreditStatus": "Credit Status",
+        "Contacts.IsActive": "Active Contact",
+        "Contacts.IsPrimaryAccountContact": "Default Billing Contact",
+        "Contacts.Name": "Contact First Name",
+        "Contacts.LastName": "Contact Last Name",
+        "Contacts.PhoneNumber": "Contact Phone Number",
+        "Contacts.Email": "Contact Email",
+        "Contacts.ContactFunctions": "Contact Function",
+        "Contacts.AccountContactAddress.Street": "Account Contact Address Street",
+        "Contacts.AccountContactAddress.City": "Account Contact Address City",
+        "Contacts.AccountContactAddress.Country": "Account Contact Address Country",
+        "Contacts.AccountContactAddress.Province": "Account Contact Address State / Province",
+        "Contacts.AccountContactAddress.ZipCode": "Account Contact Address Zip / Postal Code"
+      },
+      "TagMap": {
+        "Contacts.AccountContactAddress.Street": "Id|1",
+        "Contacts.AccountContactAddress.City": "Id|1",
+        "Contacts.AccountContactAddress.Country": "Id|1",
+        "Contacts.AccountContactAddress.Province": "Id|1",
+        "Contacts.AccountContactAddress.ZipCode": "Id|1"
+      },
+      "Formatters": {},
+      "TrackAllFields": false,
+      "TimeToLive": 732
+    },
+    "InvoiceConfiguration": {
+      "MembersToInclude": [
+        "Name",
+        "Description",
+        "InvoiceExchange",
+        "IncludeInternalDocumentAttachment",
+        "IncludeExternalDocumentAttachment",
+        "BillingContactName",
+        "CatchAll",
+        "AllSourceLocations",
+        "AllServiceTypes",
+        "AllWellClassifications",
+        "AllSubstances",
+        "AllFacilities",
+        "SourceLocationIdentifier",
+        "ServiceTypesName",
+        "WellClassifications",
+        "SubstancesName",
+        "FacilityCode",
+        "SplittingCategories",
+        "SplitEdiFieldDefinitionNames",
+        "IsMaximumDollarValueThresholdEnabled",
+        "IsMaximumTicketsThresholdEnabled",
+        "ThresholdDollarValue",
+        "ThresholdTicketCount"
+      ],
+      "DisplayNames": {
+        "Name": "Invoice Configuration Name",
+        "Description": "Invoice Configuration Description",
+        "InvoiceExchange": "Invoice Exchange",
+        "IncludeInternalDocumentAttachment": "Allow Internal Documents",
+        "IncludeExternalDocumentAttachment": "Allow External Documents",
+        "BillingContactName": "Invoice Contact",
+        "CatchAll": "Catch All",
+        "AllSourceLocations": "All Source Locations",
+        "AllServiceTypes": "All Service Types",
+        "AllWellClassifications": "All Well Classifications",
+        "AllSubstances": "All Substances",
+        "AllFacilities": "All Facilities",
+        "SourceLocationIdentifier": "Source Locations",
+        "ServiceTypesName": "Service Types",
+        "WellClassifications": "Well Classifications",
+        "SubstancesName": "Substances",
+        "FacilityCode": "Facilities",
+        "SplittingCategories": "Splitting Categories",
+        "SplitEdiFieldDefinitionNames": "Splitting EDI Fields",
+        "IsMaximumDollarValueThresholdEnabled": "Enable Maximum $ Value Threshold",
+        "IsMaximumTicketsThresholdEnabled": "Enable Maximum Tickets Threshold",
+        "ThresholdDollarValue": "Maximum $ Value Threshold",
+        "ThresholdTicketCount": "Maximum Tickets Threshold"
+      },
+      "Formatters": {
+        "IncludeInternalDocumentAttachment": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "IncludeExternalDocumentAttachment": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "CatchAll": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "AllSourceLocations": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "AllServiceTypes": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "AllWellClassifications": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "AllSubstances": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "AllFacilities": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "IsMaximumDollarValueThresholdEnabled": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "IsMaximumTicketsThresholdEnabled": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        }
+      },
+      "TrackAllFields": false,
+      "TimeToLive": 732
+    },
+    "BillingConfiguration": {
+      "MembersToInclude": [
+        "Name",
+        "CustomerGeneratorName",
+        "BillingContactName",
+        "BillingContactAddress",
+        "StartDate",
+        "EndDate",
+        "IsDefaultConfiguration",
+        "EDIValueData.EDIFieldName",
+        "EDIValueData.EDIFieldValueContent",
+        "IsSignatureRequired",
+        "FieldTicketsUploadEnabled",
+        "InvoiceExchange",
+        "FieldTicketDeliveryMethod",
+        "Signatories.FirstName",
+        "Signatories.LastName",
+        "Signatories.IsAuthorized",
+        "Signatories.Address",
+        "Signatories.PhoneNumber",
+        "Signatories.Email",
+        "EmailDeliveryContacts.SignatoryContact",
+        "EmailDeliveryContacts.IsAuthorized",
+        "EmailDeliveryContacts.EmailAddress",
+        "LoadConfirmationFrequency",
+        "IncludeInternalAttachmentInLC",
+        "IncludeExternalAttachmentInLC",
+        "FirstDayOfTheWeek",
+        "FirstDayOfTheMonth"
+      ],
+      "DisplayNames": {
+        "Name": "Billing Configuration Name",
+        "CustomerGeneratorName": "Generator",
+        "BillingContactName": "Load Confirmation Contact",
+        "BillingContactAddress": "Load Confirmation Contact Address",
+        "StartDate": "Start Date",
+        "EndDate": "End Date",
+        "IsDefaultConfiguration": "Default Billing Configuration",
+        "EDIValueData.EDIFieldName": "EDI Field Name",
+        "EDIValueData.EDIFieldValueContent": "EDI Field Value",
+        "IsSignatureRequired": "Email Signature Approval",
+        "FieldTicketsUploadEnabled": "Field Ticket Upload",
+        "InvoiceExchange": "Invoice Exchange",
+        "FieldTicketDeliveryMethod": "Field Ticket Delivery Method",
+        "Signatories.FirstName": "Signatory Contact First Name",
+        "Signatories.LastName": "Signatory Contact Last Name",
+        "Signatories.IsAuthorized": "Authorized Signatory Contact",
+        "Signatories.Address": "Signatory Contact Address",
+        "Signatories.PhoneNumber": "Signatory Contact Phone Number",
+        "Signatories.Email": "Signatory Contact Email",
+        "EmailDeliveryContacts.SignatoryContact": "Email Recipient Contact",
+        "EmailDeliveryContacts.IsAuthorized": "Enabled Email Recipient",
+        "EmailDeliveryContacts.EmailAddress": "Email Recipient Email",
+        "LoadConfirmationFrequency": "Load Confirmation Frequency",
+        "IncludeInternalAttachmentInLC": "Include Internal Attachments",
+        "IncludeExternalAttachmentInLC": "Include External Attachments",
+        "FirstDayOfTheWeek": "Day Of The Week",
+        "FirstDayOfTheMonth": "First Day Of The Month"
+      },
+      "TagMap": {
+        "Signatories.FirstName": "AccountContactId",
+        "Signatories.LastName": "AccountContactId",
+        "Signatories.IsAuthorized": "AccountContactId",
+        "Signatories.Address": "AccountContactId",
+        "Signatories.PhoneNumber": "AccountContactId",
+        "Signatories.Email": "AccountContactId",
+        "EmailDeliveryContacts.SignatoryContact": "AccountContactId",
+        "EmailDeliveryContacts.IsAuthorized": "AccountContactId",
+        "EmailDeliveryContacts.EmailAddress": "AccountContactId"
+      },
+      "Formatters": {
+        "StartDate": {
+          "Type": "CUSTOM",
+          "ValueType": "System.DateTimeOffset",
+          "Format": "UTC|F=MM/dd/yyyy"
+        },
+        "EndDate": {
+          "Type": "CUSTOM",
+          "ValueType": "System.DateTimeOffset",
+          "Format": "UTC|F=MM/dd/yyyy"
+        },
+        "IsSignatureRequired": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "FieldTicketsUploadEnabled": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "Signatories.IsAuthorized": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "EmailDeliveryContacts.IsAuthorized": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "IncludeInternalAttachmentInLC": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "IncludeExternalAttachmentInLC": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        }
+      },
+      "TrackAllFields": false,
+      "TimeToLive": 732
+    },
+    "SourceLocation": {
+      "MembersToInclude": [
+        "SourceLocationTypeName",
+        "SourceLocationTypeCategory",
+        "CountryCode",
+        "Identifier",
+        "FormattedIdentifier",
+        "FieldName",
+        "ProvinceOrState",
+        "SourceLocationCode",
+        "LicenseNumber",
+        "SourceLocationName",
+        "DownHoleType",
+        "DeliveryMethod",
+        "PlsNumber",
+        "ApiNumber",
+        "WellFileNumber",
+        "CtbNumber",
+        "IsActive",
+        "IsDeleted",
+        "GeneratorName",
+        "GeneratorStartDate",
+        "ContractOperatorName"
+      ],
+      "DisplayNames": {
+        "SourceLocationTypeName": "Source Location Type Name",
+        "SourceLocationTypeCategory": "Source Location Type Category",
+        "CountryCode": "Country",
+        "Identifier": "Identifier",
+        "FormattedIdentifier": "Formatted Identifier",
+        "FieldName": "Field Name / Address",
+        "ProvinceOrState": "Province / State",
+        "SourceLocationCode": "Source Location Code",
+        "LicenseNumber": "License Number",
+        "SourceLocationName": "Source Location Name",
+        "DownHoleType": "Well / Pit",
+        "DeliveryMethod": "Trucked / Pipeline",
+        "PlsNumber": "PLS Number",
+        "ApiNumber": "API Number",
+        "WellFileNumber": "Well File Number",
+        "CtbNumber": "CTB Number",
+        "IsActive": "Active",
+        "IsDeleted": "Deleted",
+        "GeneratorName": "Generator",
+        "GeneratorStartDate": "Start Date",
+        "ContractOperatorName": "Contract Operator"
+      },
+      "Formatters": {
+        "IsActive": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "IsDeleted": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "GeneratorStartDate": {
+          "Type": "CUSTOM",
+          "ValueType": "System.DateTimeOffset",
+          "Format": "F=MM/dd/yyyy"
+        }
+      },
+      "TrackAllFields": false,
+      "TimeToLive": 1830
+    },
+    "MaterialApproval": {
+      "MembersToInclude": [
+        "LegalEntity",
+        "Facility",
+        "WellClassification",
+        "Description",
+        "WLAFNumber",
+        "IsActive",
+        "SourceLocation",
+        "SourceLocationUnformattedIdentifier",
+        "SourceLocationFormattedIdentifier",
+        "SourceRegion",
+        "GeneratorName",
+        "GeneratorRepresentative",
+        "ThirdPartyAnalyticalCompanyName",
+        "ThirdPartyAnalyticalCompanyContact",
+        "ThirdPartyAnalyticalContactReceiveLoadSummary",
+        "BillingCustomerName",
+        "BillingCustomerContact",
+        "BillingCustomerContactAddress",
+        "BillingCustomerContactReceiveLoadSummary",
+        "ApplicantSignatories.SignatoryName",
+        "ApplicantSignatories.AccountName",
+        "ApplicantSignatories.Email",
+        "ApplicantSignatories.PhoneNumber",
+        "ApplicantSignatories.ReceiveLoadSummary",
+        "TruckingCompanyName",
+        "TruckingCompanyContact",
+        "TruckingCompanyContactReceiveLoadSummary",
+        "FacilityServiceName",
+        "FacilityServiceNumber",
+        "SubstanceName",
+        "WasteCodeName",
+        "HazardousNonhazardous",
+        "AnalyticalExpiryDate"
+      ],
+      "DisplayNames": {
+        "LegalEntity": "Legal Entity",
+        "Facility": "Facility",
+        "WellClassification": "Well Classification",
+        "Description": "Description",
+        "WLAFNumber": "WLAF Number",
+        "IsActive": "Active",
+        "SourceLocation": "Source Location",
+        "SourceLocationUnformattedIdentifier": "Source Location Identifier",
+        "SourceLocationFormattedIdentifier": "Formatted Source Location Identifier",
+        "SourceRegion": "Source Region",
+        "GeneratorName": "Generator",
+        "GeneratorRepresentative": "Generator Representative",
+        "ThirdPartyAnalyticalCompanyName": "3rd Party Company",
+        "ThirdPartyAnalyticalCompanyContact": "3rd Party Company Contact",
+        "ThirdPartyAnalyticalContactReceiveLoadSummary": "3rd Party Company - Receive Load Summary",
+        "BillingCustomerName": "Billing Customer",
+        "BillingCustomerContact": "Billing Customer Contact",
+        "BillingCustomerContactAddress": "Billing Customer Contact Address",
+        "BillingCustomerContactReceiveLoadSummary": "Billing Customer - Receive Load Summary",
+        "ApplicantSignatories.SignatoryName": "Signatory",
+        "ApplicantSignatories.AccountName": "Signatory Account",
+        "ApplicantSignatories.Email": "Signatory Email",
+        "ApplicantSignatories.PhoneNumber": "Signatory Phone Number",
+        "ApplicantSignatories.ReceiveLoadSummary": "Enabled Signatory",
+        "TruckingCompanyName": "Trucking Company",
+        "TruckingCompanyContact": "Trucking Company Contact",
+        "TruckingCompanyContactReceiveLoadSummary": "Trucking Company - Receive Load Summary",
+        "FacilityServiceName": "Facility Service Name",
+        "FacilityServiceNumber": "Facility Service Number",
+        "SubstanceName": "Substance",
+        "WasteCodeName": "Waste Code",
+        "HazardousNonhazardous": "Hazard State",
+        "AnalyticalExpiryDate": "Analytical Expiry Date"
+      },
+      "TagMap": {
+        "ApplicantSignatories.SignatoryName": "AccountContactId",
+        "ApplicantSignatories.AccountName": "AccountContactId",
+        "ApplicantSignatories.Email": "AccountContactId",
+        "ApplicantSignatories.PhoneNumber": "AccountContactId",
+        "ApplicantSignatories.ReceiveLoadSummary": "AccountContactId"
+      },
+      "Formatters": {
+        "IsActive": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "ThirdPartyAnalyticalContactReceiveLoadSummary": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "BillingCustomerContactReceiveLoadSummary": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "ApplicantSignatories.ReceiveLoadSummary": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "TruckingCompanyContactReceiveLoadSummary": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "AnalyticalExpiryDate": {
+          "Type": "CUSTOM",
+          "ValueType": "System.DateTimeOffset",
+          "Format": "UTC|F=MM/dd/yyyy"
+        }
+      },
+      "TrackAllFields": false,
+      "TimeToLive": 732
+    },
+    "TruckTicket": {
+      "MembersToInclude": [
+        "FacilityName",
+        "SiteId",
+        "TicketNumber",
+        "Status",
+        "BillingCustomerName",
+        "BillingConfigurationName",
+        "WellClassification",
+        "SourceLocationCode",
+        "SourceLocationFormatted",
+        "SourceLocationUnformatted",
+        "SourceLocationName",
+        "GeneratorName",
+        "MaterialApprovalNumber",
+        "WiqNumber",
+        "LoadDate",
+        "DowNonDow",
+        "ServiceType",
+        "SubstanceName",
+        "WasteCode",
+        "TruckingCompanyName",
+        "BillOfLading",
+        "TruckNumber",
+        "TrailerNumber",
+        "ManifestNumber",
+        "ClassNumber",
+        "UnNumber",
+        "GrossWeight",
+        "TareWeight",
+        "NetWeight",
+        "LoadVolume",
+        "OilVolume",
+        "OilVolumePercent",
+        "WaterVolume",
+        "WaterVolumePercent",
+        "SolidVolume",
+        "SolidVolumePercent",
+        "TotalVolume",
+        "TotalVolumePercent",
+        "TimeIn",
+        "TimeOut",
+        "EdiFieldValues.EDIFieldName",
+        "EdiFieldValues.EDIFieldValueContent",
+        "Signatories.ContactName",
+        "Signatories.ContactAddress",
+        "Signatories.ContactEmail",
+        "Signatories.ContactPhoneNumber",
+        "Signatories.IsAuthorized",
+        "Attachments.AttachmentType",
+        "Attachments.File",
+        "ConversionParameters.GrossWeight",
+        "ConversionParameters.TareWeight",
+        "ConversionParameters.MidWeight",
+        "ConversionParameters.OilCutPercentage",
+        "ConversionParameters.WaterCutPercentage",
+        "ConversionParameters.SolidsCutPercentage",
+        "ConversionParameters.OilWeight",
+        "ConversionParameters.WaterWeight",
+        "ConversionParameters.SolidsWeight",
+        "ConversionParameters.OilConversionFactor",
+        "ConversionParameters.WaterConversionFactor",
+        "ConversionParameters.SolidsConversionFactor",
+        "ConversionParameters.CutEntryMethod"
+      ],
+      "DisplayNames": {
+        "FacilityName": "Facility Name",
+        "SiteId": "Facility Site Id",
+        "TicketNumber": "Ticket Number",
+        "Status": "Status",
+        "BillingCustomerName": "Billing Customer",
+        "BillingConfigurationName": "Billing Configuration",
+        "WellClassification": "Well Classification",
+        "SourceLocationCode": "Source Location Code",
+        "SourceLocationFormatted": "Source Location Identifier",
+        "SourceLocationUnformatted": "Source Location Identifier Unformatted",
+        "SourceLocationName": "Source Location Name",
+        "GeneratorName": "Generator",
+        "MaterialApprovalNumber": "Material Approval Number",
+        "WiqNumber": "WiQ Number",
+        "LoadDate": "Load Date",
+        "DowNonDow": "Dow / Non-Dow",
+        "ServiceType": "Facility Service Type",
+        "SubstanceName": "Facility Service Substance",
+        "WasteCode": "Facility Service Waste Code",
+        "TruckingCompanyName": "Trucking Company",
+        "BillOfLading": "Bill of Lading",
+        "TruckNumber": "Truck Number",
+        "TrailerNumber": "Trailer Number",
+        "ManifestNumber": "Manifest Number",
+        "ClassNumber": "Class Number (TDG Class)",
+        "UnNumber": "UN Number",
+        "GrossWeight": "Gross Weight (T)",
+        "TareWeight": "Tare Weight (T)",
+        "NetWeight": "Net Weight (T)",
+        "LoadVolume": "Load Volume (M3)",
+        "OilVolume": "Oil Volume (M3)",
+        "OilVolumePercent": "Oil Volume (%)",
+        "WaterVolume": "Water Volume (M3)",
+        "WaterVolumePercent": "Water Volume (%)",
+        "SolidVolume": "Solid Volume (M3)",
+        "SolidVolumePercent": "Solid Volume (%)",
+        "TotalVolume": "Total Volume (M3)",
+        "TotalVolumePercent": "Total Volume (%)",
+        "TimeIn": "Time In",
+        "TimeOut": "Time Out",
+        "EdiFieldValues.EDIFieldName": "EDI Field Name",
+        "EdiFieldValues.EDIFieldValueContent": "EDI Field Value",
+        "Signatories.ContactName": "Signatory Contact Name",
+        "Signatories.ContactAddress": "Signatory Contact Address",
+        "Signatories.ContactEmail": "Signatory Contact Email",
+        "Signatories.ContactPhoneNumber": "Signatory Contact Phone Number",
+        "Signatories.IsAuthorized": "Authorized Signatory",
+        "Attachments.AttachmentType": "Attachment Type",
+        "Attachments.File": "Attachment File Name",
+        "ConversionParameters.GrossWeight": "Gross Weight (T)",
+        "ConversionParameters.TareWeight": "Tare Weight (T)",
+        "ConversionParameters.MidWeight": "Mid Weight (T)",
+        "ConversionParameters.OilCutPercentage": "Oil Cut (%)",
+        "ConversionParameters.WaterCutPercentage": "Water Cut (%)",
+        "ConversionParameters.SolidsCutPercentage": "Solids Cut (%)",
+        "ConversionParameters.OilWeight": "Oil Weight (T)",
+        "ConversionParameters.WaterWeight": "Water Weight (T)",
+        "ConversionParameters.SolidsWeight": "Solids Weight (T)",
+        "ConversionParameters.OilConversionFactor": "Oil Density",
+        "ConversionParameters.WaterConversionFactor": "Water Density",
+        "ConversionParameters.SolidsConversionFactor": "Solids Density",
+        "ConversionParameters.CutEntryMethod": "Load Entry Method"
+      },
+      "Formatters": {
+        "LoadDate": {
+          "Type": "CUSTOM",
+          "ValueType": "System.DateTimeOffset",
+          "Format": "F=MM/dd/yyyy"
+        },
+        "TimeIn": {
+          "Type": "CUSTOM",
+          "ValueType": "System.DateTimeOffset",
+          "Format": "F=hh:mm tt"
+        },
+        "TimeOut": {
+          "Type": "CUSTOM",
+          "ValueType": "System.DateTimeOffset",
+          "Format": "F=hh:mm tt"
+        }
+      },
+      "TrackAllFields": false,
+      "TimeToLive": 732
+    },
+    "SalesLine": {
+      "MembersToInclude": [
+        "ProductName",
+        "UnitOfMeasure",
+        "Quantity",
+        "QuantityPercent",
+        "OriginalRate",
+        "Rate",
+        "PriceChangeDate",
+        "PriceChangeUserName",
+        "ChangeReason",
+        "ChangeComments"
+      ],
+      "DisplayNames": {
+        "ProductName": "Service Name",
+        "UnitOfMeasure": "Unit of Measure",
+        "Quantity": "Quantity",
+        "QuantityPercent": "Quantity (%)",
+        "OriginalRate": "Previous Price",
+        "Rate": "Current Price",
+        "PriceChangeDate": "Price Change Date",
+        "PriceChangeUserName": "Price Changed By",
+        "ChangeReason": "Price Change Reason",
+        "ChangeComments": "Price Change Comment"
+      },
+      "Formatters": {
+        "PriceChangeDate": {
+          "Type": "CUSTOM",
+          "ValueType": "System.DateTimeOffset",
+          "Format": "F=MM/dd/yyyy hh:mm tt"
+        }
+      },
+      "TrackAllFields": false,
+      "TimeToLive": 732
+    },
+    "LoadConfirmation": {
+      "MembersToInclude": [
+        "Number",
+        "Status",
+        "InvoiceStatus",
+        "Signatories.FirstName",
+        "Signatories.LastName",
+        "Signatories.Address",
+        "Signatories.PhoneNumber",
+        "Signatories.Email",
+        "Attachments.FileName",
+        "Attachments.IsIncludedInInvoice",
+        "Attachments.AttachmentOrigin"
+      ],
+      "DisplayNames": {
+        "Number": "Load Confirmation Number",
+        "Status": "Load Confirmation Status",
+        "InvoiceStatus": "Invoice Status",
+        "Signatories.FirstName": "Signatory First Name",
+        "Signatories.LastName": "Signatory Last Name",
+        "Signatories.Address": "Signatory Address",
+        "Signatories.PhoneNumber": "Signatory Phone Number",
+        "Signatories.Email": "Signatory Email",
+        "Attachments.FileName": "Attachment File Name",
+        "Attachments.IsIncludedInInvoice": "Attachment Included in Invoice",
+        "Attachments.AttachmentOrigin": "Attachment Origin"
+      },
+      "Formatters": {},
+      "TrackAllFields": false,
+      "TimeToLive": 732
+    },
+    "Invoice": {
+      "MembersToInclude": [
+        "ProformaInvoiceNumber",
+        "GlInvoiceNumber",
+        "Status",
+        "DistributionMethod",
+        "LastDistributionDate",
+        "LastSentByName",
+        "TransactionComplete",
+        "CollectionOwner",
+        "CollectionReason",
+        "CollectionNotes",
+        "Attachments.FileName",
+        "InvoiceConfigurationName",
+        "BillingConfigurations.BillingConfigurationName",
+        "BillingContactName"
+      ],
+      "DisplayNames": {
+        "ProformaInvoiceNumber": "Proforma Invoice Number",
+        "GlInvoiceNumber": "GL Invoice Number",
+        "Status": "Status",
+        "DistributionMethod": "Distribution Method",
+        "LastDistributionDate": "Distribution Date",
+        "LastSentByName": "Sent By",
+        "TransactionComplete": "Transaction Complete",
+        "CollectionOwner": "Collection Owner",
+        "CollectionReason": "Collection Reason",
+        "CollectionNotes": "Collection Notes",
+        "Attachments.FileName": "Attachment File Name",
+        "InvoiceConfigurationName": "Invoice Configuration",
+        "BillingConfigurations.BillingConfigurationName": "Billing Configuration",
+        "BillingContactName": "Billing Contact"
+      },
+      "Formatters": {
+        "LastDistributionDate": {
+          "Type": "CUSTOM",
+          "ValueType": "System.DateTimeOffset",
+          "Format": "F=MM/dd/yyyy"
+        },
+        "TransactionComplete": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        }
+      },
+      "TrackAllFields": false,
+      "TimeToLive": 732
+    },
+    "Facility": {
+      "MembersToInclude": [
+        "SiteId",
+        "Name",
+        "Type",
+        "LegalEntity",
+        "LocationCode",
+        "CountryCode",
+        "IsActive",
+        "Pipeline",
+        "Terminaling",
+        "Treating",
+        "Water",
+        "Waste",
+        "ShowClassNumber",
+        "ShowUnNumber",
+        "ShowMaterialApproval",
+        "ShowConversionCalculator",
+        "ShowDestination",
+        "FieldTicketAutoApproval",
+        "SpartanActive",
+        "TareWeightValidityDays",
+        "DowNonDow",
+        "ShowHazNonHaz",
+        "ShowSourceRegion",
+        "EnableTareWeight"
+      ],
+      "DisplayNames": {
+        "SiteId": "Facility Code",
+        "Name": "Facility Name",
+        "Type": "Facility Type",
+        "LegalEntity": "Legal Entity",
+        "LocationCode": "Facility Location Code",
+        "CountryCode": "Country",
+        "IsActive": "Active",
+        "Pipeline": "Pipeline",
+        "Terminaling": "Terminaling",
+        "Treating": "Treating",
+        "Water": "Water",
+        "Waste": "Waste",
+        "ShowClassNumber": "Show Class Number",
+        "ShowUnNumber": "Show UN Number",
+        "ShowMaterialApproval": "Show Material Approval",
+        "ShowConversionCalculator": "Show Conversion Calculator",
+        "ShowDestination": "Show Destination",
+        "FieldTicketAutoApproval": "Field Ticket Auto Approve",
+        "SpartanActive": "Spartan Active",
+        "TareWeightValidityDays": "Tare Weight Validity Days",
+        "DowNonDow": "Dow/Non-Dow Default",
+        "ShowHazNonHaz": "Show Haz/Non-Haz",
+        "ShowSourceRegion": "Show Source Region",
+        "EnableTareWeight": "Enable Tare Weight"
+      },
+      "Formatters": {
+        "IsActive": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "ShowClassNumber": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "ShowUnNumber": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "ShowMaterialApproval": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "ShowConversionCalculator": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "ShowDestination": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "FieldTicketAutoApproval": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "SpartanActive": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "ShowHazNonHaz": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "ShowSourceRegion": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "EnableTareWeight": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        }
+      },
+      "TrackAllFields": false,
+      "TimeToLive": 732
+    },
+    "FacilityService": {
+      "MembersToInclude": [
+        "IsActive",
+        "ServiceTypeName",
+        "ServiceNumber"
+      ],
+      "DisplayNames": {
+        "IsActive": "Active",
+        "ServiceTypeName": "Service Type",
+        "ServiceNumber": "Service Number"
+      },
+      "Formatters": {
+        "IsActive": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        }
+      },
+      "TrackAllFields": false,
+      "TimeToLive": 732
+    },
+    "ServiceType": {
+      "MembersToInclude": [
+        "IsActive",
+        "ServiceTypeId",
+        "Name",
+        "Class",
+        "LegalEntityCode",
+        "Description",
+        "ReportAsCutType",
+        "Stream",
+        "ProrateService",
+        "ProductionAccountantReport"
+      ],
+      "DisplayNames": {
+        "IsActive": "Active",
+        "ServiceTypeId": "Service Type Id",
+        "Name": "Service Type Name",
+        "Class": "Class",
+        "LegalEntityCode": "Legal Entity",
+        "Description": "Description",
+        "ReportAsCutType": "Report as Cut Type",
+        "Stream": "Stream",
+        "ProrateService": "Prorate Service",
+        "ProductionAccountantReport": "Production Accountant Report"
+      },
+      "Formatters": {
+        "IsActive": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "ProrateService": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "ProductionAccountantReport": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        }
+      },
+      "TrackAllFields": false,
+      "TimeToLive": 732
+    },
+    "AdditionalServicesConfiguration": {
+      "MembersToInclude": [
+        "Name",
+        "IsActive",
+        "SiteId",
+        "FacilityName",
+        "FacilityType",
+        "CustomerName",
+        "AdditionalServices.Name",
+        "AdditionalServices.Number",
+        "AdditionalServices.Quantity",
+        "AdditionalServices.UnitOfMeasure",
+        "MatchCriteria.IsEnabled",
+        "MatchCriteria.WellClassificationState",
+        "MatchCriteria.WellClassification",
+        "MatchCriteria.SourceIdentifierValueState",
+        "MatchCriteria.SourceIdentifier",
+        "MatchCriteria.SubstanceValueState",
+        "MatchCriteria.SubstanceName"
+      ],
+      "DisplayNames": {
+        "Name": "Name",
+        "IsActive": "Active",
+        "SiteId": "Facility Code",
+        "FacilityName": "Facility Name",
+        "FacilityType": "Facility Type",
+        "CustomerName": "Customer",
+        "AdditionalServices.Name": "Product Name",
+        "AdditionalServices.Number": "Product Number",
+        "AdditionalServices.Quantity": "Quantity",
+        "AdditionalServices.UnitOfMeasure": "Unit of Measure",
+        "MatchCriteria.IsEnabled": "Enabled",
+        "MatchCriteria.WellClassificationState": "Well Classification State",
+        "MatchCriteria.WellClassification": "Well Classification",
+        "MatchCriteria.SourceIdentifierValueState": "Source Identifier State",
+        "MatchCriteria.SourceIdentifier": "Source Identifier",
+        "MatchCriteria.SubstanceValueState": "Substance State",
+        "MatchCriteria.SubstanceName": "Substance"
+      },
+      "Formatters": {
+        "IsActive": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "MatchCriteria.IsEnabled": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        }
+      },
+      "TrackAllFields": false,
+      "TimeToLive": 732
+    },
+    "TruckTicketTareWeightIndex": {
+      "MembersToInclude": [
+        "IsActivated",
+        "LoadDate",
+        "FacilityName",
+        "TruckingCompanyName",
+        "TruckNumber",
+        "TrailerNumber",
+        "TicketNumber",
+        "TareWeight"
+      ],
+      "DisplayNames": {
+        "IsActivated": "Activated",
+        "LoadDate": "Load Date",
+        "FacilityName": "Facility Name",
+        "TruckingCompanyName": "Trucking Company Name",
+        "TruckNumber": "Truck Number",
+        "TrailerNumber": "Trailer Number",
+        "TicketNumber": "Ticket Number",
+        "TareWeight": "Tare Weight"
+      },
+      "Formatters": {
+        "IsActivated": {
+          "Type": "CUSTOM",
+          "ValueType": "System.Boolean",
+          "Format": "Yes|No"
+        },
+        "LoadDate": {
+          "Type": "CUSTOM",
+          "ValueType": "System.DateTimeOffset",
+          "Format": "F=MM/dd/yyyy hh:mm tt"
+        }
+      },
+      "TrackAllFields": false,
+      "TimeToLive": 93
+    }
+  }
+}

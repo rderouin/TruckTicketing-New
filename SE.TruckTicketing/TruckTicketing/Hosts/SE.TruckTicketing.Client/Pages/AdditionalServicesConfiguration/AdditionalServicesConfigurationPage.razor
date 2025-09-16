@@ -1,0 +1,150 @@
+﻿@page "/additional-services-configuration/new"
+@page "/additional-services-configuration/edit/{id:guid}"
+@using SE.TruckTicketing.Client.Components.AdditionalServicesConfigurationComponents
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<PageLoadingContainer IsLoading="IsLoading">
+    <LoadedView>
+        <EditForm EditContext="@_editContext"
+                  OnValidSubmit="OnHandleSubmit">
+            <div class="bg-white p-4">
+                <div class="breadcrumb-container text-uppercase">
+                    @_model.Breadcrumb
+                </div>
+                <div class="d-flex align-items-center justify-content-between pb-3">
+                    <h3>@_model.Title</h3>
+                    <div class="d-flex gap-2 align-items-center">
+                        <div>
+                            <div class="col-1 d-flex gap-2 align-items-center">
+                                <RadzenLabel Text="Active"
+                                             Component="IsActiveSwitch"
+                                             class="m-0"/>
+                                <RadzenSwitch id="IsActiveSwitch"
+                                              @bind-Value="@_model.AdditionalServicesConfiguration.IsActive"/>
+                            </div>
+                        </div>
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                      ButtonType="ButtonType.Submit"
+                                      Text="@_model.SubmitButtonText"
+                                      Disabled="@(_model.SubmitButtonDisabled || !HasWritePermission(Permissions.Resources.AdditionalServicesConfiguration))"
+                                      IsBusy="_isSaving"
+                                      BusyText="@_model.SubmitButtonBusyText"
+                                      Icon="@_model.SubmitButtonIcon"/>
+                    </div>
+                </div>
+                <TridentValidationSummary Response="_response"
+                                          TModel="AdditionalServicesConfiguration"/>
+            </div>
+            <div class="m-4">
+                <RadzenTabs>
+                    <Tabs>
+                        <RadzenTabsItem Text="General">
+                            <div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="fw-bold">General Info</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <div class="col d-flex flex-column">
+                                                <RadzenLabel Text="Name"
+                                                             Component="NameTextBox"
+                                                             class="required"/>
+                                                <RadzenTextBox Id="NameTextBox"
+                                                               @bind-Value="@_model.AdditionalServicesConfiguration.Name"
+                                                               Class="w-100"
+                                                               Placeholder="Enter name..."/>
+                                            </div>
+                                            <div class="col d-flex flex-column">
+                                                <RadzenLabel Text="Facility"
+                                                             Component="FacilityDropDown"
+                                                             class="required"/>
+                                                <FacilityDropDown Id="FacilityDropDown"
+                                                                  TValue="Guid"
+                                                                  Placeholder="Select facility..."
+                                                                  @bind-Value="@_model.AdditionalServicesConfiguration.FacilityId"
+                                                                  TextProperty="@nameof(Facility.Name)"
+                                                                  ValueProperty="@nameof(Facility.Id)"
+                                                                  PageSize="10"
+                                                                  OnItemLoad="OnFacilityLoad"
+                                                                  OnItemSelect="OnFacilityChange"
+                                                                  class="w-100"/>
+                                            </div>
+                                            <div class="col d-flex flex-column">
+                                                <RadzenLabel Text="Customer"
+                                                             Component="CustomerDropDown"/>
+                                                <AccountsDropDown id="CustomerDropDown"
+                                                                  Name="CustomerDropDown"
+                                                                  TValue="Guid"
+                                                                  AccountType="@AccountTypes.Customer"
+                                                                  Placeholder="Select customer..."
+                                                                  @bind-Value="@_model.AdditionalServicesConfiguration.CustomerId"
+                                                                  TextProperty="@nameof(Account.Name)"
+                                                                  ValueProperty="@nameof(Account.Id)"
+                                                                  PageSize="10"
+                                                                  OnItemSelect="OnCustomerDropdownChange"/>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col d-flex flex-column">
+                                                <RadzenLabel Text="Apply Zero Total Volume"
+                                                             Component="ApplyZeroTotalVolumeSwitch"/>
+                                                <RadzenSwitch Name="ApplyZeroTotalVolumeSwitch"
+                                                              id="ApplyZeroTotalVolumeSwitch"
+                                                              @bind-Value="@_model.AdditionalServicesConfiguration.ApplyZeroTotalVolume"/>
+                                            </div>
+                                            <div class="col d-flex flex-column">
+                                                <RadzenLabel Text="Apply Zero Oil Volume"
+                                                             Component="ApplyZeroOilVolumeSwitch"/>
+                                                <RadzenSwitch Name="ApplyZeroOilVolumeSwitch"
+                                                              id="ApplyZeroOilVolumeSwitch"
+                                                              @bind-Value="@_model.AdditionalServicesConfiguration.ApplyZeroOilVolume"/>
+                                            </div>
+                                            <div class="col d-flex flex-column">
+                                                <RadzenLabel Text="Apply Zero Water Volume"
+                                                             Component="ApplyZeroWaterVolumeSwitch"/>
+                                                <RadzenSwitch Name="ApplyZeroWaterVolumeSwitch"
+                                                              id="ApplyZeroWaterVolumeSwitch"
+                                                              @bind-Value="@_model.AdditionalServicesConfiguration.ApplyZeroWaterVolume"/>
+                                            </div>
+                                            <div class="col d-flex flex-column">
+                                                <RadzenLabel Text="Apply Zero Solids Volume"
+                                                             Component="ApplyZeroSolidsVolumeSwitch"/>
+                                                <RadzenSwitch Name="ApplyZeroSolidsVolumeSwitch"
+                                                              id="ApplyZeroSolidsVolumeSwitch"
+                                                              @bind-Value="@_model.AdditionalServicesConfiguration.ApplyZeroSolidsVolume"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <AdditionalServicesConfigurationAdditionalServicesGrid model="@_model.AdditionalServicesConfiguration"
+                                                                                       OnAdditionalServiceChange="AdditionalServiceChange"
+                                                                                       OnAdditionalServiceAdd="AdditionalServiceAdd"
+                                                                                       OnAdditionalServicesDeleted="UpdateAdditionalServiceDeleted">
+                                </AdditionalServicesConfigurationAdditionalServicesGrid>
+                                <AdditionalServicesConfigurationMatchCriteriaGrid Model="@_model.AdditionalServicesConfiguration"
+                                                                                  MatchPredicatesList="@_model.AdditionalServicesConfiguration.MatchCriteria"
+                                                                                  OnMatchPredicateChange="MatchPredicateChange"
+                                                                                  OnMatchPredicateAdd="MatchPredicateAdd"
+                                                                                  OnMatchPredicateDeleted="UpdateMatchPredicateDeleted"
+                                                                                  Disabled="false">
+                                </AdditionalServicesConfigurationMatchCriteriaGrid>
+                            </div>
+                        </RadzenTabsItem>
+                        @if (_model.AdditionalServicesConfiguration.Id != Guid.Empty)
+                        {
+                            <RadzenTabsItem Text="History">
+                                <TridentChangeDataGridWrapper Id="_model.AdditionalServicesConfiguration.Id"
+                                                              EntityType="AdditionalServicesConfiguration"
+                                                              EntityName="Additional Services"/>
+                            </RadzenTabsItem>
+                        }
+                    </Tabs>
+                </RadzenTabs>
+            </div>
+        </EditForm>
+    </LoadedView>
+</PageLoadingContainer>

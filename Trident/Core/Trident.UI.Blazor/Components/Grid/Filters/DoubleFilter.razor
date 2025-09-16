@@ -1,0 +1,45 @@
+﻿@inherits DoubleFilter
+@typeparam TOutputValue
+
+<h6 class="small-grey-label col-sm-12 mb-2" style="font-weight:bold">
+    @FilterOptions.Label
+</h6>
+
+<div class="form-group col-sm-6">
+    <div class="filter-label">
+        <RadzenLabel Text="From"
+                     Component="from_date"
+                     Style="font-size: 14px !important; line-height: 22px; font-weight: 400 !important"></RadzenLabel>
+        @if (LowerBoundValue != null)
+        {
+            
+            <RadzenButton Id="main_Grid_Search" Click="@ResetToDefault">
+                 Clear
+            </RadzenButton> 
+        }
+    </div>
+
+    <RadzenNumeric TValue="double?"
+                   Value="this.LowerBoundValue"
+                   ValueChanged="@(async (value) => { await this.ValueChanged(Bounds.Lower, value); })"
+                   Name="from"/>
+
+</div>
+
+<div class="form-group col-sm-6">
+    <div class="filter-label">
+        <RadzenLabel Text="To"
+                     Component="to_date"
+                     Style="font-size: 14px !important; line-height: 22px; font-weight: 400 !important"></RadzenLabel>
+        @if (UpperBoundValue != null)
+        {
+            <RadzenButton Id="main_Grid_Search" Click="@ResetToDefault">
+                 Clear
+            </RadzenButton> 
+        }
+    </div>
+    <RadzenNumeric TValue="double?"
+                Value="this.UpperBoundValue"
+                ValueChanged="@(async (value) => { await this.ValueChanged(Bounds.Upper, value); })"
+                Name="to"/>
+</div>

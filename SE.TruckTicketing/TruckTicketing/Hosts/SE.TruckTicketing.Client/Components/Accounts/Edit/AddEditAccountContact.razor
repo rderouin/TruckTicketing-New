@@ -1,0 +1,312 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Security
+@inherits BaseTruckTicketingComponent
+
+<TridentValidationSummary Response="_accountWorkflowValidationResponse"
+                          TModel="Account"/>
+<br/>
+<RadzenTemplateForm TItem="AccountContact"
+                    Submit="@HandleSubmit"
+                    Data="@ViewModel.AccountContact"
+                    @ref="ReferenceToForm">
+<div class="card">
+    <div class="card-header">
+        <h4 class="fw-bold">Contact Info</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="First Name"
+                             Component="ContactFirstNameTextBox"
+                             class="required"/>
+                <RadzenTextBox id="ContactFirstNameTextBox"
+                               Name="ContactFirstNameTextBox"
+                               @bind-Value="@ViewModel.AccountContact.Name"
+                               class="w-100"/>
+                <RadzenRequiredValidator Component="ContactFirstNameTextBox"
+                                         Text="Required"/>
+
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Last Name"
+                             Component="ContactLastNameTextBox"
+                             class="required"/>
+                <RadzenTextBox id="ContactLastNameTextBox"
+                               Name="ContactLastNameTextBox"
+                               @bind-Value="@ViewModel.AccountContact.LastName"
+                               class="w-100"/>
+                <RadzenRequiredValidator Component="ContactLastNameTextBox"
+                                         Text="Required"/>
+
+
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Phone Number"
+                             Component="ContactPhoneNumberTextBox"
+                             class="@ClassNames(("required", ViewModel.AccountContact.IsPrimaryAccountContact || string.IsNullOrEmpty(ViewModel.AccountContact.Email)))"/>
+                <RadzenMask id="ContactPhoneNumberTextBox"
+                            Name="ContactPhoneNumberTextBox"
+                            Mask="(***) ***-****"
+                            CharacterPattern="[0-9]"
+                            @bind-Value="@ViewModel.AccountContact.PhoneNumber"
+                            class="w-100"/>
+                @if (ViewModel.AccountContact.IsPrimaryAccountContact)
+                {
+                    <RadzenRequiredValidator Component="ContactPhoneNumberTextBox"
+                                             Text="Required"/>
+                }
+                @if (!ViewModel.AccountContact.IsPrimaryAccountContact && string.IsNullOrEmpty(ViewModel.AccountContact.Email))
+                {
+                    <RadzenRequiredValidator Component="ContactPhoneNumberTextBox"
+                                             Text="Required"/>
+                }
+                <RadzenRegexValidator Component="ContactPhoneNumberTextBox"
+                                      Text="Enter phone number in valid format : (***) ***-****"
+                                      Pattern="^(1\s?)?(\d{3}|\(\d{3}\))[\s\-]?\d{3}[\s\-]?\d{4}$"/>
+
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Email"
+                             Component="ContactEmailTextBox"
+                             class="@ClassNames(("required", ViewModel.AccountContact.IsPrimaryAccountContact || ViewModel.AccountContact.ContactFunctions.Contains(AccountContactFunctions.FieldSignatoryContact.ToString()) || string.IsNullOrEmpty(ViewModel.AccountContact.PhoneNumber)))"/>
+                <RadzenTextBox id="ContactEmailTextBox"
+                               Name="ContactEmailTextBox"
+                               @bind-Value="@ViewModel.AccountContact.Email"
+                               class="w-100"/>
+                @if (ViewModel.AccountContact.IsPrimaryAccountContact)
+                {
+                    <RadzenRequiredValidator Component="ContactEmailTextBox"
+                                             Text="Required"/>
+                }
+                @if (!ViewModel.AccountContact.IsPrimaryAccountContact && (ViewModel.AccountContact.ContactFunctions.Contains(AccountContactFunctions.FieldSignatoryContact.ToString()) || string.IsNullOrEmpty(ViewModel.AccountContact.PhoneNumber)))
+                {
+                    <RadzenRequiredValidator Component="ContactEmailTextBox"
+                                             Text="Required"/>
+                }
+                <RadzenRegexValidator Component="ContactEmailTextBox"
+                                      Text="Enter email in valid format"
+                                      Pattern="@EmailValidationPattern"/>
+
+
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Contact Function"
+                             Component="ContactFunctionsDropDown"
+                             class="required"/>
+                <RadzenDropDown AllowClear="true"
+                                AllowFiltering="true"
+                                id="ContactFunctionsDropDown"
+                                @bind-Value="@ViewModel.ContactFunctions"
+                                TextProperty="Display"
+                                ValueProperty="Value"
+                                Placeholder="Select Account Types..."
+                                Multiple="true"
+                                Data="@ViewModel.ContactFunctionsListData"
+                                class="w-100"/>
+
+            </div>
+            @if (ViewModel.AccountContact.ContactFunctions.Contains(AccountContactFunctions.FieldSignatoryContact.ToString()))
+            {
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Signatory Type"
+                                 Component="ContactSignatoryTypeDropDown"/>
+                    <RadzenDropDown TValue="AccountFieldSignatoryContactType"
+                                    id="ContactSignatoryTypeDropDown"
+                                    Name="ContactSignatoryTypeDropDown"
+                                    @bind-Value=@ViewModel.AccountContact.SignatoryType
+                                    TextProperty="Value"
+                                    ValueProperty="Key"
+                                    Placeholder="Select Signatory Type..."
+                                    Multiple="false"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    Data="@(DataDictionary.For<AccountFieldSignatoryContactType>(false))"
+                                    class="w-100"/>
+
+                </div>
+            }
+
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="@ViewModel.PrimaryContactSwitchLabel"
+                             Component="DefaultBillingContactSwitch"/>
+                <RadzenSwitch id="DefaultBillingContactSwitch"
+                              @bind-Value="@ViewModel.AccountContact.IsPrimaryAccountContact"
+                              Change="args => OnPrimaryAccountFlagChange(args)"/>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-bold">Address</h4>
+        </div>
+        <div>
+            <RadzenButton Click="@AutoPopulateDefaultAddress"
+                          Text="Default Address"
+                          Class="flex-grow-0 mr-2"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Size="ButtonSize.Small"
+                          Icon="home"
+                          Disabled="@IsDisableDefaultAddress"/>
+
+            <RadzenButton Click="@AutoPopulateAddress"
+                          Text="Auto-Populate Address"
+                          Class="flex-grow-0"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Size="ButtonSize.Small"
+                          Icon="contact_mail"/>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Street"
+                             Component="ContactAddressStreetTextBox"
+                             class="@ClassNames(("required", AddressRequired))"/>
+                <RadzenTextBox id="ContactAddressStreetTextBox"
+                               Name="ContactAddressStreetTextBox"
+                               @bind-Value="@ViewModel.AccountContact.AccountContactAddress.Street"
+                               class="w-100"/>
+                @if (AddressRequired)
+                {
+                    <RadzenRequiredValidator Component="ContactAddressStreetTextBox"
+                                             Text="Required"/>
+                }
+
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="City"
+                             Component="ContactAddressCityTextBox"
+                             class="@ClassNames(("required", AddressRequired))"/>
+                <RadzenTextBox id="ContactAddressCityTextBox"
+                               Name="ContactAddressCityTextBox"
+                               @bind-Value="@ViewModel.AccountContact.AccountContactAddress.City"
+                               class="w-100"/>
+                @if (AddressRequired)
+                {
+                    <RadzenRequiredValidator Component="ContactAddressCityTextBox"
+                                             Text="Required"/>
+                }
+
+
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Country"
+                             Component="ContactAddressCountryDropDown"
+                             class="@ClassNames(("required", AddressRequired))"/>
+                <RadzenDropDown TValue="CountryCode"
+                                id="ContactAddressCountryDropDown"
+                                Name="ContactAddressCountryDropDown"
+                                @bind-Value="@ViewModel.SelectedCountry"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Placeholder="Select Country..."
+                                Multiple="false"
+                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                Data="@(DataDictionary.For<CountryCode>())"
+                                class="w-100"/>
+                @if (AddressRequired)
+                {
+                    <RadzenRequiredValidator Component="ContactAddressCountryDropDown"
+                                             DefaultValue="CountryCode.Undefined"
+                                             Text="Required"/>
+                }
+
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-6 d-flex flex-column">
+                <RadzenLabel Text="@ViewModel.StateProvinceLabel"
+                             Component="ContactStateProvinceDropDown"
+                             class="@ClassNames(("required", AddressRequired))"/>
+                <RadzenDropDown TValue="StateProvince"
+                                AllowClear="true"
+                                AllowFiltering="true"
+                                id="ContactStateProvinceDropDown"
+                                Name="ContactStateProvinceDropDown"
+                                @bind-Value="@ViewModel.AccountContact.AccountContactAddress.Province"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Placeholder="@ViewModel.StateProvincePlaceHolder"
+                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                Multiple="false"
+                                Data="@(ViewModel.StateProviceData)"
+                                class="w-100"/>
+                @if (AddressRequired)
+                {
+                    <RadzenRequiredValidator Component="ContactStateProvinceDropDown"
+                                             DefaultValue="StateProvince.Unspecified"
+                                             Text="Required"/>
+                }
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="@ViewModel.ZipPostalCodeLabel"
+                             Component="ContactAddressPostalCodeTextBox"
+                             class="@ClassNames(("required", AddressRequired))"/>
+                <RadzenMask id="ContactAddressPostalCodeTextBox"
+                            Name="ContactAddressPostalCodeTextBox"
+                            Mask="@ViewModel.PostalCodeMask"
+                            CharacterPattern="@ViewModel.PostalCodePattern"
+                            @bind-Value="@ViewModel.AccountContact.AccountContactAddress.ZipCode"
+                            class="w-100"/>
+                @if (AddressRequired)
+                {
+                    <RadzenRequiredValidator Component="ContactAddressPostalCodeTextBox"
+                                             Text="Required"/>
+                }
+                @if (ViewModel.AccountContact.AccountContactAddress.Country == CountryCode.CA)
+                {
+                    <RadzenRegexValidator Component="ContactAddressPostalCodeTextBox"
+                                          Text="Enter Canadian postal code in valid format"
+                                          Pattern="^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d"/>
+                }
+                else
+                {
+                    <RadzenRegexValidator Component="ContactAddressPostalCodeTextBox"
+                                          Text="Enter US postal code in valid format"
+                                          Pattern="^\d{5}(?:[-\s]\d{4})?$"/>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4 mb-3">
+    <div class="col d-flex gap-2 align-items-center">
+        <RadzenLabel Text="Active"
+                     Component="IsContactActiveSwitch"
+                     class="m-0"/>
+        <RadzenSwitch id="IsContactActiveSwitch"
+                      @bind-Value="ViewModel.AccountContact.IsActive"
+                      Disabled="@_isActiveDisabled"/>
+    </div>
+    <div class="col d-flex justify-content-end">
+
+        @if (!ViewModel.IsNew)
+        {
+            <RadzenButton ButtonStyle="ButtonStyle.Danger"
+                          Text="Delete"
+                          Click="HandleDelete"/>
+        }
+
+        <RadzenButton ButtonStyle="ButtonStyle.Light"
+                      Text="Cancel"
+                      class="ml-2"
+                      Click="HandleCancel"/>
+
+        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                      ButtonType="ButtonType.Submit"
+                      Text="@ViewModel.SubmitButtonText"
+                      Disabled="@(IsSaving || !HasWritePermission(Permissions.Resources.Account))"
+                      class="ml-2"
+                      IsBusy="@IsSaving"
+                      BusyText="@ViewModel.SubmitButtonBusyText"
+                      Icon="@ViewModel.SubmitButtonIcon"/>
+    </div>
+</div>
+</RadzenTemplateForm>

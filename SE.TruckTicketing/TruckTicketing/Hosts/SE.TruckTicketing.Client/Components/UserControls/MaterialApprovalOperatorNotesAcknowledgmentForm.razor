@@ -1,0 +1,52 @@
+﻿@using SE.Shared.Common.Extensions
+@using System.Net
+@inherits BaseTruckTicketingComponent
+
+<RadzenTemplateForm Submit="@HandleSubmit"
+                    TItem="MaterialApprovalOperatorNotesAcknowledgmentFormModel"
+                    Data="@_model">
+    <div class="mb-4">
+        <h6 class="fw-bold">Scale Operator Notes</h6>
+        <p>To proceed, you must acknowledge the scale operator note attached to the material approval @MaterialApproval.MaterialApprovalNumber:</p>
+        <br/>
+        <em class="mx-2 mb-2 d-block">@MaterialApproval.ScaleOperatorNotes</em>
+
+        @if (MaterialApproval.IncludeSupportingDocLink && MaterialApproval.SupportingDocLink.HasText())
+        {
+            <a class="rz-link text-decoration-none px-2 d-block"
+               href="@(new WebProxy(MaterialApproval.SupportingDocLink).Address)"
+               target="_blank"
+               rel="noopener noreferrer">
+                <em>
+                    Open Supporting Documentation
+                </em>
+            </a>
+        }
+    </div>
+
+    <div class="mb-4">
+        <h6 class="fw-bold required">Operator Initials</h6>
+        <p>By initialing, you indicate you have acknowledged the scale operator note above.</p>
+        <RadzenTextBox Name="InitialsTextBox"
+                       @bind-Value="@_model.Initials"
+                       class="w-100 mt-2"
+                       Placeholder="Enter initials"/>
+        <RadzenRequiredValidator Component="InitialsTextBox"
+                                 Text="Operator Initials are required"
+                                 class="mt-1 text-danger validation-message"/>
+        <RadzenRegexValidator Pattern="^[A-z]{2,4}$"
+                              Component="InitialsTextBox"
+                              Text="Initials must contain letters only and be between 2 and 4 characters long."
+                              class="mt-1 text-danger validation-message"/>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-end gap-2">
+        <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                      Text="Decline Acknowledgement"
+                      Click="@OnAcknowledgementDecline"/>
+
+        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                      ButtonType="ButtonType.Submit"
+                      Text="Acknowledge"/>
+    </div>
+</RadzenTemplateForm>

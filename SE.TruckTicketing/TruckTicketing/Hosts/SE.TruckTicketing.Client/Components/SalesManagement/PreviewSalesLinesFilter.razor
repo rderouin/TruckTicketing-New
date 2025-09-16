@@ -1,0 +1,11 @@
+﻿@inherits FilterComponent<bool>
+
+<div>
+    <RadzenLabel Text="Show Preview Sales Lines"
+                 Class="filter-label"/>
+    <div class="d-flex position-relative">
+        <RadzenSwitch @bind-value="@_showPreviewSalesLines"
+                      Change="@HandleChange">
+        </RadzenSwitch>
+    </div>
+</div>

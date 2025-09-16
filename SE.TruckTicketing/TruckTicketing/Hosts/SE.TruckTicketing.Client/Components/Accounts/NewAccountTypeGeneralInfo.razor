@@ -1,0 +1,77 @@
+﻿@using SE.Shared.Common.Extensions
+@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Models
+@inherits BaseRazorComponent
+
+
+<RadzenTemplateForm TItem="Account"
+                    Data="@account"
+                    @ref="ReferenceToAccountForm">
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4 class="fw-bold">General Info</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Legal Entity"
+                                 Component="legalEntityDropDown"
+                                 Class="required"/>
+                    <TridentApiDropDownDataGrid id="legalEntityDropDown"
+                                                TModel="LegalEntity"
+                                                TValue="Guid"
+                                                Placeholder="Select Legal Entity..."
+                                                @bind-Value="@account.LegalEntityId"
+                                                TextProperty="@nameof(LegalEntity.Name)"
+                                                PageSize="10"
+                                                Disabled="false"
+                                                OnItemSelect="OnLegalEntitySelect"
+                                                OnDataLoading="HandleLegalEntityLoading">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn Property="@nameof(LegalEntity.Code)" Title="Code" Width="100px"/>
+                            <RadzenDropDownDataGridColumn Property="@nameof(LegalEntity.Name)" Title="Name"/>
+                        </Columns>
+                    </TridentApiDropDownDataGrid>
+                    <RadzenRequiredValidator Component="legalEntityDropDown"
+                                             DefaultValue="default"
+                                             Text="Required"/>
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Account Name"
+                                 Component="AccountNameTextBox"
+                                 class="required"/>
+                    <RadzenTextBox id="AccountNameTextBox"
+                                   Name="AccountNameTextBox"
+                                   @bind-Value="@account.Name"
+                                   class="w-100"/>
+                    <RadzenRequiredValidator Component="AccountNameTextBox"
+                                             Text="Required"/>
+
+                </div>
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Account Type(s)"
+                                 Component="AccountTypeCheckBoxList"
+                                 class="required"/>
+                    <div class="d-flex flex-row align-items-center gap-2">
+
+                        <RadzenCheckBoxList TValue="AccountTypes"
+                                            id="AccountTypeCheckBoxList"
+                                            TextProperty="Value"
+                                            Change="OnAccountTypeChange"
+                                            ValueProperty="Key"
+                                            Name="AccountTypeCheckBoxList"
+                                            Data="@(DataDictionary.For<AccountTypes>())"
+                                            @bind-Value="@SelectedAccountTypes"
+                                            Orientation="Orientation.Horizontal"
+                                            Disabled="@AccountType.HasText()"/>
+                        <RadzenRequiredValidator Component="AccountTypeCheckBoxList"
+                                                 DefaultValue="default"
+                                                 Text="Required"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</RadzenTemplateForm>

@@ -1,0 +1,20 @@
+﻿@typeparam TModel
+@using System.Net
+@inherits BaseTruckTicketingComponent
+
+@if (Response != null && Response.StatusCode == HttpStatusCode.BadRequest)
+{
+    <div>
+        <div class="d-flex align-items-center">
+            <RadzenIcon Icon="error"
+                        IconStyle="IconStyle.Danger"/>
+            <h6 class="small-grey-label text-danger pl-2">Validation Error Summary</h6>
+        </div>
+        <ul class="ml-4 mt-1 pl-1 text-danger">
+            @foreach (var error in _validationErrors)
+            {
+                <li class="pb-1">• <span>@error.Message</span></li>
+            }
+        </ul>
+    </div>
+}

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Trident\Core\Trident.Security\Trident.Security.csproj" />
+    <ProjectReference Include="..\SE.Shared.Common\SE.Shared.Common.csproj" />
+    <ProjectReference Include="..\SE.TruckTicketing.Contracts\SE.TruckTicketing.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

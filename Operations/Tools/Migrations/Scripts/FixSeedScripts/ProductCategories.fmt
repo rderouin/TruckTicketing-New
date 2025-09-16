@@ -1,0 +1,12 @@
+14.0  
+10  
+1       SQLCHAR       0       100      ","     1     Unique_ID		""  
+2       SQLCHAR       0       1000     ","     2     Category		SQL_Latin1_General_CP1_CI_AS  
+3       SQLCHAR       0       1000     ","     3     Facility		SQL_Latin1_General_CP1_CI_AS
+4       SQLCHAR       0       1000     ","     2     ItemNumber		SQL_Latin1_General_CP1_CI_AS 
+5       SQLCHAR       0       1000     ","     3     Item Unit		SQL_Latin1_General_CP1_CI_AS  
+6       SQLCHAR       0       1000     ","     2     ItemName		SQL_Latin1_General_CP1_CI_AS  
+7       SQLCHAR       0       1000     ","     3     Substance		SQL_Latin1_General_CP1_CI_AS  
+8       SQLCHAR       0       1000     ","     2     Name			SQL_Latin1_General_CP1_CI_AS  
+9       SQLCHAR       0       1000     ","     3     WasteAERCode	SQL_Latin1_General_CP1_CI_AS  
+10      SQLCHAR       0       24       "\r\n"  4	 DATAAREAID		""

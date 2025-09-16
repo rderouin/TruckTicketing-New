@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pidx:Invoice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" pidx:transactionPurposeIndicator="Add" pidx:version="1.0" xmlns:pidx="http://www.api.org/pidXML/v1.0">
+    <pidx:InvoiceProperties>
+        <pidx:InvoiceNumber>UNCAV000000702</pidx:InvoiceNumber>
+        <pidx:InvoiceDate>2023-08-24</pidx:InvoiceDate>
+        <pidx:PartnerInformation partnerRoleIndicator="BillTo">
+            <pidx:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">209137967</pidx:PartnerIdentifier>
+            <pidx:ContactInformation contactInformationIndicator="BuyerDepartment">
+                <pidx:ContactName>AP Grande Prairie</pidx:ContactName>
+            </pidx:ContactInformation>
+        </pidx:PartnerInformation>
+        <pidx:PartnerInformation partnerRoleIndicator="RemitTo">
+            <pidx:PartnerIdentifier partnerIdentifierIndicator="DUNSNumber">243483406</pidx:PartnerIdentifier>
+            <pidx:ContactInformation contactInformationIndicator="EnteredBy">
+                <pidx:EmailAddress>kroberts@secure-energy.com</pidx:EmailAddress>
+            </pidx:ContactInformation>
+        </pidx:PartnerInformation>
+        <pidx:InvoiceTypeCode>DebitMemo</pidx:InvoiceTypeCode>
+        <pidx:PrimaryCurrency>
+            <pidx:CurrencyCode>CAD</pidx:CurrencyCode>
+        </pidx:PrimaryCurrency>
+        <pidx:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-07-07T00:00:00Z</pidx:ServiceDateTime>
+        <pidx:SpecialInstructions instructionIndicator="RoutingInstructions">Save</pidx:SpecialInstructions>
+        <pidx:ReferenceInformation referenceInformationIndicator="ContractNumber">
+            <pidx:ReferenceNumber />
+        </pidx:ReferenceInformation>
+        <pidx:Comment>Attn:  103/16-15-048-23W3/00 Drill Mud Processing</pidx:Comment>
+    </pidx:InvoiceProperties>
+    <pidx:InvoiceDetails>
+        <pidx:InvoiceLineItem>
+            <pidx:LineItemNumber>1</pidx:LineItemNumber>
+            <pidx:InvoiceQuantity>
+                <pidx:Quantity>10</pidx:Quantity>
+                <pidx:UnitOfMeasureCode>M3</pidx:UnitOfMeasureCode>
+            </pidx:InvoiceQuantity>
+            <pidx:LineItemInformation>
+                <pidx:LineItemIdentifier identifierIndicator="AssignedBySeller">706160</pidx:LineItemIdentifier>
+                <pidx:LineItemDescription>Drill Mud Processing</pidx:LineItemDescription>
+            </pidx:LineItemInformation>
+            <pidx:FieldTicketInformation>
+                <pidx:FieldTicketNumber>A58243</pidx:FieldTicketNumber>
+                <pidx:FieldTicketDate>2023-07-07</pidx:FieldTicketDate>
+            </pidx:FieldTicketInformation>
+            <pidx:PurchaseOrderInformation>
+                <pidx:PurchaseOrderNumber />
+            </pidx:PurchaseOrderInformation>
+            <pidx:JobLocationInformation>
+                <pidx:JobLocationDescription />
+                <pidx:WellInformation>
+                    <pidx:WellIdentifier></pidx:WellIdentifier>
+                </pidx:WellInformation>
+            </pidx:JobLocationInformation>
+            <pidx:PersonnelInformation>
+                <pidx:Comment />
+            </pidx:PersonnelInformation>
+            <pidx:Pricing>
+                <pidx:UnitPrice>
+                    <pidx:MonetaryAmount>85</pidx:MonetaryAmount>
+                    <pidx:UnitOfMeasureCode>M3</pidx:UnitOfMeasureCode>
+                </pidx:UnitPrice>
+            </pidx:Pricing>
+            <pidx:Tax>
+                <pidx:TaxTypeCode>GoodsAndServicesTax</pidx:TaxTypeCode>
+                <pidx:TaxLocation>
+                    <pidx:AddressInformation>
+                        <pidx:StateProvince>SK</pidx:StateProvince>
+                        <pidx:PostalCountry>
+                            <pidx:CountryCode>CA</pidx:CountryCode>
+                        </pidx:PostalCountry>
+                    </pidx:AddressInformation>
+                </pidx:TaxLocation>
+                <pidx:TaxAmount>
+                    <pidx:MonetaryAmount>42.5</pidx:MonetaryAmount>
+                </pidx:TaxAmount>
+            </pidx:Tax>
+            <pidx:ServiceDateTime dateTypeIndicator="ServicePeriodStart">2023-07-07T00:00:00Z</pidx:ServiceDateTime>
+            <pidx:ServiceDateTime dateTypeIndicator="ServicePeriodEnd">2023-07-07T00:00:00Z</pidx:ServiceDateTime>
+            <pidx:ReferenceInformation referenceInformationIndicator="AFENumber">
+                <pidx:ReferenceNumber>DR230305</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="OperatorGeneralLedgerCode">
+                <pidx:ReferenceNumber>3100.665</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="CostCenter">
+                <pidx:ReferenceNumber />
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="JobNumber">
+                <pidx:ReferenceNumber>D577</pidx:ReferenceNumber>
+            </pidx:ReferenceInformation>
+            <pidx:ReferenceInformation referenceInformationIndicator="CustomerAccountingReference">
+                <pidx:ReferenceNumber />
+            </pidx:ReferenceInformation>
+        </pidx:InvoiceLineItem>
+    </pidx:InvoiceDetails>
+    <pidx:InvoiceSummary>
+        <pidx:TotalLineItems>1</pidx:TotalLineItems>
+        <pidx:InvoiceTotal>
+            <pidx:MonetaryAmount>892.5</pidx:MonetaryAmount>
+        </pidx:InvoiceTotal>
+    </pidx:InvoiceSummary>
+</pidx:Invoice>

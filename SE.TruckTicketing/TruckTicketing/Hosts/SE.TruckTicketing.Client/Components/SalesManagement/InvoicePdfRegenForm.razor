@@ -1,0 +1,41 @@
+﻿@inherits BaseTruckTicketingComponent
+
+
+<RadzenTemplateForm TItem="InvoicePdfRegenFormModel"
+                    Data="@Model"
+                    Submit="@OnSubmit">
+
+    <p class="mb-3">
+        You've updated sales lines that are included in an existing invoice. Do you want to regenerate the invoice PDF?
+    </p>
+    <div class="mb-5">
+        <div class="d-flex flex-column mb-3">
+            <RadzenLabel Text="Include 'Copy of Invoice' Watermark"
+                         Component="InvoiceCopyWatermarkSwitch"/>
+
+            <RadzenSwitch id="InvoiceCopyWatermarkSwitch"
+                          Name="InvoiceCopyWatermarkSwitch"
+                          @bind-Value="@Model.IncludeInvoiceCopyWatermark"/>
+
+        </div>
+        <div class="d-flex flex-column mb-3">
+            <RadzenLabel Text="Show Revision Number"
+                         Component="ShowRevisionNumberSwitch"/>
+
+            <RadzenSwitch id="ShowRevisionNumberSwitch"
+                          Name="ShowRevisionNumberSwitch"
+                          @bind-Value="@Model.ShowRevisionNumber"/>
+
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-end gap-2">
+        <RadzenButton ButtonStyle="ButtonStyle.Secondary"
+                      Text="No"
+                      Click="@OnCancel"/>
+
+        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                      ButtonType="ButtonType.Submit"
+                      Text="Yes"/>
+    </div>
+</RadzenTemplateForm>

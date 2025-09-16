@@ -1,0 +1,12 @@
+﻿@inherits FilterComponent<bool>
+
+
+<div>
+    <RadzenLabel Text="Show Reversed Invoices"
+                 For="@Id"
+                 Class="filter-label"/>
+    <div class="filter-input-container flex gap-2 align-items-center">
+        <RadzenSwitch @bind-Value="_showReversedInvoices"
+                      Change="@HandleChange"/>
+    </div>
+</div>

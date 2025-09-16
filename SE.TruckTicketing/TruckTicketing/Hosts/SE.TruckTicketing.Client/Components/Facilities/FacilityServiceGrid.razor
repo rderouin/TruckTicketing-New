@@ -1,0 +1,74 @@
+﻿@using SE.TruckTicketing.Contracts.Models.FacilityServices
+@inherits BaseTruckTicketingComponent
+
+<PagableGridView TModel="FacilityService"
+                 @ref="_grid"
+                 Results="@_results"
+                 OnDataLoad="@LoadData"
+                 GridPageSize="10"
+                 EnableSorting="true"
+                 EnableFilters="false"
+                 EnableSearch="false"
+                 EnablePaging="true"
+                 IsLoading="@_isLoading">
+    <Columns>
+        <ColumnDefinition TItem="FacilityService"
+                          Property="@nameof(FacilityService.IsActive)"
+                          Title="Active"
+                          Width="55px"
+                          EnableSorting="false"
+                          CanToggleVisibility="false">
+            <Template Context="data">
+                <RadzenSwitch @bind-Value="@data.IsActive"
+                              class="grid-switch"
+                              Change="@(isActive => UpdateIsActiveState(data, isActive))"/>
+            </Template>
+        </ColumnDefinition>
+
+        <ColumnDefinition TItem="FacilityService"
+                          Property="@nameof(FacilityService.FacilityServiceNumber)"
+                          Title="Facility Service Number"
+                          PropertyType="typeof(string)">
+        </ColumnDefinition>
+
+        <ColumnDefinition TItem="FacilityService"
+                          Property="@nameof(FacilityService.ServiceTypeName)"
+                          Title="Service Type"
+                          PropertyType="typeof(string)"/>
+
+        <ColumnDefinition TItem="FacilityService"
+                          Property="@nameof(FacilityService.TotalItem)"
+                          Title="Total Item"
+                          PropertyType="typeof(string)"/>
+
+        <ColumnDefinition TItem="FacilityService"
+                          Property="@nameof(FacilityService.OilItem)"
+                          Title="Oil Item"
+                          PropertyType="typeof(string)"/>
+
+        <ColumnDefinition TItem="FacilityService"
+                          Property="@nameof(FacilityService.WaterItem)"
+                          Title="Water Item"
+                          PropertyType="typeof(string)"/>
+
+        <ColumnDefinition TItem="FacilityService"
+                          Property="@nameof(FacilityService.SolidsItem)"
+                          Title="Solids Item"
+                          PropertyType="typeof(string)"/>
+
+        <ColumnDefinition TItem="FacilityService"
+                          Property="@nameof(FacilityService.Id)"
+                          EnableSorting="false"
+                          CanToggleVisibility="false"
+                          Width="5rem"
+                          Title="Actions">
+            <Template Context="data">
+                <RadzenButton Click="@(() => OpenFacilityServiceDetailsDialog(data))"
+                              ButtonStyle="ButtonStyle.Secondary"
+                              Size="ButtonSize.Small">
+                    Edit
+                </RadzenButton>
+            </Template>
+        </ColumnDefinition>
+    </Columns>
+</PagableGridView>

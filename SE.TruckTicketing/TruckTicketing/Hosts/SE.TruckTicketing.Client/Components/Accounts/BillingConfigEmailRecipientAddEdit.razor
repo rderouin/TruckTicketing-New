@@ -1,0 +1,54 @@
+﻿@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseRazorComponent
+
+<EditForm Model="@emailModel"
+          OnValidSubmit="@HandleSubmit">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Email Recipients"
+                                 Component="EmailRecipientDropdown"/>
+                    <RadzenDropDown Class="w-100"
+                                    id="EmailRecipientDropdown"
+                                    @bind-Value="emailModel.AccountContactId"
+                                    AllowClear="true"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    AllowFiltering="true"
+                                    TextProperty="@nameof(AccountContact.Name)"
+                                    ValueProperty="@nameof(AccountContact.Id)"
+                                    Data="@CustomerBillingAccountContact.OrderBy(x => x.Name)"
+                                    Change="@(args => OnChange(args))">
+                        <Template Context="data">
+                            @($"{(data as AccountContact)?.Name} {(data as AccountContact)?.LastName}")
+                        </Template>
+                    </RadzenDropDown>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <RadzenLabel Text="Email"
+                                 Component="EmailTextBox"/>
+                    <RadzenTextBox id="EmailTextBox"
+                                   @bind-Value="@emailModel.EmailAddress"
+                                   class="w-100"
+                                   Disabled="true"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4 mb-3">
+        <div class="col d-flex justify-content-end">
+            <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                          ButtonType="ButtonType.Submit"
+                          Text="Save"
+                          Disabled="_isSaveDisabled"/>
+
+            <RadzenButton ButtonStyle="ButtonStyle.Light"
+                          Text="Cancel"
+                          class="ml-2"
+                          Click="HandleCancel"/>
+        </div>
+    </div>
+</EditForm>

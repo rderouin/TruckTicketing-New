@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "d01cda7c-fc5a-4906-9a13-98190d500a33",
+    "BusinessStreamId": "8a38e882-e3c9-4dbb-96d8-b6a92991605c",
+    "Code": "SESC",
+    "CountryCode": "CA",
+    "CreditExpirationThreshold": 365,
+    "Name": "SESC",
+    "DocumentType": "LegalEntityEntity",
+    "IsCustomerPrimaryContactRequired": true,
+    "EntityType": "LegalEntity",
+    "id": "LegalEntity|d01cda7c-fc5a-4906-9a13-98190d500a33"
+  },
+  {
+    "Id": "d5a9a53f-33ec-49e5-bcfa-4ae1efc9827f",
+    "BusinessStreamId": "3b38e7cc-99f3-4456-bd73-4d26c3172fea",
+    "Code": "MI - LE",
+    "CountryCode": "CA",
+    "CreditExpirationThreshold": 120,
+    "Name": "MI - LE",
+    "IsCustomerPrimaryContactRequired": true,
+    "DocumentType": "LegalEntityEntity",
+    "EntityType": "LegalEntity",
+    "id": "LegalEntity|d5a9a53f-33ec-49e5-bcfa-4ae1efc9827f"
+  }
+]

@@ -1,0 +1,311 @@
+﻿@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Constants.SourceLocations
+@using SE.Shared.Common.Utilities
+@inherits BaseRazorComponent
+    
+<TridentValidationSummary Response="_sourceLocationWorkflowValidationResponse"
+                          TModel="SourceLocation"/>
+<br/>
+<RadzenTemplateForm EditContext="@_editContext"
+                    TItem="SourceLocation"
+                    Submit="@HandleSubmit"
+                    Data="@ViewModel.SourceLocation">
+<div class="card">
+    <div class="card-header">
+        <h4 class="fw-bold">Source location Info</h4>
+    </div>
+    <br/>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Source Location Type"
+                             Component="SourceLocationTypeDropDown"/>
+
+                <TridentApiDropDown id="SourceLocationTypeDropDown"
+                                    TModel="SourceLocationType"
+                                    TValue="Guid"
+                                    Placeholder="Select source location type..."
+                                    @bind-Value="@ViewModel.SourceLocation.SourceLocationTypeId"
+                                    TextProperty="@nameof(SourceLocationType.Display)"
+                                    PageSize="10"
+                                    OnItemSelect="OnSourceLocationTypeChange"/>
+            </div>
+
+            <div class="col d-flex flex-column"
+                 hidden="@(ViewModel.SourceLocationType?.CountryCode != CountryCode.US)">
+                <RadzenLabel Text="Source Location Name"
+                             Component="SourceLocationNameTextBox"/>
+                <RadzenTextBox id="SourceLocationNameTextBox"
+                               @bind-Value="@ViewModel.SourceLocation.SourceLocationName"
+                               Disabled="@(ViewModel.SourceLocationType?.CountryCode != CountryCode.US)"
+                               class="w-100"/>
+            </div>
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="@StateProvinceLabel"
+                             Component="StateProvinceDropDown"
+                             class="required"/>
+                <RadzenDropDown TValue="StateProvince"
+                                AllowClear="true"
+                                AllowFiltering="true"
+                                id="StateProvinceDropDown"
+                                Name="StateProvinceDropDown"
+                                @bind-Value="@ViewModel.SourceLocation.ProvinceOrState"
+                                TextProperty="Value"
+                                ValueProperty="Key"
+                                Placeholder="@StateProvincePlaceHolder"
+                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                Multiple="false"
+                                Data="@(StateProvinceData)"
+                                class="w-100"/>
+                <RadzenRequiredValidator Component="StateProvinceDropDown"
+                                         Text="Required"/>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            @if (ViewModel.SourceLocationType?.CountryCode == CountryCode.US)
+            {
+                <div class="col-3 d-flex justify-content-around">
+
+                    <div class="d-flex flex-column gap-2">
+                        <RadzenLabel Text="Well / Pit"
+                                     Component="DownHoleTypeRadioButtonList"/>
+                        <RadzenRadioButtonList TValue="DownHoleType?"
+                                               id="DownHoleTypeRadioButtonList"
+                                               TextProperty="Value"
+                                               ValueProperty="Key"
+                                               Data="@(DataDictionary.For<DownHoleType>())"
+                                               @bind-Value="@ViewModel.SourceLocation.DownHoleType"/>
+                    </div>
+                    <div class="d-flex flex-column gap-2">
+                        <RadzenLabel Text="Trucked / Pipeline"
+                                     Component="DeliveryMethodRadioButtonList"/>
+
+                        <RadzenRadioButtonList TValue="DeliveryMethod?"
+                                               id="DeliveryMethodRadioButtonList"
+                                               TextProperty="Value"
+                                               ValueProperty="Key"
+                                               Data="@(DataDictionary.For<DeliveryMethod>())"
+                                               @bind-Value="@ViewModel.SourceLocation.DeliveryMethod"/>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="fw-bold">Location Info</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <div class="d-flex align-content-center">
+                    <RadzenLabel Text="Identifier"
+                                 Component="IdentifierTextBox"
+                                 class="required"/>
+                    <small class="px-2 text-muted small-grey-label">@ViewModel.IdentifierMask</small>
+                </div>
+                @if (string.IsNullOrWhiteSpace(ViewModel.IdentifierMask))
+                {
+                    <RadzenTextBox id="IdentifierTextBox"
+                                   @bind-Value="@ViewModel.SourceLocation.FormattedIdentifier"
+                                   class="w-100"
+                                   Change="OnFormattedIdentifierTextBoxChange"/>
+                }
+                else
+                {
+                    <RadzenMask Mask="@ViewModel.IdentifierRadzenMask"
+                                CharacterPattern="[0-9A-Z]"
+                                id="IdentifierTextBox"
+                                @bind-Value="@ViewModel.SourceLocation.FormattedIdentifier"
+                                class="w-100"
+                                Change="OnFormattedIdentifierTextBoxChange"/>
+                }
+
+            </div>
+        </div>
+
+        @if (ViewModel.SourceLocationType?.CountryCode == CountryCode.US)
+        {
+            <div class="row mb-3">
+                <div class="col d-flex flex-column">
+                    <div class="d-flex align-content-center">
+                        <RadzenLabel Text="PLS Number"
+                                     Component="PlsTextBox"/>
+                        <small class="px-2 text-muted small-grey-label">@("@@@@-##-###-###")</small>
+                    </div>
+
+                    <RadzenMask id="PlsTextBox"
+                                Mask="****-**-***-***"
+                                CharacterPattern="[0-9A-z]"
+                                Disabled="@(!ViewModel.SourceLocationType.RequiresPlsNumber)"
+                                @bind-Value="@ViewModel.SourceLocation.PlsNumber"
+                                class="w-100"/>
+                </div>
+
+                @if (ViewModel.SourceLocationType?.RequiresApiNumber ?? false)
+                {
+                    <div class="col d-flex flex-column">
+                        <div class="d-flex align-content-center">
+                            <RadzenLabel Text="API Number"
+                                         Component="ApiNumberTextBox"/>
+                            <small class="px-2 text-muted small-grey-label">##-###-#####-##-00</small>
+                        </div>
+
+                        <RadzenMask id="ApiNumberTextBox"
+                                    Mask="**-***-*****-**-00"
+                                    Disabled="@(!ViewModel.SourceLocationType.RequiresApiNumber)"
+                                    CharacterPattern="[0-9]"
+                                    @bind-Value="@ViewModel.SourceLocation.WellFileNumber"
+                                    class="w-100"/>
+                    </div>
+                }
+
+                @if (ViewModel.SourceLocationType?.RequiresWellFileNumber ?? false)
+                {
+                    <div class="col d-flex flex-column">
+                        <div class="d-flex align-content-center">
+                            <RadzenLabel Text="Well File Number"
+                                         Component="WellFileNumberTextBox"/>
+                            <small class="px-2 text-muted small-grey-label">##### or ########</small>
+                        </div>
+
+                        <RadzenMask id="WellFileNumberTextBox"
+                                    Mask="********"
+                                    Disabled="@(!ViewModel.SourceLocationType.RequiresWellFileNumber)"
+                                    CharacterPattern="[0-9]"
+                                    @bind-Value="@ViewModel.SourceLocation.WellFileNumber"
+                                    class="w-100"/>
+                    </div>
+                }
+
+                @if (ViewModel.SourceLocationType?.RequiresCtbNumber ?? false)
+                {
+                    <div class="col d-flex flex-column">
+                        <div class="d-flex align-content-center">
+                            <RadzenLabel Text="CTB Number"
+                                         Component="CtbNumberTextBox"/>
+                            <small class="px-2 text-muted small-grey-label">######</small>
+                        </div>
+
+                        <RadzenMask id="CtbNumberTextBox"
+                                    Mask="******"
+                                    Disabled="@(!ViewModel.SourceLocationType.RequiresCtbNumber)"
+                                    CharacterPattern="[0-9]"
+                                    @bind-Value="@ViewModel.SourceLocation.CtbNumber"
+                                    class="w-100"/>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h4 class="fw-bold">Ownership Info</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <div class="d-flex align-content-center">
+                    <RadzenLabel Text="Start Date"
+                                 Component="StartDateTimePicker"
+                                 class="required"/>
+                    <small class="px-2 text-muted small-grey-label">YYYY-MM-DD</small>
+                </div>
+
+                <RadzenDatePicker TValue="DateTimeOffset?"
+                                  id="StartDateTimePicker"
+                                  DateFormat="yyyy-MM-dd"
+                                  Class="w-100"
+                                  @bind-Value="@ViewModel.SourceLocation.GeneratorStartDate"/>
+            </div>
+
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Production Accountant"
+                             Component="GeneratorProductionAccountantDropDown"/>
+
+                <RadzenDropDown TValue="Guid?"
+                                Placeholder="Select contact..."
+                                AllowClear="true"
+                                AllowFiltering="true"
+                                Class="w-100"
+                                id="GeneratorProductionAccountantDropDown"
+                                @bind-Value="@ViewModel.SourceLocation.GeneratorProductionAccountContactId"
+                                Data="@_generatorContacts"
+                                TextProperty="@nameof(AccountContact.Name)"
+                                ValueProperty="@nameof(AccountContact.Id)">
+                    <Template Context="data">
+                        @($"{(data as AccountContact)?.Name} {(data as AccountContact)?.LastName}")
+                    </Template>
+                </RadzenDropDown>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h4 class="fw-bold">Contract Operator Info</h4>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Contract Operator Customer Info"
+                             Component="ContractOperatorDropdown"
+                             class="required"/>
+
+                <AccountsDropDown id="ContractOperatorDropdown"
+                                  TValue="Guid"
+                                  AccountType="@AccountTypes.Generator"
+                                  Placeholder="Select account..."
+                                  @bind-Value="@ViewModel.SourceLocation.ContractOperatorId"
+                                  TextProperty="@nameof(Account.Name)"
+                                  ValueProperty="@nameof(Account.Id)"
+                                  PageSize="10"
+                                  OnItemSelect="OnContractOperatorDropdownChange"
+                                  OnItemLoad="OnContractOperatorDropdownLoad"/>
+            </div>
+
+            <div class="col d-flex flex-column">
+                <RadzenLabel Text="Production Accountant"
+                             Component="ContractOperatorProductionAccountDropdown"/>
+
+                <RadzenDropDown TValue="Guid?"
+                                Placeholder="Select contact..."
+                                AllowClear="true"
+                                AllowFiltering="true"
+                                class="w-100"
+                                id="ContractOperatorProductionAccountDropdown"
+                                @bind-Value="@ViewModel.SourceLocation.ContractOperatorProductionAccountContactId"
+                                Data="@_contractOperatorContacts"
+                                TextProperty="@nameof(AccountContact.Name)"
+                                ValueProperty="@nameof(AccountContact.Id)">
+                    <Template Context="data">
+                        @($"{(data as AccountContact)?.Name} {(data as AccountContact)?.LastName}")
+                    </Template>
+                </RadzenDropDown>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4 mb-3">
+    <div class="col d-flex justify-content-end">
+        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                      ButtonType="ButtonType.Submit"
+                      Text="@ViewModel.SubmitButtonText"
+                      IsBusy="@IsBusy"
+                      BusyText="@ViewModel.SubmitButtonBusyText"/>
+        <RadzenButton ButtonStyle="ButtonStyle.Light"
+                      Text="Cancel"
+                      class="ml-2"
+                      Click="HandleCancel"/>
+    </div>
+</div>
+</RadzenTemplateForm>

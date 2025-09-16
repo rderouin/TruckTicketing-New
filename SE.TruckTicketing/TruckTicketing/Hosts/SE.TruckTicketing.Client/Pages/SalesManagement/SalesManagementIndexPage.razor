@@ -1,0 +1,259 @@
+﻿@page "/sales-management"
+@page "/sales-management/{FacilityIdsUrl}"
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Contracts.Models.Operations
+@using SE.TruckTicketing.Contracts.Models.SourceLocations
+@using SE.TruckTicketing.Contracts.Security
+@using SE.Shared.Common.Lookups
+@using SE.Shared.Common.Utilities
+@using SE.TruckTicketing.Client.Components.SalesManagement
+@inherits BaseTruckTicketingComponent
+
+<style>
+    .vlimit {
+        max-height: 100%;
+        width: 100%;
+    }
+</style>
+
+<div class="d-flex flex-column h-100">
+    <div class="flex-grow-0" style="position:relative; top:0px; width:100%; z-index:1;">
+        <div class="p-4">
+            <div class="d-flex align-items-center justify-content-between">
+                <h3>Manage Sales</h3>
+                <div class="d-flex align-items-center gap-5">
+                    <div class="d-flex gap-2">
+                        
+                        <RadzenLabel Text="Facility"
+                                     Component="FacilityDropDown"
+                                     class="my-2"/>
+                        <RadzenDropDownDataGrid @ref="_facilityDataGrid"
+                                                AllowFiltering="true"
+                                                AllowSorting="true"
+                                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                                FilterOperator="StringFilterOperator.Contains"
+                                                AllowClear="true"
+                                                @bind-Value=@FacilityIds
+                                                Multiple="true"
+                                                Placeholder="Select Facility..."
+                                                Data="@_facilityRecords"
+                                                Count="@(facilityResults?.Info?.TotalRecords ?? 0)"
+                                                TextProperty="@nameof(Facility.Display)"
+                                                ValueProperty="@nameof(Facility.Id)"
+                                                PageSize="10"
+                                                Change="@(args => HandleFacilityChange(args))">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Width="25px" Sortable="false">
+                                    <HeaderTemplate>
+                                        <RadzenCheckBox Disabled="true" TriState="false" TValue="bool" Value="@(FacilityIds != null ? FacilityIds.ToArray().Any() : false)" />
+                                    </HeaderTemplate>
+                                    <Template Context="data">
+                                        <RadzenCheckBox TriState="false" TValue="bool" Value="@(FacilityIds != null && FacilityIds.ToList().Contains(data.Id))" />
+                                    </Template>
+                                </RadzenDropDownDataGridColumn>
+                                <RadzenDropDownDataGridColumn Property="@nameof(Facility.SiteId)" Title="Site Id" Width="50px" />
+                                <RadzenDropDownDataGridColumn Property="@nameof(Facility.Name)" Title="Name" Width="100px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                    </div>
+                    <SalesManagementButtons SalesManagementButtonFlag="@SalesManagementButtonFlag.SalesLines"
+                                            FacilityIds="@FacilityIds">
+                    </SalesManagementButtons>
+                </div>
+            </div>
+            <div>View sales lines individually, or view them in their respective load confirmations & invoices.</div>
+        </div>
+
+        @if (ShowFilters)
+        {
+            <div>
+                <GridFiltersContainer Expandable="@true"
+                                      OnFilterChange="@(async criteria => await ApplyFilterOnTabChange(criteria))">
+                    <div class="d-flex flex-grow-1 gap-3">
+                        <KeywordFilter Label="Search"
+                                       Placeholder="Search by sales id, ticket #, customer name, generator name, load confirmation #, invoice #..."/>
+                        <DateRangeFilter Label="Ticket Date Range"
+                                         FilterPath="@nameof(SalesLine.TruckTicketEffectiveDate)"/>
+                        <SelectFilter Label="Well Classification"
+                                      Placeholder="All classifications"
+                                      FilterPath="@nameof(SalesLine.WellClassification)"
+                                      Data="@(DataDictionary.For<WellClassifications>().SelectOptions())"/>
+                    </div>
+                    <GridFiltersExpandedContainer>
+                        <div class="d-flex flex-grow-1 gap-3 mb-3">
+                            <NumberRangeFilter Label="Rate Range"
+                                               FilterPath="@nameof(SalesLine.Rate)"/>
+                            <NumberRangeFilter Label="Quantity Range"
+                                               FilterPath="@nameof(SalesLine.Quantity)"/>
+                            <DropDownDataGridFilter Label="Product"
+                                                    FilterPath="@nameof(SalesLine.ProductId)"
+                                                    Placeholder="All products"
+                                                    TItem="Product"
+                                                    DefaultSortProperty="@nameof(Product.Name)"
+                                                    TextProperty="@nameof(Product.Name)">
+                                <Columns>
+                                    <RadzenDropDownDataGridColumn Property="@nameof(Product.Name)"
+                                                                  Title="Name"
+                                                                  Width="40px"/>
+                                    <RadzenDropDownDataGridColumn Property="@nameof(Product.Number)"
+                                                                  Title="Number"
+                                                                  Width="20px"/>
+                                    <RadzenDropDownDataGridColumn Property="@nameof(Product.LegalEntityCode)"
+                                                              Title="Legal Entity"
+                                                              Width="20px"/>
+                                </Columns>
+                            </DropDownDataGridFilter>
+                        </div>
+                        <div class="d-flex flex-grow-1 gap-3 mb-3">
+                            <SelectFilter Label="Status"
+                                          Placeholder="All statuses"
+                                          FilterPath="@nameof(SalesLine.Status)"
+                                          Data="@(DataDictionary.ForSelectedValues<SalesLineStatus>(FilteredSalesLineStatus).SelectOptions())" />
+                            <SelectFilter Label="Attachments"
+                                          Placeholder="Any"
+                                          FilterPath="@nameof(SalesLine.HasAttachments)"
+                                          Data="@(DataDictionary.For<HasAttachments>(false).SelectOptions())"/>
+                            <SelectFilter Label="Dow/Non-Dow"
+                                          Placeholder="All"
+                                          FilterPath="@nameof(SalesLine.DowNonDow)"
+                                          Data="@(DataDictionary.For<DowNonDow>(false).SelectOptions())"/>
+                            <DropDownDataGridFilter Label="Source Location Type"
+                                                    FilterPath="@nameof(SalesLine.SourceLocationTypeId)"
+                                                    Placeholder="All location types"
+                                                    TItem="SourceLocationType"
+                                                    DefaultSortProperty="@nameof(SourceLocationType.Name)"
+                                                    TextProperty="@nameof(SourceLocationType.Name)">
+                                <Columns>
+                                    <RadzenDropDownDataGridColumn Property="@nameof(SourceLocationType.Name)"
+                                                                  Title="Name"
+                                                                  Width="84px"/>
+                                </Columns>
+                            </DropDownDataGridFilter>
+                        </div>
+                        <div class="d-flex flex-grow-1 gap-3 mb-3">
+                            <DropDownDataGridFilter Label="Source Location"
+                                                    FilterPath="@nameof(SalesLine.SourceLocationId)"
+                                                    Placeholder="All locations"
+                                                    TItem="SourceLocation"
+                                                    TextProperty="@nameof(SourceLocation.Display)">
+                                <Columns>
+                                    <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.Display)"
+                                                                  Title="Source Location"
+                                                                  Width="60px"/>
+
+                                    <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.SourceLocationTypeName)"
+                                                                  Title="Type"
+                                                                  Width="30px"/>
+
+                                    <RadzenDropDownDataGridColumn Property="@nameof(SourceLocation.GeneratorName)"
+                                                                  Title="Generator Name"
+                                                                  Width="60px"/>
+
+                                </Columns>
+                            </DropDownDataGridFilter>
+                            <PreviewSalesLinesFilter/>
+                            <AwaitingRemovalAckFilter/>
+                        </div>
+                    </GridFiltersExpandedContainer>
+                </GridFiltersContainer>
+            </div>
+        }
+    </div>
+
+    <div class="p-2 vlimit" 
+         style="align-content: center; position: relative; top:0px; z-index:0; height:calc(100% - 200px);">
+        <RadzenTabs TabPosition="@TabPosition.Top"
+                    RenderMode="TabRenderMode.Client"
+                    Change="@(args => ChangeTabs(args))"
+                    Style="align-content:center; height:calc(100% - 45px);">
+            <Tabs>
+                <RadzenTabsItem Text="@AllCountText">
+                    <SalesManagementGrid @ref="_salesManagementGrid"
+                                         BeforeDataLoad="@LoadAllData"
+                                         OnAllCountChange="@AllCountHandler"
+                                         SalesManagementPage="this"
+                                         ChildStateChange="@StateHasChanged"/>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="@ManualPriceChangeText">
+                    <SalesManagementGrid @ref="_salesLinePriceChangeGrid"
+                                         BeforeDataLoad="@LoadSalesLinesWithManualPriceChanged"
+                                         OnSalesLinePriceChangeCountChange="@SalesLinePriceChangeCountHandler"
+                                         SalesManagementPage="this">
+                        <AdditionalColumns>
+                            <ColumnDefinition TItem="SalesLine"
+                                              Property="@nameof(SalesLine.OriginalRate)"
+                                              Title="Original Price"/>
+                            <ColumnDefinition TItem="SalesLine"
+                                              Property="@nameof(SalesLine.Rate)"
+                                              Title="New Prince"
+                                              PropertyType="typeof(double)"/>
+                            <ColumnDefinition TItem="SalesLine"
+                                              Property="@nameof(SalesLine.PriceChangeDate)"
+                                              Title="Price Change Date"
+                                              PropertyType="typeof(DateTimeOffset)">
+                                <Template Context="data">
+                                    @(data.PriceChangeDate?.ToString("d"))
+                                </Template>
+                            </ColumnDefinition>
+                            <ColumnDefinition TItem="SalesLine"
+                                              Property="@nameof(SalesLine.PriceChangeUserName)"
+                                              Title="Price Change By"
+                                              PropertyType="typeof(string)"/>
+                            <ColumnDefinition TItem="SalesLine"
+                                              Property="@nameof(SalesLine.ChangeReason)"
+                                              Title="Price Change Reason"
+                                              PropertyType="typeof(string)"/>
+                            <ColumnDefinition TItem="SalesLine"
+                                              Property="@nameof(SalesLine.ChangeComments)"
+                                              Title="Price Change Comments"
+                                              PropertyType="typeof(string)"/>
+                        </AdditionalColumns>
+                    </SalesManagementGrid>
+                </RadzenTabsItem>
+            </Tabs>
+        </RadzenTabs>
+    </div>
+
+    <div class="flex-grow-0 d-flex align-items-center justify-content-between p-2 footer-panel" 
+         style="position:absolute; bottom:0px; width:100%;">
+        <div class="d-flex">
+            <div class="d-flex gap-2">
+                <LinesSelectedText NumberOfLinesSelected="@(_salesManagementGrid?.NumberOfSelected() ?? 0)"></LinesSelectedText>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end">
+            <div class="d-flex gap-2 align-items-start">
+                <RadzenButton Text="Resend For Acknowledgement"
+                              Click="@(_ => HandleSave(true))"
+                              ButtonStyle="ButtonStyle.Primary"
+                              Size="ButtonSize.Medium"
+                              Disabled="@(!_salesManagementGrid?.SelectedSalesLines?.Any() ?? true)"
+                              IsBusy="_isSaving"
+                              BusyText="Resending"/>
+                <RadzenButton Text="Save Selected"
+                              Click="@(_ => HandleSave())"
+                              ButtonStyle="ButtonStyle.Primary"
+                              Size="ButtonSize.Medium"
+                              Disabled="@(!_salesManagementGrid?.SelectedSalesLines?.Any() ?? true)"
+                              IsBusy="_isSaving"
+                              BusyText="Saving"/>
+                <RadzenButton Text="Change Price"
+                              Click="@(_ => HandleBulkPriceChange())"
+                              ButtonStyle="ButtonStyle.Primary"
+                              Disabled="@(DisablePriceChanges || !IsAuthorizedFor(Permissions.Resources.SalesLinePricingBulk, Permissions.Operations.Execute))"
+                              Size="ButtonSize.Medium"/>
+                <RadzenButton Text="Refresh Price"
+                              Click="@(_ => HandlePriceRefresh())"
+                              ButtonStyle="ButtonStyle.Primary"
+                              Disabled="@(DisablePriceChanges || !IsAuthorizedFor(Permissions.Resources.SalesLinePricingRefresh, Permissions.Operations.Execute))"
+                              Size="ButtonSize.Medium"/>
+                <RadzenButton Text="Ad Hoc Load Confirmation"
+                              Click="@(_ => OpenAdHocLoadConfirmation())"
+                              ButtonStyle="ButtonStyle.Primary"
+                              Disabled="@(!AdHocLoadConfirmationEnabled)"
+                              Size="ButtonSize.Medium"
+                              MouseEnter="@(args => ShowAdHocLoadConfirmationTooltip(args))"/>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,110 @@
+﻿@typeparam TCutParameters
+@using SE.TruckTicketing.Contracts.Lookups
+@using SE.TruckTicketing.Client.Components.Validators
+@inherits BaseTruckTicketingComponent
+
+<div class="card-header px-0">
+    Cuts (%)
+</div>
+<br/>
+<div class="row">
+    <div class="col-2 d-flex align-items-center"
+         style="min-width: 50px">
+        <RadzenLabel Text="Oil"
+                     Component="OilCutPercentageNumeric"
+                     class="m-0"/>
+    </div>
+    <div class="col">
+        <TridentNumeric id="OilCutPercentageNumeric"
+                        Name="OilCutPercentageNumeric"
+                        TValue="double?"
+                        class="w-100"
+                        MaxDecimalPlaces="1"
+                        @bind-Value="@ViewModel.Oil.CutPercentage"
+                        Change="OnParameterChange"
+                        Disabled="@(ViewModel.CutEntryMethod != CutEntryMethod.Percentage || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"/>
+        <TridentNullableNumericRangeValidator Component="OilCutPercentageNumeric"
+                                              Min="0"
+                                              Max="100"
+                                              Text="Percentage must be between 0 and 100"
+                                              class="mt-1 text-danger validation-message"/>
+    </div>
+</div>
+<br/>
+
+<div class="row">
+    <div class="col-2 d-flex align-items-center"
+         style="min-width: 50px">
+        <RadzenLabel Text="Water"
+                     Component="WaterCutPercentageNumeric"
+                     class="m-0"/>
+    </div>
+    <div class="col">
+        <TridentNumeric id="WaterCutPercentageNumeric"
+                        Name="WaterCutPercentageNumeric"
+                        TValue="double?"
+                        class="w-100"
+                        MaxDecimalPlaces="1"
+                        @bind-Value="@ViewModel.Water.CutPercentage"
+                        Change="OnParameterChange"
+                        Disabled="@(ViewModel.CutEntryMethod != CutEntryMethod.Percentage || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"/>
+        <TridentNullableNumericRangeValidator Component="WaterCutPercentageNumeric"
+                                              Min="0"
+                                              Max="100"
+                                              Text="Percentage must be between 0 and 100"
+                                              class="mt-1 text-danger validation-message"/>
+    </div>
+</div>
+<br/>
+
+<div class="row">
+    <div class="col-2 d-flex align-items-center"
+         style="min-width: 50px">
+        <RadzenLabel Text="Solids"
+                     Component="SolidsCutPercentageNumeric"
+                     class="m-0"/>
+    </div>
+    <div class="col">
+        <TridentNumeric id="SolidsCutPercentageNumeric"
+                        Name="SolidsCutPercentageNumeric"
+                        TValue="double?"
+                        class="w-100"
+                        MaxDecimalPlaces="1"
+                        @bind-Value="@ViewModel.Solids.CutPercentage"
+                        Change="OnParameterChange"
+                        Disabled="@(ViewModel.CutEntryMethod != CutEntryMethod.Percentage || ViewModel.TruckTicket.Status is TruckTicketStatus.Approved or TruckTicketStatus.Invoiced)"/>
+        <TridentNullableNumericRangeValidator Component="SolidsCutPercentageNumeric"
+                                              Min="0"
+                                              Max="100"
+                                              Text="Percentage must be between 0 and 100"
+                                              class="mt-1 text-danger validation-message"/>
+    </div>
+</div>
+<hr class="text-muted"/>
+
+<div class="row">
+    <div class="col-2 d-flex align-items-center"
+         style="min-width: 50px">
+        <RadzenLabel Text="Total"
+                     Component="TotalCutPercentageNumeric"
+                     class="m-0"/>
+    </div>
+
+    <div class="col">
+        <RadzenNumeric id="TotalCutPercentageNumeric"
+                       Name="TotalCutPercentageNumeric"
+                       ShowUpDown="false"
+                       class="w-100"
+                       TValue="double?"
+                       Format="N1"
+                       @bind-Value="@ViewModel.Total.CutPercentage"
+                       Disabled="true"/>
+
+        @if (TotalCutPercentageInvalid)
+        {
+            <div class="mt-1 text-danger validation-message">
+                Total Percentage (@Math.Abs(ViewModel.Total.CutPercentage ?? 0)) must be equal to 100
+            </div>
+        }
+    </div>
+</div>

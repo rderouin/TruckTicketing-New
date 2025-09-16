@@ -1,0 +1,54 @@
+{
+  "Blobs": "",
+  "CorrelationId": "{292EE85F-C5DA-408B-B173-3522ECE39C59}",
+  "Identifiers": "",
+  "MessageDate": "2022-11-28T17:01:09+00:00",
+  "MessageType": "ContactPerson",
+  "Operation": "Update",
+  "Payload": {
+    "Addresses": [
+      {
+        "AddressType": "",
+        "City": "",
+        "Country": "CAN",
+        "IsPrimary": false,
+        "Province": "",
+        "State": "",
+        "Street": "",
+        "ZipCode": ""
+      },
+      {
+        "AddressType": "",
+        "City": "Montréal",
+        "Country": "CAN",
+        "IsPrimary": false,
+        "Province": "",
+        "State": "QC",
+        "Street": "123 Test street",
+        "ZipCode": ""
+      }
+    ],
+    "SignatoryType": "Completions",
+    "ContactFunctions": ["a","b"],
+    "City": "",
+    "Country": "CA",
+    "Province": "AB",
+    "State": "",
+    "Street": "213 Manor",
+    "ZipCode": "",
+    "CustAccount": "000001",
+    "Contact": "Sam",
+    "DataAreaId": "maec",
+    "Email": "abc@123.com",
+    "Name": "John",
+    "IsActive": true,
+    "IsPrimary": true,
+    "LastName": "Doe",
+    "PhoneNumber": "111222333",
+    "JobTitle": "",
+    "AccountId": "{641EA833-11EC-41F3-888E-EC5C1CBCA0F6}",
+    "IsPrimaryAccountContact": true
+  },
+  "Source": "D365FO",
+  "SourceId": "{641EA833-11EC-41F3-888E-EC5C1CBCA0F6}"
+}

@@ -1,0 +1,119 @@
+@inherits BaseTruckTicketingComponent
+@page "/truck-ticketing/truck-tickets/old"
+
+<style>
+    #TruckTicketIndex [data-ticket-active='true'] td {
+        font-weight: 800;
+        background-color: rgba(17, 81, 243, 0.16); 
+        border: 2px solid rgba(17, 81, 243, 0.2)
+    }
+    
+    #TruckTicketIndex tr td {
+        padding: 0.25em 0.5em;
+    }
+</style>
+
+<RadzenSplitter>
+    <RadzenSplitterPane Collapsible="false">
+        <div class="position-relative h-100"
+             style="overflow-y: auto">
+            <div class="pt-4 px-4">
+                <div class="bg-white pb-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h3>Manage Truck Tickets</h3>
+                        <div class="d-flex gap-2">
+                            <RadzenButton Click="OpenTruckTicketStubCreationDialog"
+                                          Text="Create Pre-Printed Tickets"
+                                          Icon="add_circle_outline"
+                                          ButtonStyle="ButtonStyle.Secondary"/>
+
+                            <RadzenButton Text="Add Ticket"
+                                          ButtonStyle="ButtonStyle.Primary"
+                                          Click="HandleAddTicketClick">
+
+                            </RadzenButton>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="TruckTicketIndex">
+                    <TruckTicketIndex @ref="_truckTicketIndex"
+                                      OnTruckTicketSelect="HandleTruckTicketRowSelect"/>
+                </div>
+
+                <TridentElementAttributeMarker ContainerId="TruckTicketIndex"
+                                               ItemMarkerAttribute="data-ticket-number"
+                                               ItemMarkedAttribute="data-ticket-active"
+                                               ParentSelector="tr"
+                                               MarkedItems="@markedItems"/>
+
+                <div class="bg-white pt-2">
+                    <div class="d-flex align-items-center justify-content-end">
+                        <div class="d-flex gap-2">
+                            <RadzenButton Text="Edit Multiple"
+                                          ButtonStyle="ButtonStyle.Secondary"
+                                          Disabled="@(!(_truckTicketIndex?.GetSelectedTickets()?.Count > 1))"
+                                          Click="ShowEditMultipleDialog">
+                            </RadzenButton>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </RadzenSplitterPane>
+
+    <RadzenSplitterPane Collapsed="@(_activeTruckTicket is null)"
+                        Collapsible="false">
+        @if (_activeTruckTicket is not null)
+        {
+            <div class="d-flex flex-column h-100">
+                <div class="flex-grow-1"
+                     style="overflow-y: auto">
+                    <TruckTicketDetailsPage Model="@_activeTruckTicket"
+                                            SalesLineResults="@_salesLineResults"
+                                            LoadSalesLines="LoadSalesLines"
+                                            LoadPreviewSalesLines="LoadPreviewSalesLines"
+                                            CloneTicket="CloneTruckTicket"
+                                            OnRefresh="RefreshTruckTicket"
+                                            OnClose="HandleDetailsPaneClose"/>
+                </div>
+                <div class="flex-grow-0 d-flex align-items-center justify-content-between p-4 footer-panel">
+                    <div class="">
+                        <RadzenSplitButton class="primary"
+                                           Visible="@((_activeTruckTicket?.TicketNumber?.EndsWith("LF") ?? false) || _activeTruckTicket?.MaterialApprovalId.GetValueOrDefault(Guid.Empty) != Guid.Empty || _activeTruckTicket.Id == Guid.Empty)"
+                                           Click="@HandleTicketDownloadAction"
+                                           Text="Download Scale Ticket"
+                                           Disabled="@_isDownloadingTicket">
+                            <ChildContent>
+                                <RadzenSplitButtonItem Text="Download With Material Approval Info Only"
+                                                       Value="1"/>
+                            </ChildContent>
+                        </RadzenSplitButton>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                      ButtonType="ButtonType.Button"
+                                      Click="SplitTicket"
+                                      Text="Split Ticket"
+                                      IsBusy="@_isSpliting"
+                                      BusyText="Spliting Ticket"
+                                      Visible="@(_splitButtonVisible)"/>
+
+                        <RadzenButton ButtonStyle="ButtonStyle.Light"
+                                      Text="Discard Changes"
+                                      Click="HandleDiscardChanges"
+                                      Visible="@(_activeTruckTicketBackup is not null)"/>
+
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary"
+                                      ButtonType="ButtonType.Button"
+                                      Click="HandleSave"
+                                      Text="Save"
+                                      IsBusy="@_isSaving"
+                                      BusyText="Saving"
+                                      Disabled="@(_disableSaveButton)"/>
+                    </div>
+                </div>
+            </div>
+        }
+    </RadzenSplitterPane>
+</RadzenSplitter>

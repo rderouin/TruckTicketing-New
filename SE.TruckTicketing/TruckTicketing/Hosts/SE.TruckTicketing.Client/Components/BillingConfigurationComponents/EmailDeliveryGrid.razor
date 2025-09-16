@@ -1,0 +1,75 @@
+﻿@using SE.TruckTicketing.Contracts.Security
+@using SE.TruckTicketing.Contracts.Models.Operations
+@inherits BaseTruckTicketingComponent
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <h4 class="fw-bold">Add Email Recipient</h4>
+        </div>
+        <div>
+            <RadzenButton Click="@(args => AddEmailRecipient())"
+                          Text="Email Recipient"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Size="ButtonSize.Small"
+                          Disabled="@(!HasWritePermission(Permissions.Resources.Account))"
+                          Icon="contact_mail"/>
+        </div>
+    </div>
+    <div class="card-body grid-switch-container">
+        <PagableGridView TModel="EmailDeliveryContact"
+                         Results="@_associatedEmailDeliveryContacts"
+                         class="bs-class"
+                         EnableSearch="false"
+                         EnablePaging="false"
+                         EnableSorting="true"
+                         EnableRowExpansion="false"
+                         EnableFilters="false"
+                         OnDataLoad="LoadEmailDeliveryContacts">
+            <Columns>
+                <ColumnDefinition TItem="EmailDeliveryContact"
+                                  Property="@nameof(EmailDeliveryContact.IsAuthorized)"
+                                  Title="Enabled"
+                                  PropertyType="typeof(string)"
+                                  Width="4rem"
+                                  EnableSorting="false">
+                    <Template Context="context">
+                        <RadzenSwitch @bind-Value="@context.IsAuthorized"
+                                      class="grid-switch"
+                                      Change="() => EnableEmailContactAsSignatory(context)"
+                                      Disabled="@isEmailDeliveryContactFieldsDisabled"/>
+                    </Template>
+                </ColumnDefinition>
+                <ColumnDefinition TItem="EmailDeliveryContact"
+                                  Property="@nameof(EmailDeliveryContact.SignatoryContact)"
+                                  Title="Signatory Contact"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="EmailDeliveryContact"
+                                  Property="@nameof(EmailDeliveryContact.EmailAddress)"
+                                  Title="Email Address"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="EmailDeliveryContact"
+                                  Property="@nameof(EmailDeliveryContact.ReferenceId)"
+                                  Title="Reference ID"
+                                  Width="6rem"
+                                  PropertyType="typeof(string)">
+                </ColumnDefinition>
+                <ColumnDefinition TItem="EmailDeliveryContact"
+                                  Property="@nameof(EmailDeliveryContact)"
+                                  Title="Actions"
+                                  Width="4rem"
+                                  EnableSorting="false">
+                    <Template Context="data">
+                        <RadzenButton Click="() => DeleteButton_Click(data)"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Size="ButtonSize.Small"
+                                      Disabled="@isEmailDeliveryContactFieldsDisabled">
+                            Delete
+                        </RadzenButton>
+                    </Template>
+                </ColumnDefinition>
+            </Columns>
+        </PagableGridView>
+    </div>
+</div>
